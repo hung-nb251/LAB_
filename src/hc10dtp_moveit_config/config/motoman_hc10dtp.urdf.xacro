@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="motoman_hc10dtp">
+    <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
+    <xacro:arg name="use_fake_hardware"       default="false" />
+    <xacro:arg name="robot_ip"                default="192.168.1.33" />
+    <xacro:arg name="controller_port"         default="50240" />
+
+    <!-- Import HC10DTP URDF -->
+    <xacro:include filename="$(find motoman_hc10dtp_support)/urdf/hc10dtp.urdf" />
+
+    <!-- Import ros2_control xacro -->
+    <xacro:include filename="motoman_hc10dtp.ros2_control.xacro" />
+
+    <!-- Instantiate ros2_control macro -->
+    <xacro:motoman_hc10dtp_ros2_control
+        name="HC10DTPRealSystem"
+        initial_positions_file="$(arg initial_positions_file)"
+        use_fake_hardware="$(arg use_fake_hardware)"
+        robot_ip="$(arg robot_ip)"
+        controller_port="$(arg controller_port)"
+    />
+
+    <!-- ========================================== -->
+    <!-- TẠO HÀNG RÀO AN TOÀN DẠNG KHUNG (CAGE)     -->
+    <!-- Hướng chính: Bàn làm việc dọc ở phía +X   -->
+    <!-- X: -0.4 to 2.0 (Sâu 2.4m)                  -->
+    <!-- Y: -0.8 to 0.8 (Rộng 1.0m)                 -->
+    <!-- Z: -0.5 to 1.5 (Sàn ở Z=-0.5)              -->
+    <!-- ========================================== -->
+
+    <!-- ========================================== -->
+    <!-- MÔI TRƯỜNG LÀM VIỆC (WORKSPACE)            -->
+    <!-- ========================================== -->
+
+    <material name="cabinet_color">
+        <color rgba="0.4 0.2 0.1 0.8"/>
+    </material>
+    <link name="environment_objects">
+        <!-- ================= TỦ ĐỠ ROBOT ================= -->
+        <!-- Kích thước: 0.8m (X) x 0.6m (Y) x 0.5m (Z) -->
+        <collision>
+            <origin xyz="0 0 -0.25" rpy="0 0 0" />
+            <geometry><box size="0.8 0.6 0.5" /></geometry>
+        </collision>
+        <visual>
+            <origin xyz="0 0 -0.25" rpy="0 0 0" />
+            <geometry><box size="0.8 0.6 0.5" /></geometry>
+            <material name="cabinet_color"/>
+        </visual>
+
+
+    </link>
+
+    <joint name="environment_objects_joint" type="fixed">
+        <parent link="base_link" />
+        <child link="environment_objects" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+</robot>

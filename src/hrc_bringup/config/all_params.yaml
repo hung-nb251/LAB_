@@ -1,0 +1,29 @@
+experiment_logger:
+  ros__parameters:
+    auto_start: true
+    log_dir: /home/duy/cocarry_ws/cocarry_logs
+realsense_tracker:
+  ros__parameters:
+    # model_path is passed dynamically from the launch file
+    offset_x: 0.0029441434890031815
+    offset_y: 0.07468471676111221
+    offset_z: 0.9220000505447388
+trajectory_predictor:
+  ros__parameters:
+    auto_start: false
+    clear_on_tracking_lost: 1.0
+    default_model: gru
+    filter:
+      ema_alpha: 0.2
+      enabled: true
+      max_deviation: 0.08
+      max_rate: 0.04
+    model_dir: /home/duy/cocarry_ws/src/GRU-Model
+    model_files:
+      gru: gru_model_Ts5.h5
+      lstm: lstm_model_Ts5.h5
+      rnn: rnn_model_Ts5.h5
+    num_features: 6
+    scaler_x_file: scaler_x_Ts5.pkl
+    scaler_y_file: scaler_y_Ts5.pkl
+    window_size: 20
