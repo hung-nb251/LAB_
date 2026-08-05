@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/duy/cocarry_ws/src/kinect2_ros2/kinect2_bridge
+CMAKE_SOURCE_DIR = /home/hungnb/cocarry_ws/src/kinect2_ros2/kinect2_bridge
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/duy/cocarry_ws/build/kinect2_bridge
+CMAKE_BINARY_DIR = /home/hungnb/cocarry_ws/build/kinect2_bridge
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -142,9 +142,9 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/duy/cocarry_ws/build/kinect2_bridge/CMakeFiles /home/duy/cocarry_ws/build/kinect2_bridge//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/hungnb/cocarry_ws/build/kinect2_bridge/CMakeFiles /home/hungnb/cocarry_ws/build/kinect2_bridge//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/duy/cocarry_ws/build/kinect2_bridge/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/hungnb/cocarry_ws/build/kinect2_bridge/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

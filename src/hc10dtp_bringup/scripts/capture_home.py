@@ -31,7 +31,7 @@ class CaptureHomeNode(Node):
                 return
 
         # 1. Cập nhật initial_positions.yaml
-        ws_path = '/home/duy/cocarry_ws'
+        ws_path = '/home/hungnb/cocarry_ws'
         init_yaml = f'{ws_path}/src/hc10dtp_moveit_config/config/initial_positions.yaml'
         try:
             with open(init_yaml, 'w') as f:

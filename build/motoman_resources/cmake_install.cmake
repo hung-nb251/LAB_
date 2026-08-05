@@ -1,8 +1,8 @@
-# Install script for directory: /home/duy/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources
+# Install script for directory: /home/hungnb/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/duy/cocarry_ws/install/motoman_resources")
+  set(CMAKE_INSTALL_PREFIX "/home/hungnb/cocarry_ws/install/motoman_resources")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,7 +38,7 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  include("/home/duy/cocarry_ws/build/motoman_resources/ament_cmake_symlink_install/ament_cmake_symlink_install.cmake")
+  include("/home/hungnb/cocarry_ws/build/motoman_resources/ament_cmake_symlink_install/ament_cmake_symlink_install.cmake")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -49,5 +49,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/duy/cocarry_ws/build/motoman_resources/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/hungnb/cocarry_ws/build/motoman_resources/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces
+CMAKE_SOURCE_DIR = /home/hungnb/cocarry_ws/src/motoros2_interfaces
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/duy/cocarry_ws/build/motoros2_interfaces
+CMAKE_BINARY_DIR = /home/hungnb/cocarry_ws/build/motoros2_interfaces
 
 # Utility rule file for motoros2_interfaces_uninstall.
 
@@ -67,7 +67,7 @@ include CMakeFiles/motoros2_interfaces_uninstall.dir/compiler_depend.make
 include CMakeFiles/motoros2_interfaces_uninstall.dir/progress.make
 
 CMakeFiles/motoros2_interfaces_uninstall:
-	/usr/bin/cmake -P /home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_uninstall_target/ament_cmake_uninstall_target.cmake
+	/usr/bin/cmake -P /home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_uninstall_target/ament_cmake_uninstall_target.cmake
 
 motoros2_interfaces_uninstall: CMakeFiles/motoros2_interfaces_uninstall
 motoros2_interfaces_uninstall: CMakeFiles/motoros2_interfaces_uninstall.dir/build.make
@@ -82,6 +82,6 @@ CMakeFiles/motoros2_interfaces_uninstall.dir/clean:
 .PHONY : CMakeFiles/motoros2_interfaces_uninstall.dir/clean
 
 CMakeFiles/motoros2_interfaces_uninstall.dir/depend:
-	cd /home/duy/cocarry_ws/build/motoros2_interfaces && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces /home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces /home/duy/cocarry_ws/build/motoros2_interfaces /home/duy/cocarry_ws/build/motoros2_interfaces /home/duy/cocarry_ws/build/motoros2_interfaces/CMakeFiles/motoros2_interfaces_uninstall.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/hungnb/cocarry_ws/build/motoros2_interfaces && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/hungnb/cocarry_ws/src/motoros2_interfaces /home/hungnb/cocarry_ws/src/motoros2_interfaces /home/hungnb/cocarry_ws/build/motoros2_interfaces /home/hungnb/cocarry_ws/build/motoros2_interfaces /home/hungnb/cocarry_ws/build/motoros2_interfaces/CMakeFiles/motoros2_interfaces_uninstall.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/motoros2_interfaces_uninstall.dir/depend
 

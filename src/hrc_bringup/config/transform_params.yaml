@@ -1,0 +1,37 @@
+coord_transform:
+  ros__parameters:
+    filter:
+      # Ngưỡng nhiễu ban đầu — tăng lên 6cm cho Kinect v2 QHD
+      # (Depth noise Kinect QHD ~ 20-50mm, cần > 50mm để không bị kẹt tại gốc tọa độ)
+      initial_noise_tolerance: 0.06
+
+      # Outlier rejection (m) — loại bỏ nhảy đột ngột > 15cm
+      outlier_threshold: 0.15
+
+      # Median pre-filter size cho trục Y (depth)
+      # Nhỏ = phản hồi nhanh hơn (ưu tiên cho Kinect vì đã có slop lớn)
+      median_size_y: 3
+
+      # Deadband stationary: std tối đa để coi là "đứng yên"
+      deadband_depth_tol: 0.02
+
+      # Số frame liên tiếp đứng yên để lock vị trí
+      stationary_threshold: 5
+
+      # EMA alpha khi tay đang di chuyển (1.0 = không lọc, 0.0 = đứng nguyên)
+      ema_x_moving: 0.75
+      ema_y_moving: 0.50
+      ema_z_moving: 0.75
+
+      # EMA alpha khi tay đang giữ (nhỏ = ổn định hơn, chống rung)
+      ema_x_hold: 0.08
+      ema_y_hold: 0.02
+      ema_z_hold: 0.05
+
+      # Deadband vùng đích: chỉ áp dụng khi Y >= threshold (m)
+      # Với Kinect: Y = depth (khoảng cách tới camera) thường ~1-2m
+      # Set nhỏ để tránh không bao giờ kích hoạt
+      deadband_y_threshold: 0.10
+
+      # Std tối đa để coi là "đứng yên tại đích"
+      deadband_near_target_tol: 0.030

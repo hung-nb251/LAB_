@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/duy/cocarry_ws/src/kinect2_ros2/kinect2_bridge
+CMAKE_SOURCE_DIR = /home/hungnb/cocarry_ws/src/kinect2_ros2/kinect2_bridge
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/duy/cocarry_ws/build/kinect2_bridge
+CMAKE_BINARY_DIR = /home/hungnb/cocarry_ws/build/kinect2_bridge
 
 # Utility rule file for kinect2_bridge_uninstall.
 
@@ -67,7 +67,7 @@ include CMakeFiles/kinect2_bridge_uninstall.dir/compiler_depend.make
 include CMakeFiles/kinect2_bridge_uninstall.dir/progress.make
 
 CMakeFiles/kinect2_bridge_uninstall:
-	/usr/bin/cmake -P /home/duy/cocarry_ws/build/kinect2_bridge/ament_cmake_uninstall_target/ament_cmake_uninstall_target.cmake
+	/usr/bin/cmake -P /home/hungnb/cocarry_ws/build/kinect2_bridge/ament_cmake_uninstall_target/ament_cmake_uninstall_target.cmake
 
 kinect2_bridge_uninstall: CMakeFiles/kinect2_bridge_uninstall
 kinect2_bridge_uninstall: CMakeFiles/kinect2_bridge_uninstall.dir/build.make
@@ -82,6 +82,6 @@ CMakeFiles/kinect2_bridge_uninstall.dir/clean:
 .PHONY : CMakeFiles/kinect2_bridge_uninstall.dir/clean
 
 CMakeFiles/kinect2_bridge_uninstall.dir/depend:
-	cd /home/duy/cocarry_ws/build/kinect2_bridge && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/duy/cocarry_ws/src/kinect2_ros2/kinect2_bridge /home/duy/cocarry_ws/src/kinect2_ros2/kinect2_bridge /home/duy/cocarry_ws/build/kinect2_bridge /home/duy/cocarry_ws/build/kinect2_bridge /home/duy/cocarry_ws/build/kinect2_bridge/CMakeFiles/kinect2_bridge_uninstall.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/hungnb/cocarry_ws/build/kinect2_bridge && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/hungnb/cocarry_ws/src/kinect2_ros2/kinect2_bridge /home/hungnb/cocarry_ws/src/kinect2_ros2/kinect2_bridge /home/hungnb/cocarry_ws/build/kinect2_bridge /home/hungnb/cocarry_ws/build/kinect2_bridge /home/hungnb/cocarry_ws/build/kinect2_bridge/CMakeFiles/kinect2_bridge_uninstall.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/kinect2_bridge_uninstall.dir/depend
 

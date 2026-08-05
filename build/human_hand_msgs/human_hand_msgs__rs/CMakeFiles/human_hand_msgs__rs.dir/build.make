@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/duy/cocarry_ws/src/human_hand_msgs
+CMAKE_SOURCE_DIR = /home/hungnb/cocarry_ws/src/human_hand_msgs
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/duy/cocarry_ws/build/human_hand_msgs
+CMAKE_BINARY_DIR = /home/hungnb/cocarry_ws/build/human_hand_msgs
 
 # Utility rule file for human_hand_msgs__rs.
 
@@ -126,8 +126,8 @@ rosidl_generator_rs/human_hand_msgs/rust/src/lib.rs: /opt/ros/humble/share/std_m
 rosidl_generator_rs/human_hand_msgs/rust/src/lib.rs: /opt/ros/humble/share/std_msgs/msg/UInt8MultiArray.idl
 rosidl_generator_rs/human_hand_msgs/rust/src/lib.rs: /opt/ros/humble/share/builtin_interfaces/msg/Duration.idl
 rosidl_generator_rs/human_hand_msgs/rust/src/lib.rs: /opt/ros/humble/share/builtin_interfaces/msg/Time.idl
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/duy/cocarry_ws/build/human_hand_msgs/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating Rust code for ROS interfaces"
-	cd /home/duy/cocarry_ws/build/human_hand_msgs/human_hand_msgs__rs && /usr/bin/python3 /opt/ros/humble/share/rosidl_generator_rs/cmake/../../../lib/rosidl_generator_rs/rosidl_generator_rs --generator-arguments-file /home/duy/cocarry_ws/build/human_hand_msgs/rosidl_generator_rs__arguments.json --typesupport-impls "rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c;rosidl_typesupport_c"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/hungnb/cocarry_ws/build/human_hand_msgs/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating Rust code for ROS interfaces"
+	cd /home/hungnb/cocarry_ws/build/human_hand_msgs/human_hand_msgs__rs && /usr/bin/python3 /opt/ros/humble/share/rosidl_generator_rs/cmake/../../../lib/rosidl_generator_rs/rosidl_generator_rs --generator-arguments-file /home/hungnb/cocarry_ws/build/human_hand_msgs/rosidl_generator_rs__arguments.json --typesupport-impls "rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c;rosidl_typesupport_c"
 
 rosidl_generator_rs/human_hand_msgs/rust/build.rs: rosidl_generator_rs/human_hand_msgs/rust/src/lib.rs
 	@$(CMAKE_COMMAND) -E touch_nocreate rosidl_generator_rs/human_hand_msgs/rust/build.rs
@@ -163,10 +163,10 @@ human_hand_msgs__rs/CMakeFiles/human_hand_msgs__rs.dir/build: human_hand_msgs__r
 .PHONY : human_hand_msgs__rs/CMakeFiles/human_hand_msgs__rs.dir/build
 
 human_hand_msgs__rs/CMakeFiles/human_hand_msgs__rs.dir/clean:
-	cd /home/duy/cocarry_ws/build/human_hand_msgs/human_hand_msgs__rs && $(CMAKE_COMMAND) -P CMakeFiles/human_hand_msgs__rs.dir/cmake_clean.cmake
+	cd /home/hungnb/cocarry_ws/build/human_hand_msgs/human_hand_msgs__rs && $(CMAKE_COMMAND) -P CMakeFiles/human_hand_msgs__rs.dir/cmake_clean.cmake
 .PHONY : human_hand_msgs__rs/CMakeFiles/human_hand_msgs__rs.dir/clean
 
 human_hand_msgs__rs/CMakeFiles/human_hand_msgs__rs.dir/depend:
-	cd /home/duy/cocarry_ws/build/human_hand_msgs && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/duy/cocarry_ws/src/human_hand_msgs /home/duy/cocarry_ws/build/human_hand_msgs/human_hand_msgs__rs /home/duy/cocarry_ws/build/human_hand_msgs /home/duy/cocarry_ws/build/human_hand_msgs/human_hand_msgs__rs /home/duy/cocarry_ws/build/human_hand_msgs/human_hand_msgs__rs/CMakeFiles/human_hand_msgs__rs.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/hungnb/cocarry_ws/build/human_hand_msgs && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/hungnb/cocarry_ws/src/human_hand_msgs /home/hungnb/cocarry_ws/build/human_hand_msgs/human_hand_msgs__rs /home/hungnb/cocarry_ws/build/human_hand_msgs /home/hungnb/cocarry_ws/build/human_hand_msgs/human_hand_msgs__rs /home/hungnb/cocarry_ws/build/human_hand_msgs/human_hand_msgs__rs/CMakeFiles/human_hand_msgs__rs.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : human_hand_msgs__rs/CMakeFiles/human_hand_msgs__rs.dir/depend
 

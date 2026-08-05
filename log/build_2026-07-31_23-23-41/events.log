@@ -1,0 +1,1014 @@
+[0.000000] (-) TimerEvent: {}
+[0.000605] (-) JobUnselected: {'identifier': 'coord_transform'}
+[0.000657] (-) JobUnselected: {'identifier': 'experiment_logger'}
+[0.000687] (-) JobUnselected: {'identifier': 'hc10dtp_bringup'}
+[0.000717] (-) JobUnselected: {'identifier': 'hc10dtp_moveit_config'}
+[0.000744] (-) JobUnselected: {'identifier': 'hc10dtp_simulation'}
+[0.000827] (-) JobUnselected: {'identifier': 'hrc_bringup'}
+[0.000846] (-) JobUnselected: {'identifier': 'human_hand_msgs'}
+[0.001858] (-) JobUnselected: {'identifier': 'motoman'}
+[0.001907] (-) JobUnselected: {'identifier': 'motoman_ar2010_support'}
+[0.001919] (-) JobUnselected: {'identifier': 'motoman_es_support'}
+[0.001930] (-) JobUnselected: {'identifier': 'motoman_gp110_support'}
+[0.001940] (-) JobUnselected: {'identifier': 'motoman_gp12_support'}
+[0.001950] (-) JobUnselected: {'identifier': 'motoman_gp165r_support'}
+[0.001961] (-) JobUnselected: {'identifier': 'motoman_gp180_support'}
+[0.001969] (-) JobUnselected: {'identifier': 'motoman_gp200r_support'}
+[0.001977] (-) JobUnselected: {'identifier': 'motoman_gp20hl_support'}
+[0.001985] (-) JobUnselected: {'identifier': 'motoman_gp215_support'}
+[0.001993] (-) JobUnselected: {'identifier': 'motoman_gp225_support'}
+[0.002002] (-) JobUnselected: {'identifier': 'motoman_gp250_support'}
+[0.002014] (-) JobUnselected: {'identifier': 'motoman_gp25_support'}
+[0.002023] (-) JobUnselected: {'identifier': 'motoman_gp35l_support'}
+[0.002031] (-) JobUnselected: {'identifier': 'motoman_gp4_support'}
+[0.002040] (-) JobUnselected: {'identifier': 'motoman_gp50_support'}
+[0.002048] (-) JobUnselected: {'identifier': 'motoman_gp70l_support'}
+[0.002056] (-) JobUnselected: {'identifier': 'motoman_gp7_support'}
+[0.002064] (-) JobUnselected: {'identifier': 'motoman_gp88_support'}
+[0.002072] (-) JobUnselected: {'identifier': 'motoman_gp8_support'}
+[0.002080] (-) JobUnselected: {'identifier': 'motoman_gp8l_support'}
+[0.002088] (-) JobUnselected: {'identifier': 'motoman_hc10_support'}
+[0.002097] (-) JobUnselected: {'identifier': 'motoman_hc10dtp_support'}
+[0.002106] (-) JobUnselected: {'identifier': 'motoman_hc20_support'}
+[0.002116] (-) JobUnselected: {'identifier': 'motoman_ma2010_support'}
+[0.002124] (-) JobUnselected: {'identifier': 'motoman_mh110_support'}
+[0.002132] (-) JobUnselected: {'identifier': 'motoman_mh12_support'}
+[0.002139] (-) JobUnselected: {'identifier': 'motoman_mh50_support'}
+[0.002149] (-) JobUnselected: {'identifier': 'motoman_mh5_support'}
+[0.002158] (-) JobUnselected: {'identifier': 'motoman_motomini_support'}
+[0.002235] (-) JobUnselected: {'identifier': 'motoman_motopos_d500_support'}
+[0.002259] (-) JobUnselected: {'identifier': 'motoman_motopos_mh1655_support'}
+[0.002266] (-) JobUnselected: {'identifier': 'motoman_mpx1950_support'}
+[0.002274] (-) JobUnselected: {'identifier': 'motoman_ms210_support'}
+[0.002282] (-) JobUnselected: {'identifier': 'motoman_resources'}
+[0.002296] (-) JobUnselected: {'identifier': 'motoman_sda10f_support'}
+[0.002306] (-) JobUnselected: {'identifier': 'motoman_sia10d_support'}
+[0.002321] (-) JobUnselected: {'identifier': 'motoman_sia10f_support'}
+[0.002332] (-) JobUnselected: {'identifier': 'motoman_sia20d_support'}
+[0.002339] (-) JobUnselected: {'identifier': 'motoman_sia30d_support'}
+[0.002348] (-) JobUnselected: {'identifier': 'motoman_sia50_support'}
+[0.002359] (-) JobUnselected: {'identifier': 'motoman_sia5d_support'}
+[0.002367] (-) JobUnselected: {'identifier': 'motoman_up50n_support'}
+[0.002375] (-) JobUnselected: {'identifier': 'predictor_ui'}
+[0.002385] (-) JobUnselected: {'identifier': 'realsense_tracker'}
+[0.002394] (-) JobUnselected: {'identifier': 'trajectory_predictor'}
+[0.002405] (motoros2_interfaces) JobQueued: {'identifier': 'motoros2_interfaces', 'dependencies': OrderedDict()}
+[0.002417] (motoros2_interfaces) JobStarted: {'identifier': 'motoros2_interfaces'}
+[0.009093] (motoros2_interfaces) JobProgress: {'identifier': 'motoros2_interfaces', 'progress': 'cmake'}
+[0.009789] (motoros2_interfaces) Command: {'cmd': ['/usr/bin/cmake', '/home/hungnb/cocarry_ws/src/motoros2_interfaces', '-DAMENT_CMAKE_SYMLINK_INSTALL=1', '-DCMAKE_INSTALL_PREFIX=/home/hungnb/cocarry_ws/install/motoros2_interfaces'], 'cwd': '/home/hungnb/cocarry_ws/build/motoros2_interfaces', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'hungnb'), ('LC_TIME', 'vi_VN'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/hungnb'), ('OLDPWD', '/home/hungnb/cocarry_ws/src'), ('DESKTOP_SESSION', 'ubuntu'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('LC_MONETARY', 'vi_VN'), ('SYSTEMD_EXEC_PID', '25211'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'hungnb'), ('_', '/home/hungnb/.local/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'hungnb'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/home/hungnb/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/hungnb-XiaoXinPro-14c-AHP10R:@/tmp/.ICE-unix/1729,unix/hungnb-XiaoXinPro-14c-AHP10R:/tmp/.ICE-unix/1729'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'vi_VN'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/bd608319_8334_454b_af80_bc3ab77c987b'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'vi_VN'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.5LL2S3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.192'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'vi_VN'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('LC_MEASUREMENT', 'vi_VN'), ('LC_IDENTIFICATION', 'vi_VN'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/hungnb/cocarry_ws/build/motoros2_interfaces'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('LC_NUMERIC', 'vi_VN'), ('LC_PAPER', 'vi_VN'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[0.060079] (motoros2_interfaces) StdoutLine: {'line': b'-- The C compiler identification is GNU 11.4.0\n'}
+[0.099777] (-) TimerEvent: {}
+[0.101798] (motoros2_interfaces) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 11.4.0\n'}
+[0.107809] (motoros2_interfaces) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[0.166565] (motoros2_interfaces) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[0.171313] (motoros2_interfaces) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[0.171461] (motoros2_interfaces) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[0.171683] (motoros2_interfaces) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[0.173483] (motoros2_interfaces) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[0.199892] (-) TimerEvent: {}
+[0.239111] (motoros2_interfaces) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[0.243245] (motoros2_interfaces) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[0.243456] (motoros2_interfaces) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[0.243698] (motoros2_interfaces) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[0.245259] (motoros2_interfaces) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[0.300011] (-) TimerEvent: {}
+[0.346831] (motoros2_interfaces) StdoutLine: {'line': b'-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter \n'}
+[0.386750] (motoros2_interfaces) StdoutLine: {'line': b'-- Override CMake install command with custom implementation using symlinks instead of copying resources\n'}
+[0.400098] (-) TimerEvent: {}
+[0.422083] (motoros2_interfaces) StdoutLine: {'line': b'-- Found builtin_interfaces: 1.2.3 (/opt/ros/humble/share/builtin_interfaces/cmake)\n'}
+[0.452170] (motoros2_interfaces) StdoutLine: {'line': b'-- Found rosidl_generator_c: 3.1.9 (/opt/ros/humble/share/rosidl_generator_c/cmake)\n'}
+[0.456490] (motoros2_interfaces) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.9 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[0.465084] (motoros2_interfaces) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 3.1.9 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)\n'}
+[0.476028] (motoros2_interfaces) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[0.488694] (motoros2_interfaces) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[0.500210] (-) TimerEvent: {}
+[0.500829] (motoros2_interfaces) StdoutLine: {'line': b'-- Found rosidl_default_generators: 1.2.1 (/opt/ros/humble/share/rosidl_default_generators/cmake)\n'}
+[0.512017] (motoros2_interfaces) StdoutLine: {'line': b'-- Found trajectory_msgs: 4.9.1 (/opt/ros/humble/share/trajectory_msgs/cmake)\n'}
+[0.552425] (motoros2_interfaces) StdoutLine: {'line': b'-- Found ament_lint_auto: 0.12.15 (/opt/ros/humble/share/ament_lint_auto/cmake)\n'}
+[0.600330] (-) TimerEvent: {}
+[0.700669] (-) TimerEvent: {}
+[0.800999] (-) TimerEvent: {}
+[0.847721] (motoros2_interfaces) StdoutLine: {'line': b'-- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)\n'}
+[0.901100] (-) TimerEvent: {}
+[1.001393] (-) TimerEvent: {}
+[1.101687] (-) TimerEvent: {}
+[1.154377] (motoros2_interfaces) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[1.201822] (-) TimerEvent: {}
+[1.267414] (motoros2_interfaces) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[1.284016] (motoros2_interfaces) StdoutLine: {'line': b'-- Found PythonInterp: /usr/bin/python3 (found suitable version "3.10.12", minimum required is "3.6") \n'}
+[1.285427] (motoros2_interfaces) StdoutLine: {'line': b'-- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)\n'}
+[1.301938] (-) TimerEvent: {}
+[1.307218] (motoros2_interfaces) StdoutLine: {'line': b'-- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython3.10.so (found suitable version "3.10.12", minimum required is "3.5") \n'}
+[1.307401] (motoros2_interfaces) StdoutLine: {'line': b'-- Using PYTHON_EXECUTABLE: /usr/bin/python3\n'}
+[1.307493] (motoros2_interfaces) StdoutLine: {'line': b'-- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10\n'}
+[1.307572] (motoros2_interfaces) StdoutLine: {'line': b'-- Using PYTHON_LIBRARIES: /usr/lib/x86_64-linux-gnu/libpython3.10.so\n'}
+[1.322418] (motoros2_interfaces) StdoutLine: {'line': b'-- Found PythonExtra: .so  \n'}
+[1.402066] (-) TimerEvent: {}
+[1.435909] (motoros2_interfaces) StdoutLine: {'line': b"-- Added test 'copyright' to check source files copyright and LICENSE\n"}
+[1.444606] (motoros2_interfaces) StdoutLine: {'line': b"-- Added test 'lint_cmake' to check CMake code style\n"}
+[1.449322] (motoros2_interfaces) StdoutLine: {'line': b"-- Added test 'xmllint' to check XML markup files\n"}
+[1.455691] (motoros2_interfaces) StdoutLine: {'line': b'-- Configuring done\n'}
+[1.502202] (-) TimerEvent: {}
+[1.502571] (motoros2_interfaces) StdoutLine: {'line': b'-- Generating done\n'}
+[1.511813] (motoros2_interfaces) StdoutLine: {'line': b'-- Build files have been written to: /home/hungnb/cocarry_ws/build/motoros2_interfaces\n'}
+[1.520956] (motoros2_interfaces) CommandEnded: {'returncode': 0}
+[1.522475] (motoros2_interfaces) JobProgress: {'identifier': 'motoros2_interfaces', 'progress': 'build'}
+[1.522602] (motoros2_interfaces) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/hungnb/cocarry_ws/build/motoros2_interfaces', '--', '-j16', '-l16'], 'cwd': '/home/hungnb/cocarry_ws/build/motoros2_interfaces', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'hungnb'), ('LC_TIME', 'vi_VN'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/hungnb'), ('OLDPWD', '/home/hungnb/cocarry_ws/src'), ('DESKTOP_SESSION', 'ubuntu'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('LC_MONETARY', 'vi_VN'), ('SYSTEMD_EXEC_PID', '25211'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'hungnb'), ('_', '/home/hungnb/.local/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'hungnb'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/home/hungnb/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/hungnb-XiaoXinPro-14c-AHP10R:@/tmp/.ICE-unix/1729,unix/hungnb-XiaoXinPro-14c-AHP10R:/tmp/.ICE-unix/1729'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'vi_VN'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/bd608319_8334_454b_af80_bc3ab77c987b'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'vi_VN'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.5LL2S3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.192'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'vi_VN'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('LC_MEASUREMENT', 'vi_VN'), ('LC_IDENTIFICATION', 'vi_VN'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/hungnb/cocarry_ws/build/motoros2_interfaces'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('LC_NUMERIC', 'vi_VN'), ('LC_PAPER', 'vi_VN'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[1.567804] (motoros2_interfaces) StdoutLine: {'line': b'[  0%] \x1b[34m\x1b[1mGenerating C code for ROS interfaces\x1b[0m\n'}
+[1.575930] (motoros2_interfaces) StdoutLine: {'line': b'[  1%] \x1b[34m\x1b[1mGenerating Rust code for ROS interfaces\x1b[0m\n'}
+[1.579158] (motoros2_interfaces) StdoutLine: {'line': b'[  1%] \x1b[34m\x1b[1mGenerating C++ code for ROS interfaces\x1b[0m\n'}
+[1.582659] (motoros2_interfaces) StdoutLine: {'line': b'[  1%] Built target ament_cmake_python_symlink_motoros2_interfaces\n'}
+[1.602305] (-) TimerEvent: {}
+[1.702677] (-) TimerEvent: {}
+[1.726144] (motoros2_interfaces) StdoutLine: {'line': b'running egg_info\n'}
+[1.726539] (motoros2_interfaces) StdoutLine: {'line': b'creating motoros2_interfaces.egg-info\n'}
+[1.726663] (motoros2_interfaces) StdoutLine: {'line': b'writing motoros2_interfaces.egg-info/PKG-INFO\n'}
+[1.726765] (motoros2_interfaces) StdoutLine: {'line': b'writing dependency_links to motoros2_interfaces.egg-info/dependency_links.txt\n'}
+[1.726867] (motoros2_interfaces) StdoutLine: {'line': b'writing top-level names to motoros2_interfaces.egg-info/top_level.txt\n'}
+[1.726978] (motoros2_interfaces) StdoutLine: {'line': b"writing manifest file 'motoros2_interfaces.egg-info/SOURCES.txt'\n"}
+[1.728756] (motoros2_interfaces) StdoutLine: {'line': b"reading manifest file 'motoros2_interfaces.egg-info/SOURCES.txt'\n"}
+[1.729532] (motoros2_interfaces) StdoutLine: {'line': b"writing manifest file 'motoros2_interfaces.egg-info/SOURCES.txt'\n"}
+[1.760196] (motoros2_interfaces) StdoutLine: {'line': b'[  1%] Built target ament_cmake_python_build_motoros2_interfaces_egg\n'}
+[1.802773] (-) TimerEvent: {}
+[1.903146] (-) TimerEvent: {}
+[2.003485] (-) TimerEvent: {}
+[2.103899] (-) TimerEvent: {}
+[2.204240] (-) TimerEvent: {}
+[2.304586] (-) TimerEvent: {}
+[2.404886] (-) TimerEvent: {}
+[2.505139] (-) TimerEvent: {}
+[2.605448] (-) TimerEvent: {}
+[2.705835] (-) TimerEvent: {}
+[2.806191] (-) TimerEvent: {}
+[2.809906] (motoros2_interfaces) StdoutLine: {'line': b'[  1%] Built target motoros2_interfaces__rs\n'}
+[2.906425] (-) TimerEvent: {}
+[3.007331] (-) TimerEvent: {}
+[3.107924] (-) TimerEvent: {}
+[3.211239] (-) TimerEvent: {}
+[3.311597] (-) TimerEvent: {}
+[3.411941] (-) TimerEvent: {}
+[3.521382] (-) TimerEvent: {}
+[3.606620] (motoros2_interfaces) StdoutLine: {'line': b'[  1%] Built target motoros2_interfaces__cpp\n'}
+[3.612092] (motoros2_interfaces) StdoutLine: {'line': b'[  4%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_c.dir/rosidl_generator_c/motoros2_interfaces/msg/detail/io_result_codes__functions.c.o\x1b[0m\n'}
+[3.612384] (motoros2_interfaces) StdoutLine: {'line': b'[  4%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_c.dir/rosidl_generator_c/motoros2_interfaces/msg/detail/alarm_info__functions.c.o\x1b[0m\n'}
+[3.612448] (motoros2_interfaces) StdoutLine: {'line': b'[  4%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_c.dir/rosidl_generator_c/motoros2_interfaces/msg/detail/queue_result_enum__functions.c.o\x1b[0m\n'}
+[3.612503] (motoros2_interfaces) StdoutLine: {'line': b'[  4%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_c.dir/rosidl_generator_c/motoros2_interfaces/msg/detail/inform_job_crud_result_codes__functions.c.o\x1b[0m\n'}
+[3.612574] (motoros2_interfaces) StdoutLine: {'line': b'[  4%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_c.dir/rosidl_generator_c/motoros2_interfaces/msg/detail/error_info__functions.c.o\x1b[0m\n'}
+[3.612621] (motoros2_interfaces) StdoutLine: {'line': b'[  4%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_c.dir/rosidl_generator_c/motoros2_interfaces/msg/detail/alarm_cause_remedy__functions.c.o\x1b[0m\n'}
+[3.612665] (motoros2_interfaces) StdoutLine: {'line': b'[  4%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_c.dir/rosidl_generator_c/motoros2_interfaces/msg/detail/motion_ready_enum__functions.c.o\x1b[0m\n'}
+[3.612709] (motoros2_interfaces) StdoutLine: {'line': b'[  6%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_c.dir/rosidl_generator_c/motoros2_interfaces/msg/detail/init_traj_enum__functions.c.o\x1b[0m\n'}
+[3.612996] (motoros2_interfaces) StdoutLine: {'line': b'[  5%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_c.dir/rosidl_generator_c/motoros2_interfaces/msg/detail/selection_result_codes__functions.c.o\x1b[0m\n'}
+[3.613317] (motoros2_interfaces) StdoutLine: {'line': b'[  5%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_c.dir/rosidl_generator_c/motoros2_interfaces/srv/detail/get_active_alarm_info__functions.c.o\x1b[0m\n'}
+[3.613404] (motoros2_interfaces) StdoutLine: {'line': b'[  6%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_c.dir/rosidl_generator_c/motoros2_interfaces/srv/detail/queue_traj_point__functions.c.o\x1b[0m\n'}
+[3.613481] (motoros2_interfaces) StdoutLine: {'line': b'[  8%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_c.dir/rosidl_generator_c/motoros2_interfaces/srv/detail/list_inform_jobs__functions.c.o\x1b[0m\n'}
+[3.613530] (motoros2_interfaces) StdoutLine: {'line': b'[  8%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_c.dir/rosidl_generator_c/motoros2_interfaces/srv/detail/read_m_register__functions.c.o\x1b[0m\n'}
+[3.613578] (motoros2_interfaces) StdoutLine: {'line': b'[  9%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_c.dir/rosidl_generator_c/motoros2_interfaces/srv/detail/read_group_io__functions.c.o\x1b[0m\n'}
+[3.614836] (motoros2_interfaces) StdoutLine: {'line': b'[  9%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_c.dir/rosidl_generator_c/motoros2_interfaces/srv/detail/reset_error__functions.c.o\x1b[0m\n'}
+[3.615156] (motoros2_interfaces) StdoutLine: {'line': b'[  9%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_c.dir/rosidl_generator_c/motoros2_interfaces/srv/detail/read_single_io__functions.c.o\x1b[0m\n'}
+[3.621486] (-) TimerEvent: {}
+[3.692219] (motoros2_interfaces) StdoutLine: {'line': b'[ 10%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_c.dir/rosidl_generator_c/motoros2_interfaces/srv/detail/start_traj_mode__functions.c.o\x1b[0m\n'}
+[3.692454] (motoros2_interfaces) StdoutLine: {'line': b'[ 10%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_c.dir/rosidl_generator_c/motoros2_interfaces/srv/detail/select_motion_tool__functions.c.o\x1b[0m\n'}
+[3.692814] (motoros2_interfaces) StdoutLine: {'line': b'[ 10%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_c.dir/rosidl_generator_c/motoros2_interfaces/srv/detail/write_m_register__functions.c.o\x1b[0m\n'}
+[3.692941] (motoros2_interfaces) StdoutLine: {'line': b'[ 12%] \x1b[34m\x1b[1mGenerating C++ type support for eProsima Fast-RTPS\x1b[0m\n'}
+[3.693006] (motoros2_interfaces) StdoutLine: {'line': b'[ 12%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_c.dir/rosidl_generator_c/motoros2_interfaces/srv/detail/start_point_queue_mode__functions.c.o\x1b[0m\n'}
+[3.694062] (motoros2_interfaces) StdoutLine: {'line': b'[ 13%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_c.dir/rosidl_generator_c/motoros2_interfaces/srv/detail/write_single_io__functions.c.o\x1b[0m\n'}
+[3.695001] (motoros2_interfaces) StdoutLine: {'line': b'[ 13%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_c.dir/rosidl_generator_c/motoros2_interfaces/srv/detail/write_group_io__functions.c.o\x1b[0m\n'}
+[3.695203] (motoros2_interfaces) StdoutLine: {'line': b'[ 14%] \x1b[34m\x1b[1mGenerating C++ introspection for ROS interfaces\x1b[0m\n'}
+[3.697074] (motoros2_interfaces) StdoutLine: {'line': b'[ 15%] \x1b[34m\x1b[1mGenerating C++ type support dispatch for ROS interfaces\x1b[0m\n'}
+[3.721590] (-) TimerEvent: {}
+[3.743518] (motoros2_interfaces) StdoutLine: {'line': b'[ 16%] \x1b[32m\x1b[1mLinking C shared library libmotoros2_interfaces__rosidl_generator_c.so\x1b[0m\n'}
+[3.785716] (motoros2_interfaces) StdoutLine: {'line': b'[ 16%] Built target motoros2_interfaces__rosidl_generator_c\n'}
+[3.795047] (motoros2_interfaces) StdoutLine: {'line': b'[ 18%] \x1b[34m\x1b[1mGenerating C type support for eProsima Fast-RTPS\x1b[0m\n'}
+[3.795272] (motoros2_interfaces) StdoutLine: {'line': b'[ 19%] \x1b[34m\x1b[1mGenerating C introspection for ROS interfaces\x1b[0m\n'}
+[3.795349] (motoros2_interfaces) StdoutLine: {'line': b'[ 19%] \x1b[34m\x1b[1mGenerating C type support dispatch for ROS interfaces\x1b[0m\n'}
+[3.821692] (-) TimerEvent: {}
+[3.921985] (-) TimerEvent: {}
+[4.022283] (-) TimerEvent: {}
+[4.122711] (-) TimerEvent: {}
+[4.223074] (-) TimerEvent: {}
+[4.323434] (-) TimerEvent: {}
+[4.423827] (-) TimerEvent: {}
+[4.524207] (-) TimerEvent: {}
+[4.624537] (-) TimerEvent: {}
+[4.724899] (-) TimerEvent: {}
+[4.825250] (-) TimerEvent: {}
+[4.925560] (-) TimerEvent: {}
+[5.025833] (-) TimerEvent: {}
+[5.126115] (-) TimerEvent: {}
+[5.226399] (-) TimerEvent: {}
+[5.279078] (motoros2_interfaces) StdoutLine: {'line': b'[ 22%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/motoros2_interfaces/msg/motion_ready_enum__type_support.cpp.o\x1b[0m\n'}
+[5.279339] (motoros2_interfaces) StdoutLine: {'line': b'[ 22%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/motoros2_interfaces/msg/error_info__type_support.cpp.o\x1b[0m\n'}
+[5.279418] (motoros2_interfaces) StdoutLine: {'line': b'[ 22%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/motoros2_interfaces/msg/alarm_cause_remedy__type_support.cpp.o\x1b[0m\n'}
+[5.279471] (motoros2_interfaces) StdoutLine: {'line': b'[ 22%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/motoros2_interfaces/msg/init_traj_enum__type_support.cpp.o\x1b[0m\n'}
+[5.279519] (motoros2_interfaces) StdoutLine: {'line': b'[ 22%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/motoros2_interfaces/msg/inform_job_crud_result_codes__type_support.cpp.o\x1b[0m\n'}
+[5.279576] (motoros2_interfaces) StdoutLine: {'line': b'[ 22%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/motoros2_interfaces/msg/io_result_codes__type_support.cpp.o\x1b[0m\n'}
+[5.279621] (motoros2_interfaces) StdoutLine: {'line': b'[ 22%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/motoros2_interfaces/msg/alarm_info__type_support.cpp.o\x1b[0m\n'}
+[5.279671] (motoros2_interfaces) StdoutLine: {'line': b'[ 23%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/motoros2_interfaces/msg/queue_result_enum__type_support.cpp.o\x1b[0m\n'}
+[5.279768] (motoros2_interfaces) StdoutLine: {'line': b'[ 23%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/motoros2_interfaces/srv/list_inform_jobs__type_support.cpp.o\x1b[0m\n'}
+[5.282545] (motoros2_interfaces) StdoutLine: {'line': b'[ 24%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/motoros2_interfaces/srv/get_active_alarm_info__type_support.cpp.o\x1b[0m\n'}
+[5.283212] (motoros2_interfaces) StdoutLine: {'line': b'[ 24%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/motoros2_interfaces/msg/selection_result_codes__type_support.cpp.o\x1b[0m\n'}
+[5.326494] (-) TimerEvent: {}
+[5.426831] (-) TimerEvent: {}
+[5.527919] (-) TimerEvent: {}
+[5.587036] (motoros2_interfaces) StdoutLine: {'line': b'[ 24%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/motoros2_interfaces/msg/alarm_info__type_support.cpp.o\x1b[0m\n'}
+[5.628033] (-) TimerEvent: {}
+[5.630022] (motoros2_interfaces) StdoutLine: {'line': b'[ 25%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/motoros2_interfaces/srv/read_m_register__type_support.cpp.o\x1b[0m\n'}
+[5.630315] (motoros2_interfaces) StdoutLine: {'line': b'[ 25%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/motoros2_interfaces/srv/queue_traj_point__type_support.cpp.o\x1b[0m\n'}
+[5.630421] (motoros2_interfaces) StdoutLine: {'line': b'[ 26%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/motoros2_interfaces/msg/alarm_cause_remedy__type_support.cpp.o\x1b[0m\n'}
+[5.634422] (motoros2_interfaces) StdoutLine: {'line': b'[ 28%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/motoros2_interfaces/srv/read_single_io__type_support.cpp.o\x1b[0m\n'}
+[5.634679] (motoros2_interfaces) StdoutLine: {'line': b'[ 28%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/motoros2_interfaces/msg/error_info__type_support.cpp.o\x1b[0m\n'}
+[5.634743] (motoros2_interfaces) StdoutLine: {'line': b'[ 28%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/motoros2_interfaces/msg/inform_job_crud_result_codes__type_support.cpp.o\x1b[0m\n'}
+[5.652897] (motoros2_interfaces) StdoutLine: {'line': b'[ 28%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/motoros2_interfaces/msg/init_traj_enum__type_support.cpp.o\x1b[0m\n'}
+[5.657392] (motoros2_interfaces) StdoutLine: {'line': b'[ 28%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/motoros2_interfaces/srv/read_group_io__type_support.cpp.o\x1b[0m\n'}
+[5.659394] (motoros2_interfaces) StdoutLine: {'line': b'[ 29%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/motoros2_interfaces/srv/reset_error__type_support.cpp.o\x1b[0m\n'}
+[5.660811] (motoros2_interfaces) StdoutLine: {'line': b'[ 30%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/motoros2_interfaces/msg/io_result_codes__type_support.cpp.o\x1b[0m\n'}
+[5.667014] (motoros2_interfaces) StdoutLine: {'line': b'[ 30%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/motoros2_interfaces/srv/select_motion_tool__type_support.cpp.o\x1b[0m\n'}
+[5.682024] (motoros2_interfaces) StdoutLine: {'line': b'[ 30%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/motoros2_interfaces/msg/motion_ready_enum__type_support.cpp.o\x1b[0m\n'}
+[5.682261] (motoros2_interfaces) StdoutLine: {'line': b'[ 31%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/motoros2_interfaces/msg/queue_result_enum__type_support.cpp.o\x1b[0m\n'}
+[5.689589] (motoros2_interfaces) StdoutLine: {'line': b'[ 32%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/motoros2_interfaces/srv/start_traj_mode__type_support.cpp.o\x1b[0m\n'}
+[5.693560] (motoros2_interfaces) StdoutLine: {'line': b'[ 32%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/motoros2_interfaces/srv/start_point_queue_mode__type_support.cpp.o\x1b[0m\n'}
+[5.703877] (motoros2_interfaces) StdoutLine: {'line': b'[ 33%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/motoros2_interfaces/srv/write_m_register__type_support.cpp.o\x1b[0m\n'}
+[5.721018] (motoros2_interfaces) StdoutLine: {'line': b'[ 33%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/motoros2_interfaces/msg/selection_result_codes__type_support.cpp.o\x1b[0m\n'}
+[5.723925] (motoros2_interfaces) StdoutLine: {'line': b'[ 34%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/motoros2_interfaces/srv/write_group_io__type_support.cpp.o\x1b[0m\n'}
+[5.725944] (motoros2_interfaces) StdoutLine: {'line': b'[ 34%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/motoros2_interfaces/srv/write_single_io__type_support.cpp.o\x1b[0m\n'}
+[5.728128] (-) TimerEvent: {}
+[5.781046] (motoros2_interfaces) StdoutLine: {'line': b'[ 35%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/motoros2_interfaces/srv/get_active_alarm_info__type_support.cpp.o\x1b[0m\n'}
+[5.828506] (-) TimerEvent: {}
+[5.857642] (motoros2_interfaces) StdoutLine: {'line': b'[ 35%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/motoros2_interfaces/srv/list_inform_jobs__type_support.cpp.o\x1b[0m\n'}
+[5.925307] (motoros2_interfaces) StdoutLine: {'line': b'[ 36%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/motoros2_interfaces/srv/queue_traj_point__type_support.cpp.o\x1b[0m\n'}
+[5.928757] (-) TimerEvent: {}
+[5.984021] (motoros2_interfaces) StdoutLine: {'line': b'[ 36%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/motoros2_interfaces/srv/read_m_register__type_support.cpp.o\x1b[0m\n'}
+[5.992290] (motoros2_interfaces) StdoutLine: {'line': b'[ 37%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/motoros2_interfaces/srv/read_single_io__type_support.cpp.o\x1b[0m\n'}
+[6.025932] (motoros2_interfaces) StdoutLine: {'line': b'[ 38%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/motoros2_interfaces/msg/detail/alarm_info__type_support.cpp.o\x1b[0m\n'}
+[6.026502] (motoros2_interfaces) StdoutLine: {'line': b'[ 38%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/motoros2_interfaces/msg/detail/alarm_cause_remedy__type_support.cpp.o\x1b[0m\n'}
+[6.029046] (-) TimerEvent: {}
+[6.035519] (motoros2_interfaces) StdoutLine: {'line': b'[ 38%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/motoros2_interfaces/srv/read_group_io__type_support.cpp.o\x1b[0m\n'}
+[6.035763] (motoros2_interfaces) StdoutLine: {'line': b'[ 38%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/motoros2_interfaces/msg/detail/error_info__type_support.cpp.o\x1b[0m\n'}
+[6.035822] (motoros2_interfaces) StdoutLine: {'line': b'[ 39%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/motoros2_interfaces/msg/detail/inform_job_crud_result_codes__type_support.cpp.o\x1b[0m\n'}
+[6.041651] (motoros2_interfaces) StdoutLine: {'line': b'[ 39%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/motoros2_interfaces/msg/detail/init_traj_enum__type_support.cpp.o\x1b[0m\n'}
+[6.045206] (motoros2_interfaces) StdoutLine: {'line': b'[ 40%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/motoros2_interfaces/msg/detail/io_result_codes__type_support.cpp.o\x1b[0m\n'}
+[6.050728] (motoros2_interfaces) StdoutLine: {'line': b'[ 40%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/motoros2_interfaces/msg/detail/motion_ready_enum__type_support.cpp.o\x1b[0m\n'}
+[6.070832] (motoros2_interfaces) StdoutLine: {'line': b'[ 41%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/motoros2_interfaces/srv/reset_error__type_support.cpp.o\x1b[0m\n'}
+[6.078095] (motoros2_interfaces) StdoutLine: {'line': b'[ 41%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/motoros2_interfaces/srv/select_motion_tool__type_support.cpp.o\x1b[0m\n'}
+[6.089077] (motoros2_interfaces) StdoutLine: {'line': b'[ 42%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/motoros2_interfaces/msg/detail/queue_result_enum__type_support.cpp.o\x1b[0m\n'}
+[6.111958] (motoros2_interfaces) StdoutLine: {'line': b'[ 43%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/motoros2_interfaces/srv/start_traj_mode__type_support.cpp.o\x1b[0m\n'}
+[6.112593] (motoros2_interfaces) StdoutLine: {'line': b'[ 43%] \x1b[32m\x1b[1mLinking CXX shared library libmotoros2_interfaces__rosidl_typesupport_cpp.so\x1b[0m\n'}
+[6.117010] (motoros2_interfaces) StdoutLine: {'line': b'[ 43%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/motoros2_interfaces/srv/start_point_queue_mode__type_support.cpp.o\x1b[0m\n'}
+[6.117651] (motoros2_interfaces) StdoutLine: {'line': b'[ 43%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/motoros2_interfaces/msg/detail/selection_result_codes__type_support.cpp.o\x1b[0m\n'}
+[6.129181] (-) TimerEvent: {}
+[6.140573] (motoros2_interfaces) StdoutLine: {'line': b'[ 44%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/motoros2_interfaces/srv/write_m_register__type_support.cpp.o\x1b[0m\n'}
+[6.162581] (motoros2_interfaces) StdoutLine: {'line': b'[ 45%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/motoros2_interfaces/srv/detail/get_active_alarm_info__type_support.cpp.o\x1b[0m\n'}
+[6.178351] (motoros2_interfaces) StdoutLine: {'line': b'[ 45%] Built target motoros2_interfaces__rosidl_typesupport_cpp\n'}
+[6.183896] (motoros2_interfaces) StdoutLine: {'line': b'[ 45%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/motoros2_interfaces/srv/write_single_io__type_support.cpp.o\x1b[0m\n'}
+[6.187373] (motoros2_interfaces) StdoutLine: {'line': b'[ 45%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/motoros2_interfaces/srv/detail/list_inform_jobs__type_support.cpp.o\x1b[0m\n'}
+[6.200719] (motoros2_interfaces) StdoutLine: {'line': b'[ 46%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/motoros2_interfaces/srv/write_group_io__type_support.cpp.o\x1b[0m\n'}
+[6.229322] (-) TimerEvent: {}
+[6.243175] (motoros2_interfaces) StdoutLine: {'line': b'[ 47%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/motoros2_interfaces/srv/detail/queue_traj_point__type_support.cpp.o\x1b[0m\n'}
+[6.247139] (motoros2_interfaces) StdoutLine: {'line': b'[ 47%] \x1b[32m\x1b[1mLinking CXX shared library libmotoros2_interfaces__rosidl_typesupport_c.so\x1b[0m\n'}
+[6.325281] (motoros2_interfaces) StdoutLine: {'line': b'[ 47%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/motoros2_interfaces/msg/detail/dds_fastrtps/alarm_info__type_support.cpp.o\x1b[0m\n'}
+[6.328346] (motoros2_interfaces) StdoutLine: {'line': b'[ 47%] Built target motoros2_interfaces__rosidl_typesupport_c\n'}
+[6.329394] (-) TimerEvent: {}
+[6.340149] (motoros2_interfaces) StdoutLine: {'line': b'[ 47%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/motoros2_interfaces/srv/detail/read_m_register__type_support.cpp.o\x1b[0m\n'}
+[6.429574] (-) TimerEvent: {}
+[6.498474] (motoros2_interfaces) StdoutLine: {'line': b'[ 47%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/motoros2_interfaces/msg/detail/alarm_info__type_support_c.cpp.o\x1b[0m\n'}
+[6.517843] (motoros2_interfaces) StdoutLine: {'line': b'[ 48%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/motoros2_interfaces/msg/detail/dds_fastrtps/error_info__type_support.cpp.o\x1b[0m\n'}
+[6.518529] (motoros2_interfaces) StdoutLine: {'line': b'[ 48%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/motoros2_interfaces/msg/detail/alarm_cause_remedy__type_support_c.cpp.o\x1b[0m\n'}
+[6.518648] (motoros2_interfaces) StdoutLine: {'line': b'[ 49%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/motoros2_interfaces/msg/detail/dds_fastrtps/alarm_cause_remedy__type_support.cpp.o\x1b[0m\n'}
+[6.526164] (motoros2_interfaces) StdoutLine: {'line': b'[ 50%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/motoros2_interfaces/srv/detail/read_single_io__type_support.cpp.o\x1b[0m\n'}
+[6.530950] (motoros2_interfaces) StdoutLine: {'line': b'[ 50%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/motoros2_interfaces/msg/detail/alarm_info__type_support.c.o\x1b[0m\n'}
+[6.531706] (-) TimerEvent: {}
+[6.564023] (motoros2_interfaces) StdoutLine: {'line': b'[ 51%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/motoros2_interfaces/msg/detail/dds_fastrtps/inform_job_crud_result_codes__type_support.cpp.o\x1b[0m\n'}
+[6.566976] (motoros2_interfaces) StdoutLine: {'line': b'[ 51%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/motoros2_interfaces/msg/detail/error_info__type_support_c.cpp.o\x1b[0m\n'}
+[6.578301] (motoros2_interfaces) StdoutLine: {'line': b'[ 52%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/motoros2_interfaces/msg/detail/alarm_cause_remedy__type_support.c.o\x1b[0m\n'}
+[6.580383] (motoros2_interfaces) StdoutLine: {'line': b'[ 52%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/motoros2_interfaces/srv/detail/read_group_io__type_support.cpp.o\x1b[0m\n'}
+[6.596755] (motoros2_interfaces) StdoutLine: {'line': b'[ 53%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/motoros2_interfaces/srv/detail/reset_error__type_support.cpp.o\x1b[0m\n'}
+[6.631866] (-) TimerEvent: {}
+[6.636278] (motoros2_interfaces) StdoutLine: {'line': b'[ 53%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/motoros2_interfaces/msg/detail/error_info__type_support.c.o\x1b[0m\n'}
+[6.687362] (motoros2_interfaces) StdoutLine: {'line': b'[ 54%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/motoros2_interfaces/msg/detail/inform_job_crud_result_codes__type_support.c.o\x1b[0m\n'}
+[6.707129] (motoros2_interfaces) StdoutLine: {'line': b'[ 54%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/motoros2_interfaces/srv/detail/select_motion_tool__type_support.cpp.o\x1b[0m\n'}
+[6.731958] (-) TimerEvent: {}
+[6.740825] (motoros2_interfaces) StdoutLine: {'line': b'[ 54%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/motoros2_interfaces/msg/detail/init_traj_enum__type_support.c.o\x1b[0m\n'}
+[6.745570] (motoros2_interfaces) StdoutLine: {'line': b'[ 55%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/motoros2_interfaces/msg/detail/inform_job_crud_result_codes__type_support_c.cpp.o\x1b[0m\n'}
+[6.792426] (motoros2_interfaces) StdoutLine: {'line': b'[ 56%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/motoros2_interfaces/msg/detail/io_result_codes__type_support.c.o\x1b[0m\n'}
+[6.832093] (-) TimerEvent: {}
+[6.838134] (motoros2_interfaces) StdoutLine: {'line': b'[ 56%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/motoros2_interfaces/msg/detail/motion_ready_enum__type_support.c.o\x1b[0m\n'}
+[6.856383] (motoros2_interfaces) StdoutLine: {'line': b'[ 56%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/motoros2_interfaces/msg/detail/init_traj_enum__type_support_c.cpp.o\x1b[0m\n'}
+[6.867307] (motoros2_interfaces) StdoutLine: {'line': b'[ 56%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/motoros2_interfaces/msg/detail/dds_fastrtps/init_traj_enum__type_support.cpp.o\x1b[0m\n'}
+[6.888383] (motoros2_interfaces) StdoutLine: {'line': b'[ 57%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/motoros2_interfaces/srv/detail/start_traj_mode__type_support.cpp.o\x1b[0m\n'}
+[6.892540] (motoros2_interfaces) StdoutLine: {'line': b'[ 58%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/motoros2_interfaces/msg/detail/queue_result_enum__type_support.c.o\x1b[0m\n'}
+[6.914934] (motoros2_interfaces) StdoutLine: {'line': b'[ 59%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/motoros2_interfaces/msg/detail/dds_fastrtps/io_result_codes__type_support.cpp.o\x1b[0m\n'}
+[6.932224] (-) TimerEvent: {}
+[6.940002] (motoros2_interfaces) StdoutLine: {'line': b'[ 59%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/motoros2_interfaces/msg/detail/selection_result_codes__type_support.c.o\x1b[0m\n'}
+[6.949794] (motoros2_interfaces) StdoutLine: {'line': b'[ 59%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/motoros2_interfaces/msg/detail/dds_fastrtps/motion_ready_enum__type_support.cpp.o\x1b[0m\n'}
+[6.954806] (motoros2_interfaces) StdoutLine: {'line': b'[ 59%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/motoros2_interfaces/srv/detail/start_point_queue_mode__type_support.cpp.o\x1b[0m\n'}
+[6.992161] (motoros2_interfaces) StdoutLine: {'line': b'[ 60%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/motoros2_interfaces/srv/detail/get_active_alarm_info__type_support.c.o\x1b[0m\n'}
+[7.003158] (motoros2_interfaces) StdoutLine: {'line': b'[ 61%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/motoros2_interfaces/msg/detail/dds_fastrtps/queue_result_enum__type_support.cpp.o\x1b[0m\n'}
+[7.016072] (motoros2_interfaces) StdoutLine: {'line': b'[ 62%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/motoros2_interfaces/srv/detail/list_inform_jobs__type_support.c.o\x1b[0m\n'}
+[7.016451] (motoros2_interfaces) StdoutLine: {'line': b'[ 62%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/motoros2_interfaces/srv/detail/write_m_register__type_support.cpp.o\x1b[0m\n'}
+[7.034940] (-) TimerEvent: {}
+[7.037869] (motoros2_interfaces) StdoutLine: {'line': b'[ 62%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/motoros2_interfaces/srv/detail/write_single_io__type_support.cpp.o\x1b[0m\n'}
+[7.057858] (motoros2_interfaces) StdoutLine: {'line': b'[ 63%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/motoros2_interfaces/msg/detail/io_result_codes__type_support_c.cpp.o\x1b[0m\n'}
+[7.068645] (motoros2_interfaces) StdoutLine: {'line': b'[ 64%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/motoros2_interfaces/srv/detail/write_group_io__type_support.cpp.o\x1b[0m\n'}
+[7.086598] (motoros2_interfaces) StdoutLine: {'line': b'[ 65%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/motoros2_interfaces/srv/detail/queue_traj_point__type_support.c.o\x1b[0m\n'}
+[7.093201] (motoros2_interfaces) StdoutLine: {'line': b'[ 65%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/motoros2_interfaces/msg/detail/motion_ready_enum__type_support_c.cpp.o\x1b[0m\n'}
+[7.097816] (motoros2_interfaces) StdoutLine: {'line': b'[ 65%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/motoros2_interfaces/srv/detail/read_m_register__type_support.c.o\x1b[0m\n'}
+[7.135067] (-) TimerEvent: {}
+[7.148765] (motoros2_interfaces) StdoutLine: {'line': b'[ 66%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/motoros2_interfaces/srv/detail/read_single_io__type_support.c.o\x1b[0m\n'}
+[7.155206] (motoros2_interfaces) StdoutLine: {'line': b'[ 66%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/motoros2_interfaces/msg/detail/dds_fastrtps/selection_result_codes__type_support.cpp.o\x1b[0m\n'}
+[7.161641] (motoros2_interfaces) StdoutLine: {'line': b'[ 67%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/motoros2_interfaces/srv/detail/dds_fastrtps/get_active_alarm_info__type_support.cpp.o\x1b[0m\n'}
+[7.191196] (motoros2_interfaces) StdoutLine: {'line': b'[ 68%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/motoros2_interfaces/msg/detail/queue_result_enum__type_support_c.cpp.o\x1b[0m\n'}
+[7.203550] (motoros2_interfaces) StdoutLine: {'line': b'[ 68%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/motoros2_interfaces/srv/detail/read_group_io__type_support.c.o\x1b[0m\n'}
+[7.235212] (-) TimerEvent: {}
+[7.254828] (motoros2_interfaces) StdoutLine: {'line': b'[ 69%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/motoros2_interfaces/srv/detail/reset_error__type_support.c.o\x1b[0m\n'}
+[7.272292] (motoros2_interfaces) StdoutLine: {'line': b'[ 69%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/motoros2_interfaces/srv/detail/select_motion_tool__type_support.c.o\x1b[0m\n'}
+[7.314926] (motoros2_interfaces) StdoutLine: {'line': b'[ 70%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/motoros2_interfaces/srv/detail/start_traj_mode__type_support.c.o\x1b[0m\n'}
+[7.327514] (motoros2_interfaces) StdoutLine: {'line': b'[ 70%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/motoros2_interfaces/srv/detail/dds_fastrtps/list_inform_jobs__type_support.cpp.o\x1b[0m\n'}
+[7.335333] (-) TimerEvent: {}
+[7.356285] (motoros2_interfaces) StdoutLine: {'line': b'[ 70%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/motoros2_interfaces/msg/detail/selection_result_codes__type_support_c.cpp.o\x1b[0m\n'}
+[7.366132] (motoros2_interfaces) StdoutLine: {'line': b'[ 70%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/motoros2_interfaces/srv/detail/start_point_queue_mode__type_support.c.o\x1b[0m\n'}
+[7.370373] (motoros2_interfaces) StdoutLine: {'line': b'[ 71%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/motoros2_interfaces/srv/detail/dds_fastrtps/queue_traj_point__type_support.cpp.o\x1b[0m\n'}
+[7.400503] (motoros2_interfaces) StdoutLine: {'line': b'[ 72%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/motoros2_interfaces/srv/detail/get_active_alarm_info__type_support_c.cpp.o\x1b[0m\n'}
+[7.424275] (motoros2_interfaces) StdoutLine: {'line': b'[ 73%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/motoros2_interfaces/srv/detail/list_inform_jobs__type_support_c.cpp.o\x1b[0m\n'}
+[7.427687] (motoros2_interfaces) StdoutLine: {'line': b'[ 73%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/motoros2_interfaces/srv/detail/write_m_register__type_support.c.o\x1b[0m\n'}
+[7.428451] (motoros2_interfaces) StdoutLine: {'line': b'[ 74%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/motoros2_interfaces/srv/detail/queue_traj_point__type_support_c.cpp.o\x1b[0m\n'}
+[7.435552] (-) TimerEvent: {}
+[7.480942] (motoros2_interfaces) StdoutLine: {'line': b'[ 74%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/motoros2_interfaces/srv/detail/dds_fastrtps/read_m_register__type_support.cpp.o\x1b[0m\n'}
+[7.482326] (motoros2_interfaces) StdoutLine: {'line': b'[ 74%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/motoros2_interfaces/srv/detail/write_single_io__type_support.c.o\x1b[0m\n'}
+[7.503675] (motoros2_interfaces) StdoutLine: {'line': b'[ 75%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/motoros2_interfaces/srv/detail/dds_fastrtps/read_single_io__type_support.cpp.o\x1b[0m\n'}
+[7.505758] (motoros2_interfaces) StdoutLine: {'line': b'[ 76%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/motoros2_interfaces/srv/detail/write_group_io__type_support.c.o\x1b[0m\n'}
+[7.519551] (motoros2_interfaces) StdoutLine: {'line': b'[ 77%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/motoros2_interfaces/srv/detail/dds_fastrtps/reset_error__type_support.cpp.o\x1b[0m\n'}
+[7.520402] (motoros2_interfaces) StdoutLine: {'line': b'[ 77%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/motoros2_interfaces/srv/detail/dds_fastrtps/read_group_io__type_support.cpp.o\x1b[0m\n'}
+[7.532058] (motoros2_interfaces) StdoutLine: {'line': b'[ 77%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/motoros2_interfaces/srv/detail/dds_fastrtps/select_motion_tool__type_support.cpp.o\x1b[0m\n'}
+[7.535644] (-) TimerEvent: {}
+[7.563429] (motoros2_interfaces) StdoutLine: {'line': b'[ 77%] \x1b[32m\x1b[1mLinking C shared library libmotoros2_interfaces__rosidl_typesupport_introspection_c.so\x1b[0m\n'}
+[7.573093] (motoros2_interfaces) StdoutLine: {'line': b'[ 77%] \x1b[32m\x1b[1mLinking CXX shared library libmotoros2_interfaces__rosidl_typesupport_introspection_cpp.so\x1b[0m\n'}
+[7.598636] (motoros2_interfaces) StdoutLine: {'line': b'[ 78%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/motoros2_interfaces/srv/detail/dds_fastrtps/start_traj_mode__type_support.cpp.o\x1b[0m\n'}
+[7.630006] (motoros2_interfaces) StdoutLine: {'line': b'[ 78%] Built target motoros2_interfaces__rosidl_typesupport_introspection_c\n'}
+[7.635810] (-) TimerEvent: {}
+[7.644152] (motoros2_interfaces) StdoutLine: {'line': b'[ 78%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/motoros2_interfaces/srv/detail/read_m_register__type_support_c.cpp.o\x1b[0m\n'}
+[7.644804] (motoros2_interfaces) StdoutLine: {'line': b'[ 79%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/motoros2_interfaces/srv/detail/read_single_io__type_support_c.cpp.o\x1b[0m\n'}
+[7.735945] (-) TimerEvent: {}
+[7.751206] (motoros2_interfaces) StdoutLine: {'line': b'[ 79%] Built target motoros2_interfaces__rosidl_typesupport_introspection_cpp\n'}
+[7.766446] (motoros2_interfaces) StdoutLine: {'line': b'[ 79%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/motoros2_interfaces/srv/detail/read_group_io__type_support_c.cpp.o\x1b[0m\n'}
+[7.786910] (motoros2_interfaces) StdoutLine: {'line': b'[ 79%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/motoros2_interfaces/srv/detail/dds_fastrtps/start_point_queue_mode__type_support.cpp.o\x1b[0m\n'}
+[7.836085] (-) TimerEvent: {}
+[7.842226] (motoros2_interfaces) StdoutLine: {'line': b'[ 80%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/motoros2_interfaces/srv/detail/dds_fastrtps/write_m_register__type_support.cpp.o\x1b[0m\n'}
+[7.861236] (motoros2_interfaces) StdoutLine: {'line': b'[ 80%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/motoros2_interfaces/srv/detail/dds_fastrtps/write_single_io__type_support.cpp.o\x1b[0m\n'}
+[7.879718] (motoros2_interfaces) StdoutLine: {'line': b'[ 81%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/motoros2_interfaces/srv/detail/reset_error__type_support_c.cpp.o\x1b[0m\n'}
+[7.907725] (motoros2_interfaces) StdoutLine: {'line': b'[ 82%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/motoros2_interfaces/srv/detail/dds_fastrtps/write_group_io__type_support.cpp.o\x1b[0m\n'}
+[7.919946] (motoros2_interfaces) StdoutLine: {'line': b'[ 82%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/motoros2_interfaces/srv/detail/select_motion_tool__type_support_c.cpp.o\x1b[0m\n'}
+[7.927208] (motoros2_interfaces) StdoutLine: {'line': b'[ 83%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/motoros2_interfaces/srv/detail/start_traj_mode__type_support_c.cpp.o\x1b[0m\n'}
+[7.936207] (-) TimerEvent: {}
+[7.989945] (motoros2_interfaces) StdoutLine: {'line': b'[ 83%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/motoros2_interfaces/srv/detail/start_point_queue_mode__type_support_c.cpp.o\x1b[0m\n'}
+[8.036044] (motoros2_interfaces) StdoutLine: {'line': b'[ 84%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/motoros2_interfaces/srv/detail/write_m_register__type_support_c.cpp.o\x1b[0m\n'}
+[8.036343] (-) TimerEvent: {}
+[8.039138] (motoros2_interfaces) StdoutLine: {'line': b'[ 84%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/motoros2_interfaces/srv/detail/write_single_io__type_support_c.cpp.o\x1b[0m\n'}
+[8.045108] (motoros2_interfaces) StdoutLine: {'line': b'[ 85%] \x1b[32mBuilding CXX object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/motoros2_interfaces/srv/detail/write_group_io__type_support_c.cpp.o\x1b[0m\n'}
+[8.136496] (-) TimerEvent: {}
+[8.236897] (-) TimerEvent: {}
+[8.337289] (-) TimerEvent: {}
+[8.340424] (motoros2_interfaces) StdoutLine: {'line': b'[ 85%] \x1b[32m\x1b[1mLinking CXX shared library libmotoros2_interfaces__rosidl_typesupport_fastrtps_cpp.so\x1b[0m\n'}
+[8.431094] (motoros2_interfaces) StdoutLine: {'line': b'[ 85%] Built target motoros2_interfaces__rosidl_typesupport_fastrtps_cpp\n'}
+[8.433285] (motoros2_interfaces) StdoutLine: {'line': b'[ 85%] \x1b[32m\x1b[1mLinking CXX shared library libmotoros2_interfaces__rosidl_typesupport_fastrtps_c.so\x1b[0m\n'}
+[8.437335] (-) TimerEvent: {}
+[8.504498] (motoros2_interfaces) StdoutLine: {'line': b'[ 85%] Built target motoros2_interfaces__rosidl_typesupport_fastrtps_c\n'}
+[8.525206] (motoros2_interfaces) StdoutLine: {'line': b'[ 85%] Built target motoros2_interfaces\n'}
+[8.537576] (-) TimerEvent: {}
+[8.546110] (motoros2_interfaces) StdoutLine: {'line': b'[ 86%] \x1b[34m\x1b[1mGenerating Python code for ROS interfaces\x1b[0m\n'}
+[8.637662] (-) TimerEvent: {}
+[8.738085] (-) TimerEvent: {}
+[8.838407] (-) TimerEvent: {}
+[8.938765] (-) TimerEvent: {}
+[9.039108] (-) TimerEvent: {}
+[9.139451] (-) TimerEvent: {}
+[9.239782] (-) TimerEvent: {}
+[9.340145] (-) TimerEvent: {}
+[9.440484] (-) TimerEvent: {}
+[9.540818] (-) TimerEvent: {}
+[9.641171] (-) TimerEvent: {}
+[9.741508] (-) TimerEvent: {}
+[9.841818] (-) TimerEvent: {}
+[9.942155] (-) TimerEvent: {}
+[10.042513] (-) TimerEvent: {}
+[10.142876] (-) TimerEvent: {}
+[10.243303] (-) TimerEvent: {}
+[10.343661] (-) TimerEvent: {}
+[10.444078] (-) TimerEvent: {}
+[10.544435] (-) TimerEvent: {}
+[10.644789] (-) TimerEvent: {}
+[10.745166] (-) TimerEvent: {}
+[10.845508] (-) TimerEvent: {}
+[10.945880] (-) TimerEvent: {}
+[11.046301] (-) TimerEvent: {}
+[11.146640] (-) TimerEvent: {}
+[11.246998] (-) TimerEvent: {}
+[11.347344] (-) TimerEvent: {}
+[11.447654] (-) TimerEvent: {}
+[11.547991] (-) TimerEvent: {}
+[11.648324] (-) TimerEvent: {}
+[11.748623] (-) TimerEvent: {}
+[11.849003] (-) TimerEvent: {}
+[11.873332] (motoros2_interfaces) StdoutLine: {'line': b'[ 86%] Built target motoros2_interfaces__py\n'}
+[11.900244] (motoros2_interfaces) StdoutLine: {'line': b'[ 90%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_py.dir/rosidl_generator_py/motoros2_interfaces/msg/_error_info_s.c.o\x1b[0m\n'}
+[11.900460] (motoros2_interfaces) StdoutLine: {'line': b'[ 90%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_py.dir/rosidl_generator_py/motoros2_interfaces/msg/_inform_job_crud_result_codes_s.c.o\x1b[0m\n'}
+[11.900521] (motoros2_interfaces) StdoutLine: {'line': b'[ 90%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_py.dir/rosidl_generator_py/motoros2_interfaces/msg/_motion_ready_enum_s.c.o\x1b[0m\n'}
+[11.900615] (motoros2_interfaces) StdoutLine: {'line': b'[ 90%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_py.dir/rosidl_generator_py/motoros2_interfaces/msg/_alarm_cause_remedy_s.c.o\x1b[0m\n'}
+[11.900665] (motoros2_interfaces) StdoutLine: {'line': b'[ 90%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_py.dir/rosidl_generator_py/motoros2_interfaces/msg/_init_traj_enum_s.c.o\x1b[0m\n'}
+[11.900705] (motoros2_interfaces) StdoutLine: {'line': b'[ 90%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_py.dir/rosidl_generator_py/motoros2_interfaces/msg/_alarm_info_s.c.o\x1b[0m\n'}
+[11.900742] (motoros2_interfaces) StdoutLine: {'line': b'[ 90%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_py.dir/rosidl_generator_py/motoros2_interfaces/msg/_queue_result_enum_s.c.o\x1b[0m\n'}
+[11.900779] (motoros2_interfaces) StdoutLine: {'line': b'[ 90%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_py.dir/rosidl_generator_py/motoros2_interfaces/msg/_selection_result_codes_s.c.o\x1b[0m\n'}
+[11.900830] (motoros2_interfaces) StdoutLine: {'line': b'[ 90%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_py.dir/rosidl_generator_py/motoros2_interfaces/msg/_io_result_codes_s.c.o\x1b[0m\n'}
+[11.900915] (motoros2_interfaces) StdoutLine: {'line': b'[ 91%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_py.dir/rosidl_generator_py/motoros2_interfaces/srv/_get_active_alarm_info_s.c.o\x1b[0m\n'}
+[11.900981] (motoros2_interfaces) StdoutLine: {'line': b'[ 91%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_py.dir/rosidl_generator_py/motoros2_interfaces/srv/_list_inform_jobs_s.c.o\x1b[0m\n'}
+[11.901018] (motoros2_interfaces) StdoutLine: {'line': b'[ 92%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_py.dir/rosidl_generator_py/motoros2_interfaces/srv/_queue_traj_point_s.c.o\x1b[0m\n'}
+[11.901051] (motoros2_interfaces) StdoutLine: {'line': b'[ 92%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_py.dir/rosidl_generator_py/motoros2_interfaces/srv/_read_m_register_s.c.o\x1b[0m\n'}
+[11.901116] (motoros2_interfaces) StdoutLine: {'line': b'[ 92%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_py.dir/rosidl_generator_py/motoros2_interfaces/srv/_read_group_io_s.c.o\x1b[0m\n'}
+[11.901149] (motoros2_interfaces) StdoutLine: {'line': b'[ 93%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_py.dir/rosidl_generator_py/motoros2_interfaces/srv/_read_single_io_s.c.o\x1b[0m\n'}
+[11.909468] (motoros2_interfaces) StdoutLine: {'line': b'[ 94%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_py.dir/rosidl_generator_py/motoros2_interfaces/srv/_reset_error_s.c.o\x1b[0m\n'}
+[11.950949] (-) TimerEvent: {}
+[12.033887] (motoros2_interfaces) StdoutLine: {'line': b'[ 95%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_py.dir/rosidl_generator_py/motoros2_interfaces/srv/_start_point_queue_mode_s.c.o\x1b[0m\n'}
+[12.034143] (motoros2_interfaces) StdoutLine: {'line': b'[ 95%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_py.dir/rosidl_generator_py/motoros2_interfaces/srv/_select_motion_tool_s.c.o\x1b[0m\n'}
+[12.034200] (motoros2_interfaces) StdoutLine: {'line': b'[ 96%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_py.dir/rosidl_generator_py/motoros2_interfaces/srv/_start_traj_mode_s.c.o\x1b[0m\n'}
+[12.034246] (motoros2_interfaces) StdoutLine: {'line': b'[ 96%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_py.dir/rosidl_generator_py/motoros2_interfaces/srv/_write_m_register_s.c.o\x1b[0m\n'}
+[12.034489] (motoros2_interfaces) StdoutLine: {'line': b'[ 97%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_py.dir/rosidl_generator_py/motoros2_interfaces/srv/_write_group_io_s.c.o\x1b[0m\n'}
+[12.034637] (motoros2_interfaces) StdoutLine: {'line': b'[ 97%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_generator_py.dir/rosidl_generator_py/motoros2_interfaces/srv/_write_single_io_s.c.o\x1b[0m\n'}
+[12.051046] (-) TimerEvent: {}
+[12.123936] (motoros2_interfaces) StdoutLine: {'line': b'[ 97%] \x1b[32m\x1b[1mLinking C shared library rosidl_generator_py/motoros2_interfaces/libmotoros2_interfaces__rosidl_generator_py.so\x1b[0m\n'}
+[12.151148] (-) TimerEvent: {}
+[12.162627] (motoros2_interfaces) StdoutLine: {'line': b'[ 97%] Built target motoros2_interfaces__rosidl_generator_py\n'}
+[12.182642] (motoros2_interfaces) StdoutLine: {'line': b'[ 99%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/motoros2_interfaces/_motoros2_interfaces_s.ep.rosidl_typesupport_c.c.o\x1b[0m\n'}
+[12.182865] (motoros2_interfaces) StdoutLine: {'line': b'[ 99%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/motoros2_interfaces/_motoros2_interfaces_s.ep.rosidl_typesupport_fastrtps_c.c.o\x1b[0m\n'}
+[12.186046] (motoros2_interfaces) StdoutLine: {'line': b'[100%] \x1b[32mBuilding C object CMakeFiles/motoros2_interfaces__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/motoros2_interfaces/_motoros2_interfaces_s.ep.rosidl_typesupport_introspection_c.c.o\x1b[0m\n'}
+[12.251269] (-) TimerEvent: {}
+[12.320421] (motoros2_interfaces) StdoutLine: {'line': b'[100%] \x1b[32m\x1b[1mLinking C shared library rosidl_generator_py/motoros2_interfaces/motoros2_interfaces_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so\x1b[0m\n'}
+[12.320642] (motoros2_interfaces) StdoutLine: {'line': b'[100%] \x1b[32m\x1b[1mLinking C shared library rosidl_generator_py/motoros2_interfaces/motoros2_interfaces_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so\x1b[0m\n'}
+[12.321443] (motoros2_interfaces) StdoutLine: {'line': b'[100%] \x1b[32m\x1b[1mLinking C shared library rosidl_generator_py/motoros2_interfaces/motoros2_interfaces_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so\x1b[0m\n'}
+[12.351365] (-) TimerEvent: {}
+[12.355367] (motoros2_interfaces) StdoutLine: {'line': b'[100%] Built target motoros2_interfaces__rosidl_typesupport_c__pyext\n'}
+[12.355582] (motoros2_interfaces) StdoutLine: {'line': b'[100%] Built target motoros2_interfaces__rosidl_typesupport_fastrtps_c__pyext\n'}
+[12.356380] (motoros2_interfaces) StdoutLine: {'line': b'[100%] Built target motoros2_interfaces__rosidl_typesupport_introspection_c__pyext\n'}
+[12.368397] (motoros2_interfaces) CommandEnded: {'returncode': 0}
+[12.369082] (motoros2_interfaces) JobProgress: {'identifier': 'motoros2_interfaces', 'progress': 'install'}
+[12.375761] (motoros2_interfaces) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/hungnb/cocarry_ws/build/motoros2_interfaces'], 'cwd': '/home/hungnb/cocarry_ws/build/motoros2_interfaces', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'hungnb'), ('LC_TIME', 'vi_VN'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/hungnb'), ('OLDPWD', '/home/hungnb/cocarry_ws/src'), ('DESKTOP_SESSION', 'ubuntu'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('LC_MONETARY', 'vi_VN'), ('SYSTEMD_EXEC_PID', '25211'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'hungnb'), ('_', '/home/hungnb/.local/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'hungnb'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/home/hungnb/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/hungnb-XiaoXinPro-14c-AHP10R:@/tmp/.ICE-unix/1729,unix/hungnb-XiaoXinPro-14c-AHP10R:/tmp/.ICE-unix/1729'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'vi_VN'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/bd608319_8334_454b_af80_bc3ab77c987b'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'vi_VN'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.5LL2S3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.192'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'vi_VN'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('LC_MEASUREMENT', 'vi_VN'), ('LC_IDENTIFICATION', 'vi_VN'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/hungnb/cocarry_ws/build/motoros2_interfaces'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('LC_NUMERIC', 'vi_VN'), ('LC_PAPER', 'vi_VN'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[12.385385] (motoros2_interfaces) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[12.386039] (motoros2_interfaces) StdoutLine: {'line': b'-- Execute custom install script\n'}
+[12.386351] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/ament_index/resource_index/rosidl_interfaces/motoros2_interfaces\n'}
+[12.396262] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/alarm_cause_remedy.h\n'}
+[12.404571] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/alarm_info.h\n'}
+[12.412619] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/alarm_cause_remedy__functions.h\n'}
+[12.419311] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/alarm_cause_remedy__struct.h\n'}
+[12.426938] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/alarm_cause_remedy__type_support.h\n'}
+[12.433869] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/alarm_info__functions.h\n'}
+[12.441044] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/alarm_info__struct.h\n'}
+[12.448717] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/alarm_info__type_support.h\n'}
+[12.451440] (-) TimerEvent: {}
+[12.456233] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/error_info__functions.h\n'}
+[12.463962] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/error_info__struct.h\n'}
+[12.471104] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/error_info__type_support.h\n'}
+[12.477819] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/inform_job_crud_result_codes__functions.h\n'}
+[12.488114] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/inform_job_crud_result_codes__struct.h\n'}
+[12.495890] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/inform_job_crud_result_codes__type_support.h\n'}
+[12.503518] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/init_traj_enum__functions.h\n'}
+[12.510394] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/init_traj_enum__struct.h\n'}
+[12.517539] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/init_traj_enum__type_support.h\n'}
+[12.524881] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/io_result_codes__functions.h\n'}
+[12.532330] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/io_result_codes__struct.h\n'}
+[12.539334] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/io_result_codes__type_support.h\n'}
+[12.545759] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/motion_ready_enum__functions.h\n'}
+[12.551524] (-) TimerEvent: {}
+[12.554944] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/motion_ready_enum__struct.h\n'}
+[12.562815] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/motion_ready_enum__type_support.h\n'}
+[12.571440] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/queue_result_enum__functions.h\n'}
+[12.581971] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/queue_result_enum__struct.h\n'}
+[12.590400] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/queue_result_enum__type_support.h\n'}
+[12.599814] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/selection_result_codes__functions.h\n'}
+[12.607424] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/selection_result_codes__struct.h\n'}
+[12.614732] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/selection_result_codes__type_support.h\n'}
+[12.622970] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/error_info.h\n'}
+[12.629349] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/inform_job_crud_result_codes.h\n'}
+[12.635871] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/init_traj_enum.h\n'}
+[12.643818] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/io_result_codes.h\n'}
+[12.650388] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/motion_ready_enum.h\n'}
+[12.651589] (-) TimerEvent: {}
+[12.657517] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/queue_result_enum.h\n'}
+[12.664349] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/rosidl_generator_c__visibility_control.h\n'}
+[12.671752] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/selection_result_codes.h\n'}
+[12.682393] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/get_active_alarm_info__functions.h\n'}
+[12.690398] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/get_active_alarm_info__struct.h\n'}
+[12.697562] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/get_active_alarm_info__type_support.h\n'}
+[12.705335] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/list_inform_jobs__functions.h\n'}
+[12.712720] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/list_inform_jobs__struct.h\n'}
+[12.719634] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/list_inform_jobs__type_support.h\n'}
+[12.725729] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/queue_traj_point__functions.h\n'}
+[12.733428] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/queue_traj_point__struct.h\n'}
+[12.741169] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/queue_traj_point__type_support.h\n'}
+[12.748667] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_group_io__functions.h\n'}
+[12.751670] (-) TimerEvent: {}
+[12.756181] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_group_io__struct.h\n'}
+[12.763640] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_group_io__type_support.h\n'}
+[12.771353] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_m_register__functions.h\n'}
+[12.785612] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_m_register__struct.h\n'}
+[12.794884] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_m_register__type_support.h\n'}
+[12.803529] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_single_io__functions.h\n'}
+[12.813920] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_single_io__struct.h\n'}
+[12.822169] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_single_io__type_support.h\n'}
+[12.831986] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/reset_error__functions.h\n'}
+[12.840110] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/reset_error__struct.h\n'}
+[12.849663] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/reset_error__type_support.h\n'}
+[12.851738] (-) TimerEvent: {}
+[12.857115] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/select_motion_tool__functions.h\n'}
+[12.865591] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/select_motion_tool__struct.h\n'}
+[12.875815] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/select_motion_tool__type_support.h\n'}
+[12.887300] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/start_point_queue_mode__functions.h\n'}
+[12.897403] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/start_point_queue_mode__struct.h\n'}
+[12.905456] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/start_point_queue_mode__type_support.h\n'}
+[12.914983] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/start_traj_mode__functions.h\n'}
+[12.923841] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/start_traj_mode__struct.h\n'}
+[12.934254] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/start_traj_mode__type_support.h\n'}
+[12.942140] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_group_io__functions.h\n'}
+[12.951390] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_group_io__struct.h\n'}
+[12.951800] (-) TimerEvent: {}
+[12.959816] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_group_io__type_support.h\n'}
+[12.969639] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_m_register__functions.h\n'}
+[12.980254] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_m_register__struct.h\n'}
+[12.989981] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_m_register__type_support.h\n'}
+[12.998082] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_single_io__functions.h\n'}
+[13.005666] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_single_io__struct.h\n'}
+[13.012615] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_single_io__type_support.h\n'}
+[13.019143] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/get_active_alarm_info.h\n'}
+[13.026755] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/list_inform_jobs.h\n'}
+[13.034055] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/queue_traj_point.h\n'}
+[13.041892] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/read_group_io.h\n'}
+[13.049075] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/read_m_register.h\n'}
+[13.051911] (-) TimerEvent: {}
+[13.056481] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/read_single_io.h\n'}
+[13.063204] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/reset_error.h\n'}
+[13.070412] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/select_motion_tool.h\n'}
+[13.077388] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/start_point_queue_mode.h\n'}
+[13.087281] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/start_traj_mode.h\n'}
+[13.096801] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/write_group_io.h\n'}
+[13.105742] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/write_m_register.h\n'}
+[13.112173] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/write_single_io.h\n'}
+[13.120372] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/environment/library_path.sh\n'}
+[13.127964] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/environment/library_path.dsv\n'}
+[13.137985] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/alarm_cause_remedy__rosidl_typesupport_fastrtps_c.h\n'}
+[13.146146] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/alarm_info__rosidl_typesupport_fastrtps_c.h\n'}
+[13.152033] (-) TimerEvent: {}
+[13.153364] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/error_info__rosidl_typesupport_fastrtps_c.h\n'}
+[13.161497] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/inform_job_crud_result_codes__rosidl_typesupport_fastrtps_c.h\n'}
+[13.169374] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/init_traj_enum__rosidl_typesupport_fastrtps_c.h\n'}
+[13.175660] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/io_result_codes__rosidl_typesupport_fastrtps_c.h\n'}
+[13.186739] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/motion_ready_enum__rosidl_typesupport_fastrtps_c.h\n'}
+[13.195556] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/queue_result_enum__rosidl_typesupport_fastrtps_c.h\n'}
+[13.203891] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/selection_result_codes__rosidl_typesupport_fastrtps_c.h\n'}
+[13.209964] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/rosidl_typesupport_fastrtps_c__visibility_control.h\n'}
+[13.217397] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/get_active_alarm_info__rosidl_typesupport_fastrtps_c.h\n'}
+[13.224124] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/list_inform_jobs__rosidl_typesupport_fastrtps_c.h\n'}
+[13.231779] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/queue_traj_point__rosidl_typesupport_fastrtps_c.h\n'}
+[13.239283] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_group_io__rosidl_typesupport_fastrtps_c.h\n'}
+[13.246826] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_m_register__rosidl_typesupport_fastrtps_c.h\n'}
+[13.252122] (-) TimerEvent: {}
+[13.254297] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_single_io__rosidl_typesupport_fastrtps_c.h\n'}
+[13.260769] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/reset_error__rosidl_typesupport_fastrtps_c.h\n'}
+[13.267968] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/select_motion_tool__rosidl_typesupport_fastrtps_c.h\n'}
+[13.274489] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/start_point_queue_mode__rosidl_typesupport_fastrtps_c.h\n'}
+[13.285888] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/start_traj_mode__rosidl_typesupport_fastrtps_c.h\n'}
+[13.296083] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_group_io__rosidl_typesupport_fastrtps_c.h\n'}
+[13.302169] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_m_register__rosidl_typesupport_fastrtps_c.h\n'}
+[13.308133] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_single_io__rosidl_typesupport_fastrtps_c.h\n'}
+[13.317825] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/alarm_cause_remedy.hpp\n'}
+[13.325004] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/alarm_info.hpp\n'}
+[13.332250] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/alarm_cause_remedy__builder.hpp\n'}
+[13.339145] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/alarm_cause_remedy__struct.hpp\n'}
+[13.345338] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/alarm_cause_remedy__traits.hpp\n'}
+[13.352247] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/alarm_cause_remedy__type_support.hpp\n'}
+[13.352405] (-) TimerEvent: {}
+[13.358439] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/alarm_info__builder.hpp\n'}
+[13.366129] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/alarm_info__struct.hpp\n'}
+[13.373924] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/alarm_info__traits.hpp\n'}
+[13.387902] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/alarm_info__type_support.hpp\n'}
+[13.398864] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/error_info__builder.hpp\n'}
+[13.407574] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/error_info__struct.hpp\n'}
+[13.416866] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/error_info__traits.hpp\n'}
+[13.427399] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/error_info__type_support.hpp\n'}
+[13.436059] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/inform_job_crud_result_codes__builder.hpp\n'}
+[13.447426] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/inform_job_crud_result_codes__struct.hpp\n'}
+[13.452487] (-) TimerEvent: {}
+[13.454349] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/inform_job_crud_result_codes__traits.hpp\n'}
+[13.464407] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/inform_job_crud_result_codes__type_support.hpp\n'}
+[13.473120] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/init_traj_enum__builder.hpp\n'}
+[13.485068] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/init_traj_enum__struct.hpp\n'}
+[13.497120] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/init_traj_enum__traits.hpp\n'}
+[13.503969] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/init_traj_enum__type_support.hpp\n'}
+[13.515369] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/io_result_codes__builder.hpp\n'}
+[13.526725] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/io_result_codes__struct.hpp\n'}
+[13.534616] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/io_result_codes__traits.hpp\n'}
+[13.547975] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/io_result_codes__type_support.hpp\n'}
+[13.552562] (-) TimerEvent: {}
+[13.555062] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/motion_ready_enum__builder.hpp\n'}
+[13.564960] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/motion_ready_enum__struct.hpp\n'}
+[13.574825] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/motion_ready_enum__traits.hpp\n'}
+[13.586215] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/motion_ready_enum__type_support.hpp\n'}
+[13.597579] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/queue_result_enum__builder.hpp\n'}
+[13.607718] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/queue_result_enum__struct.hpp\n'}
+[13.615789] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/queue_result_enum__traits.hpp\n'}
+[13.622806] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/queue_result_enum__type_support.hpp\n'}
+[13.630544] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/selection_result_codes__builder.hpp\n'}
+[13.638048] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/selection_result_codes__struct.hpp\n'}
+[13.644774] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/selection_result_codes__traits.hpp\n'}
+[13.652642] (-) TimerEvent: {}
+[13.652812] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/selection_result_codes__type_support.hpp\n'}
+[13.660092] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/error_info.hpp\n'}
+[13.667599] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/inform_job_crud_result_codes.hpp\n'}
+[13.675194] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/init_traj_enum.hpp\n'}
+[13.686158] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/io_result_codes.hpp\n'}
+[13.694647] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/motion_ready_enum.hpp\n'}
+[13.702510] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/queue_result_enum.hpp\n'}
+[13.710677] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/rosidl_generator_cpp__visibility_control.hpp\n'}
+[13.718625] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/selection_result_codes.hpp\n'}
+[13.725914] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/get_active_alarm_info__builder.hpp\n'}
+[13.733655] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/get_active_alarm_info__struct.hpp\n'}
+[13.741866] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/get_active_alarm_info__traits.hpp\n'}
+[13.750232] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/get_active_alarm_info__type_support.hpp\n'}
+[13.752707] (-) TimerEvent: {}
+[13.756974] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/list_inform_jobs__builder.hpp\n'}
+[13.764930] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/list_inform_jobs__struct.hpp\n'}
+[13.772464] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/list_inform_jobs__traits.hpp\n'}
+[13.782436] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/list_inform_jobs__type_support.hpp\n'}
+[13.791678] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/queue_traj_point__builder.hpp\n'}
+[13.800972] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/queue_traj_point__struct.hpp\n'}
+[13.807950] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/queue_traj_point__traits.hpp\n'}
+[13.815546] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/queue_traj_point__type_support.hpp\n'}
+[13.823135] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_group_io__builder.hpp\n'}
+[13.831229] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_group_io__struct.hpp\n'}
+[13.837651] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_group_io__traits.hpp\n'}
+[13.844219] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_group_io__type_support.hpp\n'}
+[13.850919] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_m_register__builder.hpp\n'}
+[13.852777] (-) TimerEvent: {}
+[13.857560] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_m_register__struct.hpp\n'}
+[13.865878] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_m_register__traits.hpp\n'}
+[13.872494] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_m_register__type_support.hpp\n'}
+[13.881779] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_single_io__builder.hpp\n'}
+[13.892190] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_single_io__struct.hpp\n'}
+[13.900348] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_single_io__traits.hpp\n'}
+[13.907879] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_single_io__type_support.hpp\n'}
+[13.915002] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/reset_error__builder.hpp\n'}
+[13.922165] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/reset_error__struct.hpp\n'}
+[13.930422] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/reset_error__traits.hpp\n'}
+[13.937687] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/reset_error__type_support.hpp\n'}
+[13.945929] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/select_motion_tool__builder.hpp\n'}
+[13.952570] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/select_motion_tool__struct.hpp\n'}
+[13.952838] (-) TimerEvent: {}
+[13.960925] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/select_motion_tool__traits.hpp\n'}
+[13.968906] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/select_motion_tool__type_support.hpp\n'}
+[13.976099] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/start_point_queue_mode__builder.hpp\n'}
+[13.986263] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/start_point_queue_mode__struct.hpp\n'}
+[13.995617] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/start_point_queue_mode__traits.hpp\n'}
+[14.002982] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/start_point_queue_mode__type_support.hpp\n'}
+[14.011878] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/start_traj_mode__builder.hpp\n'}
+[14.017907] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/start_traj_mode__struct.hpp\n'}
+[14.025160] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/start_traj_mode__traits.hpp\n'}
+[14.032648] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/start_traj_mode__type_support.hpp\n'}
+[14.039548] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_group_io__builder.hpp\n'}
+[14.047095] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_group_io__struct.hpp\n'}
+[14.052902] (-) TimerEvent: {}
+[14.054828] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_group_io__traits.hpp\n'}
+[14.062571] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_group_io__type_support.hpp\n'}
+[14.070340] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_m_register__builder.hpp\n'}
+[14.076686] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_m_register__struct.hpp\n'}
+[14.088254] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_m_register__traits.hpp\n'}
+[14.096020] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_m_register__type_support.hpp\n'}
+[14.102310] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_single_io__builder.hpp\n'}
+[14.109901] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_single_io__struct.hpp\n'}
+[14.117700] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_single_io__traits.hpp\n'}
+[14.124921] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_single_io__type_support.hpp\n'}
+[14.132101] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/get_active_alarm_info.hpp\n'}
+[14.140548] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/list_inform_jobs.hpp\n'}
+[14.148573] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/queue_traj_point.hpp\n'}
+[14.152972] (-) TimerEvent: {}
+[14.156339] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/read_group_io.hpp\n'}
+[14.164365] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/read_m_register.hpp\n'}
+[14.172316] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/read_single_io.hpp\n'}
+[14.182087] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/reset_error.hpp\n'}
+[14.191663] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/select_motion_tool.hpp\n'}
+[14.199692] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/start_point_queue_mode.hpp\n'}
+[14.206926] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/start_traj_mode.hpp\n'}
+[14.213877] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/write_group_io.hpp\n'}
+[14.220721] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/write_m_register.hpp\n'}
+[14.228454] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/write_single_io.hpp\n'}
+[14.236714] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/alarm_cause_remedy__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[14.244453] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/alarm_info__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[14.253014] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/error_info__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[14.253179] (-) TimerEvent: {}
+[14.260818] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/inform_job_crud_result_codes__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[14.267810] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/init_traj_enum__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[14.275548] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/io_result_codes__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[14.286054] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/motion_ready_enum__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[14.294727] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/queue_result_enum__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[14.302363] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/selection_result_codes__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[14.309382] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h\n'}
+[14.317810] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/get_active_alarm_info__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[14.324517] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/list_inform_jobs__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[14.332588] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/queue_traj_point__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[14.340285] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_group_io__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[14.349264] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_m_register__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[14.353292] (-) TimerEvent: {}
+[14.356650] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_single_io__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[14.365259] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/reset_error__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[14.373172] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/select_motion_tool__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[14.383998] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/start_point_queue_mode__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[14.393218] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/start_traj_mode__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[14.400290] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_group_io__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[14.407998] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_m_register__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[14.414833] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_single_io__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[14.423314] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/alarm_cause_remedy__rosidl_typesupport_introspection_c.h\n'}
+[14.430518] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/alarm_info__rosidl_typesupport_introspection_c.h\n'}
+[14.438229] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/error_info__rosidl_typesupport_introspection_c.h\n'}
+[14.446490] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/inform_job_crud_result_codes__rosidl_typesupport_introspection_c.h\n'}
+[14.453376] (-) TimerEvent: {}
+[14.454956] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/init_traj_enum__rosidl_typesupport_introspection_c.h\n'}
+[14.462811] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/io_result_codes__rosidl_typesupport_introspection_c.h\n'}
+[14.470608] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/motion_ready_enum__rosidl_typesupport_introspection_c.h\n'}
+[14.477974] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/queue_result_enum__rosidl_typesupport_introspection_c.h\n'}
+[14.488277] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/selection_result_codes__rosidl_typesupport_introspection_c.h\n'}
+[14.496432] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/rosidl_typesupport_introspection_c__visibility_control.h\n'}
+[14.504362] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/get_active_alarm_info__rosidl_typesupport_introspection_c.h\n'}
+[14.511765] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/list_inform_jobs__rosidl_typesupport_introspection_c.h\n'}
+[14.519705] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/queue_traj_point__rosidl_typesupport_introspection_c.h\n'}
+[14.527444] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_group_io__rosidl_typesupport_introspection_c.h\n'}
+[14.535470] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_m_register__rosidl_typesupport_introspection_c.h\n'}
+[14.542634] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_single_io__rosidl_typesupport_introspection_c.h\n'}
+[14.549875] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/reset_error__rosidl_typesupport_introspection_c.h\n'}
+[14.553446] (-) TimerEvent: {}
+[14.556981] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/select_motion_tool__rosidl_typesupport_introspection_c.h\n'}
+[14.565550] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/start_point_queue_mode__rosidl_typesupport_introspection_c.h\n'}
+[14.573813] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/start_traj_mode__rosidl_typesupport_introspection_c.h\n'}
+[14.584913] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_group_io__rosidl_typesupport_introspection_c.h\n'}
+[14.593616] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_m_register__rosidl_typesupport_introspection_c.h\n'}
+[14.601294] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_single_io__rosidl_typesupport_introspection_c.h\n'}
+[14.609184] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/alarm_cause_remedy__rosidl_typesupport_introspection_cpp.hpp\n'}
+[14.616606] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/alarm_info__rosidl_typesupport_introspection_cpp.hpp\n'}
+[14.623282] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/error_info__rosidl_typesupport_introspection_cpp.hpp\n'}
+[14.630304] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/inform_job_crud_result_codes__rosidl_typesupport_introspection_cpp.hpp\n'}
+[14.637379] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/init_traj_enum__rosidl_typesupport_introspection_cpp.hpp\n'}
+[14.644856] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/io_result_codes__rosidl_typesupport_introspection_cpp.hpp\n'}
+[14.652726] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/motion_ready_enum__rosidl_typesupport_introspection_cpp.hpp\n'}
+[14.653556] (-) TimerEvent: {}
+[14.659934] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/queue_result_enum__rosidl_typesupport_introspection_cpp.hpp\n'}
+[14.666539] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/msg/detail/selection_result_codes__rosidl_typesupport_introspection_cpp.hpp\n'}
+[14.672515] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/get_active_alarm_info__rosidl_typesupport_introspection_cpp.hpp\n'}
+[14.680582] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/list_inform_jobs__rosidl_typesupport_introspection_cpp.hpp\n'}
+[14.690990] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/queue_traj_point__rosidl_typesupport_introspection_cpp.hpp\n'}
+[14.698672] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_group_io__rosidl_typesupport_introspection_cpp.hpp\n'}
+[14.705402] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_m_register__rosidl_typesupport_introspection_cpp.hpp\n'}
+[14.713632] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/read_single_io__rosidl_typesupport_introspection_cpp.hpp\n'}
+[14.720514] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/reset_error__rosidl_typesupport_introspection_cpp.hpp\n'}
+[14.728146] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/select_motion_tool__rosidl_typesupport_introspection_cpp.hpp\n'}
+[14.736199] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/start_point_queue_mode__rosidl_typesupport_introspection_cpp.hpp\n'}
+[14.743748] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/start_traj_mode__rosidl_typesupport_introspection_cpp.hpp\n'}
+[14.751904] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_group_io__rosidl_typesupport_introspection_cpp.hpp\n'}
+[14.753625] (-) TimerEvent: {}
+[14.759368] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_m_register__rosidl_typesupport_introspection_cpp.hpp\n'}
+[14.766864] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/include/motoros2_interfaces/motoros2_interfaces/srv/detail/write_single_io__rosidl_typesupport_introspection_cpp.hpp\n'}
+[14.773771] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/environment/pythonpath.sh\n'}
+[14.783167] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/environment/pythonpath.dsv\n'}
+[14.793229] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces-0.2.0-py3.10.egg-info/PKG-INFO\n'}
+[14.801131] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces-0.2.0-py3.10.egg-info/SOURCES.txt\n'}
+[14.808013] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces-0.2.0-py3.10.egg-info/dependency_links.txt\n'}
+[14.815072] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces-0.2.0-py3.10.egg-info/top_level.txt\n'}
+[14.823702] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/__init__.py\n'}
+[14.831514] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/_motoros2_interfaces_s.ep.rosidl_typesupport_c.c\n'}
+[14.838927] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/_motoros2_interfaces_s.ep.rosidl_typesupport_fastrtps_c.c\n'}
+[14.845990] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/_motoros2_interfaces_s.ep.rosidl_typesupport_introspection_c.c\n'}
+[14.853756] (-) TimerEvent: {}
+[14.854093] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/libmotoros2_interfaces__rosidl_generator_py.so\n'}
+[14.862201] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/motoros2_interfaces_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so\n'}
+[14.869678] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/motoros2_interfaces_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so\n'}
+[14.877474] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/motoros2_interfaces_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so\n'}
+[14.888300] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/__init__.py\n'}
+[14.896912] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/_alarm_cause_remedy.py\n'}
+[14.903942] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/_alarm_cause_remedy_s.c\n'}
+[14.910680] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/_alarm_info.py\n'}
+[14.917686] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/_alarm_info_s.c\n'}
+[14.925701] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/_error_info.py\n'}
+[14.933013] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/_error_info_s.c\n'}
+[14.941015] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/_inform_job_crud_result_codes.py\n'}
+[14.949181] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/_inform_job_crud_result_codes_s.c\n'}
+[14.953815] (-) TimerEvent: {}
+[14.957793] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/_init_traj_enum.py\n'}
+[14.964802] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/_init_traj_enum_s.c\n'}
+[14.972914] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/_io_result_codes.py\n'}
+[14.981495] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/_io_result_codes_s.c\n'}
+[14.991385] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/_motion_ready_enum.py\n'}
+[15.000118] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/_motion_ready_enum_s.c\n'}
+[15.007405] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/_queue_result_enum.py\n'}
+[15.015671] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/_queue_result_enum_s.c\n'}
+[15.023217] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/_selection_result_codes.py\n'}
+[15.029931] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/_selection_result_codes_s.c\n'}
+[15.037012] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/__init__.py\n'}
+[15.045100] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_get_active_alarm_info.py\n'}
+[15.053079] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_get_active_alarm_info_s.c\n'}
+[15.053867] (-) TimerEvent: {}
+[15.059969] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_list_inform_jobs.py\n'}
+[15.066144] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_list_inform_jobs_s.c\n'}
+[15.072529] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_queue_traj_point.py\n'}
+[15.082721] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_queue_traj_point_s.c\n'}
+[15.092067] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_read_group_io.py\n'}
+[15.100147] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_read_group_io_s.c\n'}
+[15.107272] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_read_m_register.py\n'}
+[15.115746] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_read_m_register_s.c\n'}
+[15.123049] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_read_single_io.py\n'}
+[15.130874] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_read_single_io_s.c\n'}
+[15.138833] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_reset_error.py\n'}
+[15.146658] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_reset_error_s.c\n'}
+[15.153976] (-) TimerEvent: {}
+[15.154320] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_select_motion_tool.py\n'}
+[15.161372] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_select_motion_tool_s.c\n'}
+[15.169423] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_start_point_queue_mode.py\n'}
+[15.176079] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_start_point_queue_mode_s.c\n'}
+[15.186718] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_start_traj_mode.py\n'}
+[15.195058] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_start_traj_mode_s.c\n'}
+[15.201451] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_write_group_io.py\n'}
+[15.208626] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_write_group_io_s.c\n'}
+[15.215544] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_write_m_register.py\n'}
+[15.223609] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_write_m_register_s.c\n'}
+[15.230950] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_write_single_io.py\n'}
+[15.238315] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_write_single_io_s.c\n'}
+[15.244865] (motoros2_interfaces) StdoutLine: {'line': b'-- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/motoros2_interfaces_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so\n'}
+[15.245131] (motoros2_interfaces) StdoutLine: {'line': b'-- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/motoros2_interfaces_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so\n'}
+[15.245397] (motoros2_interfaces) StdoutLine: {'line': b'-- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/motoros2_interfaces_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so\n'}
+[15.245560] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/ament_index/resource_index/rust_packages/motoros2_interfaces\n'}
+[15.254037] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/rust/Cargo.toml\n'}
+[15.254204] (-) TimerEvent: {}
+[15.260038] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/rust/build.rs\n'}
+[15.266739] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/rust/src/lib.rs\n'}
+[15.274522] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/rust/src/msg.rs\n'}
+[15.286385] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/rust/src/msg/rmw.rs\n'}
+[15.296283] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/rust/src/srv.rs\n'}
+[15.305042] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/rust/src/srv/rmw.rs\n'}
+[15.313073] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/msg/AlarmInfo.idl\n'}
+[15.320365] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/msg/AlarmCauseRemedy.idl\n'}
+[15.328248] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/msg/ErrorInfo.idl\n'}
+[15.335846] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/msg/InformJobCrudResultCodes.idl\n'}
+[15.342972] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/msg/InitTrajEnum.idl\n'}
+[15.349580] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/msg/IoResultCodes.idl\n'}
+[15.354321] (-) TimerEvent: {}
+[15.357341] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/msg/MotionReadyEnum.idl\n'}
+[15.365994] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/msg/QueueResultEnum.idl\n'}
+[15.374081] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/msg/SelectionResultCodes.idl\n'}
+[15.385440] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/GetActiveAlarmInfo.idl\n'}
+[15.394866] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/ListInformJobs.idl\n'}
+[15.428733] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/QueueTrajPoint.idl\n'}
+[15.435727] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/ReadMRegister.idl\n'}
+[15.443852] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/ReadSingleIO.idl\n'}
+[15.451423] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/ReadGroupIO.idl\n'}
+[15.454386] (-) TimerEvent: {}
+[15.459379] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/ResetError.idl\n'}
+[15.467784] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/SelectMotionTool.idl\n'}
+[15.475179] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/StartTrajMode.idl\n'}
+[15.485798] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/StartPointQueueMode.idl\n'}
+[15.496212] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/WriteMRegister.idl\n'}
+[15.502567] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/WriteSingleIO.idl\n'}
+[15.508758] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/WriteGroupIO.idl\n'}
+[15.517595] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/msg/AlarmInfo.msg\n'}
+[15.525282] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/msg/AlarmCauseRemedy.msg\n'}
+[15.532778] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/msg/ErrorInfo.msg\n'}
+[15.539669] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/msg/InformJobCrudResultCodes.msg\n'}
+[15.546033] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/msg/InitTrajEnum.msg\n'}
+[15.554477] (-) TimerEvent: {}
+[15.554665] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/msg/IoResultCodes.msg\n'}
+[15.562879] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/msg/MotionReadyEnum.msg\n'}
+[15.569528] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/msg/QueueResultEnum.msg\n'}
+[15.576793] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/msg/SelectionResultCodes.msg\n'}
+[15.587247] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/GetActiveAlarmInfo.srv\n'}
+[15.597664] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/GetActiveAlarmInfo_Request.msg\n'}
+[15.605857] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/GetActiveAlarmInfo_Response.msg\n'}
+[15.617275] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/ListInformJobs.srv\n'}
+[15.626000] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/ListInformJobs_Request.msg\n'}
+[15.635334] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/ListInformJobs_Response.msg\n'}
+[15.643978] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/QueueTrajPoint.srv\n'}
+[15.654321] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/QueueTrajPoint_Request.msg\n'}
+[15.654542] (-) TimerEvent: {}
+[15.662441] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/QueueTrajPoint_Response.msg\n'}
+[15.671007] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/ReadMRegister.srv\n'}
+[15.680176] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/ReadMRegister_Request.msg\n'}
+[15.693961] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/ReadMRegister_Response.msg\n'}
+[15.701813] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/ReadSingleIO.srv\n'}
+[15.711195] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/ReadSingleIO_Request.msg\n'}
+[15.722676] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/ReadSingleIO_Response.msg\n'}
+[15.729786] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/ReadGroupIO.srv\n'}
+[15.738026] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/ReadGroupIO_Request.msg\n'}
+[15.744904] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/ReadGroupIO_Response.msg\n'}
+[15.754662] (-) TimerEvent: {}
+[15.756204] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/ResetError.srv\n'}
+[15.766781] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/ResetError_Request.msg\n'}
+[15.776186] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/ResetError_Response.msg\n'}
+[15.788955] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/SelectMotionTool.srv\n'}
+[15.798116] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/SelectMotionTool_Request.msg\n'}
+[15.808680] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/SelectMotionTool_Response.msg\n'}
+[15.817681] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/StartTrajMode.srv\n'}
+[15.826668] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/StartTrajMode_Request.msg\n'}
+[15.835164] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/StartTrajMode_Response.msg\n'}
+[15.844195] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/StartPointQueueMode.srv\n'}
+[15.854154] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/StartPointQueueMode_Request.msg\n'}
+[15.854726] (-) TimerEvent: {}
+[15.862955] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/StartPointQueueMode_Response.msg\n'}
+[15.869948] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/WriteMRegister.srv\n'}
+[15.878409] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/WriteMRegister_Request.msg\n'}
+[15.890875] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/WriteMRegister_Response.msg\n'}
+[15.898502] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/WriteSingleIO.srv\n'}
+[15.907465] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/WriteSingleIO_Request.msg\n'}
+[15.915092] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/WriteSingleIO_Response.msg\n'}
+[15.921878] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/WriteGroupIO.srv\n'}
+[15.928245] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/WriteGroupIO_Request.msg\n'}
+[15.935872] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/srv/WriteGroupIO_Response.msg\n'}
+[15.944485] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/ament_index/resource_index/package_run_dependencies/motoros2_interfaces\n'}
+[15.952339] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/ament_index/resource_index/parent_prefix_path/motoros2_interfaces\n'}
+[15.954840] (-) TimerEvent: {}
+[15.959520] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/environment/ament_prefix_path.sh\n'}
+[15.966774] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/environment/ament_prefix_path.dsv\n'}
+[15.974093] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/environment/path.sh\n'}
+[15.984226] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/environment/path.dsv\n'}
+[15.994644] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/local_setup.bash\n'}
+[16.002189] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/local_setup.sh\n'}
+[16.009126] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/local_setup.zsh\n'}
+[16.016935] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/local_setup.dsv\n'}
+[16.024705] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/package.dsv\n'}
+[16.032319] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/ament_index/resource_index/packages/motoros2_interfaces\n'}
+[16.039712] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/cmake/rosidl_cmake-extras.cmake\n'}
+[16.047493] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/cmake/ament_cmake_export_dependencies-extras.cmake\n'}
+[16.054956] (-) TimerEvent: {}
+[16.055367] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/cmake/ament_cmake_export_include_directories-extras.cmake\n'}
+[16.062767] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/cmake/ament_cmake_export_libraries-extras.cmake\n'}
+[16.071569] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/cmake/ament_cmake_export_targets-extras.cmake\n'}
+[16.079698] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake\n'}
+[16.090009] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake\n'}
+[16.098374] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/cmake/rosidl_cmake_aggregate_target-extras.cmake\n'}
+[16.106761] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/cmake/motoros2_interfacesConfig.cmake\n'}
+[16.114035] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/cmake/motoros2_interfacesConfig-version.cmake\n'}
+[16.121075] (motoros2_interfaces) StdoutLine: {'line': b'-- Symlinking: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/package.xml\n'}
+[16.128995] (motoros2_interfaces) StdoutLine: {'line': b'-- Installing: /home/hungnb/cocarry_ws/install/motoros2_interfaces/lib/libmotoros2_interfaces__rosidl_generator_c.so\n'}
+[16.129613] (motoros2_interfaces) StdoutLine: {'line': b'-- Set runtime path of "/home/hungnb/cocarry_ws/install/motoros2_interfaces/lib/libmotoros2_interfaces__rosidl_generator_c.so" to ""\n'}
+[16.129689] (motoros2_interfaces) StdoutLine: {'line': b'-- Installing: /home/hungnb/cocarry_ws/install/motoros2_interfaces/lib/libmotoros2_interfaces__rosidl_typesupport_fastrtps_c.so\n'}
+[16.130200] (motoros2_interfaces) StdoutLine: {'line': b'-- Set runtime path of "/home/hungnb/cocarry_ws/install/motoros2_interfaces/lib/libmotoros2_interfaces__rosidl_typesupport_fastrtps_c.so" to ""\n'}
+[16.130275] (motoros2_interfaces) StdoutLine: {'line': b'-- Installing: /home/hungnb/cocarry_ws/install/motoros2_interfaces/lib/libmotoros2_interfaces__rosidl_typesupport_fastrtps_cpp.so\n'}
+[16.131091] (motoros2_interfaces) StdoutLine: {'line': b'-- Set runtime path of "/home/hungnb/cocarry_ws/install/motoros2_interfaces/lib/libmotoros2_interfaces__rosidl_typesupport_fastrtps_cpp.so" to ""\n'}
+[16.131189] (motoros2_interfaces) StdoutLine: {'line': b'-- Installing: /home/hungnb/cocarry_ws/install/motoros2_interfaces/lib/libmotoros2_interfaces__rosidl_typesupport_introspection_c.so\n'}
+[16.131662] (motoros2_interfaces) StdoutLine: {'line': b'-- Set runtime path of "/home/hungnb/cocarry_ws/install/motoros2_interfaces/lib/libmotoros2_interfaces__rosidl_typesupport_introspection_c.so" to ""\n'}
+[16.131729] (motoros2_interfaces) StdoutLine: {'line': b'-- Installing: /home/hungnb/cocarry_ws/install/motoros2_interfaces/lib/libmotoros2_interfaces__rosidl_typesupport_c.so\n'}
+[16.132019] (motoros2_interfaces) StdoutLine: {'line': b'-- Set runtime path of "/home/hungnb/cocarry_ws/install/motoros2_interfaces/lib/libmotoros2_interfaces__rosidl_typesupport_c.so" to ""\n'}
+[16.132083] (motoros2_interfaces) StdoutLine: {'line': b'-- Installing: /home/hungnb/cocarry_ws/install/motoros2_interfaces/lib/libmotoros2_interfaces__rosidl_typesupport_introspection_cpp.so\n'}
+[16.132795] (motoros2_interfaces) StdoutLine: {'line': b'-- Set runtime path of "/home/hungnb/cocarry_ws/install/motoros2_interfaces/lib/libmotoros2_interfaces__rosidl_typesupport_introspection_cpp.so" to ""\n'}
+[16.132853] (motoros2_interfaces) StdoutLine: {'line': b'-- Installing: /home/hungnb/cocarry_ws/install/motoros2_interfaces/lib/libmotoros2_interfaces__rosidl_typesupport_cpp.so\n'}
+[16.133250] (motoros2_interfaces) StdoutLine: {'line': b'-- Set runtime path of "/home/hungnb/cocarry_ws/install/motoros2_interfaces/lib/libmotoros2_interfaces__rosidl_typesupport_cpp.so" to ""\n'}
+[16.155097] (-) TimerEvent: {}
+[16.213706] (motoros2_interfaces) StdoutLine: {'line': b"Listing '/home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces'...\n"}
+[16.214045] (motoros2_interfaces) StdoutLine: {'line': b"Compiling '/home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/__init__.py'...\n"}
+[16.214155] (motoros2_interfaces) StdoutLine: {'line': b"Listing '/home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg'...\n"}
+[16.214231] (motoros2_interfaces) StdoutLine: {'line': b"Compiling '/home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/__init__.py'...\n"}
+[16.214299] (motoros2_interfaces) StdoutLine: {'line': b"Compiling '/home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/_alarm_cause_remedy.py'...\n"}
+[16.214364] (motoros2_interfaces) StdoutLine: {'line': b"Compiling '/home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/_alarm_info.py'...\n"}
+[16.214431] (motoros2_interfaces) StdoutLine: {'line': b"Compiling '/home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/_error_info.py'...\n"}
+[16.214495] (motoros2_interfaces) StdoutLine: {'line': b"Compiling '/home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/_inform_job_crud_result_codes.py'...\n"}
+[16.214557] (motoros2_interfaces) StdoutLine: {'line': b"Compiling '/home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/_init_traj_enum.py'...\n"}
+[16.214623] (motoros2_interfaces) StdoutLine: {'line': b"Compiling '/home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/_io_result_codes.py'...\n"}
+[16.214687] (motoros2_interfaces) StdoutLine: {'line': b"Compiling '/home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/_motion_ready_enum.py'...\n"}
+[16.214751] (motoros2_interfaces) StdoutLine: {'line': b"Compiling '/home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/_queue_result_enum.py'...\n"}
+[16.214818] (motoros2_interfaces) StdoutLine: {'line': b"Compiling '/home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/msg/_selection_result_codes.py'...\n"}
+[16.214924] (motoros2_interfaces) StdoutLine: {'line': b"Listing '/home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv'...\n"}
+[16.214993] (motoros2_interfaces) StdoutLine: {'line': b"Compiling '/home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/__init__.py'...\n"}
+[16.215058] (motoros2_interfaces) StdoutLine: {'line': b"Compiling '/home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_get_active_alarm_info.py'...\n"}
+[16.215125] (motoros2_interfaces) StdoutLine: {'line': b"Compiling '/home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_list_inform_jobs.py'...\n"}
+[16.215155] (motoros2_interfaces) StdoutLine: {'line': b"Compiling '/home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_queue_traj_point.py'...\n"}
+[16.215180] (motoros2_interfaces) StdoutLine: {'line': b"Compiling '/home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_read_group_io.py'...\n"}
+[16.215211] (motoros2_interfaces) StdoutLine: {'line': b"Compiling '/home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_read_m_register.py'...\n"}
+[16.215236] (motoros2_interfaces) StdoutLine: {'line': b"Compiling '/home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_read_single_io.py'...\n"}
+[16.215262] (motoros2_interfaces) StdoutLine: {'line': b"Compiling '/home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_reset_error.py'...\n"}
+[16.215296] (motoros2_interfaces) StdoutLine: {'line': b"Compiling '/home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_select_motion_tool.py'...\n"}
+[16.215321] (motoros2_interfaces) StdoutLine: {'line': b"Compiling '/home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_start_point_queue_mode.py'...\n"}
+[16.215347] (motoros2_interfaces) StdoutLine: {'line': b"Compiling '/home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_start_traj_mode.py'...\n"}
+[16.215372] (motoros2_interfaces) StdoutLine: {'line': b"Compiling '/home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_write_group_io.py'...\n"}
+[16.215397] (motoros2_interfaces) StdoutLine: {'line': b"Compiling '/home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_write_m_register.py'...\n"}
+[16.215422] (motoros2_interfaces) StdoutLine: {'line': b"Compiling '/home/hungnb/cocarry_ws/install/motoros2_interfaces/local/lib/python3.10/dist-packages/motoros2_interfaces/srv/_write_single_io.py'...\n"}
+[16.217085] (motoros2_interfaces) StdoutLine: {'line': b'-- Installing: /home/hungnb/cocarry_ws/install/motoros2_interfaces/lib/libmotoros2_interfaces__rosidl_generator_py.so\n'}
+[16.218077] (motoros2_interfaces) StdoutLine: {'line': b'-- Set runtime path of "/home/hungnb/cocarry_ws/install/motoros2_interfaces/lib/libmotoros2_interfaces__rosidl_generator_py.so" to ""\n'}
+[16.218176] (motoros2_interfaces) StdoutLine: {'line': b'-- Installing: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/cmake/export_motoros2_interfaces__rosidl_generator_cExport.cmake\n'}
+[16.218311] (motoros2_interfaces) StdoutLine: {'line': b'-- Installing: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/cmake/export_motoros2_interfaces__rosidl_generator_cExport-noconfig.cmake\n'}
+[16.218410] (motoros2_interfaces) StdoutLine: {'line': b'-- Installing: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/cmake/export_motoros2_interfaces__rosidl_typesupport_fastrtps_cExport.cmake\n'}
+[16.218486] (motoros2_interfaces) StdoutLine: {'line': b'-- Installing: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/cmake/export_motoros2_interfaces__rosidl_typesupport_fastrtps_cExport-noconfig.cmake\n'}
+[16.218561] (motoros2_interfaces) StdoutLine: {'line': b'-- Installing: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/cmake/export_motoros2_interfaces__rosidl_generator_cppExport.cmake\n'}
+[16.218650] (motoros2_interfaces) StdoutLine: {'line': b'-- Installing: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/cmake/export_motoros2_interfaces__rosidl_typesupport_fastrtps_cppExport.cmake\n'}
+[16.218745] (motoros2_interfaces) StdoutLine: {'line': b'-- Installing: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/cmake/export_motoros2_interfaces__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake\n'}
+[16.218868] (motoros2_interfaces) StdoutLine: {'line': b'-- Installing: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/cmake/motoros2_interfaces__rosidl_typesupport_introspection_cExport.cmake\n'}
+[16.218972] (motoros2_interfaces) StdoutLine: {'line': b'-- Installing: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/cmake/motoros2_interfaces__rosidl_typesupport_introspection_cExport-noconfig.cmake\n'}
+[16.219079] (motoros2_interfaces) StdoutLine: {'line': b'-- Installing: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/cmake/motoros2_interfaces__rosidl_typesupport_cExport.cmake\n'}
+[16.219184] (motoros2_interfaces) StdoutLine: {'line': b'-- Installing: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/cmake/motoros2_interfaces__rosidl_typesupport_cExport-noconfig.cmake\n'}
+[16.219290] (motoros2_interfaces) StdoutLine: {'line': b'-- Installing: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/cmake/motoros2_interfaces__rosidl_typesupport_introspection_cppExport.cmake\n'}
+[16.219393] (motoros2_interfaces) StdoutLine: {'line': b'-- Installing: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/cmake/motoros2_interfaces__rosidl_typesupport_introspection_cppExport-noconfig.cmake\n'}
+[16.219504] (motoros2_interfaces) StdoutLine: {'line': b'-- Installing: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/cmake/motoros2_interfaces__rosidl_typesupport_cppExport.cmake\n'}
+[16.219609] (motoros2_interfaces) StdoutLine: {'line': b'-- Installing: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/cmake/motoros2_interfaces__rosidl_typesupport_cppExport-noconfig.cmake\n'}
+[16.219717] (motoros2_interfaces) StdoutLine: {'line': b'-- Installing: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/cmake/export_motoros2_interfaces__rosidl_generator_pyExport.cmake\n'}
+[16.219818] (motoros2_interfaces) StdoutLine: {'line': b'-- Installing: /home/hungnb/cocarry_ws/install/motoros2_interfaces/share/motoros2_interfaces/cmake/export_motoros2_interfaces__rosidl_generator_pyExport-noconfig.cmake\n'}
+[16.221900] (motoros2_interfaces) CommandEnded: {'returncode': 0}
+[16.241362] (motoros2_interfaces) JobEnded: {'identifier': 'motoros2_interfaces', 'rc': 0}
+[16.242584] (-) EventReactorShutdown: {}

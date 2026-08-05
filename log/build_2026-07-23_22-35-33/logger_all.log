@@ -1,0 +1,911 @@
+[0.075s] DEBUG:colcon:Command line arguments: ['/home/hungnb/.local/bin/colcon', 'build', '--symlink-install']
+[0.075s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=True, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=16, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=None, packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, verb_parser=<colcon_defaults.argument_parser.defaults.DefaultArgumentsDecorator object at 0x7ae45db0fdf0>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0x7ae45db0f8e0>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0x7ae45db0f8e0>>)
+[0.150s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.150s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.150s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.150s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.150s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.150s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.151s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/hungnb/cocarry_ws'
+[0.151s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.151s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.151s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.151s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.151s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.151s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.151s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.151s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.151s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.157s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[0.157s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[0.157s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[0.157s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[0.157s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[0.157s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.157s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[0.157s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[0.157s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs) by extensions ['ignore', 'ignore_ament_install']
+[0.157s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs) by extension 'ignore'
+[0.157s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs) by extension 'ignore_ament_install'
+[0.157s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs) by extensions ['colcon_pkg']
+[0.157s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs) by extension 'colcon_pkg'
+[0.157s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs) by extensions ['colcon_meta']
+[0.157s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs) by extension 'colcon_meta'
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs) by extensions ['ros']
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs) by extension 'ros'
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs) by extensions ['cmake', 'python']
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs) by extension 'cmake'
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs) by extension 'python'
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs) by extensions ['python_setup_py']
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs) by extension 'python_setup_py'
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Bách) by extensions ['ignore', 'ignore_ament_install']
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Bách) by extension 'ignore'
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Bách) by extension 'ignore_ament_install'
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Bách) by extensions ['colcon_pkg']
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Bách) by extension 'colcon_pkg'
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Bách) by extensions ['colcon_meta']
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Bách) by extension 'colcon_meta'
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Bách) by extensions ['ros']
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Bách) by extension 'ros'
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Bách) by extensions ['cmake', 'python']
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Bách) by extension 'cmake'
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Bách) by extension 'python'
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Bách) by extensions ['python_setup_py']
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Bách) by extension 'python_setup_py'
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Duy) by extensions ['ignore', 'ignore_ament_install']
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Duy) by extension 'ignore'
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Duy) by extension 'ignore_ament_install'
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Duy) by extensions ['colcon_pkg']
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Duy) by extension 'colcon_pkg'
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Duy) by extensions ['colcon_meta']
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Duy) by extension 'colcon_meta'
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Duy) by extensions ['ros']
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Duy) by extension 'ros'
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Duy) by extensions ['cmake', 'python']
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Duy) by extension 'cmake'
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Duy) by extension 'python'
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Duy) by extensions ['python_setup_py']
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Duy) by extension 'python_setup_py'
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Long) by extensions ['ignore', 'ignore_ament_install']
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Long) by extension 'ignore'
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Long) by extension 'ignore_ament_install'
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Long) by extensions ['colcon_pkg']
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Long) by extension 'colcon_pkg'
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Long) by extensions ['colcon_meta']
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Long) by extension 'colcon_meta'
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Long) by extensions ['ros']
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Long) by extension 'ros'
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Long) by extensions ['cmake', 'python']
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Long) by extension 'cmake'
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Long) by extension 'python'
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Long) by extensions ['python_setup_py']
+[0.158s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Long) by extension 'python_setup_py'
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Lộc) by extensions ['ignore', 'ignore_ament_install']
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Lộc) by extension 'ignore'
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Lộc) by extension 'ignore_ament_install'
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Lộc) by extensions ['colcon_pkg']
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Lộc) by extension 'colcon_pkg'
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Lộc) by extensions ['colcon_meta']
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Lộc) by extension 'colcon_meta'
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Lộc) by extensions ['ros']
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Lộc) by extension 'ros'
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Lộc) by extensions ['cmake', 'python']
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Lộc) by extension 'cmake'
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Lộc) by extension 'python'
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Lộc) by extensions ['python_setup_py']
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Lộc) by extension 'python_setup_py'
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Minh) by extensions ['ignore', 'ignore_ament_install']
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Minh) by extension 'ignore'
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Minh) by extension 'ignore_ament_install'
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Minh) by extensions ['colcon_pkg']
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Minh) by extension 'colcon_pkg'
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Minh) by extensions ['colcon_meta']
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Minh) by extension 'colcon_meta'
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Minh) by extensions ['ros']
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Minh) by extension 'ros'
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Minh) by extensions ['cmake', 'python']
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Minh) by extension 'cmake'
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Minh) by extension 'python'
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Minh) by extensions ['python_setup_py']
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Minh) by extension 'python_setup_py'
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Nam) by extensions ['ignore', 'ignore_ament_install']
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Nam) by extension 'ignore'
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Nam) by extension 'ignore_ament_install'
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Nam) by extensions ['colcon_pkg']
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Nam) by extension 'colcon_pkg'
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Nam) by extensions ['colcon_meta']
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Nam) by extension 'colcon_meta'
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Nam) by extensions ['ros']
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Nam) by extension 'ros'
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Nam) by extensions ['cmake', 'python']
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Nam) by extension 'cmake'
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Nam) by extension 'python'
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Nam) by extensions ['python_setup_py']
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Nam) by extension 'python_setup_py'
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Phong) by extensions ['ignore', 'ignore_ament_install']
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Phong) by extension 'ignore'
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Phong) by extension 'ignore_ament_install'
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Phong) by extensions ['colcon_pkg']
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Phong) by extension 'colcon_pkg'
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Phong) by extensions ['colcon_meta']
+[0.159s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Phong) by extension 'colcon_meta'
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Phong) by extensions ['ros']
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Phong) by extension 'ros'
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Phong) by extensions ['cmake', 'python']
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Phong) by extension 'cmake'
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Phong) by extension 'python'
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Phong) by extensions ['python_setup_py']
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Phong) by extension 'python_setup_py'
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Phát) by extensions ['ignore', 'ignore_ament_install']
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Phát) by extension 'ignore'
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Phát) by extension 'ignore_ament_install'
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Phát) by extensions ['colcon_pkg']
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Phát) by extension 'colcon_pkg'
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Phát) by extensions ['colcon_meta']
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Phát) by extension 'colcon_meta'
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Phát) by extensions ['ros']
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Phát) by extension 'ros'
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Phát) by extensions ['cmake', 'python']
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Phát) by extension 'cmake'
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Phát) by extension 'python'
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Phát) by extensions ['python_setup_py']
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Phát) by extension 'python_setup_py'
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Tuấn) by extensions ['ignore', 'ignore_ament_install']
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Tuấn) by extension 'ignore'
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Tuấn) by extension 'ignore_ament_install'
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Tuấn) by extensions ['colcon_pkg']
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Tuấn) by extension 'colcon_pkg'
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Tuấn) by extensions ['colcon_meta']
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Tuấn) by extension 'colcon_meta'
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Tuấn) by extensions ['ros']
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Tuấn) by extension 'ros'
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Tuấn) by extensions ['cmake', 'python']
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Tuấn) by extension 'cmake'
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Tuấn) by extension 'python'
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Tuấn) by extensions ['python_setup_py']
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Tuấn) by extension 'python_setup_py'
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/ros_log) by extensions ['ignore', 'ignore_ament_install']
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/ros_log) by extension 'ignore'
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/ros_log) by extension 'ignore_ament_install'
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/ros_log) by extensions ['colcon_pkg']
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/ros_log) by extension 'colcon_pkg'
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/ros_log) by extensions ['colcon_meta']
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/ros_log) by extension 'colcon_meta'
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/ros_log) by extensions ['ros']
+[0.160s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/ros_log) by extension 'ros'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/ros_log) by extensions ['cmake', 'python']
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/ros_log) by extension 'cmake'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/ros_log) by extension 'python'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/ros_log) by extensions ['python_setup_py']
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/ros_log) by extension 'python_setup_py'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Đức) by extensions ['ignore', 'ignore_ament_install']
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Đức) by extension 'ignore'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Đức) by extension 'ignore_ament_install'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Đức) by extensions ['colcon_pkg']
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Đức) by extension 'colcon_pkg'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Đức) by extensions ['colcon_meta']
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Đức) by extension 'colcon_meta'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Đức) by extensions ['ros']
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Đức) by extension 'ros'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Đức) by extensions ['cmake', 'python']
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Đức) by extension 'cmake'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Đức) by extension 'python'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Đức) by extensions ['python_setup_py']
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(cocarry_logs/Đức) by extension 'python_setup_py'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(docs) by extensions ['ignore', 'ignore_ament_install']
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(docs) by extension 'ignore'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(docs) by extension 'ignore_ament_install'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(docs) by extensions ['colcon_pkg']
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(docs) by extension 'colcon_pkg'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(docs) by extensions ['colcon_meta']
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(docs) by extension 'colcon_meta'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(docs) by extensions ['ros']
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(docs) by extension 'ros'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(docs) by extensions ['cmake', 'python']
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(docs) by extension 'cmake'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(docs) by extension 'python'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(docs) by extensions ['python_setup_py']
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(docs) by extension 'python_setup_py'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(log_temp) by extensions ['ignore', 'ignore_ament_install']
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(log_temp) by extension 'ignore'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(log_temp) by extension 'ignore_ament_install'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(log_temp) by extensions ['colcon_pkg']
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(log_temp) by extension 'colcon_pkg'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(log_temp) by extensions ['colcon_meta']
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(log_temp) by extension 'colcon_meta'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(log_temp) by extensions ['ros']
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(log_temp) by extension 'ros'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(log_temp) by extensions ['cmake', 'python']
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(log_temp) by extension 'cmake'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(log_temp) by extension 'python'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(log_temp) by extensions ['python_setup_py']
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(log_temp) by extension 'python_setup_py'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(ros_log) by extensions ['ignore', 'ignore_ament_install']
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(ros_log) by extension 'ignore'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(ros_log) by extension 'ignore_ament_install'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(ros_log) by extensions ['colcon_pkg']
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(ros_log) by extension 'colcon_pkg'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(ros_log) by extensions ['colcon_meta']
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(ros_log) by extension 'colcon_meta'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(ros_log) by extensions ['ros']
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(ros_log) by extension 'ros'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(ros_log) by extensions ['cmake', 'python']
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(ros_log) by extension 'cmake'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(ros_log) by extension 'python'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(ros_log) by extensions ['python_setup_py']
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(ros_log) by extension 'python_setup_py'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ignore', 'ignore_ament_install']
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore_ament_install'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_pkg']
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_pkg'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_meta']
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_meta'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ros']
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ros'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['cmake', 'python']
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'cmake'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['python_setup_py']
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python_setup_py'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src/GRU-Model) by extensions ['ignore', 'ignore_ament_install']
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src/GRU-Model) by extension 'ignore'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src/GRU-Model) by extension 'ignore_ament_install'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src/GRU-Model) by extensions ['colcon_pkg']
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src/GRU-Model) by extension 'colcon_pkg'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src/GRU-Model) by extensions ['colcon_meta']
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src/GRU-Model) by extension 'colcon_meta'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src/GRU-Model) by extensions ['ros']
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src/GRU-Model) by extension 'ros'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src/GRU-Model) by extensions ['cmake', 'python']
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src/GRU-Model) by extension 'cmake'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src/GRU-Model) by extension 'python'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src/GRU-Model) by extensions ['python_setup_py']
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src/GRU-Model) by extension 'python_setup_py'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src/GRU-Model/Best_Autoregressive) by extensions ['ignore', 'ignore_ament_install']
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src/GRU-Model/Best_Autoregressive) by extension 'ignore'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src/GRU-Model/Best_Autoregressive) by extension 'ignore_ament_install'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src/GRU-Model/Best_Autoregressive) by extensions ['colcon_pkg']
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src/GRU-Model/Best_Autoregressive) by extension 'colcon_pkg'
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src/GRU-Model/Best_Autoregressive) by extensions ['colcon_meta']
+[0.162s] Level 1:colcon.colcon_core.package_identification:_identify(src/GRU-Model/Best_Autoregressive) by extension 'colcon_meta'
+[0.163s] Level 1:colcon.colcon_core.package_identification:_identify(src/GRU-Model/Best_Autoregressive) by extensions ['ros']
+[0.163s] Level 1:colcon.colcon_core.package_identification:_identify(src/GRU-Model/Best_Autoregressive) by extension 'ros'
+[0.163s] Level 1:colcon.colcon_core.package_identification:_identify(src/GRU-Model/Best_Autoregressive) by extensions ['cmake', 'python']
+[0.163s] Level 1:colcon.colcon_core.package_identification:_identify(src/GRU-Model/Best_Autoregressive) by extension 'cmake'
+[0.163s] Level 1:colcon.colcon_core.package_identification:_identify(src/GRU-Model/Best_Autoregressive) by extension 'python'
+[0.163s] Level 1:colcon.colcon_core.package_identification:_identify(src/GRU-Model/Best_Autoregressive) by extensions ['python_setup_py']
+[0.163s] Level 1:colcon.colcon_core.package_identification:_identify(src/GRU-Model/Best_Autoregressive) by extension 'python_setup_py'
+[0.163s] Level 1:colcon.colcon_core.package_identification:_identify(src/coord_transform) by extensions ['ignore', 'ignore_ament_install']
+[0.163s] Level 1:colcon.colcon_core.package_identification:_identify(src/coord_transform) by extension 'ignore'
+[0.163s] Level 1:colcon.colcon_core.package_identification:_identify(src/coord_transform) by extension 'ignore_ament_install'
+[0.163s] Level 1:colcon.colcon_core.package_identification:_identify(src/coord_transform) by extensions ['colcon_pkg']
+[0.163s] Level 1:colcon.colcon_core.package_identification:_identify(src/coord_transform) by extension 'colcon_pkg'
+[0.163s] Level 1:colcon.colcon_core.package_identification:_identify(src/coord_transform) by extensions ['colcon_meta']
+[0.163s] Level 1:colcon.colcon_core.package_identification:_identify(src/coord_transform) by extension 'colcon_meta'
+[0.163s] Level 1:colcon.colcon_core.package_identification:_identify(src/coord_transform) by extensions ['ros']
+[0.163s] Level 1:colcon.colcon_core.package_identification:_identify(src/coord_transform) by extension 'ros'
+[0.164s] DEBUG:colcon.colcon_core.package_identification:Package 'src/coord_transform' with type 'ros.ament_python' and name 'coord_transform'
+[0.164s] Level 1:colcon.colcon_core.package_identification:_identify(src/experiment_logger) by extensions ['ignore', 'ignore_ament_install']
+[0.164s] Level 1:colcon.colcon_core.package_identification:_identify(src/experiment_logger) by extension 'ignore'
+[0.164s] Level 1:colcon.colcon_core.package_identification:_identify(src/experiment_logger) by extension 'ignore_ament_install'
+[0.164s] Level 1:colcon.colcon_core.package_identification:_identify(src/experiment_logger) by extensions ['colcon_pkg']
+[0.164s] Level 1:colcon.colcon_core.package_identification:_identify(src/experiment_logger) by extension 'colcon_pkg'
+[0.164s] Level 1:colcon.colcon_core.package_identification:_identify(src/experiment_logger) by extensions ['colcon_meta']
+[0.164s] Level 1:colcon.colcon_core.package_identification:_identify(src/experiment_logger) by extension 'colcon_meta'
+[0.164s] Level 1:colcon.colcon_core.package_identification:_identify(src/experiment_logger) by extensions ['ros']
+[0.164s] Level 1:colcon.colcon_core.package_identification:_identify(src/experiment_logger) by extension 'ros'
+[0.165s] DEBUG:colcon.colcon_core.package_identification:Package 'src/experiment_logger' with type 'ros.ament_python' and name 'experiment_logger'
+[0.166s] Level 1:colcon.colcon_core.package_identification:_identify(src/hc10dtp_bringup) by extensions ['ignore', 'ignore_ament_install']
+[0.166s] Level 1:colcon.colcon_core.package_identification:_identify(src/hc10dtp_bringup) by extension 'ignore'
+[0.166s] Level 1:colcon.colcon_core.package_identification:_identify(src/hc10dtp_bringup) by extension 'ignore_ament_install'
+[0.166s] Level 1:colcon.colcon_core.package_identification:_identify(src/hc10dtp_bringup) by extensions ['colcon_pkg']
+[0.166s] Level 1:colcon.colcon_core.package_identification:_identify(src/hc10dtp_bringup) by extension 'colcon_pkg'
+[0.166s] Level 1:colcon.colcon_core.package_identification:_identify(src/hc10dtp_bringup) by extensions ['colcon_meta']
+[0.166s] Level 1:colcon.colcon_core.package_identification:_identify(src/hc10dtp_bringup) by extension 'colcon_meta'
+[0.166s] Level 1:colcon.colcon_core.package_identification:_identify(src/hc10dtp_bringup) by extensions ['ros']
+[0.166s] Level 1:colcon.colcon_core.package_identification:_identify(src/hc10dtp_bringup) by extension 'ros'
+[0.166s] DEBUG:colcon.colcon_core.package_identification:Package 'src/hc10dtp_bringup' with type 'ros.ament_cmake' and name 'hc10dtp_bringup'
+[0.166s] Level 1:colcon.colcon_core.package_identification:_identify(src/hc10dtp_moveit_config) by extensions ['ignore', 'ignore_ament_install']
+[0.166s] Level 1:colcon.colcon_core.package_identification:_identify(src/hc10dtp_moveit_config) by extension 'ignore'
+[0.166s] Level 1:colcon.colcon_core.package_identification:_identify(src/hc10dtp_moveit_config) by extension 'ignore_ament_install'
+[0.166s] Level 1:colcon.colcon_core.package_identification:_identify(src/hc10dtp_moveit_config) by extensions ['colcon_pkg']
+[0.166s] Level 1:colcon.colcon_core.package_identification:_identify(src/hc10dtp_moveit_config) by extension 'colcon_pkg'
+[0.166s] Level 1:colcon.colcon_core.package_identification:_identify(src/hc10dtp_moveit_config) by extensions ['colcon_meta']
+[0.166s] Level 1:colcon.colcon_core.package_identification:_identify(src/hc10dtp_moveit_config) by extension 'colcon_meta'
+[0.166s] Level 1:colcon.colcon_core.package_identification:_identify(src/hc10dtp_moveit_config) by extensions ['ros']
+[0.166s] Level 1:colcon.colcon_core.package_identification:_identify(src/hc10dtp_moveit_config) by extension 'ros'
+[0.167s] DEBUG:colcon.colcon_core.package_identification:Package 'src/hc10dtp_moveit_config' with type 'ros.ament_cmake' and name 'hc10dtp_moveit_config'
+[0.167s] Level 1:colcon.colcon_core.package_identification:_identify(src/hc10dtp_simulation) by extensions ['ignore', 'ignore_ament_install']
+[0.167s] Level 1:colcon.colcon_core.package_identification:_identify(src/hc10dtp_simulation) by extension 'ignore'
+[0.167s] Level 1:colcon.colcon_core.package_identification:_identify(src/hc10dtp_simulation) by extension 'ignore_ament_install'
+[0.167s] Level 1:colcon.colcon_core.package_identification:_identify(src/hc10dtp_simulation) by extensions ['colcon_pkg']
+[0.167s] Level 1:colcon.colcon_core.package_identification:_identify(src/hc10dtp_simulation) by extension 'colcon_pkg'
+[0.167s] Level 1:colcon.colcon_core.package_identification:_identify(src/hc10dtp_simulation) by extensions ['colcon_meta']
+[0.167s] Level 1:colcon.colcon_core.package_identification:_identify(src/hc10dtp_simulation) by extension 'colcon_meta'
+[0.167s] Level 1:colcon.colcon_core.package_identification:_identify(src/hc10dtp_simulation) by extensions ['ros']
+[0.167s] Level 1:colcon.colcon_core.package_identification:_identify(src/hc10dtp_simulation) by extension 'ros'
+[0.167s] DEBUG:colcon.colcon_core.package_identification:Package 'src/hc10dtp_simulation' with type 'ros.ament_cmake' and name 'hc10dtp_simulation'
+[0.167s] Level 1:colcon.colcon_core.package_identification:_identify(src/hrc_bringup) by extensions ['ignore', 'ignore_ament_install']
+[0.167s] Level 1:colcon.colcon_core.package_identification:_identify(src/hrc_bringup) by extension 'ignore'
+[0.167s] Level 1:colcon.colcon_core.package_identification:_identify(src/hrc_bringup) by extension 'ignore_ament_install'
+[0.167s] Level 1:colcon.colcon_core.package_identification:_identify(src/hrc_bringup) by extensions ['colcon_pkg']
+[0.167s] Level 1:colcon.colcon_core.package_identification:_identify(src/hrc_bringup) by extension 'colcon_pkg'
+[0.167s] Level 1:colcon.colcon_core.package_identification:_identify(src/hrc_bringup) by extensions ['colcon_meta']
+[0.167s] Level 1:colcon.colcon_core.package_identification:_identify(src/hrc_bringup) by extension 'colcon_meta'
+[0.167s] Level 1:colcon.colcon_core.package_identification:_identify(src/hrc_bringup) by extensions ['ros']
+[0.167s] Level 1:colcon.colcon_core.package_identification:_identify(src/hrc_bringup) by extension 'ros'
+[0.168s] DEBUG:colcon.colcon_core.package_identification:Package 'src/hrc_bringup' with type 'ros.ament_cmake' and name 'hrc_bringup'
+[0.168s] Level 1:colcon.colcon_core.package_identification:_identify(src/human_hand_msgs) by extensions ['ignore', 'ignore_ament_install']
+[0.168s] Level 1:colcon.colcon_core.package_identification:_identify(src/human_hand_msgs) by extension 'ignore'
+[0.168s] Level 1:colcon.colcon_core.package_identification:_identify(src/human_hand_msgs) by extension 'ignore_ament_install'
+[0.168s] Level 1:colcon.colcon_core.package_identification:_identify(src/human_hand_msgs) by extensions ['colcon_pkg']
+[0.168s] Level 1:colcon.colcon_core.package_identification:_identify(src/human_hand_msgs) by extension 'colcon_pkg'
+[0.168s] Level 1:colcon.colcon_core.package_identification:_identify(src/human_hand_msgs) by extensions ['colcon_meta']
+[0.168s] Level 1:colcon.colcon_core.package_identification:_identify(src/human_hand_msgs) by extension 'colcon_meta'
+[0.168s] Level 1:colcon.colcon_core.package_identification:_identify(src/human_hand_msgs) by extensions ['ros']
+[0.168s] Level 1:colcon.colcon_core.package_identification:_identify(src/human_hand_msgs) by extension 'ros'
+[0.168s] DEBUG:colcon.colcon_core.package_identification:Package 'src/human_hand_msgs' with type 'ros.catkin' and name 'human_hand_msgs'
+[0.168s] Level 1:colcon.colcon_core.package_identification:_identify(src/predictor_ui) by extensions ['ignore', 'ignore_ament_install']
+[0.168s] Level 1:colcon.colcon_core.package_identification:_identify(src/predictor_ui) by extension 'ignore'
+[0.168s] Level 1:colcon.colcon_core.package_identification:_identify(src/predictor_ui) by extension 'ignore_ament_install'
+[0.168s] Level 1:colcon.colcon_core.package_identification:_identify(src/predictor_ui) by extensions ['colcon_pkg']
+[0.168s] Level 1:colcon.colcon_core.package_identification:_identify(src/predictor_ui) by extension 'colcon_pkg'
+[0.168s] Level 1:colcon.colcon_core.package_identification:_identify(src/predictor_ui) by extensions ['colcon_meta']
+[0.168s] Level 1:colcon.colcon_core.package_identification:_identify(src/predictor_ui) by extension 'colcon_meta'
+[0.168s] Level 1:colcon.colcon_core.package_identification:_identify(src/predictor_ui) by extensions ['ros']
+[0.168s] Level 1:colcon.colcon_core.package_identification:_identify(src/predictor_ui) by extension 'ros'
+[0.169s] DEBUG:colcon.colcon_core.package_identification:Package 'src/predictor_ui' with type 'ros.ament_python' and name 'predictor_ui'
+[0.169s] Level 1:colcon.colcon_core.package_identification:_identify(src/realsense_tracker) by extensions ['ignore', 'ignore_ament_install']
+[0.169s] Level 1:colcon.colcon_core.package_identification:_identify(src/realsense_tracker) by extension 'ignore'
+[0.169s] Level 1:colcon.colcon_core.package_identification:_identify(src/realsense_tracker) by extension 'ignore_ament_install'
+[0.169s] Level 1:colcon.colcon_core.package_identification:_identify(src/realsense_tracker) by extensions ['colcon_pkg']
+[0.169s] Level 1:colcon.colcon_core.package_identification:_identify(src/realsense_tracker) by extension 'colcon_pkg'
+[0.169s] Level 1:colcon.colcon_core.package_identification:_identify(src/realsense_tracker) by extensions ['colcon_meta']
+[0.169s] Level 1:colcon.colcon_core.package_identification:_identify(src/realsense_tracker) by extension 'colcon_meta'
+[0.169s] Level 1:colcon.colcon_core.package_identification:_identify(src/realsense_tracker) by extensions ['ros']
+[0.169s] Level 1:colcon.colcon_core.package_identification:_identify(src/realsense_tracker) by extension 'ros'
+[0.169s] DEBUG:colcon.colcon_core.package_identification:Package 'src/realsense_tracker' with type 'ros.ament_python' and name 'realsense_tracker'
+[0.169s] Level 1:colcon.colcon_core.package_identification:_identify(src/trajectory_predictor) by extensions ['ignore', 'ignore_ament_install']
+[0.169s] Level 1:colcon.colcon_core.package_identification:_identify(src/trajectory_predictor) by extension 'ignore'
+[0.170s] Level 1:colcon.colcon_core.package_identification:_identify(src/trajectory_predictor) by extension 'ignore_ament_install'
+[0.170s] Level 1:colcon.colcon_core.package_identification:_identify(src/trajectory_predictor) by extensions ['colcon_pkg']
+[0.170s] Level 1:colcon.colcon_core.package_identification:_identify(src/trajectory_predictor) by extension 'colcon_pkg'
+[0.170s] Level 1:colcon.colcon_core.package_identification:_identify(src/trajectory_predictor) by extensions ['colcon_meta']
+[0.170s] Level 1:colcon.colcon_core.package_identification:_identify(src/trajectory_predictor) by extension 'colcon_meta'
+[0.170s] Level 1:colcon.colcon_core.package_identification:_identify(src/trajectory_predictor) by extensions ['ros']
+[0.170s] Level 1:colcon.colcon_core.package_identification:_identify(src/trajectory_predictor) by extension 'ros'
+[0.170s] DEBUG:colcon.colcon_core.package_identification:Package 'src/trajectory_predictor' with type 'ros.ament_python' and name 'trajectory_predictor'
+[0.170s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.170s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.170s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.170s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.170s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.182s] Level 5:colcon.colcon_core.verb:set package 'hc10dtp_moveit_config' build argument 'cmake_args' from command line to 'None'
+[0.182s] Level 5:colcon.colcon_core.verb:set package 'hc10dtp_moveit_config' build argument 'cmake_target' from command line to 'None'
+[0.182s] Level 5:colcon.colcon_core.verb:set package 'hc10dtp_moveit_config' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.182s] Level 5:colcon.colcon_core.verb:set package 'hc10dtp_moveit_config' build argument 'cmake_clean_cache' from command line to 'False'
+[0.182s] Level 5:colcon.colcon_core.verb:set package 'hc10dtp_moveit_config' build argument 'cmake_clean_first' from command line to 'False'
+[0.182s] Level 5:colcon.colcon_core.verb:set package 'hc10dtp_moveit_config' build argument 'cmake_force_configure' from command line to 'False'
+[0.182s] Level 5:colcon.colcon_core.verb:set package 'hc10dtp_moveit_config' build argument 'ament_cmake_args' from command line to 'None'
+[0.182s] Level 5:colcon.colcon_core.verb:set package 'hc10dtp_moveit_config' build argument 'catkin_cmake_args' from command line to 'None'
+[0.182s] Level 5:colcon.colcon_core.verb:set package 'hc10dtp_moveit_config' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.182s] DEBUG:colcon.colcon_core.verb:Building package 'hc10dtp_moveit_config' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/hungnb/cocarry_ws/build/hc10dtp_moveit_config', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config', 'merge_install': False, 'path': '/home/hungnb/cocarry_ws/src/hc10dtp_moveit_config', 'symlink_install': True, 'test_result_base': None}
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'human_hand_msgs' build argument 'cmake_args' from command line to 'None'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'human_hand_msgs' build argument 'cmake_target' from command line to 'None'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'human_hand_msgs' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'human_hand_msgs' build argument 'cmake_clean_cache' from command line to 'False'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'human_hand_msgs' build argument 'cmake_clean_first' from command line to 'False'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'human_hand_msgs' build argument 'cmake_force_configure' from command line to 'False'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'human_hand_msgs' build argument 'ament_cmake_args' from command line to 'None'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'human_hand_msgs' build argument 'catkin_cmake_args' from command line to 'None'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'human_hand_msgs' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.183s] DEBUG:colcon.colcon_core.verb:Building package 'human_hand_msgs' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/hungnb/cocarry_ws/build/human_hand_msgs', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/hungnb/cocarry_ws/install/human_hand_msgs', 'merge_install': False, 'path': '/home/hungnb/cocarry_ws/src/human_hand_msgs', 'symlink_install': True, 'test_result_base': None}
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'coord_transform' build argument 'cmake_args' from command line to 'None'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'coord_transform' build argument 'cmake_target' from command line to 'None'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'coord_transform' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'coord_transform' build argument 'cmake_clean_cache' from command line to 'False'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'coord_transform' build argument 'cmake_clean_first' from command line to 'False'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'coord_transform' build argument 'cmake_force_configure' from command line to 'False'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'coord_transform' build argument 'ament_cmake_args' from command line to 'None'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'coord_transform' build argument 'catkin_cmake_args' from command line to 'None'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'coord_transform' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.183s] DEBUG:colcon.colcon_core.verb:Building package 'coord_transform' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/hungnb/cocarry_ws/build/coord_transform', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/hungnb/cocarry_ws/install/coord_transform', 'merge_install': False, 'path': '/home/hungnb/cocarry_ws/src/coord_transform', 'symlink_install': True, 'test_result_base': None}
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'experiment_logger' build argument 'cmake_args' from command line to 'None'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'experiment_logger' build argument 'cmake_target' from command line to 'None'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'experiment_logger' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'experiment_logger' build argument 'cmake_clean_cache' from command line to 'False'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'experiment_logger' build argument 'cmake_clean_first' from command line to 'False'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'experiment_logger' build argument 'cmake_force_configure' from command line to 'False'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'experiment_logger' build argument 'ament_cmake_args' from command line to 'None'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'experiment_logger' build argument 'catkin_cmake_args' from command line to 'None'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'experiment_logger' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.183s] DEBUG:colcon.colcon_core.verb:Building package 'experiment_logger' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/hungnb/cocarry_ws/build/experiment_logger', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/hungnb/cocarry_ws/install/experiment_logger', 'merge_install': False, 'path': '/home/hungnb/cocarry_ws/src/experiment_logger', 'symlink_install': True, 'test_result_base': None}
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'hc10dtp_bringup' build argument 'cmake_args' from command line to 'None'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'hc10dtp_bringup' build argument 'cmake_target' from command line to 'None'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'hc10dtp_bringup' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'hc10dtp_bringup' build argument 'cmake_clean_cache' from command line to 'False'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'hc10dtp_bringup' build argument 'cmake_clean_first' from command line to 'False'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'hc10dtp_bringup' build argument 'cmake_force_configure' from command line to 'False'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'hc10dtp_bringup' build argument 'ament_cmake_args' from command line to 'None'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'hc10dtp_bringup' build argument 'catkin_cmake_args' from command line to 'None'
+[0.183s] Level 5:colcon.colcon_core.verb:set package 'hc10dtp_bringup' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.183s] DEBUG:colcon.colcon_core.verb:Building package 'hc10dtp_bringup' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/hungnb/cocarry_ws/build/hc10dtp_bringup', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/hungnb/cocarry_ws/install/hc10dtp_bringup', 'merge_install': False, 'path': '/home/hungnb/cocarry_ws/src/hc10dtp_bringup', 'symlink_install': True, 'test_result_base': None}
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'predictor_ui' build argument 'cmake_args' from command line to 'None'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'predictor_ui' build argument 'cmake_target' from command line to 'None'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'predictor_ui' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'predictor_ui' build argument 'cmake_clean_cache' from command line to 'False'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'predictor_ui' build argument 'cmake_clean_first' from command line to 'False'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'predictor_ui' build argument 'cmake_force_configure' from command line to 'False'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'predictor_ui' build argument 'ament_cmake_args' from command line to 'None'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'predictor_ui' build argument 'catkin_cmake_args' from command line to 'None'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'predictor_ui' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.184s] DEBUG:colcon.colcon_core.verb:Building package 'predictor_ui' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/hungnb/cocarry_ws/build/predictor_ui', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/hungnb/cocarry_ws/install/predictor_ui', 'merge_install': False, 'path': '/home/hungnb/cocarry_ws/src/predictor_ui', 'symlink_install': True, 'test_result_base': None}
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'realsense_tracker' build argument 'cmake_args' from command line to 'None'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'realsense_tracker' build argument 'cmake_target' from command line to 'None'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'realsense_tracker' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'realsense_tracker' build argument 'cmake_clean_cache' from command line to 'False'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'realsense_tracker' build argument 'cmake_clean_first' from command line to 'False'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'realsense_tracker' build argument 'cmake_force_configure' from command line to 'False'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'realsense_tracker' build argument 'ament_cmake_args' from command line to 'None'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'realsense_tracker' build argument 'catkin_cmake_args' from command line to 'None'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'realsense_tracker' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.184s] DEBUG:colcon.colcon_core.verb:Building package 'realsense_tracker' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/hungnb/cocarry_ws/build/realsense_tracker', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/hungnb/cocarry_ws/install/realsense_tracker', 'merge_install': False, 'path': '/home/hungnb/cocarry_ws/src/realsense_tracker', 'symlink_install': True, 'test_result_base': None}
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'trajectory_predictor' build argument 'cmake_args' from command line to 'None'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'trajectory_predictor' build argument 'cmake_target' from command line to 'None'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'trajectory_predictor' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'trajectory_predictor' build argument 'cmake_clean_cache' from command line to 'False'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'trajectory_predictor' build argument 'cmake_clean_first' from command line to 'False'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'trajectory_predictor' build argument 'cmake_force_configure' from command line to 'False'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'trajectory_predictor' build argument 'ament_cmake_args' from command line to 'None'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'trajectory_predictor' build argument 'catkin_cmake_args' from command line to 'None'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'trajectory_predictor' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.184s] DEBUG:colcon.colcon_core.verb:Building package 'trajectory_predictor' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/hungnb/cocarry_ws/build/trajectory_predictor', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/hungnb/cocarry_ws/install/trajectory_predictor', 'merge_install': False, 'path': '/home/hungnb/cocarry_ws/src/trajectory_predictor', 'symlink_install': True, 'test_result_base': None}
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'hc10dtp_simulation' build argument 'cmake_args' from command line to 'None'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'hc10dtp_simulation' build argument 'cmake_target' from command line to 'None'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'hc10dtp_simulation' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'hc10dtp_simulation' build argument 'cmake_clean_cache' from command line to 'False'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'hc10dtp_simulation' build argument 'cmake_clean_first' from command line to 'False'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'hc10dtp_simulation' build argument 'cmake_force_configure' from command line to 'False'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'hc10dtp_simulation' build argument 'ament_cmake_args' from command line to 'None'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'hc10dtp_simulation' build argument 'catkin_cmake_args' from command line to 'None'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'hc10dtp_simulation' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.184s] DEBUG:colcon.colcon_core.verb:Building package 'hc10dtp_simulation' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/hungnb/cocarry_ws/build/hc10dtp_simulation', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/hungnb/cocarry_ws/install/hc10dtp_simulation', 'merge_install': False, 'path': '/home/hungnb/cocarry_ws/src/hc10dtp_simulation', 'symlink_install': True, 'test_result_base': None}
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'hrc_bringup' build argument 'cmake_args' from command line to 'None'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'hrc_bringup' build argument 'cmake_target' from command line to 'None'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'hrc_bringup' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.184s] Level 5:colcon.colcon_core.verb:set package 'hrc_bringup' build argument 'cmake_clean_cache' from command line to 'False'
+[0.185s] Level 5:colcon.colcon_core.verb:set package 'hrc_bringup' build argument 'cmake_clean_first' from command line to 'False'
+[0.185s] Level 5:colcon.colcon_core.verb:set package 'hrc_bringup' build argument 'cmake_force_configure' from command line to 'False'
+[0.185s] Level 5:colcon.colcon_core.verb:set package 'hrc_bringup' build argument 'ament_cmake_args' from command line to 'None'
+[0.185s] Level 5:colcon.colcon_core.verb:set package 'hrc_bringup' build argument 'catkin_cmake_args' from command line to 'None'
+[0.185s] Level 5:colcon.colcon_core.verb:set package 'hrc_bringup' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.185s] DEBUG:colcon.colcon_core.verb:Building package 'hrc_bringup' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/hungnb/cocarry_ws/build/hrc_bringup', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/hungnb/cocarry_ws/install/hrc_bringup', 'merge_install': False, 'path': '/home/hungnb/cocarry_ws/src/hrc_bringup', 'symlink_install': True, 'test_result_base': None}
+[0.185s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[0.185s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[0.186s] INFO:colcon.colcon_ros.task.catkin.build:Building ROS package in '/home/hungnb/cocarry_ws/src/human_hand_msgs' with build type 'catkin'
+[0.186s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/hungnb/cocarry_ws/src/human_hand_msgs'
+[0.187s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.187s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.187s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.191s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/hungnb/cocarry_ws/src/hc10dtp_moveit_config' with build type 'ament_cmake'
+[0.191s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/hungnb/cocarry_ws/src/hc10dtp_moveit_config'
+[0.191s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.191s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.197s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/hungnb/cocarry_ws/build/human_hand_msgs': /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/human_hand_msgs -- -j16 -l16
+[0.200s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/hungnb/cocarry_ws/build/hc10dtp_moveit_config': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/hc10dtp_moveit_config -- -j16 -l16
+[0.236s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/hungnb/cocarry_ws/build/hc10dtp_moveit_config' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/hc10dtp_moveit_config -- -j16 -l16
+[0.246s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/hungnb/cocarry_ws/build/hc10dtp_moveit_config': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/hc10dtp_moveit_config
+[0.277s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(hc10dtp_moveit_config)
+[0.277s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/hungnb/cocarry_ws/build/hc10dtp_moveit_config' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/hc10dtp_moveit_config
+[0.279s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config' for CMake module files
+[0.279s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config' for CMake config files
+[0.280s] Level 1:colcon.colcon_core.shell:create_environment_hook('hc10dtp_moveit_config', 'cmake_prefix_path')
+[0.280s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config/share/hc10dtp_moveit_config/hook/cmake_prefix_path.ps1'
+[0.280s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config/share/hc10dtp_moveit_config/hook/cmake_prefix_path.dsv'
+[0.281s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config/share/hc10dtp_moveit_config/hook/cmake_prefix_path.sh'
+[0.281s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config/bin'
+[0.281s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config/lib/pkgconfig/hc10dtp_moveit_config.pc'
+[0.283s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config/lib/python3.10/site-packages'
+[0.283s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config/bin'
+[0.283s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config/share/hc10dtp_moveit_config/package.ps1'
+[0.284s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config/share/hc10dtp_moveit_config/package.dsv'
+[0.285s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config/share/hc10dtp_moveit_config/package.sh'
+[0.285s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config/share/hc10dtp_moveit_config/package.bash'
+[0.287s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config/share/hc10dtp_moveit_config/package.zsh'
+[0.287s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config/share/colcon-core/packages/hc10dtp_moveit_config)
+[0.288s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(hc10dtp_moveit_config)
+[0.288s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config' for CMake module files
+[0.288s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config' for CMake config files
+[0.289s] Level 1:colcon.colcon_core.shell:create_environment_hook('hc10dtp_moveit_config', 'cmake_prefix_path')
+[0.289s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config/share/hc10dtp_moveit_config/hook/cmake_prefix_path.ps1'
+[0.289s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config/share/hc10dtp_moveit_config/hook/cmake_prefix_path.dsv'
+[0.289s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config/share/hc10dtp_moveit_config/hook/cmake_prefix_path.sh'
+[0.290s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config/bin'
+[0.290s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config/lib/pkgconfig/hc10dtp_moveit_config.pc'
+[0.290s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config/lib/python3.10/site-packages'
+[0.290s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config/bin'
+[0.291s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config/share/hc10dtp_moveit_config/package.ps1'
+[0.291s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config/share/hc10dtp_moveit_config/package.dsv'
+[0.292s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config/share/hc10dtp_moveit_config/package.sh'
+[0.292s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config/share/hc10dtp_moveit_config/package.bash'
+[0.292s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config/share/hc10dtp_moveit_config/package.zsh'
+[0.293s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config/share/colcon-core/packages/hc10dtp_moveit_config)
+[0.293s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/hungnb/cocarry_ws/src/hc10dtp_bringup' with build type 'ament_cmake'
+[0.293s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/hungnb/cocarry_ws/src/hc10dtp_bringup'
+[0.294s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.294s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.305s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/hungnb/cocarry_ws/build/hc10dtp_bringup': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:/opt/ros/humble /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/hc10dtp_bringup -- -j16 -l16
+[0.340s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/hungnb/cocarry_ws/build/hc10dtp_bringup' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:/opt/ros/humble /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/hc10dtp_bringup -- -j16 -l16
+[0.342s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/hungnb/cocarry_ws/build/hc10dtp_bringup': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:/opt/ros/humble /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/hc10dtp_bringup
+[0.361s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(hc10dtp_bringup)
+[0.361s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_bringup' for CMake module files
+[0.362s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/hungnb/cocarry_ws/build/hc10dtp_bringup' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:/opt/ros/humble /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/hc10dtp_bringup
+[0.362s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_bringup' for CMake config files
+[0.362s] Level 1:colcon.colcon_core.shell:create_environment_hook('hc10dtp_bringup', 'cmake_prefix_path')
+[0.362s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/hc10dtp_bringup/share/hc10dtp_bringup/hook/cmake_prefix_path.ps1'
+[0.363s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/install/hc10dtp_bringup/share/hc10dtp_bringup/hook/cmake_prefix_path.dsv'
+[0.363s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/hc10dtp_bringup/share/hc10dtp_bringup/hook/cmake_prefix_path.sh'
+[0.363s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_bringup/lib'
+[0.363s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_bringup/bin'
+[0.363s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_bringup/lib/pkgconfig/hc10dtp_bringup.pc'
+[0.364s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_bringup/lib/python3.10/site-packages'
+[0.364s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_bringup/bin'
+[0.364s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hc10dtp_bringup/share/hc10dtp_bringup/package.ps1'
+[0.364s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/hungnb/cocarry_ws/install/hc10dtp_bringup/share/hc10dtp_bringup/package.dsv'
+[0.365s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hc10dtp_bringup/share/hc10dtp_bringup/package.sh'
+[0.365s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hc10dtp_bringup/share/hc10dtp_bringup/package.bash'
+[0.365s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hc10dtp_bringup/share/hc10dtp_bringup/package.zsh'
+[0.365s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/hungnb/cocarry_ws/install/hc10dtp_bringup/share/colcon-core/packages/hc10dtp_bringup)
+[0.365s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(hc10dtp_bringup)
+[0.366s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_bringup' for CMake module files
+[0.366s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_bringup' for CMake config files
+[0.366s] Level 1:colcon.colcon_core.shell:create_environment_hook('hc10dtp_bringup', 'cmake_prefix_path')
+[0.366s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/hc10dtp_bringup/share/hc10dtp_bringup/hook/cmake_prefix_path.ps1'
+[0.366s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/install/hc10dtp_bringup/share/hc10dtp_bringup/hook/cmake_prefix_path.dsv'
+[0.366s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/hc10dtp_bringup/share/hc10dtp_bringup/hook/cmake_prefix_path.sh'
+[0.367s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_bringup/lib'
+[0.367s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_bringup/bin'
+[0.367s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_bringup/lib/pkgconfig/hc10dtp_bringup.pc'
+[0.367s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_bringup/lib/python3.10/site-packages'
+[0.367s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_bringup/bin'
+[0.367s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hc10dtp_bringup/share/hc10dtp_bringup/package.ps1'
+[0.368s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/hungnb/cocarry_ws/install/hc10dtp_bringup/share/hc10dtp_bringup/package.dsv'
+[0.368s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hc10dtp_bringup/share/hc10dtp_bringup/package.sh'
+[0.368s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hc10dtp_bringup/share/hc10dtp_bringup/package.bash'
+[0.368s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hc10dtp_bringup/share/hc10dtp_bringup/package.zsh'
+[0.368s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/hungnb/cocarry_ws/install/hc10dtp_bringup/share/colcon-core/packages/hc10dtp_bringup)
+[0.369s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/hungnb/cocarry_ws/src/hc10dtp_simulation' with build type 'ament_cmake'
+[0.369s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/hungnb/cocarry_ws/src/hc10dtp_simulation'
+[0.369s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.369s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.388s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/hungnb/cocarry_ws/build/hc10dtp_simulation': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_bringup:/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_bringup:/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:/opt/ros/humble /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/hc10dtp_simulation -- -j16 -l16
+[0.463s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/hungnb/cocarry_ws/build/human_hand_msgs' returned '0': /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/human_hand_msgs -- -j16 -l16
+[0.465s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/hungnb/cocarry_ws/build/human_hand_msgs': /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/human_hand_msgs
+[0.508s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/hungnb/cocarry_ws/build/human_hand_msgs' returned '0': /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/human_hand_msgs
+[0.508s] Level 1:colcon.colcon_core.shell:create_environment_hook('human_hand_msgs', 'ros_package_path')
+[0.509s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/human_hand_msgs/share/human_hand_msgs/hook/ros_package_path.ps1'
+[0.509s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/install/human_hand_msgs/share/human_hand_msgs/hook/ros_package_path.dsv'
+[0.509s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/human_hand_msgs/share/human_hand_msgs/hook/ros_package_path.sh'
+[0.510s] Level 1:colcon.colcon_ros.task.catkin:checking '/home/hungnb/cocarry_ws/install/human_hand_msgs/local/lib/python3.10/dist-packages'
+[0.510s] Level 1:colcon.colcon_core.shell:create_environment_hook('human_hand_msgs', 'catkin_pythonpath')
+[0.510s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/human_hand_msgs/share/human_hand_msgs/hook/catkin_pythonpath.ps1'
+[0.510s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/install/human_hand_msgs/share/human_hand_msgs/hook/catkin_pythonpath.dsv'
+[0.511s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/human_hand_msgs/share/human_hand_msgs/hook/catkin_pythonpath.sh'
+[0.511s] Level 1:colcon.colcon_core.shell:create_environment_hook('human_hand_msgs', 'pkg_config_path')
+[0.511s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/human_hand_msgs/share/human_hand_msgs/hook/pkg_config_path.ps1'
+[0.511s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/install/human_hand_msgs/share/human_hand_msgs/hook/pkg_config_path.dsv'
+[0.512s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/human_hand_msgs/share/human_hand_msgs/hook/pkg_config_path.sh'
+[0.514s] Level 1:colcon.colcon_core.shell:create_environment_hook('human_hand_msgs', 'pkg_config_path_multiarch')
+[0.514s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/human_hand_msgs/share/human_hand_msgs/hook/pkg_config_path_multiarch.ps1'
+[0.515s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/install/human_hand_msgs/share/human_hand_msgs/hook/pkg_config_path_multiarch.dsv'
+[0.515s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/human_hand_msgs/share/human_hand_msgs/hook/pkg_config_path_multiarch.sh'
+[0.516s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(human_hand_msgs)
+[0.516s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/human_hand_msgs' for CMake module files
+[0.516s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/human_hand_msgs' for CMake config files
+[0.517s] Level 1:colcon.colcon_core.shell:create_environment_hook('human_hand_msgs', 'cmake_prefix_path')
+[0.517s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/human_hand_msgs/share/human_hand_msgs/hook/cmake_prefix_path.ps1'
+[0.518s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/install/human_hand_msgs/share/human_hand_msgs/hook/cmake_prefix_path.dsv'
+[0.518s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/human_hand_msgs/share/human_hand_msgs/hook/cmake_prefix_path.sh'
+[0.519s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/human_hand_msgs/lib'
+[0.519s] Level 1:colcon.colcon_core.shell:create_environment_hook('human_hand_msgs', 'ld_library_path_lib')
+[0.519s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/human_hand_msgs/share/human_hand_msgs/hook/ld_library_path_lib.ps1'
+[0.519s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/install/human_hand_msgs/share/human_hand_msgs/hook/ld_library_path_lib.dsv'
+[0.519s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/human_hand_msgs/share/human_hand_msgs/hook/ld_library_path_lib.sh'
+[0.520s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/human_hand_msgs/bin'
+[0.520s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/pkgconfig/human_hand_msgs.pc'
+[0.520s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/python3.10/site-packages'
+[0.520s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/human_hand_msgs/bin'
+[0.520s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/human_hand_msgs/share/human_hand_msgs/package.ps1'
+[0.521s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/hungnb/cocarry_ws/install/human_hand_msgs/share/human_hand_msgs/package.dsv'
+[0.521s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/human_hand_msgs/share/human_hand_msgs/package.sh'
+[0.521s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/human_hand_msgs/share/human_hand_msgs/package.bash'
+[0.522s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/human_hand_msgs/share/human_hand_msgs/package.zsh'
+[0.522s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/hungnb/cocarry_ws/install/human_hand_msgs/share/colcon-core/packages/human_hand_msgs)
+[0.522s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/hungnb/cocarry_ws/src/coord_transform' with build type 'ament_python'
+[0.522s] Level 1:colcon.colcon_core.shell:create_environment_hook('coord_transform', 'ament_prefix_path')
+[0.522s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/coord_transform/share/coord_transform/hook/ament_prefix_path.ps1'
+[0.523s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/install/coord_transform/share/coord_transform/hook/ament_prefix_path.dsv'
+[0.523s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/coord_transform/share/coord_transform/hook/ament_prefix_path.sh'
+[0.524s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.524s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.526s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/hungnb/cocarry_ws/src/experiment_logger' with build type 'ament_python'
+[0.526s] Level 1:colcon.colcon_core.shell:create_environment_hook('experiment_logger', 'ament_prefix_path')
+[0.526s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/experiment_logger/share/experiment_logger/hook/ament_prefix_path.ps1'
+[0.527s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/install/experiment_logger/share/experiment_logger/hook/ament_prefix_path.dsv'
+[0.527s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/experiment_logger/share/experiment_logger/hook/ament_prefix_path.sh'
+[0.528s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.528s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.531s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/hungnb/cocarry_ws/src/predictor_ui' with build type 'ament_python'
+[0.531s] Level 1:colcon.colcon_core.shell:create_environment_hook('predictor_ui', 'ament_prefix_path')
+[0.531s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/predictor_ui/share/predictor_ui/hook/ament_prefix_path.ps1'
+[0.532s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/install/predictor_ui/share/predictor_ui/hook/ament_prefix_path.dsv'
+[0.532s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/predictor_ui/share/predictor_ui/hook/ament_prefix_path.sh'
+[0.532s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.532s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.536s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/hungnb/cocarry_ws/src/realsense_tracker' with build type 'ament_python'
+[0.536s] Level 1:colcon.colcon_core.shell:create_environment_hook('realsense_tracker', 'ament_prefix_path')
+[0.536s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/realsense_tracker/share/realsense_tracker/hook/ament_prefix_path.ps1'
+[0.536s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/install/realsense_tracker/share/realsense_tracker/hook/ament_prefix_path.dsv'
+[0.536s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/realsense_tracker/share/realsense_tracker/hook/ament_prefix_path.sh'
+[0.537s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.537s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.539s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/hungnb/cocarry_ws/src/trajectory_predictor' with build type 'ament_python'
+[0.539s] Level 1:colcon.colcon_core.shell:create_environment_hook('trajectory_predictor', 'ament_prefix_path')
+[0.540s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/trajectory_predictor/share/trajectory_predictor/hook/ament_prefix_path.ps1'
+[0.540s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/install/trajectory_predictor/share/trajectory_predictor/hook/ament_prefix_path.dsv'
+[0.540s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/trajectory_predictor/share/trajectory_predictor/hook/ament_prefix_path.sh'
+[0.541s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.541s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.706s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/hungnb/cocarry_ws/src/coord_transform'
+[0.707s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.707s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.861s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/hungnb/cocarry_ws/src/experiment_logger'
+[0.861s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.861s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.010s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/hungnb/cocarry_ws/src/predictor_ui'
+[1.011s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.011s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.167s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/hungnb/cocarry_ws/src/realsense_tracker'
+[1.167s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.167s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.172s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/hungnb/cocarry_ws/build/hc10dtp_simulation' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_bringup:/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_bringup:/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:/opt/ros/humble /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/hc10dtp_simulation -- -j16 -l16
+[1.174s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/hungnb/cocarry_ws/build/hc10dtp_simulation': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_bringup:/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_bringup:/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:/opt/ros/humble /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/hc10dtp_simulation
+[1.341s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/hungnb/cocarry_ws/src/trajectory_predictor'
+[1.341s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.341s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.352s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(hc10dtp_simulation)
+[1.352s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_simulation' for CMake module files
+[1.352s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/hungnb/cocarry_ws/build/hc10dtp_simulation' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_bringup:/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_bringup:/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:/opt/ros/humble /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/hc10dtp_simulation
+[1.353s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_simulation' for CMake config files
+[1.353s] Level 1:colcon.colcon_core.shell:create_environment_hook('hc10dtp_simulation', 'cmake_prefix_path')
+[1.353s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/hook/cmake_prefix_path.ps1'
+[1.353s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/hook/cmake_prefix_path.dsv'
+[1.354s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/hook/cmake_prefix_path.sh'
+[1.354s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_simulation/lib'
+[1.354s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_simulation/bin'
+[1.354s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_simulation/lib/pkgconfig/hc10dtp_simulation.pc'
+[1.354s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_simulation/lib/python3.10/site-packages'
+[1.354s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_simulation/bin'
+[1.355s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/package.ps1'
+[1.355s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/package.dsv'
+[1.355s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/package.sh'
+[1.355s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/package.bash'
+[1.356s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/package.zsh'
+[1.356s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/colcon-core/packages/hc10dtp_simulation)
+[1.356s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(hc10dtp_simulation)
+[1.356s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_simulation' for CMake module files
+[1.357s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_simulation' for CMake config files
+[1.357s] Level 1:colcon.colcon_core.shell:create_environment_hook('hc10dtp_simulation', 'cmake_prefix_path')
+[1.357s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/hook/cmake_prefix_path.ps1'
+[1.357s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/hook/cmake_prefix_path.dsv'
+[1.357s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/hook/cmake_prefix_path.sh'
+[1.358s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_simulation/lib'
+[1.358s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_simulation/bin'
+[1.358s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_simulation/lib/pkgconfig/hc10dtp_simulation.pc'
+[1.358s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_simulation/lib/python3.10/site-packages'
+[1.358s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hc10dtp_simulation/bin'
+[1.358s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/package.ps1'
+[1.381s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/package.dsv'
+[1.381s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/package.sh'
+[1.382s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/package.bash'
+[1.382s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/package.zsh'
+[1.382s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/colcon-core/packages/hc10dtp_simulation)
+[1.595s] DEBUG:colcon.colcon_core.task.python.build:Available setuptools commands: setopt, register, upload_docs, easy_install, install_data, install_egg_info, install_lib, sdist, symlink_data, egg_info, build_clib, clean, dist_info, install, install_headers, update_catalog, init_catalog, bdist_egg, test, check, alias, bdist_wheel, bdist, saveopts, develop, install_scripts, build_py, upload, build_scripts, rotate, extract_messages, build, bdist_dumb, bdist_rpm, compile_catalog, build_ext
+[1.597s] DEBUG:colcon.colcon_core.task.python.build:Available setuptools commands: setopt, register, upload_docs, easy_install, install_data, install_egg_info, install_lib, sdist, symlink_data, egg_info, build_clib, clean, dist_info, install, install_headers, update_catalog, init_catalog, bdist_egg, test, check, alias, bdist_wheel, bdist, saveopts, develop, install_scripts, build_py, upload, build_scripts, rotate, extract_messages, build, bdist_dumb, bdist_rpm, compile_catalog, build_ext
+[1.598s] DEBUG:colcon.colcon_core.task.python.build:Available setuptools commands: setopt, register, upload_docs, easy_install, install_data, install_egg_info, install_lib, sdist, symlink_data, egg_info, build_clib, clean, dist_info, install, install_headers, update_catalog, init_catalog, bdist_egg, test, check, alias, bdist_wheel, bdist, saveopts, develop, install_scripts, build_py, upload, build_scripts, rotate, extract_messages, build, bdist_dumb, bdist_rpm, compile_catalog, build_ext
+[1.599s] DEBUG:colcon.colcon_core.task.python.build:Available setuptools commands: setopt, register, upload_docs, easy_install, install_data, install_egg_info, install_lib, sdist, symlink_data, egg_info, build_clib, clean, dist_info, install, install_headers, update_catalog, init_catalog, bdist_egg, test, check, alias, bdist_wheel, bdist, saveopts, develop, install_scripts, build_py, upload, build_scripts, rotate, extract_messages, build, bdist_dumb, bdist_rpm, compile_catalog, build_ext
+[1.630s] DEBUG:colcon.colcon_core.task.python.build:Available setuptools commands: setopt, register, upload_docs, easy_install, install_data, install_egg_info, install_lib, sdist, symlink_data, egg_info, build_clib, clean, dist_info, install, install_headers, update_catalog, init_catalog, bdist_egg, test, check, alias, bdist_wheel, bdist, saveopts, develop, install_scripts, build_py, upload, build_scripts, rotate, extract_messages, build, bdist_dumb, bdist_rpm, compile_catalog, build_ext
+[1.786s] DEBUG:colcon.colcon_core.task.python.build:Available setuptools 'develop' options: --install-dir, --no-deps, --uninstall, --exclude-scripts, --build-directory, --editable, --verbose, --always-unzip, --install-layout, --local-snapshots-ok, --dry-run, --upgrade, --allow-hosts, --zip-ok, --find-links, --user, --egg-path, --force-installation-into-system-dir, --index-url, --multi-version, --help, --record, --always-copy, --optimize, --quiet, --prefix, --version, --no-user-cfg, --no-find-links, --site-dirs, --script-dir
+[1.788s] DEBUG:colcon.colcon_core.task.python.build:Available setuptools 'develop' options: --install-dir, --no-deps, --uninstall, --exclude-scripts, --build-directory, --editable, --verbose, --always-unzip, --install-layout, --local-snapshots-ok, --dry-run, --upgrade, --allow-hosts, --zip-ok, --find-links, --user, --egg-path, --force-installation-into-system-dir, --index-url, --multi-version, --help, --record, --always-copy, --optimize, --quiet, --prefix, --version, --no-user-cfg, --no-find-links, --site-dirs, --script-dir
+[1.789s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/hungnb/cocarry_ws/build/experiment_logger': CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib:${LD_LIBRARY_PATH} PKG_CONFIG_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/x86_64-linux-gnu/pkgconfig:/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/pkgconfig PYTHONPATH=/home/hungnb/cocarry_ws/build/experiment_logger/prefix_override:/home/hungnb/.local/lib/python3.10/site-packages/colcon_core/task/python/colcon_distutils_commands:/home/hungnb/cocarry_ws/install/experiment_logger/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/install/human_hand_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} ROS_PACKAGE_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/share /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/hungnb/cocarry_ws/build/experiment_logger/build --no-deps symlink_data
+[1.791s] DEBUG:colcon.colcon_core.task.python.build:Available setuptools 'develop' options: --install-dir, --no-deps, --uninstall, --exclude-scripts, --build-directory, --editable, --verbose, --always-unzip, --install-layout, --local-snapshots-ok, --dry-run, --upgrade, --allow-hosts, --zip-ok, --find-links, --user, --egg-path, --force-installation-into-system-dir, --index-url, --multi-version, --help, --record, --always-copy, --optimize, --quiet, --prefix, --version, --no-user-cfg, --no-find-links, --site-dirs, --script-dir
+[1.791s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/hungnb/cocarry_ws/build/predictor_ui': CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib:${LD_LIBRARY_PATH} PKG_CONFIG_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/x86_64-linux-gnu/pkgconfig:/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/pkgconfig PYTHONPATH=/home/hungnb/cocarry_ws/build/predictor_ui/prefix_override:/home/hungnb/.local/lib/python3.10/site-packages/colcon_core/task/python/colcon_distutils_commands:/home/hungnb/cocarry_ws/install/predictor_ui/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/install/human_hand_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} ROS_PACKAGE_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/share /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/hungnb/cocarry_ws/build/predictor_ui/build --no-deps symlink_data
+[1.793s] DEBUG:colcon.colcon_core.task.python.build:Available setuptools 'develop' options: --install-dir, --no-deps, --uninstall, --exclude-scripts, --build-directory, --editable, --verbose, --always-unzip, --install-layout, --local-snapshots-ok, --dry-run, --upgrade, --allow-hosts, --zip-ok, --find-links, --user, --egg-path, --force-installation-into-system-dir, --index-url, --multi-version, --help, --record, --always-copy, --optimize, --quiet, --prefix, --version, --no-user-cfg, --no-find-links, --site-dirs, --script-dir
+[1.794s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/hungnb/cocarry_ws/build/coord_transform': CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib:${LD_LIBRARY_PATH} PKG_CONFIG_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/x86_64-linux-gnu/pkgconfig:/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/pkgconfig PYTHONPATH=/home/hungnb/cocarry_ws/build/coord_transform/prefix_override:/home/hungnb/.local/lib/python3.10/site-packages/colcon_core/task/python/colcon_distutils_commands:/home/hungnb/cocarry_ws/install/coord_transform/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/install/human_hand_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} ROS_PACKAGE_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/share /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/hungnb/cocarry_ws/build/coord_transform/build --no-deps symlink_data
+[1.797s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/hungnb/cocarry_ws/build/realsense_tracker': CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib:${LD_LIBRARY_PATH} PKG_CONFIG_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/x86_64-linux-gnu/pkgconfig:/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/pkgconfig PYTHONPATH=/home/hungnb/cocarry_ws/build/realsense_tracker/prefix_override:/home/hungnb/.local/lib/python3.10/site-packages/colcon_core/task/python/colcon_distutils_commands:/home/hungnb/cocarry_ws/install/realsense_tracker/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/install/human_hand_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} ROS_PACKAGE_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/share /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/hungnb/cocarry_ws/build/realsense_tracker/build --no-deps symlink_data
+[1.820s] DEBUG:colcon.colcon_core.task.python.build:Available setuptools 'develop' options: --install-dir, --no-deps, --uninstall, --exclude-scripts, --build-directory, --editable, --verbose, --always-unzip, --install-layout, --local-snapshots-ok, --dry-run, --upgrade, --allow-hosts, --zip-ok, --find-links, --user, --egg-path, --force-installation-into-system-dir, --index-url, --multi-version, --help, --record, --always-copy, --optimize, --quiet, --prefix, --version, --no-user-cfg, --no-find-links, --site-dirs, --script-dir
+[1.823s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/hungnb/cocarry_ws/build/trajectory_predictor': CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib:${LD_LIBRARY_PATH} PKG_CONFIG_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/x86_64-linux-gnu/pkgconfig:/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/pkgconfig PYTHONPATH=/home/hungnb/cocarry_ws/build/trajectory_predictor/prefix_override:/home/hungnb/.local/lib/python3.10/site-packages/colcon_core/task/python/colcon_distutils_commands:/home/hungnb/cocarry_ws/install/trajectory_predictor/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/install/human_hand_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} ROS_PACKAGE_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/share /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/hungnb/cocarry_ws/build/trajectory_predictor/build --no-deps symlink_data
+[2.076s] Level 1:colcon.colcon_core.shell:create_environment_hook('predictor_ui', 'pythonpath_develop')
+[2.076s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/build/predictor_ui/share/predictor_ui/hook/pythonpath_develop.ps1'
+[2.077s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/hungnb/cocarry_ws/build/predictor_ui' returned '0': CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib:${LD_LIBRARY_PATH} PKG_CONFIG_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/x86_64-linux-gnu/pkgconfig:/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/pkgconfig PYTHONPATH=/home/hungnb/cocarry_ws/build/predictor_ui/prefix_override:/home/hungnb/.local/lib/python3.10/site-packages/colcon_core/task/python/colcon_distutils_commands:/home/hungnb/cocarry_ws/install/predictor_ui/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/install/human_hand_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} ROS_PACKAGE_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/share /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/hungnb/cocarry_ws/build/predictor_ui/build --no-deps symlink_data
+[2.078s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/build/predictor_ui/share/predictor_ui/hook/pythonpath_develop.dsv'
+[2.078s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/build/predictor_ui/share/predictor_ui/hook/pythonpath_develop.sh'
+[2.078s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/predictor_ui' for CMake module files
+[2.079s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/predictor_ui' for CMake config files
+[2.079s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/predictor_ui/lib'
+[2.079s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/predictor_ui/bin'
+[2.079s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/predictor_ui/lib/pkgconfig/predictor_ui.pc'
+[2.079s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/predictor_ui/lib/python3.10/site-packages'
+[2.079s] Level 1:colcon.colcon_core.shell:create_environment_hook('predictor_ui', 'pythonpath')
+[2.079s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/predictor_ui/share/predictor_ui/hook/pythonpath.ps1'
+[2.080s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/install/predictor_ui/share/predictor_ui/hook/pythonpath.dsv'
+[2.080s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/predictor_ui/share/predictor_ui/hook/pythonpath.sh'
+[2.080s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/predictor_ui/bin'
+[2.080s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(predictor_ui)
+[2.081s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/predictor_ui/share/predictor_ui/package.ps1'
+[2.081s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/hungnb/cocarry_ws/install/predictor_ui/share/predictor_ui/package.dsv'
+[2.081s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/predictor_ui/share/predictor_ui/package.sh'
+[2.082s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/predictor_ui/share/predictor_ui/package.bash'
+[2.082s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/predictor_ui/share/predictor_ui/package.zsh'
+[2.082s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/hungnb/cocarry_ws/install/predictor_ui/share/colcon-core/packages/predictor_ui)
+[2.083s] Level 1:colcon.colcon_core.shell:create_environment_hook('experiment_logger', 'pythonpath_develop')
+[2.083s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/build/experiment_logger/share/experiment_logger/hook/pythonpath_develop.ps1'
+[2.084s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/hungnb/cocarry_ws/build/experiment_logger' returned '0': CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib:${LD_LIBRARY_PATH} PKG_CONFIG_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/x86_64-linux-gnu/pkgconfig:/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/pkgconfig PYTHONPATH=/home/hungnb/cocarry_ws/build/experiment_logger/prefix_override:/home/hungnb/.local/lib/python3.10/site-packages/colcon_core/task/python/colcon_distutils_commands:/home/hungnb/cocarry_ws/install/experiment_logger/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/install/human_hand_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} ROS_PACKAGE_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/share /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/hungnb/cocarry_ws/build/experiment_logger/build --no-deps symlink_data
+[2.084s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/build/experiment_logger/share/experiment_logger/hook/pythonpath_develop.dsv'
+[2.085s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/build/experiment_logger/share/experiment_logger/hook/pythonpath_develop.sh'
+[2.085s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/experiment_logger' for CMake module files
+[2.085s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/experiment_logger' for CMake config files
+[2.086s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/experiment_logger/lib'
+[2.086s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/experiment_logger/bin'
+[2.086s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/experiment_logger/lib/pkgconfig/experiment_logger.pc'
+[2.086s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/experiment_logger/lib/python3.10/site-packages'
+[2.086s] Level 1:colcon.colcon_core.shell:create_environment_hook('experiment_logger', 'pythonpath')
+[2.086s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/experiment_logger/share/experiment_logger/hook/pythonpath.ps1'
+[2.087s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/install/experiment_logger/share/experiment_logger/hook/pythonpath.dsv'
+[2.087s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/experiment_logger/share/experiment_logger/hook/pythonpath.sh'
+[2.087s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/experiment_logger/bin'
+[2.087s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(experiment_logger)
+[2.088s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/experiment_logger/share/experiment_logger/package.ps1'
+[2.088s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/hungnb/cocarry_ws/install/experiment_logger/share/experiment_logger/package.dsv'
+[2.088s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/experiment_logger/share/experiment_logger/package.sh'
+[2.089s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/experiment_logger/share/experiment_logger/package.bash'
+[2.089s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/experiment_logger/share/experiment_logger/package.zsh'
+[2.089s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/hungnb/cocarry_ws/install/experiment_logger/share/colcon-core/packages/experiment_logger)
+[2.090s] Level 1:colcon.colcon_core.shell:create_environment_hook('coord_transform', 'pythonpath_develop')
+[2.090s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/build/coord_transform/share/coord_transform/hook/pythonpath_develop.ps1'
+[2.091s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/hungnb/cocarry_ws/build/coord_transform' returned '0': CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib:${LD_LIBRARY_PATH} PKG_CONFIG_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/x86_64-linux-gnu/pkgconfig:/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/pkgconfig PYTHONPATH=/home/hungnb/cocarry_ws/build/coord_transform/prefix_override:/home/hungnb/.local/lib/python3.10/site-packages/colcon_core/task/python/colcon_distutils_commands:/home/hungnb/cocarry_ws/install/coord_transform/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/install/human_hand_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} ROS_PACKAGE_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/share /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/hungnb/cocarry_ws/build/coord_transform/build --no-deps symlink_data
+[2.091s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/build/coord_transform/share/coord_transform/hook/pythonpath_develop.dsv'
+[2.092s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/build/coord_transform/share/coord_transform/hook/pythonpath_develop.sh'
+[2.092s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/coord_transform' for CMake module files
+[2.092s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/coord_transform' for CMake config files
+[2.093s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/coord_transform/lib'
+[2.093s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/coord_transform/bin'
+[2.093s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/coord_transform/lib/pkgconfig/coord_transform.pc'
+[2.093s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/coord_transform/lib/python3.10/site-packages'
+[2.093s] Level 1:colcon.colcon_core.shell:create_environment_hook('coord_transform', 'pythonpath')
+[2.093s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/coord_transform/share/coord_transform/hook/pythonpath.ps1'
+[2.094s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/install/coord_transform/share/coord_transform/hook/pythonpath.dsv'
+[2.094s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/coord_transform/share/coord_transform/hook/pythonpath.sh'
+[2.095s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/coord_transform/bin'
+[2.095s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(coord_transform)
+[2.095s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/coord_transform/share/coord_transform/package.ps1'
+[2.096s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/hungnb/cocarry_ws/install/coord_transform/share/coord_transform/package.dsv'
+[2.096s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/coord_transform/share/coord_transform/package.sh'
+[2.096s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/coord_transform/share/coord_transform/package.bash'
+[2.097s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/coord_transform/share/coord_transform/package.zsh'
+[2.097s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/hungnb/cocarry_ws/install/coord_transform/share/colcon-core/packages/coord_transform)
+[2.098s] Level 1:colcon.colcon_core.shell:create_environment_hook('realsense_tracker', 'pythonpath_develop')
+[2.098s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/build/realsense_tracker/share/realsense_tracker/hook/pythonpath_develop.ps1'
+[2.099s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/hungnb/cocarry_ws/build/realsense_tracker' returned '0': CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib:${LD_LIBRARY_PATH} PKG_CONFIG_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/x86_64-linux-gnu/pkgconfig:/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/pkgconfig PYTHONPATH=/home/hungnb/cocarry_ws/build/realsense_tracker/prefix_override:/home/hungnb/.local/lib/python3.10/site-packages/colcon_core/task/python/colcon_distutils_commands:/home/hungnb/cocarry_ws/install/realsense_tracker/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/install/human_hand_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} ROS_PACKAGE_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/share /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/hungnb/cocarry_ws/build/realsense_tracker/build --no-deps symlink_data
+[2.099s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/build/realsense_tracker/share/realsense_tracker/hook/pythonpath_develop.dsv'
+[2.099s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/build/realsense_tracker/share/realsense_tracker/hook/pythonpath_develop.sh'
+[2.100s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/realsense_tracker' for CMake module files
+[2.100s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/realsense_tracker' for CMake config files
+[2.100s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/realsense_tracker/lib'
+[2.100s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/realsense_tracker/bin'
+[2.100s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/realsense_tracker/lib/pkgconfig/realsense_tracker.pc'
+[2.101s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/realsense_tracker/lib/python3.10/site-packages'
+[2.101s] Level 1:colcon.colcon_core.shell:create_environment_hook('realsense_tracker', 'pythonpath')
+[2.101s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/realsense_tracker/share/realsense_tracker/hook/pythonpath.ps1'
+[2.101s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/install/realsense_tracker/share/realsense_tracker/hook/pythonpath.dsv'
+[2.101s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/realsense_tracker/share/realsense_tracker/hook/pythonpath.sh'
+[2.102s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/realsense_tracker/bin'
+[2.102s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(realsense_tracker)
+[2.102s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/realsense_tracker/share/realsense_tracker/package.ps1'
+[2.102s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/hungnb/cocarry_ws/install/realsense_tracker/share/realsense_tracker/package.dsv'
+[2.102s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/realsense_tracker/share/realsense_tracker/package.sh'
+[2.103s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/realsense_tracker/share/realsense_tracker/package.bash'
+[2.103s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/realsense_tracker/share/realsense_tracker/package.zsh'
+[2.103s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/hungnb/cocarry_ws/install/realsense_tracker/share/colcon-core/packages/realsense_tracker)
+[2.108s] Level 1:colcon.colcon_core.shell:create_environment_hook('trajectory_predictor', 'pythonpath_develop')
+[2.109s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/build/trajectory_predictor/share/trajectory_predictor/hook/pythonpath_develop.ps1'
+[2.109s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/hungnb/cocarry_ws/build/trajectory_predictor' returned '0': CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib:${LD_LIBRARY_PATH} PKG_CONFIG_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/x86_64-linux-gnu/pkgconfig:/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/pkgconfig PYTHONPATH=/home/hungnb/cocarry_ws/build/trajectory_predictor/prefix_override:/home/hungnb/.local/lib/python3.10/site-packages/colcon_core/task/python/colcon_distutils_commands:/home/hungnb/cocarry_ws/install/trajectory_predictor/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/install/human_hand_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} ROS_PACKAGE_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/share /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/hungnb/cocarry_ws/build/trajectory_predictor/build --no-deps symlink_data
+[2.109s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/build/trajectory_predictor/share/trajectory_predictor/hook/pythonpath_develop.dsv'
+[2.110s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/build/trajectory_predictor/share/trajectory_predictor/hook/pythonpath_develop.sh'
+[2.110s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/trajectory_predictor' for CMake module files
+[2.110s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/trajectory_predictor' for CMake config files
+[2.111s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/trajectory_predictor/lib'
+[2.111s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/trajectory_predictor/bin'
+[2.111s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/trajectory_predictor/lib/pkgconfig/trajectory_predictor.pc'
+[2.111s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/trajectory_predictor/lib/python3.10/site-packages'
+[2.111s] Level 1:colcon.colcon_core.shell:create_environment_hook('trajectory_predictor', 'pythonpath')
+[2.111s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/trajectory_predictor/share/trajectory_predictor/hook/pythonpath.ps1'
+[2.111s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/install/trajectory_predictor/share/trajectory_predictor/hook/pythonpath.dsv'
+[2.111s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/trajectory_predictor/share/trajectory_predictor/hook/pythonpath.sh'
+[2.112s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/trajectory_predictor/bin'
+[2.112s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(trajectory_predictor)
+[2.112s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/trajectory_predictor/share/trajectory_predictor/package.ps1'
+[2.112s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/hungnb/cocarry_ws/install/trajectory_predictor/share/trajectory_predictor/package.dsv'
+[2.112s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/trajectory_predictor/share/trajectory_predictor/package.sh'
+[2.113s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/trajectory_predictor/share/trajectory_predictor/package.bash'
+[2.113s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/trajectory_predictor/share/trajectory_predictor/package.zsh'
+[2.113s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/hungnb/cocarry_ws/install/trajectory_predictor/share/colcon-core/packages/trajectory_predictor)
+[2.113s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/hungnb/cocarry_ws/src/hrc_bringup' with build type 'ament_cmake'
+[2.113s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/hungnb/cocarry_ws/src/hrc_bringup'
+[2.113s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[2.113s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[2.129s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/hungnb/cocarry_ws/build/hrc_bringup': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_simulation:/home/hungnb/cocarry_ws/install/trajectory_predictor:/home/hungnb/cocarry_ws/install/realsense_tracker:/home/hungnb/cocarry_ws/install/predictor_ui:/home/hungnb/cocarry_ws/install/hc10dtp_bringup:/home/hungnb/cocarry_ws/install/experiment_logger:/home/hungnb/cocarry_ws/install/coord_transform:/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_simulation:/home/hungnb/cocarry_ws/install/hc10dtp_bringup:/opt/ros/humble:/home/hungnb/cocarry_ws/install/human_hand_msgs:/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib:${LD_LIBRARY_PATH} PKG_CONFIG_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/x86_64-linux-gnu/pkgconfig:/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/pkgconfig PYTHONPATH=/home/hungnb/cocarry_ws/build/trajectory_predictor:/home/hungnb/cocarry_ws/install/trajectory_predictor/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/build/realsense_tracker:/home/hungnb/cocarry_ws/install/realsense_tracker/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/build/predictor_ui:/home/hungnb/cocarry_ws/install/predictor_ui/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/build/experiment_logger:/home/hungnb/cocarry_ws/install/experiment_logger/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/build/coord_transform:/home/hungnb/cocarry_ws/install/coord_transform/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/install/human_hand_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} ROS_PACKAGE_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/share /usr/bin/cmake /home/hungnb/cocarry_ws/src/hrc_bringup -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/hungnb/cocarry_ws/install/hrc_bringup
+[2.604s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/hungnb/cocarry_ws/build/hrc_bringup' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_simulation:/home/hungnb/cocarry_ws/install/trajectory_predictor:/home/hungnb/cocarry_ws/install/realsense_tracker:/home/hungnb/cocarry_ws/install/predictor_ui:/home/hungnb/cocarry_ws/install/hc10dtp_bringup:/home/hungnb/cocarry_ws/install/experiment_logger:/home/hungnb/cocarry_ws/install/coord_transform:/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_simulation:/home/hungnb/cocarry_ws/install/hc10dtp_bringup:/opt/ros/humble:/home/hungnb/cocarry_ws/install/human_hand_msgs:/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib:${LD_LIBRARY_PATH} PKG_CONFIG_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/x86_64-linux-gnu/pkgconfig:/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/pkgconfig PYTHONPATH=/home/hungnb/cocarry_ws/build/trajectory_predictor:/home/hungnb/cocarry_ws/install/trajectory_predictor/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/build/realsense_tracker:/home/hungnb/cocarry_ws/install/realsense_tracker/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/build/predictor_ui:/home/hungnb/cocarry_ws/install/predictor_ui/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/build/experiment_logger:/home/hungnb/cocarry_ws/install/experiment_logger/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/build/coord_transform:/home/hungnb/cocarry_ws/install/coord_transform/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/install/human_hand_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} ROS_PACKAGE_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/share /usr/bin/cmake /home/hungnb/cocarry_ws/src/hrc_bringup -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/hungnb/cocarry_ws/install/hrc_bringup
+[2.605s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/hungnb/cocarry_ws/build/hrc_bringup': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_simulation:/home/hungnb/cocarry_ws/install/trajectory_predictor:/home/hungnb/cocarry_ws/install/realsense_tracker:/home/hungnb/cocarry_ws/install/predictor_ui:/home/hungnb/cocarry_ws/install/hc10dtp_bringup:/home/hungnb/cocarry_ws/install/experiment_logger:/home/hungnb/cocarry_ws/install/coord_transform:/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_simulation:/home/hungnb/cocarry_ws/install/hc10dtp_bringup:/opt/ros/humble:/home/hungnb/cocarry_ws/install/human_hand_msgs:/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib:${LD_LIBRARY_PATH} PKG_CONFIG_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/x86_64-linux-gnu/pkgconfig:/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/pkgconfig PYTHONPATH=/home/hungnb/cocarry_ws/build/trajectory_predictor:/home/hungnb/cocarry_ws/install/trajectory_predictor/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/build/realsense_tracker:/home/hungnb/cocarry_ws/install/realsense_tracker/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/build/predictor_ui:/home/hungnb/cocarry_ws/install/predictor_ui/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/build/experiment_logger:/home/hungnb/cocarry_ws/install/experiment_logger/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/build/coord_transform:/home/hungnb/cocarry_ws/install/coord_transform/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/install/human_hand_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} ROS_PACKAGE_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/share /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/hrc_bringup -- -j16 -l16
+[2.638s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/hungnb/cocarry_ws/build/hrc_bringup' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_simulation:/home/hungnb/cocarry_ws/install/trajectory_predictor:/home/hungnb/cocarry_ws/install/realsense_tracker:/home/hungnb/cocarry_ws/install/predictor_ui:/home/hungnb/cocarry_ws/install/hc10dtp_bringup:/home/hungnb/cocarry_ws/install/experiment_logger:/home/hungnb/cocarry_ws/install/coord_transform:/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_simulation:/home/hungnb/cocarry_ws/install/hc10dtp_bringup:/opt/ros/humble:/home/hungnb/cocarry_ws/install/human_hand_msgs:/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib:${LD_LIBRARY_PATH} PKG_CONFIG_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/x86_64-linux-gnu/pkgconfig:/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/pkgconfig PYTHONPATH=/home/hungnb/cocarry_ws/build/trajectory_predictor:/home/hungnb/cocarry_ws/install/trajectory_predictor/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/build/realsense_tracker:/home/hungnb/cocarry_ws/install/realsense_tracker/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/build/predictor_ui:/home/hungnb/cocarry_ws/install/predictor_ui/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/build/experiment_logger:/home/hungnb/cocarry_ws/install/experiment_logger/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/build/coord_transform:/home/hungnb/cocarry_ws/install/coord_transform/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/install/human_hand_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} ROS_PACKAGE_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/share /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/hrc_bringup -- -j16 -l16
+[2.640s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/hungnb/cocarry_ws/build/hrc_bringup': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_simulation:/home/hungnb/cocarry_ws/install/trajectory_predictor:/home/hungnb/cocarry_ws/install/realsense_tracker:/home/hungnb/cocarry_ws/install/predictor_ui:/home/hungnb/cocarry_ws/install/hc10dtp_bringup:/home/hungnb/cocarry_ws/install/experiment_logger:/home/hungnb/cocarry_ws/install/coord_transform:/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_simulation:/home/hungnb/cocarry_ws/install/hc10dtp_bringup:/opt/ros/humble:/home/hungnb/cocarry_ws/install/human_hand_msgs:/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib:${LD_LIBRARY_PATH} PKG_CONFIG_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/x86_64-linux-gnu/pkgconfig:/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/pkgconfig PYTHONPATH=/home/hungnb/cocarry_ws/build/trajectory_predictor:/home/hungnb/cocarry_ws/install/trajectory_predictor/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/build/realsense_tracker:/home/hungnb/cocarry_ws/install/realsense_tracker/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/build/predictor_ui:/home/hungnb/cocarry_ws/install/predictor_ui/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/build/experiment_logger:/home/hungnb/cocarry_ws/install/experiment_logger/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/build/coord_transform:/home/hungnb/cocarry_ws/install/coord_transform/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/install/human_hand_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} ROS_PACKAGE_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/share /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/hrc_bringup
+[2.834s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(hrc_bringup)
+[2.834s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hrc_bringup' for CMake module files
+[2.835s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/hungnb/cocarry_ws/build/hrc_bringup' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_simulation:/home/hungnb/cocarry_ws/install/trajectory_predictor:/home/hungnb/cocarry_ws/install/realsense_tracker:/home/hungnb/cocarry_ws/install/predictor_ui:/home/hungnb/cocarry_ws/install/hc10dtp_bringup:/home/hungnb/cocarry_ws/install/experiment_logger:/home/hungnb/cocarry_ws/install/coord_transform:/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_simulation:/home/hungnb/cocarry_ws/install/hc10dtp_bringup:/opt/ros/humble:/home/hungnb/cocarry_ws/install/human_hand_msgs:/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib:${LD_LIBRARY_PATH} PKG_CONFIG_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/x86_64-linux-gnu/pkgconfig:/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/pkgconfig PYTHONPATH=/home/hungnb/cocarry_ws/build/trajectory_predictor:/home/hungnb/cocarry_ws/install/trajectory_predictor/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/build/realsense_tracker:/home/hungnb/cocarry_ws/install/realsense_tracker/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/build/predictor_ui:/home/hungnb/cocarry_ws/install/predictor_ui/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/build/experiment_logger:/home/hungnb/cocarry_ws/install/experiment_logger/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/build/coord_transform:/home/hungnb/cocarry_ws/install/coord_transform/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/install/human_hand_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} ROS_PACKAGE_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/share /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/hrc_bringup
+[2.835s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hrc_bringup' for CMake config files
+[2.835s] Level 1:colcon.colcon_core.shell:create_environment_hook('hrc_bringup', 'cmake_prefix_path')
+[2.835s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/hrc_bringup/share/hrc_bringup/hook/cmake_prefix_path.ps1'
+[2.836s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/install/hrc_bringup/share/hrc_bringup/hook/cmake_prefix_path.dsv'
+[2.836s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/hrc_bringup/share/hrc_bringup/hook/cmake_prefix_path.sh'
+[2.836s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hrc_bringup/bin'
+[2.836s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hrc_bringup/lib/pkgconfig/hrc_bringup.pc'
+[2.836s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hrc_bringup/lib/python3.10/site-packages'
+[2.836s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hrc_bringup/bin'
+[2.837s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hrc_bringup/share/hrc_bringup/package.ps1'
+[2.837s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/hungnb/cocarry_ws/install/hrc_bringup/share/hrc_bringup/package.dsv'
+[2.837s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hrc_bringup/share/hrc_bringup/package.sh'
+[2.837s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hrc_bringup/share/hrc_bringup/package.bash'
+[2.838s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hrc_bringup/share/hrc_bringup/package.zsh'
+[2.838s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/hungnb/cocarry_ws/install/hrc_bringup/share/colcon-core/packages/hrc_bringup)
+[2.838s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(hrc_bringup)
+[2.838s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hrc_bringup' for CMake module files
+[2.838s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hrc_bringup' for CMake config files
+[2.839s] Level 1:colcon.colcon_core.shell:create_environment_hook('hrc_bringup', 'cmake_prefix_path')
+[2.839s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/hrc_bringup/share/hrc_bringup/hook/cmake_prefix_path.ps1'
+[2.839s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/hungnb/cocarry_ws/install/hrc_bringup/share/hrc_bringup/hook/cmake_prefix_path.dsv'
+[2.839s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/hungnb/cocarry_ws/install/hrc_bringup/share/hrc_bringup/hook/cmake_prefix_path.sh'
+[2.839s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hrc_bringup/bin'
+[2.839s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hrc_bringup/lib/pkgconfig/hrc_bringup.pc'
+[2.840s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hrc_bringup/lib/python3.10/site-packages'
+[2.840s] Level 1:colcon.colcon_core.environment:checking '/home/hungnb/cocarry_ws/install/hrc_bringup/bin'
+[2.840s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hrc_bringup/share/hrc_bringup/package.ps1'
+[2.875s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/hungnb/cocarry_ws/install/hrc_bringup/share/hrc_bringup/package.dsv'
+[2.876s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hrc_bringup/share/hrc_bringup/package.sh'
+[2.876s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hrc_bringup/share/hrc_bringup/package.bash'
+[2.876s] INFO:colcon.colcon_core.shell:Creating package script '/home/hungnb/cocarry_ws/install/hrc_bringup/share/hrc_bringup/package.zsh'
+[2.876s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/hungnb/cocarry_ws/install/hrc_bringup/share/colcon-core/packages/hrc_bringup)
+[2.877s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[2.877s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[2.877s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[2.877s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[2.881s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[2.881s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[2.881s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[2.887s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[2.888s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/hungnb/cocarry_ws/install/local_setup.ps1'
+[2.889s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/hungnb/cocarry_ws/install/_local_setup_util_ps1.py'
+[2.890s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/hungnb/cocarry_ws/install/setup.ps1'
+[2.890s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/hungnb/cocarry_ws/install/local_setup.sh'
+[2.890s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/hungnb/cocarry_ws/install/_local_setup_util_sh.py'
+[2.891s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/hungnb/cocarry_ws/install/setup.sh'
+[2.891s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/hungnb/cocarry_ws/install/local_setup.bash'
+[2.892s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/hungnb/cocarry_ws/install/setup.bash'
+[2.892s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/hungnb/cocarry_ws/install/local_setup.zsh'
+[2.892s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/hungnb/cocarry_ws/install/setup.zsh'

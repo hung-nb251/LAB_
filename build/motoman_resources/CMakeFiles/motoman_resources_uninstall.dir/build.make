@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/duy/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources
+CMAKE_SOURCE_DIR = /home/hungnb/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/duy/cocarry_ws/build/motoman_resources
+CMAKE_BINARY_DIR = /home/hungnb/cocarry_ws/build/motoman_resources
 
 # Utility rule file for motoman_resources_uninstall.
 
@@ -67,7 +67,7 @@ include CMakeFiles/motoman_resources_uninstall.dir/compiler_depend.make
 include CMakeFiles/motoman_resources_uninstall.dir/progress.make
 
 CMakeFiles/motoman_resources_uninstall:
-	/usr/bin/cmake -P /home/duy/cocarry_ws/build/motoman_resources/ament_cmake_uninstall_target/ament_cmake_uninstall_target.cmake
+	/usr/bin/cmake -P /home/hungnb/cocarry_ws/build/motoman_resources/ament_cmake_uninstall_target/ament_cmake_uninstall_target.cmake
 
 motoman_resources_uninstall: CMakeFiles/motoman_resources_uninstall
 motoman_resources_uninstall: CMakeFiles/motoman_resources_uninstall.dir/build.make
@@ -82,6 +82,6 @@ CMakeFiles/motoman_resources_uninstall.dir/clean:
 .PHONY : CMakeFiles/motoman_resources_uninstall.dir/clean
 
 CMakeFiles/motoman_resources_uninstall.dir/depend:
-	cd /home/duy/cocarry_ws/build/motoman_resources && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/duy/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources /home/duy/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources /home/duy/cocarry_ws/build/motoman_resources /home/duy/cocarry_ws/build/motoman_resources /home/duy/cocarry_ws/build/motoman_resources/CMakeFiles/motoman_resources_uninstall.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/hungnb/cocarry_ws/build/motoman_resources && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/hungnb/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources /home/hungnb/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources /home/hungnb/cocarry_ws/build/motoman_resources /home/hungnb/cocarry_ws/build/motoman_resources /home/hungnb/cocarry_ws/build/motoman_resources/CMakeFiles/motoman_resources_uninstall.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/motoman_resources_uninstall.dir/depend
 

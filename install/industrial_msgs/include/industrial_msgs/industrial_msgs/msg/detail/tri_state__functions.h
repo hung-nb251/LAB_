@@ -1,1 +1,0 @@
-/home/duy/cocarry_ws/build/industrial_msgs/rosidl_generator_c/industrial_msgs/msg/detail/tri_state__functions.h

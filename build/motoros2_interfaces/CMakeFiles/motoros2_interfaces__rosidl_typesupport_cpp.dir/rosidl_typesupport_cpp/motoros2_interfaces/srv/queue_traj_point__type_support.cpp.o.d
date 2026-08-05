@@ -1,5 +1,5 @@
 CMakeFiles/motoros2_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/motoros2_interfaces/srv/queue_traj_point__type_support.cpp.o: \
- /home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_typesupport_cpp/motoros2_interfaces/srv/queue_traj_point__type_support.cpp \
+ /home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_typesupport_cpp/motoros2_interfaces/srv/queue_traj_point__type_support.cpp \
  /usr/include/stdc-predef.h /usr/include/c++/11/cstddef \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -15,7 +15,7 @@ CMakeFiles/motoros2_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cp
  /opt/ros/humble/include/rosidl_runtime_c/rosidl_runtime_c/message_type_support_struct.h \
  /opt/ros/humble/include/rosidl_runtime_c/rosidl_runtime_c/visibility_control.h \
  /opt/ros/humble/include/rosidl_typesupport_interface/rosidl_typesupport_interface/macros.h \
- /home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_generator_cpp/motoros2_interfaces/srv/detail/queue_traj_point__struct.hpp \
+ /home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_generator_cpp/motoros2_interfaces/srv/detail/queue_traj_point__struct.hpp \
  /usr/include/c++/11/algorithm /usr/include/c++/11/utility \
  /usr/include/c++/11/bits/stl_relops.h \
  /usr/include/c++/11/bits/stl_pair.h /usr/include/c++/11/bits/move.h \
@@ -162,7 +162,7 @@ CMakeFiles/motoros2_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cp
  /opt/ros/humble/include/rosidl_runtime_c/rosidl_runtime_c/message_initialization.h \
  /opt/ros/humble/include/trajectory_msgs/trajectory_msgs/msg/detail/joint_trajectory_point__struct.hpp \
  /opt/ros/humble/include/builtin_interfaces/builtin_interfaces/msg/detail/duration__struct.hpp \
- /home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_generator_cpp/motoros2_interfaces/msg/detail/queue_result_enum__struct.hpp \
+ /home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_generator_cpp/motoros2_interfaces/msg/detail/queue_result_enum__struct.hpp \
  /opt/ros/humble/include/rosidl_typesupport_cpp/rosidl_typesupport_cpp/identifier.hpp \
  /opt/ros/humble/include/rosidl_typesupport_cpp/rosidl_typesupport_cpp/visibility_control.h \
  /opt/ros/humble/include/rosidl_runtime_cpp/rosidl_typesupport_cpp/message_type_support.hpp \

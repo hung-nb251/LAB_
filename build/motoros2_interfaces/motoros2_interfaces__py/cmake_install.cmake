@@ -1,8 +1,8 @@
-# Install script for directory: /home/duy/cocarry_ws/build/motoros2_interfaces/motoros2_interfaces__py
+# Install script for directory: /home/hungnb/cocarry_ws/build/motoros2_interfaces/motoros2_interfaces__py
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/duy/cocarry_ws/install/motoros2_interfaces")
+  set(CMAKE_INSTALL_PREFIX "/home/hungnb/cocarry_ws/install/motoros2_interfaces")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 

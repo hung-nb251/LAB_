@@ -1,13 +1,26 @@
 experiment_logger:
   ros__parameters:
     auto_start: true
-    log_dir: /home/duy/cocarry_ws/cocarry_logs
+    log_dir: /home/hungnb/cocarry_ws/cocarry_logs
 realsense_tracker:
   ros__parameters:
     # model_path is passed dynamically from the launch file
     offset_x: 0.0029441434890031815
     offset_y: 0.07468471676111221
     offset_z: 0.9220000505447388
+kinect_tracker:
+  ros__parameters:
+    offset_x: 0.0
+    offset_y: 0.0
+    offset_z: 0.0
+    camera_namespace: '/kinect2/qhd'
+# Bộ lọc tọa độ của transform_node — tăng initial_noise_tolerance cho Kinect
+# vì depth noise của Kinect QHD (~20-50mm) lớn hơn RealSense (~5-10mm)
+# Nếu noise_tolerance quá nhỏ, filter sẽ giữ tay ở gốc tọa độ → đồ thị Y bằng phẳng
+transform_node:
+  ros__parameters:
+    filter:
+      initial_noise_tolerance: 0.06  # 6cm — đủ lớn để vượt noise Kinect QHD
 trajectory_predictor:
   ros__parameters:
     auto_start: false
@@ -18,7 +31,7 @@ trajectory_predictor:
       enabled: true
       max_deviation: 0.08
       max_rate: 0.04
-    model_dir: /home/duy/cocarry_ws/src/GRU-Model
+    model_dir: /home/hungnb/cocarry_ws/src/GRU-Model
     model_files:
       gru: gru_model_Ts5.h5
       lstm: lstm_model_Ts5.h5

@@ -1,0 +1,3928 @@
+Manual, EtherCAT Axia F/T Sensor
+
+Document #: 9610-05-EtherCAT Axia
+
+Engineered Products for Robotic Productivity
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+Foreword
+Information contained in this document is the property of ATI Industrial Automation, Inc. and shall not be reproduced in
+whole or in part without prior written approval of ATI Industrial Automation, Inc. The information herein is subject to
+change without notice and should not be construed as a commitment of ATI Industrial Automation, Inc. This manual is
+periodically revised to reflect and incorporate changes made to the F/T system.
+ATI Industrial Automation, Inc. assumes no responsibility for any errors or omissions in this document.
+Copyright © (2020) by ATI Industrial Automation, Inc., Apex, North Carolina USA. All Rights Reserved.
+Published in the USA.
+In consideration that ATI Industrial Automation, Inc. (ATI) products are intended for use with robotic and/or automated
+machines, ATI does not recommend the use of its products for applications wherein failure or malfunction of an ATI
+component or system threatens life or makes injury probable. Anyone who uses or incorporates ATI components within
+any potentially life-threatening system must obtain ATI’s prior consent based upon assurance to ATI that a malfunction
+of ATI’s component does not pose direct or indirect threat of injury or death, and (even if such consent is given) shall
+indemnify ATI from any claim, loss, liability, and related expenses arising from any injury or death resulting from use of
+ATI components.
+All trademarks belong to their respective owners. EtherCAT® is a registered trademark and patented technology, licensed
+by Beckhoff Automation GmbH, Germany.
+FCC Compliance-Class A
+This devices complies with Part 15 Subpart B of the FCC Title 47. Operation is subject to the following two conditions:
+(1) this device may not cause harmful interference, and (2) this device must accept any interference received, including
+interference that may cause undesired operation.
+Any modifications to the device could impact compliance. It is the user’s responsibility to certify the device remains
+compliant after modifications.
+“Electromagnetic Compatibility”
+This device complies with EMC Directive 2014/30/EU and conforms to the following standards: EN61000-6-4 CISPR
+16-2-3, IEC/EN61000-4-2, IEC/EN61000-4-3, IEC/EN61000-4-4, IEC/EN61000-4-5, IEC/EN61000-4-6, IEC/
+EN61000-4-8, IEC/EN61000-4-11.
+RoHS Compliance
+This product conforms to EU Directive CE 2015/863 (RoHS).
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+2
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+Note:
+Please read the manual before calling customer service, and have the following
+information available:
+1.
+
+Serial number (e.g., FT01234)
+
+2.
+
+Model (e.g., Axia80-M20)
+
+3.
+
+Calibration (e.g., US-15-50, SI-65-6, etc.)
+
+4.
+
+Accurate and complete description of the question or concern
+
+•
+
+For the status code; refer to Section 5.2.1.7—Object 0x6010: Status Code.
+
+5.
+
+Computer and software information (operating system, PC type, drivers, and
+application software)
+
+Be near the F/T system when calling (if possible).
+Please contact an ATI representative for assistance, if needed:
+Sale, Service and Information about ATI products:
+ATI Industrial Automation
+1031 Goodworth Drive
+Apex, NC 27539 USA
+www.ati-ia.com
+Tel: +1.919.772.0115
+Fax: +1.919.772.8259
+Application Engineering
+Tel: +1.919.772.0115, Extension 511
+Fax: +1.919.772.8259
+E-mail: ft_support@ati-ia.com
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+3
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+Statement of Compliance
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+4
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+Table of Contents
+Foreword........................................................................................................................................... 2
+Statement of Compliance................................................................................................................ 4
+Glossary............................................................................................................................................ 7
+1.
+
+2.
+
+Safety.......................................................................................................................................... 9
+1.1
+
+Explanation of Notifications.......................................................................................................... 9
+
+1.2
+
+General Safety Guidelines............................................................................................................. 9
+
+1.3
+
+Safety Precautions....................................................................................................................... 10
+
+Product Overview.....................................................................................................................11
+2.1
+
+3.
+
+Overview of Axia Models............................................................................................................. 12
+
+Installation............................................................................................................................... 13
+3.1
+
+Interface Plates............................................................................................................................. 13
+
+3.2
+
+Routing the Cable......................................................................................................................... 15
+
+3.3
+
+Installing the Sensor to the Robot.............................................................................................. 18
+
+3.4
+
+Removing the Sensor from the Robot........................................................................................ 19
+
+3.5
+
+Pin Assignment for the EtherCAT and Power Connection....................................................... 20
+3.5.1
+
+Pin Assignment : 6-pin Male M8 ZC22 Connector............................................................ 20
+
+3.5.2
+
+Pin Assignment : 8-Pin Male M12 ZC28 Connector.......................................................... 20
+
+3.5.3
+
+3.6
+
+4.
+
+Pin Assignment for Cable P/N 9105-C-ZC28-U-RJ45S-X................................................. 21
+3.5.3.1
+
+Branch 1, Unterminated End for Power Connection.......................................... 21
+
+3.5.3.2
+
+Branch 2, RJ45 Connection for EtherCAT......................................................... 21
+
+Accuracy Check Procedure......................................................................................................... 22
+
+Operation................................................................................................................................. 24
+4.1
+
+Sensor Environment.................................................................................................................... 24
+
+4.2
+
+LED Self-Test Sequence and Functions..................................................................................... 24
+
+4.3
+
+4.2.1
+
+LED Self-Test Sequence................................................................................................... 24
+
+4.2.2
+
+EtherCAT Link/Activity LED............................................................................................... 24
+
+4.2.3
+
+Run LED............................................................................................................................ 24
+
+4.2.4
+
+Sensor Status LED............................................................................................................ 25
+
+Sample Rate.................................................................................................................................. 25
+4.3.1
+
+Sample Rate Versus Data Rate........................................................................................ 25
+
+4.4
+
+Low-pass Filter............................................................................................................................. 26
+
+4.5
+
+Tool Transformation..................................................................................................................... 29
+4.5.1
+
+Avoid Overloading the Sensor During Tool Transformation............................................... 31
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+5
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+5.
+
+EtherCAT Bus Interface.......................................................................................................... 32
+5.1
+
+PDO Interface................................................................................................................................ 32
+
+5.2
+
+EtherCAT Dictionary Objects (SDO Data).................................................................................. 32
+5.2.1
+
+ATI Specific Area Objects.................................................................................................. 33
+5.2.1.1
+
+Object 0x2019: Product Description.................................................................. 33
+
+5.2.1.2
+
+Object 0x2020: Tool Transformation.................................................................. 34
+
+5.2.1.3
+
+Object 0x2021: Calibration................................................................................ 34
+
+5.2.1.4
+
+Object 0x2080: Diagnostic Readings................................................................. 36
+
+5.2.1.5
+
+Object 0x2090: Version...................................................................................... 37
+
+5.2.1.6
+
+Object 0x6000: Reading Data............................................................................ 37
+
+5.2.1.7
+
+Object 0x6010: Status Code.............................................................................. 38
+
+5.2.1.8
+
+Status Code: Force/Torque Out of Range......................................................... 39
+
+5.2.1.9
+
+Object 0x6020: Sample Counter........................................................................ 40
+
+5.2.1.10 Object 0x6030: Gage Data................................................................................ 40
+5.2.1.11 Object 0x7010: Control Codes........................................................................... 41
+5.2.2
+
+EtherCAT Communication Area Objects........................................................................... 42
+5.2.2.1
+
+5.2.3
+5.3
+
+6.
+
+7.
+
+9.
+
+5.2.2.2
+
+Object 0x1008: Device Name............................................................................ 42
+
+5.2.2.3
+
+Object 0x1018: Identity...................................................................................... 43
+
+5.2.2.4
+
+Unused EtherCAT Objects................................................................................. 44
+
+How to Interpret Hexadecimal Output............................................................................... 45
+
+Establishing Communication with the EtherCAT Axia Sensor................................................ 46
+
+Maintenance............................................................................................................................. 46
+6.1
+
+Periodic Inspection...................................................................................................................... 46
+
+6.2
+
+Periodic Calibrating..................................................................................................................... 46
+
+Troubleshooting...................................................................................................................... 47
+7.1
+
+8.
+
+Object 0x1000: Device Type.............................................................................. 42
+
+Errors with Force and Torque Readings.................................................................................... 48
+
+Specifications.......................................................................................................................... 49
+8.1
+
+Storage and Operating Conditions............................................................................................. 49
+
+8.2
+
+Electrical Specifications.............................................................................................................. 49
+
+8.3
+
+Calibration Ranges....................................................................................................................... 49
+
+Terms and Conditions of Sale................................................................................................ 50
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+6
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+Glossary
+Term
+
+Definition
+
+Active Configuration
+
+The configuration that the system is currently using.
+
+ADC
+
+Analog-to-digital converter.
+
+Calibration
+
+The factory-supplied data used by the EtherCAT Axia sensor so it can
+report accurate sensor readings. Calibrations apply to a specific loading
+range.
+
+CoE
+
+CANopen over EtherCAT is the preferred embedded protocol for configuring
+EtherCAT devices. Used within SDO to encode the configuration data.
+
+Complex Loading
+
+Any force or torque load that is not purely in one axis.
+
+Configuration
+
+User-defined settings that include which force and torque units are reported
+and which calibration is to be used.
+
+Coordinate Frame
+
+See Point of Origin.
+
+Data Rate
+
+How fast data can be output over a network.
+
+DINT
+
+Signed double integer (32 bit)
+
+ESI
+
+EtherCAT Slave Information is a file type.
+
+EtherCAT
+
+An industrial automation fieldbus.
+
+FoE
+
+File access over EtherCAT, the preferred embedded protocol for uploading
+new firmware to EtherCAT devices.
+
+Force
+
+The push or pull exerted on an object.
+
+FS
+
+Full-Scale.
+
+F/T
+
+Force/Torque.
+
+Fxy
+
+The resultant force vector comprised of components Fx and Fy.
+
+Hysteresis
+
+A source of measurement error caused by the residual effects of previously
+applied loads.
+
+INT
+
+Signed integer (16 bit)
+
+Interface Plate
+
+A separate plate that attaches the sensor to another surface. Interface
+plates are often used if the bolt pattern on the MAP or TAP doesn’t match
+the bolt pattern on the robot arm or customer tooling. The interface plate
+has two bolt patterns on either side of the plate. One side is for the MAP or
+TAP. The other side is for the robot arm or customer tooling.
+
+IP64
+
+Ingress protection rating “64” designates protection against dust and
+splashing of water. An IP64 rating does not guarantee protection when a
+user submerges a device in water or any type of fluid.
+
+ISR
+
+Interrupt service routine
+
+Mounting Adapter Plate | MAP
+
+The surface of the sensor that attaches to a fixed surface like an interface
+plate or robot arm.
+
+N/A
+
+Not Applicable
+
+Overload
+
+The condition where more load is applied to the sensor than the rated
+measurement range that can be applied to the sensor. Overloads result in
+reduced accuracy and potentially reduced sensor life.
+
+PDO
+
+Process Data Object, a protocol for reading and writing real-time process
+information cyclically.
+
+P/N
+
+Part Number
+
+Point of Origin
+
+The location on the sensor from which all forces and torques are measured.
+Also known as the Coordinate Frame.
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+7
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+Term
+
+Definition
+
+Power Cycle
+
+When a user removes and then restores power to a device.
+
+Resolution
+
+The smallest change in load that can be measured.
+
+Sample Rate
+
+How fast the ADCs are sampling inside the unit.
+
+SDO
+
+Service Data Object, a protocol for reading and writing configuration
+information acyclically.
+
+Sense loads
+
+The ATI F/T sensor detects sense loads that are a cumulation of forces and
+torques acted upon the customer tooling.
+
+Sensor
+
+The component that converts a detected load into electrical signals.
+
+SINT
+
+Signed short integer (8 bit)
+
+Status Bit
+
+A unit of computer data sent from the ATI F/T sensor.
+
+STRINGn
+
+Sting of n characters
+
+STRING(8)
+
+A data type representing (8) characters, using (8) bytes.
+
+STRING(30)
+
+A data type representing (30) characters, using (30) bytes.
+
+Tool Adapter Plate | TAP
+
+The surface of the sensor that attaches to a fixed surface like an interface
+plate or the customer tooling.
+
+Torque
+
+The measurement of force exerted on an object causing it to rotate.
+Mathematically, torque is expressed as: Torque = Force x Moment Arm
+Distance.
+
+Transducer
+
+Every transducer is also (or has) a sensor but every sensor isn’t a
+transducer. A transducer is more than a sensor. It consists of a sensor/
+actuator along with signal conditioning circuits.
+
+Txy
+
+The resultant torque vector comprised of components Tx and Ty.
+
+UDINT
+
+A (32) bit data type representing an unsigned integer.
+
+UINT
+
+A (16) bit data type representing an unsigned integer.
+
+USINT
+
+An (8) bit data type representing an unsigned integer.
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+8
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+1. Safety
+The safety section describes general safety guidelines to be followed with this product, explanations of the
+notifications found in this manual, and safety precautions that apply to the product. Product specific notifications
+are imbedded within the sections of this manual (where they apply).
+
+1.1
+
+Explanation of Notifications
+
+These notifications are used in all of ATI manuals and are not specific to this product. The user should heed
+all notifications from the robot manufacturer and/or the manufacturers of other components
+used in the installation.
+DANGER: Notification of information or instructions that if not followed will result in
+death or serious injury. The notification provides information about the nature of the
+hazardous situation, the consequences of not avoiding the hazard, and the method for
+avoiding the situation.
+WARNING: Notification of information or instructions that if not followed could result
+in death or serious injury. The notification provides information about the nature of the
+hazardous situation, the consequences of not avoiding the hazard, and the method for
+avoiding the situation.
+CAUTION: Notification of information or instructions that if not followed could result
+in moderate injury or will cause damage to equipment. The notification provides
+information about the nature of the hazardous situation, the consequences of not
+avoiding the hazard, and the method for avoiding the situation.
+NOTICE: Notification of specific information or instructions about maintaining, operating,
+installing, or setting up the product that if not followed could result in damage to equipment. The
+notification can emphasize, but is not limited to: specific grease types, best operating practices,
+and maintenance tips.
+
+1.2
+
+General Safety Guidelines
+The customer should verify that the sensor selected is rated for maximum loads and torques expected during
+operation. Because static forces are less than the dynamic forces from the acceleration or declaration of the
+robot, be aware of the dynamic loads caused by the robot.
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+9
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+1.3
+
+Safety Precautions
+CAUTION: Modifying or disassembly of the sensor could cause damage and
+void the warranty.
+CAUTION: Probing openings in the sensor causes damage to the instrumentation.
+Avoid prying into openings of the sensor.
+CAUTION: Do not overload the sensor. Exceeding the single-axis overload values of
+the sensor, causes irreparable damage.
+CAUTION: Do not contact the IP64 seal. Contacting the seal can cause the sensor
+to malfunction.
+CAUTION: The sensor should be protected from impact and shock loads that exceed
+rated ranges during transport as the impacts can damage the sensor’s performance.
+Refer to Section 8—Specifications for more information about rated ranges.
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+10
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+2. Product Overview
+The EtherCAT Axia F/T sensor system measures six components of force and torque (Fx \ Fy \ Fz \ Tx \ Ty \ Tz)
+and streams this data to customer devices via EtherCAT fieldbus (refer to Section 5.1—PDO Interface). To user
+EtherCAT, the user needs a software interface and computer hardware that it compatible with EtherCAT. Free,
+downloadable software such as TwinCAT is available online for users with a Windows® operating system.
+The sensor’s mounting side attaches to a mounting interface plate, which mounts to the customer robot. The tool
+side attaches to the customer tooling. Both the mounting and tool sides have a 71.12 mm bolt circle pattern with (6)
+M5 tapped holes and (2) slip fit dowel holes (refer to the customer drawing on the ATI website). The sensor is IP64
+rated. An M8 6-pin male connector is for power and Ethernet. For the pin assignments, refer to Section 3.5—Pin
+Assignment for the EtherCAT and Power Connection.
+The customer drawing, ATI P/N 9230-05-1543, is available on the ATI website: https://www.ati-ia.com/app_
+content/Documents/9230-05-1543.auto.pdf.
+The Axia sensor provides the following features:
+•
+
+Set bias and clear bias
+
+•
+
+Programmable low-pass filtering
+
+•
+
+LED indicator for Run, EtherCAT Link, and Sensor Status (refer to Section 4.2—LED Self-Test Sequence and
+Functions for more information)
+Figure 2.1—EtherCAT Axia F/T Sensor
+
+Mounting Side
+to robot or fixture.
+
+6-Pin Male M8 Connector
+for Power and
+Communication
+
+IP64 Seal
+
+Tool side
+(For Customer
+Tooling)
+
+Link/Activity LED
+
+Sensor Status LED
+Run LED
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+11
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+2.1
+
+Overview of Axia Models
+The Axia sensor is available in three different models. An overview of each model is summarized in the
+following table:
+Table 2.1—Axia Models
+Model
+
+Part Number
+
+Number of Identifying
+Grooves1
+
+Axia80-M8
+
+9105-ECAT-Axia80-M8
+
+3
+
+Axia80-M20
+
+9105-ECAT-Axia80-M202
+
+0
+
+Axia80-M50
+
+9105-ECAT-Axia80-M50
+
+2
+
+Material
+Aluminum
+Stainless Steel
+
+Notes:
+1.
+2.
+3.
+
+Identifying grooves are physical indentations in the sensor body (refer to Figure 2.2). These grooves
+provide users a quick visual method to differentiate the sensor models.
+This part number used to be 9105-ECAT-Axia80.
+For calibration ranges, refer to Section 8.3—Calibration Ranges.
+
+Figure 2.2—Identifying Grooves (Axia80-M8 shown as a reference)
+
+Identifying
+Groove
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+12
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+3. Installation
+WARNING: Performing maintenance or repair on the sensor when circuits (e.g. power,
+water, and air) are energized could result in death or serious injury. Discharge and
+verify all energized circuits are de-energized in accordance with the customer’s safety
+practices and policies.
+CAUTION: Modification or disassembly of the sensor could cause damage and void the
+warranty. Use the supplied mounting bolt pattern and the provided tool side mounting bolt
+pattern to mount the sensor to the robot and customer tooling to the sensor (refer to the
+customer drawing on the ATI website).
+CAUTION: Using fasteners that exceed the customer interface depth penetrates the body of
+the sensor, damages the electronics, and voids the warranty (refer to the customer drawing
+on the ATI website).
+CAUTION: Thread locker applied to fasteners must not be used more than once. Fasteners
+may become loose and cause equipment damage. Always apply new thread locker when
+reusing fasteners.
+CAUTION: Avoid damage to the sensor from Electro-Static Discharge. Ensure proper
+grounding procedures are followed when handling the sensor or cables connected to the
+sensor. Failure to follow proper grounding procedures could damage the sensor.
+CAUTION: Do not apply excessive force to the sensor and cable connector during
+installation, or damage will occur to the connectors. Align the keyway on the sensor and cable
+connector during installation to avoid applying excessive force to the connectors.
+
+Keyway on the
+sensor connector.
+
+Keyway on the
+cable connector.
+
+NOTICE: Depending on the maintenance or repair being performed, utilities to the sensor may not
+need to be disconnected.
+
+3.1
+
+Interface Plates
+The sensor’s mounting side attaches to the robot arm, and the sensor’s tool side attaches to the customer
+tooling. If interface plate(s) are required, ATI can supply custom robot mounting and tool interface
+plates. For technical information on the sensor’s mounting features refer to the customer drawing on
+the ATI website.
+CAUTION: Incorrect installation of robot mounting and tool interface plates will result in
+the failure of the F/T sensor to function properly. Because the mounting and tool sides
+of the sensor have identical bolt patterns, verify the robot mounting and tool interface
+plates are installed correctly.
+CAUTION: The customer tool should only touch the tool interface plate. If the customer
+tool touches any other part of the sensor, it will not properly sense loads.
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+13
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+If the customer chooses to design and build an interface plate, the consider the following points:
+•
+
+The interface plate should include bolt holes for mounting fasteners as well as dowel pin and a boss for
+accurate positioning to the robot or customer’s device.
+
+•
+
+The thickness of the interface plate must provide sufficient thread engagement for the
+mounting fasteners.
+
+•
+
+The mounting fasteners should not extend through the sensor’s housing or interfere with the internal
+electronics. For thread depth, mounting patterns, and other details refer to the customer drawing on
+the ATI website.
+
+•
+
+Do not use dowel pins that exceed length requirements and prevent the interface plate from mating
+flush with the robot and customer tooling. Fasteners that exceed length requirements create a gap
+between the interfacing surfaces and cause damage.
+
+•
+
+The interface plate must not distort from the maximum force and torque values that can be applied to
+the sensor. For these values, refer to Section 8—Specifications.
+
+•
+
+The interface plate must provide a flat and parallel mounting surface for the sensor.
+Figure 3.1—Adapter Plate(s)
+Robot Arm
+
+Locating Dowel
+
+Locating Boss
+
+Mounting Fasteners
+.002 in (.05 mm) A
+
+Mounting Interface Plate
+
+.002 in (.05 mm)
+
+Locating Dowel
+
+A
+(6) M5 Mounting Fasteners
+
+F/T Sensor
+(6) M5 Mounting Fasteners
+(Customer Supplied)
+
+3 mm Locating Dowel Pin
+(Customer Supplied)
+4 mm Locating Dowel Pin
+(Customer Supplied)
+
+.002 in (.05 mm)
+.002 in (.05 mm) B
+
+Tool Interface Plate
+(Customer Supplied)
+
+B
+Locating Boss
+
+Mounting Fasteners
+(Customer Supplied)
+Locating Dowel Pin
+(Customer Supplied)
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+14
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+3.2
+
+Routing the Cable
+The routing and bending radius of the cable depends upon the customer application. Unlike motionless
+applications, where the cable is in a static condition, dynamic applications subject the cable to a repetitive
+motion. For dynamic applications, restrain the cable at a distance that does not expose and damage the
+sensor’s cable connection from the robot’s repetitive motion.
+NOTICE: The maximum supported cable length is 25 m.
+Figure 3.2—Routing of the Sensor Cable
+
+Robot Arm
+
+Mounting
+Interface Plate
+
+Restrain cable to keep
+repetitive motion from
+affecting the cable
+connection.
+
+Sensor Cable
+F/T Sensor
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+15
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+CAUTION: Subjecting the connector to the repetitive motion will cause damage to the
+connector. Restrain the cable close to the connector so that the repetitive motion of the
+robot does not interfere with the cable connector.
+For added stability, zip ties can be used to secure the cable to a mounting bracket (refer to the following
+figure). The zip ties should never contact the cable jacket.
+Figure 3.3—Use Zip Ties on the Connector
+(2) Zip ties stabilize and secure
+the connector. The zip tie does
+not contact the cable.
+
+CAUTION: Improper cable routing may cause injury to personnel, poor functionality
+of critical electrical lines, or damage to the equipment. The electrical line, especially
+where attached to the senor’s connector, must be routed to avoid stress failure, sharp
+bends, or a disconnection from the equipment. Damage to the sensor or cable from
+improper routing will void the warranty.
+Route the sensor cable so that it is not stressed, pulled, kinked, cut, or otherwise damaged throughout the
+full range of motion. Affix the cable by using hook and loop straps or Velcro® straps; do not use cable
+ties or zip ties.
+Figure 3.4—Use Hook and Loop or Velcro® Straps on the Cable
+Allow enough slack in
+the cable to allow full range
+of motion for the robot arm.
+
+Use hook and loop or Velcro® straps to restrain
+the cable around the robot arm.
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+16
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+CAUTION: Do not cable ties or zip ties to bundle cables or restrain the cable to the
+robot arm. Directly affixing cable ties or zip ties to the cable jacket will prevent power
+and signal communication between the F/T sensor and robot controller. Use hook
+and loop or Velcro straps on the cable jacket surfaces. Examples of the incorrect and
+correct methods to restrain or bundle cables are in the following pictures:
+CORRECT
+
+INCORRECT
+DO NOT USE zip ties to restrain
+the cable around the robot arm.
+
+USE Velcro® straps to restrain
+the cable around the robot arm.
+
+USE Velcro® straps
+to bundle cables.
+
+DO NOT USE zip ties
+to bundle cables.
+
+CAUTION: Do not damage or crush the cable by over tightening the
+straps on the cable.
+CAUTION: When routing cables do not bend less than the minimum bending radius
+specified in Table 3.1. A bend radius too small causes the cable to fail from fatigue of
+the robot’s repetitive motion.
+Table 3.1—Sensor Cable Bending Radius and Dynamic Twist Angle
+
+Cable Part Number
+
+Spliced Cable
+Branch
+Description
+
+9105-C-ZC22-ZC28-X
+
+N/A
+
+9105-C-ZC28-URJ45S-X
+
+Branch 1,
+Power
+
+Cable
+Diameter
+mm (in)
+
+6 (.24)
+
+Static
+Bending
+Radius
+(at room
+temperature)
+
+Dynamic
+Bending
+Radius
+(at room
+temperature)
+
+mm
+
+in
+
+mm
+
+in
+
+25
+
+1
+
+50
+
+2
+
+Dynamic
+Cable Twist
+Angle per
+Unit Length
+
+180°/m or
+55°/ft
+
+Branch 2,
+EtherCAT
+
+Notes:
+1.
+
+Temperature affects cable flexibility. ATI recommends increasing the minimum dynamic bending radius for
+lower temperatures.
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+17
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+3.3
+
+Installing the Sensor to the Robot
+Parts required: Refer to Figure 3.5 and (the customer drawing on the ATI website).
+Tools required: 4 mm hex key
+Supplies required: Clean rag, Loctite® 242 (if applicable, refer to step 3 and 4)
+1. Clean the mounting surfaces.
+2. Attach the mounting interface plate to the robot arm with the mounting fasteners.
+NOTICE: When mounting the sensor to the mounting interface plate, mounting the customer
+tooling or interface plate to the sensor, consider the following points:
+•
+
+•
+
+Screws must have a minimum thread engagement length of 4.5 mm and a maximum
+thread engagement less than the threaded depth that is listed the customer drawing on
+the ATI website.
+Unless otherwise specified, apply Loctite 242 to the (6) M5 socket head cap screws (class
+12.9) so that the fasteners secure the sensor to the mounting plate.
+
+3. Attach the sensor to the mounting adapter plate.
+a.
+
+Using a 4 mm hex key, secure the sensor to the mounting adapter plate with the (6) M5 socket head
+cap screws, class 12.9. Tighten the fasteners per the specifications in the following table.
+Table 3.2—Torque Values for Axia Models
+Model
+Axia80-M8
+
+Torque
+
+Axia80-M20
+
+52 in-lbs (5.88 Nm)
+
+Axia80-M50
+
+75 in-lbs (8.47 Nm)
+
+4. Once the sensor is installed on the robot, the customer tooling or tool interface plate can be installed.
+NOTICE: The tool must not touch any other part of the sensor except the tool side; otherwise,
+the sensor does not properly detect loads.
+5. Connect the cable(s) to the sensor and customer application.
+a. Connect a power and EtherCAT cable (ATI P/N 9105-C-ZC22-ZC28-X) to the sensor’s connection.
+Tighten to 4.43 in-lbs (0.5 Nm).
+b.
+
+Connect the branched cable (ATI P/N 9105-C-ZC28-U-RJ45S-X) to the cable from step a. Tighten
+to 7.08 in-lbs (0.8 Nm).
+
+c.
+
+Connect the RJ45 and power connections to the customer application.
+
+NOTICE: For the LED outputs that occur whenever power is applied to the sensor, refer to
+Section 4.2.1—LED Self-Test Sequence.
+6. Properly restrain and route the power and EtherCAT cable; refer to Section 3.2—Routing the Cable.
+7. After installation is complete, the sensor is ready for an accuracy check (refer to Section 3.6—Accuracy
+Check Procedure).
+8. Safely start normal operation.
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+18
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+Figure 3.5—Installation of the Sensor to the Robot
+
+Robot
+Dowel Pin
+
+Mounting Fasteners
+
+Interface Plate
+(9105-IP-2118 shown)
+
+Note: Cable lengths are shortened
+in the figure for reference only.
+
+Mounting
+Fasteners
+(2) Dowel Pin
+
+Mounting to the Robot
+or Interface Plate
+
+Power and
+EtherCAT
+Connection
+
+EtherCAT Axia
+Sensor
+
+Power and EtherCAT cable to the customer application
+(ATI P/N 9105-C-ZC28-U-RJ45S-X)
+Unterminated End for Power
+(Branch 1)
+
+Tool Side
+for Customer Tooling
+
+Power and EtherCAT Cable to the sensor
+(ATI P/N 9105-C-ZC22-ZC28-X)
+RJ45 Connector for EtherCAT
+(Branch 2)
+
+3.4
+
+Removing the Sensor from the Robot
+Tools required: 4 mm hex key
+1. Turn off all energized circuits, for example: electrical.
+2. Remove the power and EtherCAT cable from the sensor’s connection.
+3. Supporting the customer tooling and/or interface plate, remove the customer supplied screws that attach
+to the customer tooling to the sensor.
+4. Supporting the sensor, use a hex key to loosen the (6) M5 socket head cap screws that secure to the
+sensor to the mounting interface plate or robot.
+5. Remove the sensor.
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+19
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+3.5
+
+Pin Assignment for the EtherCAT and Power Connection
+CAUTION: Ensure the cable shield is properly grounded. Improper shielding on the
+cables can cause communication errors and inoperative sensors.
+Pin assignments for the power and EtherCAT connection on the sensor and cables are in the following
+sections. For supply voltage ratings, refer to the following table or Section 8.2—Electrical Specifications.
+Table 3.3—Power Supply1
+Power Source
+
+Voltage
+
+Power Consumption
+
+Minimum
+
+Nominal
+
+Maximum
+
+Maximum
+
+12 V
+
+24 V
+
+30 V
+
+1.5 W
+
+DC Power
+Notes:
+1.
+
+The power supply input is reverse polarity protected. If the power and ground to the power supply
+inputs are plugged in reverse, then the reverse polarity protection stops the incorrectly wired supply
+input from damaging or powering on the sensor.
+
+3.5.1 Pin Assignment : 6-pin Male M8 Connector
+Signals and corresponding pin numbers on the M8 connector are in the following table:
+Table 3.4—Pin Assignment for the 6-pin, Male, M8 Connector (Power and EtherCAT)
+Connector Schematic
+3
+
+2
+
+4
+
+6
+5
+
+1
+
+Pin Number
+
+Signal
+
+1
+
+TX+
+
+2
+
+TX-
+
+3
+
+RX+
+
+4
+
+RX-
+
+5
+
+V+
+
+6
+
+V-
+
+3.5.2 Pin Assignment : 8-Pin Male M12 ZC28 Connector
+For the 8-pin male M12 ZC28 connector on cable P/N 9105-C-ZC22-ZC28-X that connects
+to cable P/N 9105-C-ZC28-U-RJ45S-X, the signals and corresponding pin numbers are in the
+following table:
+Table 3.5—Pin Assignment for the 8-pin, Male, M12 Connector (Power and Ethernet)
+Connector Schematic
+
+Pin Number
+
+Signal
+
+1
+
+No Connection
+
+2
+
+V+
+
+3
+
+V-
+
+4
+
+TX-
+
+5
+
+RX+
+
+6
+
+TX+
+
+7
+
+No Connection
+
+8
+
+RX-
+
+Shield
+
+Shell
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+20
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+3.5.3 Pin Assignment for Cable P/N 9105-C-ZC28-U-RJ45S-X
+This cable has (2) branches: an unterminated end for power and a RJ45 connection for EtherCAT.
+For the signals and corresponding pin numbers/wire color, refer to the following sections.
+
+3.5.3.1 Branch 1, Unterminated End for Power Connection
+The signals and corresponding wire jacket color for the unterminated wires which
+connect to the customer’s device are in the following table:
+Table 3.6—Branch 1, Unterminated End: Wire Jacket Color, and Signal
+Wire Jacket Color
+
+Signal
+
+-
+
+Shield
+
+Brown
+
+V+
+
+Brown/White
+
+V-
+
+Blue/White (TP1+)1
+
+Sync
+
+Blue (TP1-)1
+
+Sync Ground
+
+Note:
+1.
+
+Reserved-not used.
+
+3.5.3.2 Branch 2, RJ45 Connection for EtherCAT
+The signals and corresponding pin numbers for the 8-pin RJ45 connect which connect
+to the customer device are in the following table:
+Table 3.7—Cable P/N 9105-C-ZC28-X Pin Assignment
+for the 8-pin, RJ45 Connector
+Connector Schematic
+
+Pin Number
+
+Wire Color
+
+Signal
+
+1
+
+White/Orange
+
+TX+
+
+2
+
+Orange
+
+TX-
+
+3
+
+White/Green
+
+RX+
+
+4
+
+-
+
+No
+Connection
+
+5
+
+-
+
+No
+Connection
+
+6
+
+Green
+
+RX-
+
+7
+
+-
+
+No
+Connection
+
+8
+
+-
+
+No
+Connection
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+21
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+3.6
+
+Accuracy Check Procedure
+Complete the following procedures after the initial installation of the sensor to the robot and once annually
+for maintenance.
+NOTICE: The mass on the tool side can be the weight of the tooling used in the application.
+1. Attach a fixed mass to the tool side of the F/T sensor:
+a.
+
+Remove cables that form bridges between the sensor’s mounting and tool sides.
+
+2. Power on the sensor. Allow a 30 minute warm-up time. Minimize external sources of
+temperature change.
+3. Move the robot so that the sensor is in the following positions:
+a. Record the sensor’s output, Fx, point n \ Fy, point n \ Fz, point n at each point without biasing:
+• Point 1: +Z up
+• Point 2: +X up
+• Point 3: +Y up
+• Point 4: -X up
+• Point 5: -Y up
+• Point 6: -Z up
+4. Calculate Fx, average \ Fy, average \ Fz, average:
+a. Use the following equations, to complete the calculations:
+
+5. For each of the 6 points, complete the following calculation:
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+22
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+6. The calculated tooling masses for all (6) points should deviate from each other by less than twice the
+worst accuracy rating of the sensor.
+• For example: the Axia80-M20 sensor’s rated accuracy is 2% the range on all axes. For a 500 N Fxy
+range and a 900 N Fz range, the allowable errors of any single data point would be ± 10 N Fxy and ±
+18 N Fz respectively. Since Fz has the larger tolerance, then one data point could be + 18 N and another
+data point could be–18 N, for a total range (max-min) of 36 N error.
+•
+
+In addition, the tooling mass should be within 36 N of the results of this test when it was performed
+with a new sensor.
+
+7. If this test fails, then the sensor should be returned to ATI for diagnosis or recalibration
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+23
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+4. Operation
+Information required when using software to operate the EtherCAT Sensor is provided in the following sections.
+Knowledge of EtherCAT standards and operation is required to communicate with the EtherCAT sensor.
+
+4.1
+
+Sensor Environment
+CAUTION: Damage to the outer jacketing of the sensor cable could enable moisture
+or water to enter an otherwise sealed sensor. Ensure the cable jacketing is in good
+condition to prevent sensor damage.
+NOTICE: Sensors may react to exceptionally strong and changing electromagnetic fields, such
+as those produced by magnetic resonance imaging (MRI) machines.
+The user must ensure that the dust and water in the environment does not exceed the IP64
+rating of the sensor.
+
+4.2
+
+LED Self-Test Sequence and Functions
+The EtherCAT F/T sensor has three LEDs for EtherCAT Link, Run, and Sensor Status. When the
+user applies power, the sensor completes a self-test, during which the LEDs under firmware control
+individually turn-on.
+
+4.2.1 LED Self-Test Sequence
+When the user applies power to the sensor, the sensor completes a self-test, during which the LEDs
+under firmware control individually turn-on in the following sequence:
+Sequence
+Order
+
+LED
+
+State
+
+1
+
+Sensor Status
+
+Red
+
+2
+
+Run
+
+Red
+
+3
+
+EtherCAT Link/Activity
+
+Red
+
+4
+
+Sensor Status
+
+Green
+
+5
+
+EtherCAT Link/Activity
+
+Green
+
+Duration
+
+Approximately one
+second for each LED.
+
+Note:
+1.
+
+The Green Run LED is not tested in the self-test sequence.
+
+4.2.2 EtherCAT Link/Activity LED
+One LED signals link/activity on the EtherCAT port as follows:
+LED State
+
+Link
+
+Activity
+
+Off
+
+No
+
+No
+
+Green
+
+Yes
+
+No
+Yes1
+
+Condition
+No EtherCAT connection.
+EtherCAT link/activity is detected.
+
+Note:
+1.
+
+This LED behavior is different from the standard EtherCAT device Link/Activity LED
+behavior, which is a flashing green LED.
+
+4.2.3 Run LED
+One LED signals the communication status of the EtherCAT sensor interface as follows:
+LED State
+Off
+
+Description
+EtherCAT interface is in the state “INIT”.
+
+Flashing green
+
+EtherCAT interface is in the state “Preoperational”.
+
+Green
+
+EtherCAT interface is in the state “Operational”.
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+24
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+4.2.4 Sensor Status LED
+One LED signals the health status of the sensor as follows:
+
+4.3
+
+LED State
+
+Description
+
+Off
+
+No power.
+
+Green
+
+Normal operation.
+The sensor’s electronics are functioning and communicating.
+
+Flashing green
+
+Power-up self testing.
+At power-up, the sensor completes diagnostic testing to verify
+internal electronics are functioning.
+
+Amber
+
+Sensing range exceeded.
+
+Red
+
+System error.
+
+Sample Rate
+The “Sample Rate” field in Section 5.2.1.11—Object 0x7010: Control Codes controls how fast the ADCs are
+sampling inside the sensor. Rounded and exact sample rates are in the following table.
+Table 4.1—Sample Rate
+Rounded Sample Rate
+
+0.5 kHz
+
+1 kHz
+
+2 kHz
+
+4 kHz
+
+Exact Sample Rate
+
+487 Hz
+
+975 Hz
+
+1990 Hz
+
+3900 Hz
+
+4.3.1 Sample Rate Versus Data Rate
+The data rate is how fast data can be output over the EtherCAT network.
+If the data rate is faster than the sample rate, the customer sees duplicate samples output over the
+network until the next sample is read internally. A faster data rate could be useful so that the sensor
+sends data at the same rate that other devices in a customer’s system are outputting. For example: if
+a discrete I/O device on the same network as the Axia is outputting data at 7,000 Hz, the customer
+may want the Axia to be outputting data to the network at 7,000 Hz as well, even though the sensor
+is not sampling that quickly internally.
+If the sample rate is faster than the data rate, the customer does not receive the data from every
+internal sample over the network. However, any filters that are enabled work based on the faster
+internal sample rate, and so, the sensor filters out higher frequency noise sources than if the filter is
+operating at a slower data rate.
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+25
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+4.4
+
+Low-pass Filter
+The power-on default selection is no filtering. The “Filter Selection” field in Section 5.2.1.11—Object
+0x7010: Control Codes controls the current filter selection. The cutoff frequency (for example: -3 dB
+frequency) is dependent on the sample rate selection which is defined in Section 4.3—Sample Rate. The
+cutoff frequencies for the different sampling rates are listed in the following table and graphs:
+Table 4.2—Low-Pass Filtering
+Selected
+Filter
+
+-3dB Cutoff Frequency (in Hz)
+at 0.5 kHz
+Sample Rate
+
+at 1 kHz
+Sample Rate
+
+at 2 kHz
+Sample Rate
+
+at 4 kHz
+Sample Rate
+
+0
+
+200
+
+350
+
+500
+
+1000
+
+1
+
+58
+
+115
+
+235
+
+460
+
+2
+
+22
+
+45
+
+90
+
+180
+
+3
+
+10
+
+21
+
+43
+
+84
+
+4
+
+5
+
+10
+
+20
+
+40
+
+5
+
+2.5
+
+5
+
+10
+
+20
+
+6
+
+1.3
+
+3
+
+5
+
+10
+
+7
+
+0.6
+
+1.2
+
+2.4
+
+4.7
+
+8
+
+0.3
+
+0.7
+
+1.4
+
+2.7
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+26
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+Figure 4.1—Filter Attenuation at 0.5 kHz Sample Rate
+
+0.0 dB
+
+200 Hz
+60 Hz
+
+-6.0 dB
+22 Hz
+10 Hz
+
+-12.0 dB
+5 Hz
+
+Attenuation
+
+2.5 Hz
+-18.0 dB
+
+1.3 Hz
+0.6 Hz
+0.3 Hz
+
+-24.0 dB
+
+-30.0 dB
+0 Hz
+
+1 Hz
+
+10 Hz
+
+100 Hz
+
+1000 Hz
+
+Frequency
+
+Figure 4.2—Filter Attenuation at 1 kHz Sample Rate
+
+0.0 dB
+350Hz
+
+115 Hz
+-6.0 dB
+45 Hz
+
+21 Hz
+-12.0 dB
+10 Hz
+
+Attenuation
+5 Hz
+-18.0 dB
+3 Hz
+
+1.2 Hz
+-24.0 dB
+0.7 Hz
+
+-30.0 dB
+0 Hz
+
+1 Hz
+
+10 Hz
+
+100 Hz
+
+1000 Hz
+
+Frequency
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+27
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+Figure 4.3—Filter Attenuation at 2 kHz Sample Rate
+
+0.0 dB
+500 Hz
+
+235 Hz
+90 Hz
+
+-6.0 dB
+43 Hz
+
+20 Hz
+-12.0 dB
+
+10 Hz
+
+Attenuation
+
+5 Hz
+2.4 Hz
+
+-18.0 dB
+1.4 Hz
+
+-24.0 dB
+
+-30.0 dB
+0 Hz
+
+1 Hz
+
+10 Hz
+
+100 Hz
+
+1000 Hz
+
+Frequency
+
+Figure 4.4—Filter Attenuation at 4 kHz Sample Rate
+
+0.0 dB
+
+1000 Hz
+460 Hz
+180 Hz
+84 Hz
+
+-6.0 dB
+40 Hz
+
+20 Hz
+-12.0 dB
+10 Hz
+
+Attenuation
+
+4.7 Hz
+
+2.7 Hz
+
+-18.0 dB
+
+-24.0 dB
+
+-30.0 dB
+0 Hz
+
+1 Hz
+
+10 Hz
+
+100 Hz
+
+1000 Hz
+
+Frequency
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+28
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+4.5
+
+Tool Transformation
+By default, the forces and torques are reported with respect to a point of origin on the sensor that is set
+by ATI. For the sensor’s point of origin, refer to the customer drawing on the ATI website.. The tool
+transformation function allows measurement of the forces and torques at a reference point other than the
+sensor’s point of origin.
+CAUTION: If the customer sets a reference point that is at the same location to which
+a force is applied, there will be no report of a torque applied to the sensor. As a result,
+the sensor could be overloaded (refer to Section 4.5.1—Avoid Overloading the Sensor
+During Tool Transformation). Therefore, when evaluating overloading conditions, use
+the sensor’s point of origin as the reference point.
+The user defines a reference point by inputting a parameter set that is a series of (3) displacements (Dx \ Dy \
+Dz) and (3) rotations (Rx \ Ry \ Rz), for example:
+Dx = -97.3 mm Dy= 46.1 mm Dz = 201.82 mm
+
+Rx = +90° rotation Ry= +180° rotation Rz= 0° rotation
+
+If zeros are entered for any of the parameter set values, the tool transformation is not performed for that
+particular parameter. Entering zero for all of the parameters, turns the tool transformation feature off. Once a
+new parameter set is entered and saved, previously entered parameter sets are no longer in effect.
+Once a user enters a parameter set, the displacements are performed first. The displacements of the user
+reference frame of origin from the sensor point of origin is shown in the following figure. In this figure, the
+user reference frame of origin has not yet rotated relative to the sensor point of origin.
+Figure 4.5—Tool Transformation : Distances
+Z+ Axis
+before rotation.
+Y+ Axis
+before rotation.
+
+X+ Axis
+before rotation.
+Sensing reference frame origin
+that is set by the customer.
+
+201.82 mm
+Customer tooling
+
+Z+
+
+X+
+Y+
+
+The tool side of
+the sensor.
+The robot side
+of the sensor.
+
+46.1 mm
+
+97.3 mm
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+29
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+After the displacements, the user point of origin rotates in the following order:
+1. The first rotation is about the X-axis.
+• Recall in this example Rx = +90° rotation. The user point of origin rotates +90° about the X-axis, in the
+following figure.
+Figure 4.6—Tool Transformation : Rotation About the X-Axis
+Y+ Axis
+after X rotation
+X+ Axis
+after X rotation.
+
+Z+ Axis
+after X rotation
+
+Customer tooling
+Z+
+
+Y+
+
+X+
+The tool side of
+the sensor.
+The robot side
+of the sensor.
+
+2. The second rotation is about the Y-axis of the new user output reference frame.
+• In this example Ry = +180° rotation. The user point of origin rotates +180° about the Y-axis of the new
+user output reference frame, in the following figure.
+Figure 4.7—Tool Transformation: Rotation About the Y-Axis
+Y+ Axis
+after Y rotation
+Z+ Axis
+after Y rotation
+
+X+ Axis
+after X rotation.
+
+Customer tooling
+Z+
+
+Y+
+
+X+
+
+The tool side of
+the sensor.
+The robot side
+of the sensor.
+
+3. The third and final rotation is about the Z-axis of the new user output reference frame.
+• In this example RZ = 0° rotation. Therefore, the user point of origin does not rotate any more.
+After, the rotations are complete, the final user reference frame of origin is set.
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+30
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+A user can issue tool transformation commands through EtherCAT dictionary Object 0x2020 (refer to
+Section 5.2.1.2—Object 0x2020: Tool Transformation).
+
+4.5.1 Avoid Overloading the Sensor During Tool Transformation
+It is possible for the user to set a reference point of origin that does not detect that a torque is
+applied to the customer tooling, and by extension, the sensor. Torque is the force multiplied by the
+distance of that force from a reference point of origin. If the customer reference point of origin is
+at the same point at which a force is applied, the distance from that force to the customer reference
+point of origin is zero. Any force that is multiplied by a distance of zero yields zero torque. The
+software tool transformation reports that no torque is applied to the sensor. However, the sensor’s
+point of origin has not changed, and the force is still applied at a distance from the sensor’s point of
+origin. Therefore, if the customer is evaluating overloading conditions, the customer should use the
+sensor’s point of origin as the reference point.
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+31
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+5. EtherCAT Bus Interface
+The EtherCAT bus interface enables users to perform the following actions:
+•
+
+Read the active calibration information matrix, and serial number
+
+•
+
+Read the firmware revision
+
+•
+
+Read force/torque data
+
+•
+
+Read strain gage data and status information
+
+•
+
+Set low-pass filter cutoff frequency
+
+•
+
+Bias the sensor
+
+•
+
+Change the sample rate
+
+5.1
+
+PDO Interface
+The PDO interface exchanges data in real time with the F/T sensor.
+
+5.2
+
+a.
+
+TxPDO Map / Output Data
+The TxPDO combines Object 0x6000: Reading Data, Object 0x6010: Status Code, and Status
+Code: Force/Torque Out of Range.
+
+b.
+
+RxPDO Map / Input Data
+The RxPDO map consists of Object 0x7010: Control Codes.
+
+EtherCAT Dictionary Objects (SDO Data)
+The SDO data configures the sensor and reads the manufacturing and calibration data. This
+section lists dictionary Objects specific to the EtherCAT F/T sensor application and some
+Objects that are a required part of the EtherCAT standard. Dictionary Objects (covered in this
+section) can be found in the ECAT Axia80 ESI File (ATI P/N 9030-05-1021) that is located at
+https://www.ati-ia.com/Products/ft/software/axia_software.aspx.
+While using some dictionary Objects, the user may need to convert a code from hexadecimal to a 32-bit
+binary number (refer to Section 5.2.3—How to Interpret Hexadecimal Output).
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+32
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+5.2.1 ATI Specific Area Objects
+The structure of these Objects are defined by ATI.
+
+5.2.1.1 Object 0x2019: Product Description
+CAUTION: Most users should not edit the fields in Object 0x2019.
+Changing these fields results in the ATI-provided EtherCAT Axia
+ESI/XML file not working. Therefore, this Object is not visible with
+the standard EtherCAT Axia ESI/XML file. To change these fields,
+contact ft_support@ati-ia.com for support
+This read/write Object allows a user to change this field in order to brand the sensor
+as part of their own system. This Object is not visible to most users. Instead, the same
+information can be found in Section 5.2.2—EtherCAT Communication Area Objects.
+Table 5.1—Object Index (hex) 0x2019: Product Description
+Subindex
+(Hex)
+
+Default Value
+Description
+
+Type
+
+Hexadecimal
+Format
+
+Decimal
+Format
+
+String
+
+Vendor ID
+
+The value written to this
+field will be read into
+Object 0x1018, Subindex
+0x01: Vendor ID (refer to
+Section 5.2.2.3—Object
+0x1018: Identity).
+
+UDINT
+
+0x00000732
+
+1842
+
+-
+
+Product
+Code
+
+The value written to this
+field will be read into Object
+0x1018, Subindex 0x02:
+Product Code (refer to
+Section 5.2.2.3—Object
+0x1018: Identity).
+
+UDINT
+
+0x26483053
+
+642265171
+
+-
+
+0x03
+
+Product
+Name
+
+The value written to this
+field will be read into Object
+0x1008:Device Name (refer
+to Section 5.2.2.2—Object
+0x1008: Device Name).
+
+String(32)
+
+-
+
+-
+
+“ATI Axia F/T
+Sensor”
+
+0x04
+
+Product
+Revision
+
+0x05
+
+Product
+Serial
+Number
+
+0x01
+
+0x02
+
+0x06
+
+0x07
+
+Name
+
+UDINT
+This field is not used by ATI.
+
+N/A
+UDINT
+
+Manufacturer
+
+A field to identify ATI
+or a company that has
+integrated the ATI sensor
+into their branded system.
+
+String(32)
+
+-
+
+-
+
+“ATI
+Industrial
+Automation”
+
+Commit
+
+To use this field, the user
+must have an ATI-provided
+password. This field
+accepts changes to other
+fields within this Object.
+
+UDINT
+
+0x00000000
+
+0
+
+-
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+33
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+5.2.1.2 Object 0x2020: Tool Transformation
+This Object allows the settings for the function tool transformation to be viewed or changed. After
+entering the changes, commit to the changes by entering “123” into the “Commit” field at the
+bottom of the Object. To turn off this feature, set the three displacements and rotations to zero. This
+Object contains the following fields:
+Table 5.2— Object Index (hex) 0x2020: Tool Transformation
+Subindex
+
+Name
+
+0x01
+
+Dx
+
+0x02
+
+Dy
+
+0x03
+
+Dz
+
+0x04
+
+Rx
+
+0x05
+
+Ry
+
+0x06
+
+Rz
+
+Type
+STRING(12)
+Enter each
+element as a
+floating-point
+number in
+text form.
+
+Description
+Displacement along the X axis in units of ttDistUnits.
+Displacement along the Y axis in units of ttDistUnits.
+Displacement along the Z axis in units of ttDistUnits.
+Rotation about the X axis in units of ttAngUnits.
+Rotation about the Y axis in units of ttAngUnits.
+Rotation about the Z axis in units of ttAngUnits.
+
+0x07
+
+ttDistUnits
+
+UINT8
+
+Distance units:
+0 = inches
+1 = feet
+2 = mm
+3 = cm
+4=m
+
+0x08
+
+ttAngUnits
+
+UINT8
+
+Rotation units:
+0 = degrees
+1 = radians
+
+0x09
+
+Commit
+
+UINT8
+
+Write “123” here to set the changes.
+
+5.2.1.3 Object 0x2021: Calibration
+This read-only Object contains information about the currently active calibration selected by the
+“Calibration Selection” field in Section 5.2.1.11—Object 0x7010: Control Codes. This Object
+contains the following fields:
+Table 5.3— Object Index (hex) 0x2021: Calibration
+Subindex
+
+Name
+
+Type
+
+Description
+
+0x01
+
+FT Serial
+
+STRING(8)
+
+The F/T Serial Number,
+e.g. “FT01234”.1
+
+0x02
+
+Calibration Part
+Number
+
+STRING(30)
+
+The calibration part number
+e.g. “SI-500-20”.2
+
+0x03
+
+Calibration Family
+
+STRING(8)
+
+Always reads “ECAT”.
+
+0x04
+
+Calibration Time
+
+STRING(30)
+
+The date the sensor was
+calibrated.
+
+0x05 through
+0x2e
+
+Reserved
+
+DINT
+
+Reserved
+
+Notes:
+1.
+
+This field identifies an individual sensor. A sensor may have more than one FTxxxxx calibration
+serial number; each F/T calibration serial number identifies a separate calibration. No two
+sensors share an F/T calibration serial number.
+
+2.
+
+This field identifies the calibration size. A sensor model may have more than one calibration size/
+part number.
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+34
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+Table 5.3— Object Index (hex) 0x2021: Calibration
+Subindex
+
+0x2f
+
+0x30
+
+Name
+
+Force Units
+
+Torque Units
+
+0x31
+
+Max Fx Counts
+
+0x32
+
+Max Fy Counts
+
+0x33
+
+Max Fz Counts
+
+0x34
+
+Max Tx Counts
+
+0x35
+
+Max Ty Counts
+
+0x36
+
+Max Tz Counts
+
+0x37
+
+Type
+
+USINT
+
+USINT
+
+Description
+Value
+
+Unit
+
+0
+
+Lbf
+
+1
+
+N
+
+2
+
+Klbf
+
+3
+
+kN
+
+4
+
+Kg
+
+Value
+
+Unit
+
+0
+
+lbf-in
+
+1
+
+lbf-ft
+
+2
+
+Nm
+
+3
+
+Nmm
+
+4
+
+Kgf-cm
+
+5
+
+kNm
+
+DINT
+
+The maximum rated value for
+this axis, in counts.
+
+Counts Per Force
+
+DINT
+
+The calibration counts per
+force unit.
+
+0x38
+
+Counts Per Torque
+
+DINT
+
+The calibration counts per
+torque unit.
+
+0x39 through
+0x56
+
+Reserved
+
+UINT
+
+Reserved
+
+0x57
+
+PeakLoadsPosFx
+
+0x58
+
+PeakLoadsPosFy
+
+0x59
+
+PeakLoadsPosFz
+
+0x5a
+
+PeakLoadsPosTx
+
+DINT
+
+0x5b
+
+Peak Loads Positive. All-time
+peak positive force/torque
+loads in counts per unit.
+
+PeakLoadsPosTy
+
+0x5c
+
+PeakLoadsPosTz
+
+0x5d
+
+PeakLoadsNegFx
+
+0x5e
+
+PeakLoadsNegFy
+
+0x5f
+
+PeakLoadsNegFz
+
+0x60
+
+PeakLoadsNegTx
+
+DINT
+
+0x61
+
+PeakLoadsNegTy
+
+Peak Loads Negative. Alltime peak negative force/
+torque loads in counts per
+unit.
+
+0x62
+
+PeakLoadsNegTz
+
+0x63 through
+0x97
+
+Reserved
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+35
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+5.2.1.4 Object 0x2080: Diagnostic Readings
+This read-only Object provides firmware version information. In this version Object, the following
+fields are available:
+Table 5.4— Object Index (hex) 0x2080: Diagnostic Readings
+Subindex
+
+Name
+
+Type
+
+Description
+
+0x01
+
+Supply Voltage
+
+UINT16
+
+The voltage of the external
+power supply x 10.
+
+0x02
+
+Gage Temperature
+
+INT16
+
+The sensor temperature in °C
+x 10.
+
+0x03
+
+Status Message
+
+STRING(40)
+
+A priority status code error
+message (refer to Table 5.5)
+
+Table 5.5—Errors in the Diagnostic Readings Status Message
+Priority
+
+Text Error Messages
+
+1
+
+Supply voltage out of range
+
+2
+
+Gage temperature out of range
+
+3
+
+Calibration checksum error
+
+4
+
+Gage(s) disconnected: <list>
+
+5
+
+Gage(s) out-of-range: <list>
+
+6
+
+Force/torque out of range
+
+7
+
+Hardware or stack error
+
+8
+
+Simulated error
+
+9
+
+Spare
+
+10
+
+Error (unspecified)
+
+11
+
+No status code errors
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+36
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+5.2.1.5 Object 0x2090: Version
+This read-only Object provides firmware version information. In this version Object, the following
+fields are available:
+Table 5.6— Object Index (hex) 0x2090: Version
+Subindex
+
+Name
+
+Type
+
+Description
+
+0x01
+
+Major
+
+UINT
+
+Major Version
+
+0x02
+
+Minor
+
+UINT
+
+Minor Version
+
+0x03
+
+Revision
+
+UINT
+
+Revision
+
+0x04
+
+Boatloader Version
+
+UDINT
+
+Bootloader Version
+
+0x05
+
+SensorHwVer
+
+UINT
+
+Sensor Hardware Version
+
+0x06
+
+SensorInstrument
+
+UINT
+
+Sensor Instrument
+
+5.2.1.6 Object 0x6000: Reading Data
+This read-only Object represents the current force/torque and is mapped into the TxPDO input data.
+In the reading data, the following fields are present:
+Table 5.7— Object Index (hex) 0x6000: Reading Data
+Subindex
+
+Name
+
+0x01
+
+Fx
+
+0x02
+
+Fy
+
+0x03
+
+Fz
+
+0x04
+
+Tx
+
+0x05
+
+Ty
+
+0x06
+
+Tz
+
+Type
+
+Description
+
+DINT
+
+These fields contain the 32-bit F/T
+result data, in counts per unit.
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+37
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+5.2.1.7 Object 0x6010: Status Code
+This Object contains a single DINT value (at subindex 0), with the following bitmap:
+Table 5.8— Object Index (hex) 0x6010: Status Code
+Bit
+Description
+Number
+
+Indicates
+an Error?
+
+0
+
+Internal Temperature Out of Range: This bit is active (high) if the
+temperature is outside the range -5 to 70°C.
+
+Yes
+
+1
+
+Supply Voltage Out of Range: This bit is active (high) if the input
+voltage is outside the range of 12 V to 30 V.
+
+Yes
+
+2
+
+Broken Gage: This bit is active whenever any gage reads positive
+full scale and indicates that the electrical connection to the gage is
+open or disconnected. This bit stays high for 32 samples, after the
+last such sample, to allow time for the sample’s effect on the data to
+abate.
+
+Yes
+
+Busy Bit. The sensor is performing (1) or more of the following
+activities that may temporarily affect the F/T data:
+Committing a change to Object 0x2021.
+•
+3
+
+•
+
+Changing the filter time constant.
+
+•
+
+Changing the calibration in use.
+
+•
+
+Changing the ADC sampling rate.
+
+•
+
+Writing to flash memory.
+
+•
+
+Any ADC ISR overrun.
+
+Yes
+
+4
+
+Reserved.
+
+No
+
+5
+
+Hardware or stack error.
+
+Yes
+
+6-25
+
+Reserved.
+
+No
+
+26
+
+Gage Out of Range Warning: This bit is active if a strain gage
+warning range (gageMinRangeWam to gageMaxRangeWam) has
+been exceeded in any of the past holdTime (normally 32) samples.
+
+Yes
+
+27
+
+Gage Out of Range: The bit is active if a strain gage output
+operating range has been exceeded in any of the past 32 samples.
+
+Yes
+
+28
+
+Simulated Error. This bit mirrors the “Simulated Error Control” bit in
+Section 5.2.1.11—Object 0x7010: Control Codes. It can be used to
+test user error handling.
+
+Yes
+
+29
+
+Calibration checksum error: This bit is set if the active calibration
+has an invalid checksum.
+
+Yes
+
+30
+
+Sensing Range Exceeded1: This bit is set whenever a F/T reading
+exceeds the calibrated range. This check occurs before digital
+filtering.
+
+Yes
+
+31
+
+Error: This bit is set whenever any status code bit that indicates an
+error is set.
+
+Yes
+
+Note:
+1.
+
+Sensing Range Exceeded is comparable to what previous F/T sensor manuals identified as
+saturation.
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+38
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+5.2.1.8 Status Code: Force/Torque Out of Range
+Bit 30 in Table 5.8 is set when a F/T load is outside the sensor’s detection capability. Bit 30 is set
+when either of the following conditions are TRUE:
+• The total percentage of the calibrated range used by Fxy and Tz axes is greater than 105%. Refer
+to the following Fxy Tz equation.
+
+• The total percentage of the calibrated range used by Fz and Txy axes is greater than 105%. Refer
+to the following Fz Txy equation.
+
+For the calibrated ranges that are used in the preceding equations, refer to Section 8.3—Calibration
+Ranges. For Example:
+An Axia80-M20 sensor that uses calibration range 0 is subjected to the following loads and has the
+following calibration ranges:
+Table 5.9—Example of Force/Torque Out of Range
+Axis
+
+Applied Load
+
+Calibration Range 0
+Table 8.3 Value
+
+Fx
+
+87.5 N
+
+500 N
+
+Fy
+
+-151.6 N
+
+500 N
+
+Fz
+
+-500.0 N
+
+900 N
+
+Tx
+
+1.0 Nm
+
+20 Nm
+
+Ty
+
+2.0 Nm
+
+20 Nm
+
+Tz
+
+-17.5 Nm
+
+20 Nm
+
+The Fxy Tz equation simplifies as follows:
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+39
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+The Fz Txy equation simplifies as follows:
+
+Because the Fxy Tz equation simplified to TRUE, bit 30 in Table 5.8 is set.
+
+5.2.1.9 Object 0x6020: Sample Counter
+This Object contains a single 32-bit unsigned integer at subindex 0 that increases by one each time
+a F/T sample (one complete set of gage data) is read.
+This number rolls over from 4 294 967 295 (232-1) to 0 without signalling an error. The sample
+counter is reset to zero during power up.
+
+5.2.1.10 Object 0x6030: Gage Data
+This read-only Object reads the latest raw gage data.
+Table 5.10— Object Index (hex) 0x6030: Raw Unbiased Gage Data
+Subindex
+
+Name
+
+0x01
+
+Gage 0
+
+0x02
+
+Gage 1
+
+0x03
+
+Gage 2
+
+0x04
+
+Gage 3
+
+0x05
+
+Gage 4
+
+0x06
+
+Gage 5
+
+0x07
+
+Gage 6
+
+Type Description
+
+DINT These fields contain the latest raw gage values.
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+40
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+5.2.1.11 Object 0x7010: Control Codes
+This Object is mapped into the RxPDO for real-time control of the F/T system. This Object
+contains the following fields:
+Table 5.11— Object Index (hex) 0x7010: Control Codes
+Subindex
+
+0x01
+
+Name
+
+Control 1
+
+Type Description
+Bit
+
+Function
+
+0
+
+1 = Set bias against current load
+0 = Use last set bias1
+
+1
+
+Reserved
+
+2
+
+1 = clear bias
+0 = leave bias unchanged
+
+3
+
+Reserved
+
+4-7
+
+The low-pass filter selection.
+0 = No filtering
+1–8 = Refer to Section 4.4—Low-pass Filter
+for details.
+
+DINT
+
+Active calibration.
+8-11
+
+Calibration slot 0, refer to Table 8.3.
+Calibration slot 1, refer to Table 8.3.
+2 through 15 = Reserved.
+
+0x02
+
+Control 2
+
+DINT
+
+12-15
+
+Sample Rate
+0 = 487 Hz
+1 = 975 Hz
+2 = 1990 Hz
+3 = 3900 Hz
+
+16-31
+
+Reserved
+
+Bit
+
+Function
+
+0-30
+
+Reserved
+
+31
+
+Simulated Error Control
+
+Note:
+1.
+
+This bit must be returned to 0 for the sensor to read properly, after a bias command is
+entered. If this bit is held at 1, then the sensor will continuously bias and output readings of
+zero in all axes.
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+41
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+5.2.2 EtherCAT Communication Area Objects
+The structure of these 0x1000 Objects are defined by the EtherCAT® Technology Group. ATI does
+not use all fields.
+
+5.2.2.1 Object 0x1000: Device Type
+This read-only Object describes the type of EtheCAT device.
+Table 5.12—Object Index (hex) 0x1000: Device Type
+Type
+
+Description
+
+The EtherCAT device category under
+UDINT which the ATI EtherCAT Axia is
+categorized.
+
+Default
+Value (hex)
+
+Default
+Value
+(decimal)
+
+0x00000192
+
+402
+
+5.2.2.2 Object 0x1008: Device Name
+This read-only Object describes the name of the device. The EtherCAT® Technology
+Group defines the structure of this Object but leaves it as optional. ATI programs in a
+default name, and this name may change. ATI can provide support to users who want
+to change this field. Sometimes users may want to change this field so they can brand
+the ATI sensor as part of their system.
+Table 5.13—Object Index (hex) 0x1008: Device Name
+Type
+STRING
+
+Description
+
+Default Value (string)
+
+The name of the device as a non-zero
+terminated string. Do not use for product
+identification.1
+
+“ATI Axia F/T Sensor”
+
+Note:
+1.
+
+Because this field can change, do not use this field for product identification. For
+fields that can be used for product identification, refer to Section 5.2.2.3—Object
+0x1018: Identity.
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+42
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+5.2.2.3 Object 0x1018: Identity
+This read-only Object contains information about the connected EtherCAT device (in this case, the
+ATI EtherCAT Axia sensor). The EtherCAT® Technology Group defines the structure of this Object,
+and ATI defines the values for each ATI product. ATI can provide support to users who want to
+change this field. Sometimes users may want to change this field so they can brand the ATI sensor
+as part of their system.
+Table 5.14—Object Index (hex) 0x1018: Identity Object
+Subindex
+(Hex)
+
+Name
+
+Functionality
+
+Type
+
+Default
+Value (hex)
+
+Default Value
+(decimal)
+
+Vendor
+ID
+
+This Vendor ID number is
+assigned by EtherCAT®
+Technology Group
+uniquely to ATI. 1
+
+0x01
+
+UDINT
+
+0x00000732
+
+1842
+
+0x02
+
+Product
+Code
+
+This Product Code is
+assigned by ATI uniquely
+to the EtherCAT Axia
+sensors (ATI part numbers
+9105-ECAT-Axiax-x
+where x indicates the Axia
+model). 2
+
+UDINT
+
+0x26483053
+
+642265171
+
+0x03
+
+Revision
+Number
+
+This field is subject to
+change and should not
+be used for identification
+purposes. 3
+
+Serial
+Number
+
+This field is subject to
+change and should not
+be used for identification
+purposes. 4
+
+0x04
+
+UDINT
+
+N/A
+
+Note:
+1.
+2.
+3.
+4.
+
+Because this field does not change among ATI products, use Vendor ID for product identification.
+For EtherCAT Axia sensors, this field does not change and can be used for product identification.
+To identify a sensor model and calibration size, refer to Section 5.2.1.3—Object 0x2021:
+Calibration, subindex 0x02 (calibration part number).
+To identify an individual sensor, refer to Section 5.2.1.3—Object 0x2021: Calibration, subindex
+0x01 (F/T Serial).
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+43
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+5.2.2.4 Unused EtherCAT Objects
+The EtherCAT® Technology Group defines the structure of these Object but leaves them as
+optional. Currently, ATI does not use these fields. Instead, the information is included in
+Section 5.2.1—ATI Specific Area Objects. To know what ATI Objects should be reference, refer to
+the following table:
+Table 5.15—Unused EtherCAT Objects
+Object
+Index
+(Hex)
+
+Object
+Name
+
+0x1001
+
+Error
+Register
+
+0x1009
+
+Hardware
+Version
+
+0x100A
+
+Software
+Version
+
+Type
+
+Cross-Reference to the
+ATI Specific Area Objects
+
+Default
+Value (hex)
+
+Default
+Value
+(decimal)
+
+USINT
+
+To monitor the F/T sensor
+status code, refer to
+Section 5.2.1.7—Object
+0x6010: Status Code.
+
+0x00
+
+0
+
+STRING
+
+To view the F/T sensor
+hardware version, refer to
+Section 5.2.1.5—Object
+0x2090: Version.
+
+STRING
+
+To view the sensor
+software version, refer to
+Section 5.2.1.5—Object
+0x2090: Version.
+
+N/A
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+44
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+5.2.3 How to Interpret Hexadecimal Output
+The user converts hexadecimal outputs to a 32-bit binary number that correlates to a code in a
+dictionary Object. An example of bit patterns are in the following table.
+Table 5.16—Bit Pattern Examples
+Simple Description
+(refer to Table 5.8)
+
+Bit Pattern
+
+0
+
+Temperature
+
+0x80000001
+
+1
+
+Supply voltage
+
+0x80000002
+
+2
+
+Broken gage
+
+0x80000004
+
+3
+
+Busy bit
+
+0x80000008
+
+4
+
+Reserved
+
+5
+
+Other
+
+Bit Number
+
+6 to 25
+
+N/A
+0x80000020
+
+Reserved
+
+N/A
+
+26
+
+Gage Out of Range Warning
+
+0x84000000
+
+27
+
+Gage out of range
+
+0x88000000
+
+28
+
+Simulated error
+
+0x10000000
+
+29
+
+Calibration checksum error
+
+0xA0000000
+
+30
+
+F/T out of range
+
+0xC0000000
+
+31
+
+Any error
+
+0x80000000
+
+—
+
+Healthy
+
+0x00000000
+
+The bit pattern can be different if more than one error is present. For example, if the status code is
+80000005 then the user must convert the hexadecimal number to a binary number.
+Using a free online calculator, convert the hexadecimal number to a binary number:
+Hex
+
+8
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+5
+
+Binary
+
+1000
+
+0000
+
+0000
+
+0000
+
+0000
+
+0000
+
+0000
+
+0101
+
+The binary number has 32-bits total. The least significant bit is on the right end of the following
+table. “1” means the bit is on. “0” means the bit is off.
+Binary
+Number
+
+1
+
+0
+
+0
+
+0
+
+0
+
+0
+
+Bit
+31 30
+Position
+
+29
+
+28 27 26
+
+00 0000 0000 0000 0000 00 0
+25 to 6
+
+5
+
+0
+
+0
+
+1
+
+0 1
+
+4
+
+3
+
+2
+
+1 0
+
+So in this example, bit number 0, 2 and 31 are on. According to the preceding table, the sensor has
+a “temperature”, “broken gage error”, and “any error” status codes (refer to Table 5.8).
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+45
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+5.3
+
+Establishing Communication with the EtherCAT Axia Sensor
+The following steps guides the user through initializing communication between the EtherCAT Axia sensor
+and the customer’s EtherCAT master device. Always refer to the software manual for the EtherCAT master
+device for instructions best suited for your application.
+1. Attach the sensor to the EtherCAT and power cables. Refer to Section 3.3—Installing the Sensor to the
+Robot and Section 3.5—Pin Assignment for the EtherCAT and Power Connection.
+2. Import the ECAT Axia80 ESI File (ATI P/N 9030-05-1021) that is located at
+https://www.ati-ia.com/Products/ft/software/axia_software.aspx.
+• Specific steps to import the ESI file varies among the different EtherCAT master software and
+hardware available to the customer.
+3. Configure the EtherCAT master device to communicate with the EtherCAT sensor.
+4. In the software for the EtherCAT master, read the calibration data at system start by using a SDO read to
+Object 0x2021, the Calibration Object (refer to Section 5.2.1.3—Object 0x2021: Calibration).
+5. Upon receipt of each real-time PDO sample, divide the force and torque counts values by the counts per
+force and counts per torque values from the Calibration Object to calculate the F/T units values.
+• F/T units are in the units specified in the calibration.
+•
+
+For different units, the software for the EtherCAT master device can adjust the counts per force and
+counts per torque values so that the resulting units are in the desired units.
+• For example: If the calibration outputs 1,000,000 counts per Newton (N), to calculate the output
+in counts per pound force (lbf), perform the following conversion:
+
+6. Maintenance
+6.1
+
+Periodic Inspection
+With industrial-type applications that frequently move the system’s cabling, you should check the cable
+jacket for signs of wear. The Axia sensor is IP64 rated. Debris and dust should be kept from accumulating
+on or in the sensor. The surface of the sensor can be cleaned with isopropyl alcohol, if contaminated by its
+environment. The sensor itself should experience no wear, if used within the operating ranges and fastened
+to the proper torque specifications (refer to Section 8—Specifications and Section 3.3—Installing the
+Sensor to the Robot).
+
+6.2
+
+Periodic Calibrating
+Periodic calibration of the sensor and its electronics is required to maintain traceability to national standards.
+Follow applicable ISO-9000-type standards for calibration. ATI Industrial Automation recommends annual
+accuracy checks (refer to Section 3.6—Accuracy Check Procedure).
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+46
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+7. Troubleshooting
+This section includes answers to some issues that might arise when setting up and using the EtherCAT Axia. The
+question or concern is listed followed by its probable answer or solution. They are categorized for easy reference.
+The information in this section should answer many questions that might arise in the field. Customer service is
+available to users who have questions or concerns addressed in the manuals.
+Note:
+Please read the manual before calling customer service. Before calling, have the following information available:
+1.
+
+Serial number (e.g., FT01234)
+
+2.
+
+Sensor model (e.g., Axia80-M20)
+
+3.
+
+Calibration (e.g., US-15-50, SI-65-6, etc.)
+
+4.
+
+Accurate and complete description of the question or concern
+
+•
+
+For the status code; refer to Section 5.2.1.7—Object 0x6010: Status Code.
+
+5.
+
+Computer and software information (operating system, PC type, drivers, and application software)
+
+Be near the F/T system when calling (if possible).
+Please contact an ATI representative for assistance, if needed:
+ATI Industrial Automation
+1031 Goodworth Drive
+Apex, NC 27539 USA
+www.ati-ia.com
+Application Engineering
+Tel: +1.919.772.0115, Extension 511
+Fax: +1.919.772.8259
+E-mail: ft_support@ati-ia.com
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+47
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+7.1
+
+Errors with Force and Torque Readings
+Inaccurate data from the sensor’s strain gages can cause errors in force/torque readings. These errors can
+result in problems with sensor biasing and accuracy. Listed in the following table are the basic problems of
+inaccurate data.
+Symptom
+
+Cause and Resolution
+
+Noise
+
+Jumps in force torque data readings (with the sensor unloaded) greater
+than 0.05% of full scale counts is abnormal. Noise can be caused by
+mechanical vibrations and electrical disturbances, possibly from a poor
+ground. Noise can also indicate component failure within the system.
+Make sure that the DC supply voltage for the Axia80 sensor has little
+to no noise superimposed. The sensor should be grounded through
+installation construction.
+
+Drift
+
+After a load is removed or applied, the raw gage reading does not
+stabilize but continues to increase or decrease. A shift in the raw gage
+reading is observed more easily in the resolved data mode using the
+bias command. Some drift from a change in temperature or mechanical
+coupling is normal.Mechanical coupling occurs when a tool plate
+contacts the sensor body, for example, debris between the tool adapter
+plate and the sensor body or in applications such as hoses and wires
+attached to a tool.
+
+Hysteresis
+
+When the sensor is loaded and then unloaded, gage readings do not
+return quickly and completely to their original readings. Hysteresis is
+caused by mechanical coupling (explained in Drift section) or internal
+failure.
+
+Sensor not streaming
+measurement data to the
+customer devices that use
+EtherCAT fieldbus.
+
+Verify the sensor is correctly installed. Ensure the robot mounting and
+tool adapter plates are installed on the proper side of the sensor. Refer
+to Section 3—Installation for more information.
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+48
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+8. Specifications
+The requirements for the EtherCAT sensor interface are covered in the following sections.
+
+8.1
+
+Storage and Operating Conditions
+Table 8.1—Environmental Conditions
+
+8.2
+
+Parameter
+
+Value
+
+Storage Temperature, °C
+
+-20 to +85
+
+Operating Temperature, °C
+
+0 to +65
+
+Relative Humidity
+
+<95%, non-condensing
+
+Electrical Specifications
+Table 8.2—Power Supply1
+Voltage
+
+Power Source
+
+Power Consumption
+
+Minimum
+
+Nominal
+
+Maximum
+
+Maximum
+
+12 V
+
+24 V
+
+30 V
+
+1.5 W
+
+DC Power
+Notes:
+1.
+
+8.3
+
+The power supply input is reverse polarity protected. If the power and ground to the power supply
+inputs are plugged in reverse, then the reverse polarity protection stops the incorrectly wired supply
+input from damaging or powering on the sensor.
+
+Calibration Ranges
+Table 8.3—Calibration Range 0 and Calibration Range 1
+Model
+
+Axia80-M8
+
+Axia80-M20
+
+Axia80-M50
+
+Parameter
+
+Fxy
+
+Fz
+
+Txyz
+
+Fxy
+
+Fz
+
+Txyz
+
+Fxy
+
+Calibration
+Range 0
+
+150 N
+
+470 N
+
+8 Nm
+
+500 N
+
+900 N
+
+20 Nm 1200 N 2000 N 50 Nm
+
+Calibration
+Range 1
+
+75 N
+
+235 N
+
+4 Nm
+
+200 N
+
+360 N
+
+8 Nm
+
+480 N
+
+Fz
+
+800 N
+
+Txyz
+
+20 Nm
+
+Notes:
+1.
+
+Each Axia80 sensor is calibrated with both of these calibration ranges.
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+49
+
+Manual, F/T Sensor, EtherCAT Axia
+Document #9610-05-EtherCAT Axia-09
+
+9. Terms and Conditions of Sale
+The following Terms and Conditions are a supplement to and include a portion of ATI’s Standard Terms and
+Conditions, which are on file at ATI and available upon request.
+ATI warrants to Purchaser that force torque sensor products purchased hereunder will be free from defects in
+material and workmanship under normal use for a period of one (1) year from the date of shipment. The warranty
+period for repairs made under a RMA shall be for the duration of the original warranty, or ninety (90) days from
+the date of repaired product shipment, whichever is longer. ATI will have no liability under this warranty unless:
+(a) ATI is given written notice of the claimed defect and a description thereof with thirty (30) days after Purchaser
+discovers the defect and in any event, not later than the last day of the warranty period and (b) the defective item
+is received by ATI not later than (10) days after the last day of the warranty period. ATI’s entire liability and
+Purchaser’s sole remedy under this warranty is limited to repair or replacement, at ATI’s election, of the defective
+part or item or, at ATI’s election, refund of the price paid for the item. The foregoing warranty does not apply to any
+defect or failure resulting from improper installation, operation, maintenance, or repair by anyone other than ATI.
+ATI will in no event be liable for incidental, consequential, or special damages of any kind, even if ATI has been
+advised of the possibility of such damages. ATI’s aggregate liability will in no event exceed the amount paid by the
+purchaser for the item which is the subject of claim or dispute. ATI will have no liability of any kind for failure of
+any equipment or other items not supplied by ATI.
+No action against ATI, regardless of form, arising out of or in any way connected with products or services supplied
+hereunder, may be brought more than one year after the cause of action accrued.
+No representation or agreement varying or extending the warranty and limitation of remedy provisions contained
+herein is authorized by ATI, and may not be relied upon as having been authorized by ATI, unless in writing and
+signed by an executive officer of ATI.
+Unless otherwise agreed in writing by ATI, all designs, drawings, data, inventions, software, and other technology
+made or developed by ATI in the course of providing products and services hereunder, and all rights therein under
+any patent, copyright, or other law protecting intellectual property, shall be and remain ATI’s property. The sale
+of products or services hereunder does not convey any expressed or implied license under any patent, copyright,
+or other intellectual property right owned or controlled by ATI, whether relating to the products sold or any other
+matter, except for the license expressly granted below.
+In the course of supplying products and services hereunder, ATI may provide or disclose to Purchaser confidential
+and proprietary information of ATI relating to the design, operation, or other aspects of ATI’s products. As between
+ATI and Purchaser, ownership of such information, including without limitation any computer software provided
+to Purchaser by ATI, shall remain in ATI and such information is licensed to Purchaser only for Purchaser’s use in
+operating the products supplied by ATI hereunder in Purchaser’s internal business operations.
+Without ATI’s prior written permission, Purchaser will not use such information for any other purpose of provide or
+otherwise make such information available to any third party. Purchaser agrees to take all reasonable precautions to
+prevent any unauthorized use or disclosure of such information.
+Purchaser will not be liable hereunder with respect to disclosure or use of information which: (a) is in the public
+domain when received from ATI, (b) is thereafter published or otherwise enters the public domain through no fault
+of Purchaser, (c) is in Purchaser’s possession prior to receipt from ATI, (d) is lawfully obtained by Purchaser from a
+third party entitled to disclose it, or (f) is required to be disclosed by judicial order or other governmental authority,
+provided that, with respect to such to maintain the confidentiality of such information.
+
+Pinnacle Park • 1031 Goodworth Drive • Apex, NC 27539 USA • Tel: +1.919.772.0115 • Fax: +1.919.772.8259 • www.ati-ia.com
+50
+
+

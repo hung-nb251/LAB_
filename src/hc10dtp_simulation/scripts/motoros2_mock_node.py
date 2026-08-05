@@ -15,7 +15,7 @@ node này đóng vai trò trung gian:
                                           (joint_trajectory_controller)
                                                       │
                                                       ▼
-                                               GenericSystem (fake HW)
+                                              GenericSystem (fake HW)
                                                       │
                                                       ▼
                                               /joint_states  ──► RViz
@@ -27,189 +27,155 @@ Mock node cung cấp (không namespace, giống cấu hình node_namespace="" tr
   - /stop_traj_mode           (Trigger)              → trả success
   - /reset_error              (Trigger)              → trả success
   - /servo_on                 (Trigger)              → trả success
-
-Cách dùng:
-  Terminal 1: ros2 launch hc10dtp_simulation sim_start.launch.py
-  Terminal 2: python3 cartesian_streamer_hc10dtp.py --demo line
 """
 
 import rclpy
 from rclpy.node import Node
 from rclpy.callback_groups import ReentrantCallbackGroup
 from rclpy.executors import MultiThreadedExecutor
-from rclpy.action import ActionClient
 
 from sensor_msgs.msg import JointState
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 from std_srvs.srv import Trigger
 from builtin_interfaces.msg import Duration
 
-from motoros2_interfaces.srv import StartPointQueueMode, QueueTrajPoint
-
-from control_msgs.action import FollowJointTrajectory
+from motoros2_interfaces.srv import StartPointQueueMode, QueueTrajPoint, ResetError
 
 JOINT_NAMES = [
     'joint_1_s', 'joint_2_l', 'joint_3_u',
     'joint_4_r', 'joint_5_b', 'joint_6_t',
 ]
 
+HOME_POSITIONS = [1.5708, 0.1242, -1.0494, 0.0, -0.3978, -1.4436]
+
 
 class MotoROS2MockNode(Node):
-    """
-    Giả lập tất cả các service mà MotoROS2 driver cung cấp.
-    Chuyển tiếp lệnh queue_traj_point thành FollowJointTrajectory action
-    hoặc trực tiếp publish lên /hc10dtp_arm_controller/joint_trajectory.
-    """
-
     def __init__(self):
         super().__init__('motoros2_mock')
         self._cb = ReentrantCallbackGroup()
-
         self._queue_mode_active = False
         self._accepted_count = 0
-        self._last_joints = [0.0] * 6
 
-        # ── Mock Services ────────────────────────────────────────────
-        # 1. StartPointQueueMode
-        self._start_queue_srv = self.create_service(
-            StartPointQueueMode,
-            '/start_point_queue_mode',
-            self._handle_start_queue,
-            callback_group=self._cb,
-        )
-
-        # 2. QueueTrajPoint (3 biến thể mà cartesian_streamer thử)
-        self._queue_traj_srv = self.create_service(
-            QueueTrajPoint,
-            '/queue_traj_point',
-            self._handle_queue_point,
-            callback_group=self._cb,
-        )
-        self._queue_point_srv = self.create_service(
-            QueueTrajPoint,
-            '/queue_point',
-            self._handle_queue_point,
-            callback_group=self._cb,
-        )
-
-        # 3. stop_traj_mode (Trigger)
-        self._stop_traj_srv = self.create_service(
-            Trigger,
-            '/stop_traj_mode',
-            self._handle_trigger_ok,
-            callback_group=self._cb,
-        )
-
-        # 4. reset_error (Trigger)
-        self._reset_error_srv = self.create_service(
-            Trigger,
-            '/reset_error',
-            self._handle_trigger_ok,
-            callback_group=self._cb,
-        )
-
-        # 5. servo_on (Trigger)
-        self._servo_on_srv = self.create_service(
-            Trigger,
-            '/servo_on',
-            self._handle_trigger_ok,
-            callback_group=self._cb,
-        )
-
-        # ── Publisher tới ros2_control JointTrajectoryController ──────
-        # Dùng topic interface (không cần action) để gửi điểm nhanh nhất
+        # Publisher -> JointTrajectoryController
         self._jtc_pub = self.create_publisher(
             JointTrajectory,
             '/hc10dtp_arm_controller/joint_trajectory',
             10,
         )
 
+        # Mock Services (Dùng đúng type của motoros2_interfaces)
+        self.create_service(StartPointQueueMode, '/start_point_queue_mode', self._handle_start_queue, callback_group=self._cb)
+        self.create_service(QueueTrajPoint, '/queue_traj_point', self._handle_queue_point, callback_group=self._cb)
+        self.create_service(QueueTrajPoint, '/queue_point', self._handle_queue_point, callback_group=self._cb)
+
+        # Các trigger phụ
+        self.create_service(Trigger, '/stop_traj_mode', self._handle_trigger_ok, callback_group=self._cb)
+        self.create_service(ResetError, '/reset_error', self._handle_reset_error, callback_group=self._cb)
+        self.create_service(Trigger, '/servo_on', self._handle_trigger_ok, callback_group=self._cb)
+
+        # Gửi home position ban đầu
+        self._init_timer = self.create_timer(0.5, self._publish_home_once)
+
         self.get_logger().info(
-            '╔══════════════════════════════════════════════╗\n'
-            '║   MotoROS2 Mock Node — Simulation Mode      ║\n'
-            '║   Tất cả /* services đã sẵn sàng            ║\n'
-            '║   (node_namespace="" — không prefix)         ║\n'
-            '╚══════════════════════════════════════════════╝'
+            '\n╔══════════════════════════════════════════════════╗\n'
+            '║   MotoROS2 Mock Node — Simulation Mode          ║\n'
+            '║   Tất cả /* services MotoROS2 đã sẵn sàng       ║\n'
+            '╚══════════════════════════════════════════════════╝'
         )
 
-    # ── Service Handlers ──────────────────────────────────────────────
+    def _publish_home_once(self):
+        self._send_jtc(HOME_POSITIONS, duration_sec=2.0)
+        self._init_count = getattr(self, '_init_count', 0) + 1
+        if self._init_count >= 5:
+            self.get_logger().info('→ Sent home position to JTC')
+            self._init_timer.cancel()
+
+    def _send_jtc(self, positions, velocities=None, duration_sec=0.1):
+        msg = JointTrajectory()
+        msg.header.frame_id = 'base_link'
+        msg.header.stamp = self.get_clock().now().to_msg()
+        msg.joint_names = JOINT_NAMES
+        pt = JointTrajectoryPoint()
+        pt.positions = list(positions)
+        if velocities and len(velocities) == 6:
+            pt.velocities = list(velocities)
+        else:
+            pt.velocities = [0.0] * 6
+        sec = int(duration_sec)
+        nsec = int((duration_sec - sec) * 1e9)
+        pt.time_from_start = Duration(sec=sec, nanosec=nsec)
+        msg.points = [pt]
+        self._jtc_pub.publish(msg)
 
     def _handle_start_queue(self, request, response):
-        """Giả lập StartPointQueueMode → trả READY (code=1)."""
         self._queue_mode_active = True
         self._accepted_count = 0
-        response.result_code.value = 1  # READY
-        response.message = 'Mock: Point Queue Mode activated (simulation)'
-        self.get_logger().info('✓ StartPointQueueMode → READY (mock)')
+        self._last_dur = 0.0
+        response.result_code.value = 1
+        response.message = 'Mock: Queue Mode Started'
         return response
 
     def _handle_queue_point(self, request, response):
-        """
-        Giả lập QueueTrajPoint.
-        Nhận JointTrajectoryPoint từ cartesian_streamer,
-        forward tới ros2_control JointTrajectoryController.
-        """
         if not self._queue_mode_active:
-            response.result_code.value = 2  # WRONG_MODE
-            response.message = 'Mock: Queue mode not active. Call start_point_queue_mode first.'
+            response.result_code.value = 106
+            response.message = 'Mock: Not in Queue Mode'
             return response
 
-        # Trích xuất joint positions từ request
-        point = request.point
-        joint_names = list(request.joint_names) if request.joint_names else JOINT_NAMES
-
-        # Forward tới JointTrajectoryController
-        traj_msg = JointTrajectory()
-        traj_msg.joint_names = joint_names
-
-        # Tạo trajectory point với thời gian ngắn (di chuyển ngay lập tức)
-        traj_point = JointTrajectoryPoint()
-        traj_point.positions = list(point.positions)
-        if point.velocities:
-            traj_point.velocities = list(point.velocities)
-        # Thời gian thực thi: 0.020s (= QUEUE_DT mới của cartesian_streamer 50Hz)
-        traj_point.time_from_start = Duration(sec=0, nanosec=20_000_000)
-
-        traj_msg.joint_names = joint_names
-        traj_msg.points = [traj_point]
-        self._jtc_pub.publish(traj_msg)
-
-        self._last_joints = list(point.positions)
+        response.result_code.value = 1
+        response.message = f'Mock: Point accepted ({self._accepted_count})'
         self._accepted_count += 1
 
-        # Trả SUCCESS (code=1)
-        response.result_code.value = 1  # SUCCESS
-        response.message = ''
+        if request.joint_names:
+            jpos = request.point.positions
+            jvel = request.point.velocities
+        else:
+            jpos = request.point.positions
+            jvel = request.point.velocities
 
-        if self._accepted_count <= 3 or self._accepted_count % 50 == 0:
-            self.get_logger().info(
-                f'QueueTrajPoint #{self._accepted_count} → forwarded to JTC. '
-                f'joints=[{", ".join(f"{j:.3f}" for j in point.positions)}]'
-            )
+        dur = request.point.time_from_start.sec + request.point.time_from_start.nanosec * 1e-9
+        
+        if not hasattr(self, '_last_dur'):
+            self._last_dur = 0.0
+        
+        dt = dur - self._last_dur
+        if dt <= 0.001:
+            dt = 0.066
+            
+        self._last_dur = dur
+        self._send_jtc(jpos, jvel, dt)
+        
         return response
 
     def _handle_trigger_ok(self, request, response):
-        """Handler chung cho các Trigger service (luôn trả success)."""
         response.success = True
-        response.message = 'Mock: OK (simulation)'
+        response.message = 'Mock: OK'
+        return response
+
+    def _handle_reset_error(self, request, response):
+        response.result_code.value = 1  # SUCCESS
+        response.message = 'Mock: Error Reset OK'
         return response
 
 
 def main():
-    rclpy.init()
-    executor = MultiThreadedExecutor(num_threads=4)
-    node = MotoROS2MockNode()
-    executor.add_node(node)
-
+    import traceback
     try:
-        executor.spin()
-    except KeyboardInterrupt:
-        pass
-    finally:
-        node.get_logger().info('MotoROS2 Mock Node shutdown.')
-        executor.shutdown()
-        rclpy.shutdown()
-
+        rclpy.init()
+        node = MotoROS2MockNode()
+        executor = MultiThreadedExecutor(num_threads=4)
+        executor.add_node(node)
+        try:
+            executor.spin()
+        except KeyboardInterrupt:
+            pass
+        finally:
+            node.destroy_node()
+            executor.shutdown()
+            rclpy.shutdown()
+    except Exception as e:
+        with open('/tmp/mock_node_crash.log', 'w') as f:
+            f.write(traceback.format_exc())
+        raise
 
 if __name__ == '__main__':
     main()

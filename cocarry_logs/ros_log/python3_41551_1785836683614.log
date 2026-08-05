@@ -1,0 +1,31 @@
+[INFO] [1785836683.659751554] [trajectory_predictor]: [Predictor] Worker launched (pid=41661)
+[INFO] [1785836683.660195888] [trajectory_predictor]: [Predictor] Started | model=gru | window=20 | auto_start=True
+  Output Filter: enabled=True, ema_alpha=0.2, max_dev=0.08, max_rate=0.04
+[WARN] [1785836684.727015045] [trajectory_predictor]: [Worker STDERR] /usr/lib/python3/dist-packages/scipy/__init__.py:146: UserWarning: A NumPy version >=1.17.3 and <1.25.0 is required for this version of SciPy (detected version 1.26.4
+[WARN] [1785836684.727422231] [trajectory_predictor]: [Worker STDERR] warnings.warn(f"A NumPy version >={np_minversion} and <{np_maxversion}"
+[WARN] [1785836685.542968136] [trajectory_predictor]: [Worker STDERR] /home/hungnb/.local/lib/python3.10/site-packages/sklearn/base.py:442: InconsistentVersionWarning: Trying to unpickle estimator MinMaxScaler from version 1.6.1 when using version 1.7.2. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+[WARN] [1785836685.543415366] [trajectory_predictor]: [Worker STDERR] https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+[WARN] [1785836685.543763392] [trajectory_predictor]: [Worker STDERR] warnings.warn(
+[INFO] [1785836685.549232138] [trajectory_predictor]: [Worker] TF 2.15.0 and sklearn loaded
+[ERROR] [1785836685.560861274] [trajectory_predictor]: [Predictor] Worker NOT READY: Load error: Unknown dtype policy: 'DTypePolicy'. Please ensure you are using a `keras.utils.custom_object_scope` and that this object is included in the scope. See https://www.tensorflow.org/guide/keras/save_and_serialize#registering_the_custom_object for details.
+[INFO] [1785836704.190716059] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=4.3mm). Khóa tại (-0.4503, -2.1722, 0.1049)
+[INFO] [1785836704.191017909] [trajectory_predictor]: [Filter] raw=(-0.4503,-2.1722,0.1049) → filt=(-0.4503,-2.1722,0.1049) Δ=(0.0000,0.0000,0.0000)
+[INFO] [1785836710.866170776] [trajectory_predictor]: [Filter] raw=(-0.4503,-2.1722,0.1049) → filt=(-0.4503,-2.1722,0.1049) Δ=(0.0000,0.0000,0.0000)
+[INFO] [1785836717.535705982] [trajectory_predictor]: [Filter] raw=(-0.4503,-2.1722,0.1049) → filt=(-0.4503,-2.1722,0.1049) Δ=(0.0000,0.0000,0.0000)
+[INFO] [1785836724.204629330] [trajectory_predictor]: [Filter] raw=(-0.4503,-2.1722,0.1049) → filt=(-0.4503,-2.1722,0.1049) Δ=(0.0000,0.0000,0.0000)
+[INFO] [1785836730.881982861] [trajectory_predictor]: [Filter] raw=(-0.4503,-2.1722,0.1049) → filt=(-0.4503,-2.1722,0.1049) Δ=(0.0000,0.0000,0.0000)
+[INFO] [1785836737.548710416] [trajectory_predictor]: [Filter] raw=(-0.4503,-2.1722,0.1049) → filt=(-0.4503,-2.1722,0.1049) Δ=(0.0000,0.0000,0.0000)
+[INFO] [1785836744.218149762] [trajectory_predictor]: [Filter] raw=(-0.4503,-2.1722,0.1049) → filt=(-0.4503,-2.1722,0.1049) Δ=(0.0000,0.0000,0.0000)
+[INFO] [1785836748.959901370] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=222.3mm). Thả hold.
+[INFO] [1785836752.195889279] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=4.7mm). Khóa tại (0.0052, 0.0078, -0.0032)
+[INFO] [1785836754.125585218] [trajectory_predictor]: [Filter] raw=(0.0052,0.0078,-0.0032) → filt=(0.0052,0.0078,-0.0032) Δ=(0.0000,0.0000,0.0000)
+[INFO] [1785836757.562702515] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=39.5mm). Thả hold.
+[INFO] [1785836773.138952693] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1785836789.770477130] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1785836798.082463452] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1785836819.538553098] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=5.7mm). Khóa tại (0.1349, -0.1920, 0.0016)
+[INFO] [1785836821.742001618] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=30.2mm). Thả hold.
+[INFO] [1785836845.422871409] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1785836852.222748373] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1785836856.756131555] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1785836873.642252867] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.8s)

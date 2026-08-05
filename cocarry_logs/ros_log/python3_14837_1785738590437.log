@@ -1,0 +1,14 @@
+[INFO] [1785738590.493395449] [trajectory_predictor]: [Predictor] Worker launched (pid=14976)
+[INFO] [1785738590.493779511] [trajectory_predictor]: [Predictor] Started | model=gru | window=20 | auto_start=True
+  Output Filter: enabled=True, ema_alpha=0.2, max_dev=0.08, max_rate=0.04
+[WARN] [1785738590.808228202] [trajectory_predictor]: [Worker STDERR] WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+[WARN] [1785738590.808954968] [trajectory_predictor]: [Worker STDERR] I0000 00:00:1785738590.807259   14976 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+[WARN] [1785738591.759125468] [trajectory_predictor]: [Worker STDERR] /usr/lib/python3/dist-packages/scipy/__init__.py:146: UserWarning: A NumPy version >=1.17.3 and <1.25.0 is required for this version of SciPy (detected version 1.26.4
+[WARN] [1785738591.759454597] [trajectory_predictor]: [Worker STDERR] warnings.warn(f"A NumPy version >={np_minversion} and <{np_maxversion}"
+[WARN] [1785738592.055723516] [trajectory_predictor]: [Worker STDERR] WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+[WARN] [1785738592.056168803] [trajectory_predictor]: [Worker STDERR] I0000 00:00:1785738592.054905   14976 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+[WARN] [1785738593.083095905] [trajectory_predictor]: [Worker STDERR] /home/hungnb/.local/lib/python3.10/site-packages/sklearn/base.py:442: InconsistentVersionWarning: Trying to unpickle estimator MinMaxScaler from version 1.6.1 when using version 1.7.2. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+[INFO] [1785738593.083303856] [trajectory_predictor]: [Worker] TF 2.21.0 and sklearn loaded
+[WARN] [1785738593.083506046] [trajectory_predictor]: [Worker STDERR] https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+[WARN] [1785738593.083752299] [trajectory_predictor]: [Worker STDERR] warnings.warn(
+[INFO] [1785738593.560497856] [trajectory_predictor]: [Predictor] Worker READY | model=gru

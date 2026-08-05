@@ -1,1 +1,1 @@
-/home/duy/cocarry_ws/build/hc10dtp_bringup/ament_cmake_core/hc10dtp_bringupConfig.cmake
+/home/hungnb/cocarry_ws/build/hc10dtp_bringup/ament_cmake_core/hc10dtp_bringupConfig.cmake

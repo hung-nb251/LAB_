@@ -1,0 +1,15 @@
+[INFO] [1785834749.755672542] [experiment_logger]: ✓ STARTED in-memory logging. Target file: /home/hungnb/cocarry_ws/cocarry_logs/experiment_GROUND_TRUTH_20260804_161229.csv
+[INFO] [1785834749.766903530] [experiment_logger]: Logger ready.
+[INFO] [1785834923.670788715] [experiment_logger]: Service called: /logger/toggle with data=False
+[INFO] [1785834923.671181087] [experiment_logger]: Writing 4144 rows from memory to /home/hungnb/cocarry_ws/cocarry_logs/experiment_GROUND_TRUTH_20260804_161229.csv...
+[INFO] [1785834923.677603012] [experiment_logger]: ✓ Successfully wrote logs to disk.
+[INFO] [1785834923.678365775] [experiment_logger]: Stopped logging. Saved 4144 rows to /home/hungnb/cocarry_ws/cocarry_logs/experiment_GROUND_TRUTH_20260804_161229.csv
+[INFO] [1785834923.692270352] [experiment_logger]: 
+============================================================
+EXPERIMENT METRICS
+  File: experiment_GROUND_TRUTH_20260804_161229.csv
+  Total samples: 0
+  Task completion time: 173.94 s
+  Mode: GROUND TRUTH (no prediction metrics)
+  Jerk: insufficient EE data for calculation
+============================================================

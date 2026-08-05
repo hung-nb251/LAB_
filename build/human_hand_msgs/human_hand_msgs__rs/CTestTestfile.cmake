@@ -1,6 +1,6 @@
 # CMake generated Testfile for 
-# Source directory: /home/duy/cocarry_ws/build/human_hand_msgs/human_hand_msgs__rs
-# Build directory: /home/duy/cocarry_ws/build/human_hand_msgs/human_hand_msgs__rs
+# Source directory: /home/hungnb/cocarry_ws/build/human_hand_msgs/human_hand_msgs__rs
+# Build directory: /home/hungnb/cocarry_ws/build/human_hand_msgs/human_hand_msgs__rs
 # 
 # This file includes the relevant testing commands required for 
 # testing this directory and lists subdirectories to be tested as well.

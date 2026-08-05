@@ -1,0 +1,5 @@
+[INFO] [1785742505.077507123] [experiment_logger]: ✓ STARTED in-memory logging. Target file: /home/hungnb/cocarry_ws/cocarry_logs/experiment_GROUND_TRUTH_20260803_143505.csv
+[INFO] [1785742505.088507880] [experiment_logger]: Logger ready.
+[INFO] [1785742598.732083570] [experiment_logger]: Trajectory mode: ground_truth
+[INFO] [1785742600.994220786] [experiment_logger]: Trajectory mode: prediction
+[INFO] [1785743767.850047184] [experiment_logger]: Trajectory mode: ground_truth

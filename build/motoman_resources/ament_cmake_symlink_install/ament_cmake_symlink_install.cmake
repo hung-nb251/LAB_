@@ -23,7 +23,7 @@ function(ament_cmake_symlink_install_directory cmake_current_source_dir)
 
   # make destination absolute path and ensure that it exists
   if(NOT IS_ABSOLUTE "${ARG_DESTINATION}")
-    set(ARG_DESTINATION "/home/duy/cocarry_ws/install/motoman_resources/${ARG_DESTINATION}")
+    set(ARG_DESTINATION "/home/hungnb/cocarry_ws/install/motoman_resources/${ARG_DESTINATION}")
   endif()
   if(NOT EXISTS "${ARG_DESTINATION}")
     file(MAKE_DIRECTORY "${ARG_DESTINATION}")
@@ -128,7 +128,7 @@ function(ament_cmake_symlink_install_files cmake_current_source_dir)
 
   # make destination an absolute path and ensure that it exists
   if(NOT IS_ABSOLUTE "${ARG_DESTINATION}")
-    set(ARG_DESTINATION "/home/duy/cocarry_ws/install/motoman_resources/${ARG_DESTINATION}")
+    set(ARG_DESTINATION "/home/hungnb/cocarry_ws/install/motoman_resources/${ARG_DESTINATION}")
   endif()
   if(NOT EXISTS "${ARG_DESTINATION}")
     file(MAKE_DIRECTORY "${ARG_DESTINATION}")
@@ -186,7 +186,7 @@ function(ament_cmake_symlink_install_programs cmake_current_source_dir)
 
   # make destination an absolute path and ensure that it exists
   if(NOT IS_ABSOLUTE "${ARG_DESTINATION}")
-    set(ARG_DESTINATION "/home/duy/cocarry_ws/install/motoman_resources/${ARG_DESTINATION}")
+    set(ARG_DESTINATION "/home/hungnb/cocarry_ws/install/motoman_resources/${ARG_DESTINATION}")
   endif()
   if(NOT EXISTS "${ARG_DESTINATION}")
     file(MAKE_DIRECTORY "${ARG_DESTINATION}")
@@ -256,7 +256,7 @@ function(ament_cmake_symlink_install_targets)
 
     # make destination an absolute path and ensure that it exists
     if(NOT IS_ABSOLUTE "${destination}")
-      set(destination "/home/duy/cocarry_ws/install/motoman_resources/${destination}")
+      set(destination "/home/hungnb/cocarry_ws/install/motoman_resources/${destination}")
     endif()
     if(NOT EXISTS "${destination}")
       file(MAKE_DIRECTORY "${destination}")
@@ -315,47 +315,47 @@ message(STATUS "Execute custom install script")
 
 # begin of custom install code
 
-# install(FILES "/home/duy/cocarry_ws/build/motoman_resources/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/motoman_resources" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" FILES "/home/duy/cocarry_ws/build/motoman_resources/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/motoman_resources" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoman_resources/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/motoman_resources" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" FILES "/home/hungnb/cocarry_ws/build/motoman_resources/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/motoman_resources" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoman_resources/ament_cmake_index/share/ament_index/resource_index/parent_prefix_path/motoman_resources" "DESTINATION" "share/ament_index/resource_index/parent_prefix_path")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" FILES "/home/duy/cocarry_ws/build/motoman_resources/ament_cmake_index/share/ament_index/resource_index/parent_prefix_path/motoman_resources" "DESTINATION" "share/ament_index/resource_index/parent_prefix_path")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoman_resources/ament_cmake_index/share/ament_index/resource_index/parent_prefix_path/motoman_resources" "DESTINATION" "share/ament_index/resource_index/parent_prefix_path")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" FILES "/home/hungnb/cocarry_ws/build/motoman_resources/ament_cmake_index/share/ament_index/resource_index/parent_prefix_path/motoman_resources" "DESTINATION" "share/ament_index/resource_index/parent_prefix_path")
 
 # install(FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/ament_prefix_path.sh" "DESTINATION" "share/motoman_resources/environment")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/ament_prefix_path.sh" "DESTINATION" "share/motoman_resources/environment")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/ament_prefix_path.sh" "DESTINATION" "share/motoman_resources/environment")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoman_resources/ament_cmake_environment_hooks/ament_prefix_path.dsv" "DESTINATION" "share/motoman_resources/environment")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" FILES "/home/duy/cocarry_ws/build/motoman_resources/ament_cmake_environment_hooks/ament_prefix_path.dsv" "DESTINATION" "share/motoman_resources/environment")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoman_resources/ament_cmake_environment_hooks/ament_prefix_path.dsv" "DESTINATION" "share/motoman_resources/environment")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" FILES "/home/hungnb/cocarry_ws/build/motoman_resources/ament_cmake_environment_hooks/ament_prefix_path.dsv" "DESTINATION" "share/motoman_resources/environment")
 
 # install(FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/path.sh" "DESTINATION" "share/motoman_resources/environment")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/path.sh" "DESTINATION" "share/motoman_resources/environment")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/path.sh" "DESTINATION" "share/motoman_resources/environment")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoman_resources/ament_cmake_environment_hooks/path.dsv" "DESTINATION" "share/motoman_resources/environment")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" FILES "/home/duy/cocarry_ws/build/motoman_resources/ament_cmake_environment_hooks/path.dsv" "DESTINATION" "share/motoman_resources/environment")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoman_resources/ament_cmake_environment_hooks/path.dsv" "DESTINATION" "share/motoman_resources/environment")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" FILES "/home/hungnb/cocarry_ws/build/motoman_resources/ament_cmake_environment_hooks/path.dsv" "DESTINATION" "share/motoman_resources/environment")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoman_resources/ament_cmake_environment_hooks/local_setup.bash" "DESTINATION" "share/motoman_resources")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" FILES "/home/duy/cocarry_ws/build/motoman_resources/ament_cmake_environment_hooks/local_setup.bash" "DESTINATION" "share/motoman_resources")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoman_resources/ament_cmake_environment_hooks/local_setup.bash" "DESTINATION" "share/motoman_resources")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" FILES "/home/hungnb/cocarry_ws/build/motoman_resources/ament_cmake_environment_hooks/local_setup.bash" "DESTINATION" "share/motoman_resources")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoman_resources/ament_cmake_environment_hooks/local_setup.sh" "DESTINATION" "share/motoman_resources")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" FILES "/home/duy/cocarry_ws/build/motoman_resources/ament_cmake_environment_hooks/local_setup.sh" "DESTINATION" "share/motoman_resources")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoman_resources/ament_cmake_environment_hooks/local_setup.sh" "DESTINATION" "share/motoman_resources")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" FILES "/home/hungnb/cocarry_ws/build/motoman_resources/ament_cmake_environment_hooks/local_setup.sh" "DESTINATION" "share/motoman_resources")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoman_resources/ament_cmake_environment_hooks/local_setup.zsh" "DESTINATION" "share/motoman_resources")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" FILES "/home/duy/cocarry_ws/build/motoman_resources/ament_cmake_environment_hooks/local_setup.zsh" "DESTINATION" "share/motoman_resources")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoman_resources/ament_cmake_environment_hooks/local_setup.zsh" "DESTINATION" "share/motoman_resources")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" FILES "/home/hungnb/cocarry_ws/build/motoman_resources/ament_cmake_environment_hooks/local_setup.zsh" "DESTINATION" "share/motoman_resources")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoman_resources/ament_cmake_environment_hooks/local_setup.dsv" "DESTINATION" "share/motoman_resources")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" FILES "/home/duy/cocarry_ws/build/motoman_resources/ament_cmake_environment_hooks/local_setup.dsv" "DESTINATION" "share/motoman_resources")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoman_resources/ament_cmake_environment_hooks/local_setup.dsv" "DESTINATION" "share/motoman_resources")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" FILES "/home/hungnb/cocarry_ws/build/motoman_resources/ament_cmake_environment_hooks/local_setup.dsv" "DESTINATION" "share/motoman_resources")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoman_resources/ament_cmake_environment_hooks/package.dsv" "DESTINATION" "share/motoman_resources")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" FILES "/home/duy/cocarry_ws/build/motoman_resources/ament_cmake_environment_hooks/package.dsv" "DESTINATION" "share/motoman_resources")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoman_resources/ament_cmake_environment_hooks/package.dsv" "DESTINATION" "share/motoman_resources")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" FILES "/home/hungnb/cocarry_ws/build/motoman_resources/ament_cmake_environment_hooks/package.dsv" "DESTINATION" "share/motoman_resources")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoman_resources/ament_cmake_index/share/ament_index/resource_index/packages/motoman_resources" "DESTINATION" "share/ament_index/resource_index/packages")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" FILES "/home/duy/cocarry_ws/build/motoman_resources/ament_cmake_index/share/ament_index/resource_index/packages/motoman_resources" "DESTINATION" "share/ament_index/resource_index/packages")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoman_resources/ament_cmake_index/share/ament_index/resource_index/packages/motoman_resources" "DESTINATION" "share/ament_index/resource_index/packages")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" FILES "/home/hungnb/cocarry_ws/build/motoman_resources/ament_cmake_index/share/ament_index/resource_index/packages/motoman_resources" "DESTINATION" "share/ament_index/resource_index/packages")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoman_resources/ament_cmake_core/motoman_resourcesConfig.cmake" "/home/duy/cocarry_ws/build/motoman_resources/ament_cmake_core/motoman_resourcesConfig-version.cmake" "DESTINATION" "share/motoman_resources/cmake")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" FILES "/home/duy/cocarry_ws/build/motoman_resources/ament_cmake_core/motoman_resourcesConfig.cmake" "/home/duy/cocarry_ws/build/motoman_resources/ament_cmake_core/motoman_resourcesConfig-version.cmake" "DESTINATION" "share/motoman_resources/cmake")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoman_resources/ament_cmake_core/motoman_resourcesConfig.cmake" "/home/hungnb/cocarry_ws/build/motoman_resources/ament_cmake_core/motoman_resourcesConfig-version.cmake" "DESTINATION" "share/motoman_resources/cmake")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" FILES "/home/hungnb/cocarry_ws/build/motoman_resources/ament_cmake_core/motoman_resourcesConfig.cmake" "/home/hungnb/cocarry_ws/build/motoman_resources/ament_cmake_core/motoman_resourcesConfig-version.cmake" "DESTINATION" "share/motoman_resources/cmake")
 
-# install(FILES "/home/duy/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources/package.xml" "DESTINATION" "share/motoman_resources")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" FILES "/home/duy/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources/package.xml" "DESTINATION" "share/motoman_resources")
+# install(FILES "/home/hungnb/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources/package.xml" "DESTINATION" "share/motoman_resources")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" FILES "/home/hungnb/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources/package.xml" "DESTINATION" "share/motoman_resources")
 
 # install(DIRECTORY "rviz" "urdf" "DESTINATION" "share/motoman_resources")
-ament_cmake_symlink_install_directory("/home/duy/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" DIRECTORY "rviz" "urdf" "DESTINATION" "share/motoman_resources")
+ament_cmake_symlink_install_directory("/home/hungnb/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources" DIRECTORY "rviz" "urdf" "DESTINATION" "share/motoman_resources")

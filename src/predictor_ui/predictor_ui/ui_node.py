@@ -274,6 +274,8 @@ class PredictorUiNode(Node):
                 self._is_init_pose_captured = True
                 self.get_logger().info(
                     f'[UI] Capture Init Pose thành công: {result.message}')
+                # Cập nhật status trên GUI (phải gọi cẩn thận nếu khác luồng, 
+                # nhưng PyQtGraph xử lý setText() từ thread ngoài trong một số trường hợp)
             else:
                 self._is_init_pose_captured = False
                 self.get_logger().error(
@@ -330,7 +332,7 @@ class PredictorUiNode(Node):
             'joint_4_r', 'joint_5_b', 'joint_6_t'
         ]
         point = JointTrajectoryPoint()
-        point.positions = [0.0] * 6
+        point.positions = [1.570774, 0.124230, -1.049406, 0.000000, -0.397843, -1.443567]
         point.time_from_start = Duration(sec=3, nanosec=0)
         goal_msg.trajectory.points = [point]
         action_client.send_goal_async(goal_msg)

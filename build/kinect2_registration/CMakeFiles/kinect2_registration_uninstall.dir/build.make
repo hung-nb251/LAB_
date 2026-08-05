@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/duy/cocarry_ws/src/kinect2_ros2/kinect2_registration
+CMAKE_SOURCE_DIR = /home/hungnb/cocarry_ws/src/kinect2_ros2/kinect2_registration
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/duy/cocarry_ws/build/kinect2_registration
+CMAKE_BINARY_DIR = /home/hungnb/cocarry_ws/build/kinect2_registration
 
 # Utility rule file for kinect2_registration_uninstall.
 
@@ -67,7 +67,7 @@ include CMakeFiles/kinect2_registration_uninstall.dir/compiler_depend.make
 include CMakeFiles/kinect2_registration_uninstall.dir/progress.make
 
 CMakeFiles/kinect2_registration_uninstall:
-	/usr/bin/cmake -P /home/duy/cocarry_ws/build/kinect2_registration/ament_cmake_uninstall_target/ament_cmake_uninstall_target.cmake
+	/usr/bin/cmake -P /home/hungnb/cocarry_ws/build/kinect2_registration/ament_cmake_uninstall_target/ament_cmake_uninstall_target.cmake
 
 kinect2_registration_uninstall: CMakeFiles/kinect2_registration_uninstall
 kinect2_registration_uninstall: CMakeFiles/kinect2_registration_uninstall.dir/build.make
@@ -82,6 +82,6 @@ CMakeFiles/kinect2_registration_uninstall.dir/clean:
 .PHONY : CMakeFiles/kinect2_registration_uninstall.dir/clean
 
 CMakeFiles/kinect2_registration_uninstall.dir/depend:
-	cd /home/duy/cocarry_ws/build/kinect2_registration && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/duy/cocarry_ws/src/kinect2_ros2/kinect2_registration /home/duy/cocarry_ws/src/kinect2_ros2/kinect2_registration /home/duy/cocarry_ws/build/kinect2_registration /home/duy/cocarry_ws/build/kinect2_registration /home/duy/cocarry_ws/build/kinect2_registration/CMakeFiles/kinect2_registration_uninstall.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/hungnb/cocarry_ws/build/kinect2_registration && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/hungnb/cocarry_ws/src/kinect2_ros2/kinect2_registration /home/hungnb/cocarry_ws/src/kinect2_ros2/kinect2_registration /home/hungnb/cocarry_ws/build/kinect2_registration /home/hungnb/cocarry_ws/build/kinect2_registration /home/hungnb/cocarry_ws/build/kinect2_registration/CMakeFiles/kinect2_registration_uninstall.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/kinect2_registration_uninstall.dir/depend
 

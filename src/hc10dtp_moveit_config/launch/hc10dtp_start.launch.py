@@ -31,6 +31,9 @@ def generate_launch_description():
     db_arg = DeclareLaunchArgument(
         "db", default_value="False", description="Database flag"
     )
+    use_rviz_arg = DeclareLaunchArgument(
+        "use_rviz", default_value="False", description="Whether to start RViz"
+    )
 
     # ── MoveIt config ────────────────────────────────────────────────────
     moveit_config = (
@@ -84,6 +87,7 @@ def generate_launch_description():
             moveit_config.planning_pipelines,
             moveit_config.robot_description_kinematics,
         ],
+        condition=IfCondition(LaunchConfiguration("use_rviz")),
     )
 
     # ── Robot State Publisher (publish TF từ URDF) ───────────────────────
@@ -120,6 +124,7 @@ def generate_launch_description():
     return LaunchDescription(
         [
             db_arg,
+            use_rviz_arg,
             static_tf,
             robot_state_publisher,
             run_move_group_node,

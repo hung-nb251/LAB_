@@ -1,1 +1,1 @@
-/home/duy/cocarry_ws/src/hrc_bringup/launch/cocarry_full.launch.py
+/home/hungnb/cocarry_ws/src/hrc_bringup/launch/cocarry_full.launch.py

@@ -1,1 +1,1 @@
-/home/duy/cocarry_ws/build/hc10dtp_simulation/ament_cmake_environment_hooks/local_setup.zsh
+/home/hungnb/cocarry_ws/build/hc10dtp_simulation/ament_cmake_environment_hooks/local_setup.zsh

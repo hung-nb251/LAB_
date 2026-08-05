@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/duy/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources
+CMAKE_SOURCE_DIR = /home/hungnb/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/duy/cocarry_ws/build/motoman_resources
+CMAKE_BINARY_DIR = /home/hungnb/cocarry_ws/build/motoman_resources
 
 # Utility rule file for uninstall.
 
@@ -78,6 +78,6 @@ CMakeFiles/uninstall.dir/clean:
 .PHONY : CMakeFiles/uninstall.dir/clean
 
 CMakeFiles/uninstall.dir/depend:
-	cd /home/duy/cocarry_ws/build/motoman_resources && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/duy/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources /home/duy/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources /home/duy/cocarry_ws/build/motoman_resources /home/duy/cocarry_ws/build/motoman_resources /home/duy/cocarry_ws/build/motoman_resources/CMakeFiles/uninstall.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/hungnb/cocarry_ws/build/motoman_resources && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/hungnb/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources /home/hungnb/cocarry_ws/src/motoman_ros2_support_packages/motoman_resources /home/hungnb/cocarry_ws/build/motoman_resources /home/hungnb/cocarry_ws/build/motoman_resources /home/hungnb/cocarry_ws/build/motoman_resources/CMakeFiles/uninstall.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/uninstall.dir/depend
 

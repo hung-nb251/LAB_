@@ -23,7 +23,7 @@ function(ament_cmake_symlink_install_directory cmake_current_source_dir)
 
   # make destination absolute path and ensure that it exists
   if(NOT IS_ABSOLUTE "${ARG_DESTINATION}")
-    set(ARG_DESTINATION "/home/duy/cocarry_ws/install/hc10dtp_bringup/${ARG_DESTINATION}")
+    set(ARG_DESTINATION "/home/hungnb/cocarry_ws/install/hc10dtp_bringup/${ARG_DESTINATION}")
   endif()
   if(NOT EXISTS "${ARG_DESTINATION}")
     file(MAKE_DIRECTORY "${ARG_DESTINATION}")
@@ -128,7 +128,7 @@ function(ament_cmake_symlink_install_files cmake_current_source_dir)
 
   # make destination an absolute path and ensure that it exists
   if(NOT IS_ABSOLUTE "${ARG_DESTINATION}")
-    set(ARG_DESTINATION "/home/duy/cocarry_ws/install/hc10dtp_bringup/${ARG_DESTINATION}")
+    set(ARG_DESTINATION "/home/hungnb/cocarry_ws/install/hc10dtp_bringup/${ARG_DESTINATION}")
   endif()
   if(NOT EXISTS "${ARG_DESTINATION}")
     file(MAKE_DIRECTORY "${ARG_DESTINATION}")
@@ -186,7 +186,7 @@ function(ament_cmake_symlink_install_programs cmake_current_source_dir)
 
   # make destination an absolute path and ensure that it exists
   if(NOT IS_ABSOLUTE "${ARG_DESTINATION}")
-    set(ARG_DESTINATION "/home/duy/cocarry_ws/install/hc10dtp_bringup/${ARG_DESTINATION}")
+    set(ARG_DESTINATION "/home/hungnb/cocarry_ws/install/hc10dtp_bringup/${ARG_DESTINATION}")
   endif()
   if(NOT EXISTS "${ARG_DESTINATION}")
     file(MAKE_DIRECTORY "${ARG_DESTINATION}")
@@ -256,7 +256,7 @@ function(ament_cmake_symlink_install_targets)
 
     # make destination an absolute path and ensure that it exists
     if(NOT IS_ABSOLUTE "${destination}")
-      set(destination "/home/duy/cocarry_ws/install/hc10dtp_bringup/${destination}")
+      set(destination "/home/hungnb/cocarry_ws/install/hc10dtp_bringup/${destination}")
     endif()
     if(NOT EXISTS "${destination}")
       file(MAKE_DIRECTORY "${destination}")
@@ -315,50 +315,47 @@ message(STATUS "Execute custom install script")
 
 # begin of custom install code
 
-# install(DIRECTORY "launch" "DESTINATION" "share/hc10dtp_bringup")
-ament_cmake_symlink_install_directory("/home/duy/cocarry_ws/src/hc10dtp_bringup" DIRECTORY "launch" "DESTINATION" "share/hc10dtp_bringup")
+# install(PROGRAMS "scripts/cartesian_streamer_hc10dtp.py" "scripts/restamp_joint_states.py" "scripts/go_home.py" "scripts/capture_home.py" "scripts/test_queue_diagnostic.py" "scripts/ee_tracker_node.py" "scripts/local_ik_solver.py" "DESTINATION" "lib/hc10dtp_bringup")
+ament_cmake_symlink_install_programs("/home/hungnb/cocarry_ws/src/hc10dtp_bringup" PROGRAMS "scripts/cartesian_streamer_hc10dtp.py" "scripts/restamp_joint_states.py" "scripts/go_home.py" "scripts/capture_home.py" "scripts/test_queue_diagnostic.py" "scripts/ee_tracker_node.py" "scripts/local_ik_solver.py" "DESTINATION" "lib/hc10dtp_bringup")
 
-# install(PROGRAMS "scripts/cartesian_streamer_hc10dtp.py" "scripts/restamp_joint_states.py" "scripts/go_home.py" "scripts/capture_home.py" "scripts/test_queue_diagnostic.py" "DESTINATION" "lib/hc10dtp_bringup")
-ament_cmake_symlink_install_programs("/home/duy/cocarry_ws/src/hc10dtp_bringup" PROGRAMS "scripts/cartesian_streamer_hc10dtp.py" "scripts/restamp_joint_states.py" "scripts/go_home.py" "scripts/capture_home.py" "scripts/test_queue_diagnostic.py" "DESTINATION" "lib/hc10dtp_bringup")
+# install(FILES "/home/hungnb/cocarry_ws/build/hc10dtp_bringup/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/hc10dtp_bringup" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/hc10dtp_bringup" FILES "/home/hungnb/cocarry_ws/build/hc10dtp_bringup/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/hc10dtp_bringup" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")
 
-# install(FILES "/home/duy/cocarry_ws/build/hc10dtp_bringup/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/hc10dtp_bringup" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/hc10dtp_bringup" FILES "/home/duy/cocarry_ws/build/hc10dtp_bringup/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/hc10dtp_bringup" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")
-
-# install(FILES "/home/duy/cocarry_ws/build/hc10dtp_bringup/ament_cmake_index/share/ament_index/resource_index/parent_prefix_path/hc10dtp_bringup" "DESTINATION" "share/ament_index/resource_index/parent_prefix_path")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/hc10dtp_bringup" FILES "/home/duy/cocarry_ws/build/hc10dtp_bringup/ament_cmake_index/share/ament_index/resource_index/parent_prefix_path/hc10dtp_bringup" "DESTINATION" "share/ament_index/resource_index/parent_prefix_path")
+# install(FILES "/home/hungnb/cocarry_ws/build/hc10dtp_bringup/ament_cmake_index/share/ament_index/resource_index/parent_prefix_path/hc10dtp_bringup" "DESTINATION" "share/ament_index/resource_index/parent_prefix_path")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/hc10dtp_bringup" FILES "/home/hungnb/cocarry_ws/build/hc10dtp_bringup/ament_cmake_index/share/ament_index/resource_index/parent_prefix_path/hc10dtp_bringup" "DESTINATION" "share/ament_index/resource_index/parent_prefix_path")
 
 # install(FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/ament_prefix_path.sh" "DESTINATION" "share/hc10dtp_bringup/environment")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/hc10dtp_bringup" FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/ament_prefix_path.sh" "DESTINATION" "share/hc10dtp_bringup/environment")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/hc10dtp_bringup" FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/ament_prefix_path.sh" "DESTINATION" "share/hc10dtp_bringup/environment")
 
-# install(FILES "/home/duy/cocarry_ws/build/hc10dtp_bringup/ament_cmake_environment_hooks/ament_prefix_path.dsv" "DESTINATION" "share/hc10dtp_bringup/environment")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/hc10dtp_bringup" FILES "/home/duy/cocarry_ws/build/hc10dtp_bringup/ament_cmake_environment_hooks/ament_prefix_path.dsv" "DESTINATION" "share/hc10dtp_bringup/environment")
+# install(FILES "/home/hungnb/cocarry_ws/build/hc10dtp_bringup/ament_cmake_environment_hooks/ament_prefix_path.dsv" "DESTINATION" "share/hc10dtp_bringup/environment")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/hc10dtp_bringup" FILES "/home/hungnb/cocarry_ws/build/hc10dtp_bringup/ament_cmake_environment_hooks/ament_prefix_path.dsv" "DESTINATION" "share/hc10dtp_bringup/environment")
 
 # install(FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/path.sh" "DESTINATION" "share/hc10dtp_bringup/environment")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/hc10dtp_bringup" FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/path.sh" "DESTINATION" "share/hc10dtp_bringup/environment")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/hc10dtp_bringup" FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/path.sh" "DESTINATION" "share/hc10dtp_bringup/environment")
 
-# install(FILES "/home/duy/cocarry_ws/build/hc10dtp_bringup/ament_cmake_environment_hooks/path.dsv" "DESTINATION" "share/hc10dtp_bringup/environment")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/hc10dtp_bringup" FILES "/home/duy/cocarry_ws/build/hc10dtp_bringup/ament_cmake_environment_hooks/path.dsv" "DESTINATION" "share/hc10dtp_bringup/environment")
+# install(FILES "/home/hungnb/cocarry_ws/build/hc10dtp_bringup/ament_cmake_environment_hooks/path.dsv" "DESTINATION" "share/hc10dtp_bringup/environment")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/hc10dtp_bringup" FILES "/home/hungnb/cocarry_ws/build/hc10dtp_bringup/ament_cmake_environment_hooks/path.dsv" "DESTINATION" "share/hc10dtp_bringup/environment")
 
-# install(FILES "/home/duy/cocarry_ws/build/hc10dtp_bringup/ament_cmake_environment_hooks/local_setup.bash" "DESTINATION" "share/hc10dtp_bringup")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/hc10dtp_bringup" FILES "/home/duy/cocarry_ws/build/hc10dtp_bringup/ament_cmake_environment_hooks/local_setup.bash" "DESTINATION" "share/hc10dtp_bringup")
+# install(FILES "/home/hungnb/cocarry_ws/build/hc10dtp_bringup/ament_cmake_environment_hooks/local_setup.bash" "DESTINATION" "share/hc10dtp_bringup")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/hc10dtp_bringup" FILES "/home/hungnb/cocarry_ws/build/hc10dtp_bringup/ament_cmake_environment_hooks/local_setup.bash" "DESTINATION" "share/hc10dtp_bringup")
 
-# install(FILES "/home/duy/cocarry_ws/build/hc10dtp_bringup/ament_cmake_environment_hooks/local_setup.sh" "DESTINATION" "share/hc10dtp_bringup")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/hc10dtp_bringup" FILES "/home/duy/cocarry_ws/build/hc10dtp_bringup/ament_cmake_environment_hooks/local_setup.sh" "DESTINATION" "share/hc10dtp_bringup")
+# install(FILES "/home/hungnb/cocarry_ws/build/hc10dtp_bringup/ament_cmake_environment_hooks/local_setup.sh" "DESTINATION" "share/hc10dtp_bringup")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/hc10dtp_bringup" FILES "/home/hungnb/cocarry_ws/build/hc10dtp_bringup/ament_cmake_environment_hooks/local_setup.sh" "DESTINATION" "share/hc10dtp_bringup")
 
-# install(FILES "/home/duy/cocarry_ws/build/hc10dtp_bringup/ament_cmake_environment_hooks/local_setup.zsh" "DESTINATION" "share/hc10dtp_bringup")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/hc10dtp_bringup" FILES "/home/duy/cocarry_ws/build/hc10dtp_bringup/ament_cmake_environment_hooks/local_setup.zsh" "DESTINATION" "share/hc10dtp_bringup")
+# install(FILES "/home/hungnb/cocarry_ws/build/hc10dtp_bringup/ament_cmake_environment_hooks/local_setup.zsh" "DESTINATION" "share/hc10dtp_bringup")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/hc10dtp_bringup" FILES "/home/hungnb/cocarry_ws/build/hc10dtp_bringup/ament_cmake_environment_hooks/local_setup.zsh" "DESTINATION" "share/hc10dtp_bringup")
 
-# install(FILES "/home/duy/cocarry_ws/build/hc10dtp_bringup/ament_cmake_environment_hooks/local_setup.dsv" "DESTINATION" "share/hc10dtp_bringup")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/hc10dtp_bringup" FILES "/home/duy/cocarry_ws/build/hc10dtp_bringup/ament_cmake_environment_hooks/local_setup.dsv" "DESTINATION" "share/hc10dtp_bringup")
+# install(FILES "/home/hungnb/cocarry_ws/build/hc10dtp_bringup/ament_cmake_environment_hooks/local_setup.dsv" "DESTINATION" "share/hc10dtp_bringup")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/hc10dtp_bringup" FILES "/home/hungnb/cocarry_ws/build/hc10dtp_bringup/ament_cmake_environment_hooks/local_setup.dsv" "DESTINATION" "share/hc10dtp_bringup")
 
-# install(FILES "/home/duy/cocarry_ws/build/hc10dtp_bringup/ament_cmake_environment_hooks/package.dsv" "DESTINATION" "share/hc10dtp_bringup")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/hc10dtp_bringup" FILES "/home/duy/cocarry_ws/build/hc10dtp_bringup/ament_cmake_environment_hooks/package.dsv" "DESTINATION" "share/hc10dtp_bringup")
+# install(FILES "/home/hungnb/cocarry_ws/build/hc10dtp_bringup/ament_cmake_environment_hooks/package.dsv" "DESTINATION" "share/hc10dtp_bringup")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/hc10dtp_bringup" FILES "/home/hungnb/cocarry_ws/build/hc10dtp_bringup/ament_cmake_environment_hooks/package.dsv" "DESTINATION" "share/hc10dtp_bringup")
 
-# install(FILES "/home/duy/cocarry_ws/build/hc10dtp_bringup/ament_cmake_index/share/ament_index/resource_index/packages/hc10dtp_bringup" "DESTINATION" "share/ament_index/resource_index/packages")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/hc10dtp_bringup" FILES "/home/duy/cocarry_ws/build/hc10dtp_bringup/ament_cmake_index/share/ament_index/resource_index/packages/hc10dtp_bringup" "DESTINATION" "share/ament_index/resource_index/packages")
+# install(FILES "/home/hungnb/cocarry_ws/build/hc10dtp_bringup/ament_cmake_index/share/ament_index/resource_index/packages/hc10dtp_bringup" "DESTINATION" "share/ament_index/resource_index/packages")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/hc10dtp_bringup" FILES "/home/hungnb/cocarry_ws/build/hc10dtp_bringup/ament_cmake_index/share/ament_index/resource_index/packages/hc10dtp_bringup" "DESTINATION" "share/ament_index/resource_index/packages")
 
-# install(FILES "/home/duy/cocarry_ws/build/hc10dtp_bringup/ament_cmake_core/hc10dtp_bringupConfig.cmake" "/home/duy/cocarry_ws/build/hc10dtp_bringup/ament_cmake_core/hc10dtp_bringupConfig-version.cmake" "DESTINATION" "share/hc10dtp_bringup/cmake")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/hc10dtp_bringup" FILES "/home/duy/cocarry_ws/build/hc10dtp_bringup/ament_cmake_core/hc10dtp_bringupConfig.cmake" "/home/duy/cocarry_ws/build/hc10dtp_bringup/ament_cmake_core/hc10dtp_bringupConfig-version.cmake" "DESTINATION" "share/hc10dtp_bringup/cmake")
+# install(FILES "/home/hungnb/cocarry_ws/build/hc10dtp_bringup/ament_cmake_core/hc10dtp_bringupConfig.cmake" "/home/hungnb/cocarry_ws/build/hc10dtp_bringup/ament_cmake_core/hc10dtp_bringupConfig-version.cmake" "DESTINATION" "share/hc10dtp_bringup/cmake")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/hc10dtp_bringup" FILES "/home/hungnb/cocarry_ws/build/hc10dtp_bringup/ament_cmake_core/hc10dtp_bringupConfig.cmake" "/home/hungnb/cocarry_ws/build/hc10dtp_bringup/ament_cmake_core/hc10dtp_bringupConfig-version.cmake" "DESTINATION" "share/hc10dtp_bringup/cmake")
 
-# install(FILES "/home/duy/cocarry_ws/src/hc10dtp_bringup/package.xml" "DESTINATION" "share/hc10dtp_bringup")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/hc10dtp_bringup" FILES "/home/duy/cocarry_ws/src/hc10dtp_bringup/package.xml" "DESTINATION" "share/hc10dtp_bringup")
+# install(FILES "/home/hungnb/cocarry_ws/src/hc10dtp_bringup/package.xml" "DESTINATION" "share/hc10dtp_bringup")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/hc10dtp_bringup" FILES "/home/hungnb/cocarry_ws/src/hc10dtp_bringup/package.xml" "DESTINATION" "share/hc10dtp_bringup")

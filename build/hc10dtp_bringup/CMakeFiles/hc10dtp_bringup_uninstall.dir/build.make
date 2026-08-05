@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/duy/cocarry_ws/src/hc10dtp_bringup
+CMAKE_SOURCE_DIR = /home/hungnb/cocarry_ws/src/hc10dtp_bringup
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/duy/cocarry_ws/build/hc10dtp_bringup
+CMAKE_BINARY_DIR = /home/hungnb/cocarry_ws/build/hc10dtp_bringup
 
 # Utility rule file for hc10dtp_bringup_uninstall.
 
@@ -67,7 +67,7 @@ include CMakeFiles/hc10dtp_bringup_uninstall.dir/compiler_depend.make
 include CMakeFiles/hc10dtp_bringup_uninstall.dir/progress.make
 
 CMakeFiles/hc10dtp_bringup_uninstall:
-	/usr/bin/cmake -P /home/duy/cocarry_ws/build/hc10dtp_bringup/ament_cmake_uninstall_target/ament_cmake_uninstall_target.cmake
+	/usr/bin/cmake -P /home/hungnb/cocarry_ws/build/hc10dtp_bringup/ament_cmake_uninstall_target/ament_cmake_uninstall_target.cmake
 
 hc10dtp_bringup_uninstall: CMakeFiles/hc10dtp_bringup_uninstall
 hc10dtp_bringup_uninstall: CMakeFiles/hc10dtp_bringup_uninstall.dir/build.make
@@ -82,6 +82,6 @@ CMakeFiles/hc10dtp_bringup_uninstall.dir/clean:
 .PHONY : CMakeFiles/hc10dtp_bringup_uninstall.dir/clean
 
 CMakeFiles/hc10dtp_bringup_uninstall.dir/depend:
-	cd /home/duy/cocarry_ws/build/hc10dtp_bringup && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/duy/cocarry_ws/src/hc10dtp_bringup /home/duy/cocarry_ws/src/hc10dtp_bringup /home/duy/cocarry_ws/build/hc10dtp_bringup /home/duy/cocarry_ws/build/hc10dtp_bringup /home/duy/cocarry_ws/build/hc10dtp_bringup/CMakeFiles/hc10dtp_bringup_uninstall.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/hungnb/cocarry_ws/build/hc10dtp_bringup && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/hungnb/cocarry_ws/src/hc10dtp_bringup /home/hungnb/cocarry_ws/src/hc10dtp_bringup /home/hungnb/cocarry_ws/build/hc10dtp_bringup /home/hungnb/cocarry_ws/build/hc10dtp_bringup /home/hungnb/cocarry_ws/build/hc10dtp_bringup/CMakeFiles/hc10dtp_bringup_uninstall.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/hc10dtp_bringup_uninstall.dir/depend
 

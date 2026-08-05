@@ -71,7 +71,7 @@ class CoordTransformNode(Node):
         # Dynamic Deadband (chống nhiễu rung tay) — params loaded from YAML
         self._calib_buffer = deque(maxlen=40)  # 2s ở 20fps cho calibration
         self._recent_buffer = deque(maxlen=15)  # ~0.75s ở 20fps, đủ lớn để lọc noise camera
-        self._noise_tolerance = 0.005          # Sẽ được cập nhật lúc calib
+        self._noise_tolerance = self._filter_initial_noise_tolerance  # Được cập nhật lúc Capture Init
         self._is_holding_position = False
         self._moving_deadzone_tol = self._filter_deadband_depth_tol
         self._stationary_threshold = self._filter_stationary_threshold
@@ -173,6 +173,9 @@ class CoordTransformNode(Node):
         # Khi tay đã vượt ngưỡng → áp dụng deadband với tol cao hơn để dừng chắc tại đích
         self.declare_parameter('filter.deadband_y_threshold',      0.30)
         self.declare_parameter('filter.deadband_near_target_tol',  0.025)
+        # Ngưỡng nhiễu ban đầu (m) — set cao hơn cho Kinect vì depth noise lớn hơn RealSense
+        # Kinect QHD depth noise ~ 20-50mm, RealSense ~ 5-10mm
+        self.declare_parameter('filter.initial_noise_tolerance',    0.005)
 
         # ── Target Zone Auto-Snap ──────────────────────────────────────────
         self.declare_parameter('target_zones.enabled',            True)
@@ -254,6 +257,7 @@ class CoordTransformNode(Node):
         self._filter_pred_snap_radius     = self.get_parameter('filter.pred_snap_radius').value
         self._filter_deadband_y_threshold     = self.get_parameter('filter.deadband_y_threshold').value
         self._filter_deadband_near_target_tol = self.get_parameter('filter.deadband_near_target_tol').value
+        self._filter_initial_noise_tolerance  = self.get_parameter('filter.initial_noise_tolerance').value
 
         # Target Zone params
         self._tz_enabled     = self.get_parameter('target_zones.enabled').value
@@ -464,7 +468,26 @@ class CoordTransformNode(Node):
         """Xử lý HandState cho cả 2 mode để luôn cập nhật quỹ đạo thực tế (UI)"""
         if not msg.is_tracked:
             return
-            
+
+        # ── Robot EE source: đã ở base_link frame → bypass camera transform ──
+        if msg.source == 'robot_ee':
+            p_base = np.array([msg.x, msg.y, msg.z])
+
+            # Publish filtered position cho UI vẽ (Actual)
+            filtered_pt = PointStamped()
+            filtered_pt.header.frame_id = 'base_link'
+            filtered_pt.header.stamp = self.get_clock().now().to_msg()
+            filtered_pt.point.x = float(p_base[0])
+            filtered_pt.point.y = float(p_base[1])
+            filtered_pt.point.z = float(p_base[2])
+            self._filtered_hand_pub.publish(filtered_pt)
+
+            # Nếu đang ở ground_truth, publish target trực tiếp
+            if self._mode == 'ground_truth':
+                self._publish_robot_ee_target(p_base)
+            return
+
+        # ── Legacy camera path (giữ nguyên toàn bộ) ──────────────────────────
         p_cam = np.array([msg.x, msg.y, msg.z])
         self._last_p_cam = p_cam
         self._calib_buffer.append(p_cam)
@@ -492,6 +515,13 @@ class CoordTransformNode(Node):
         if self._mode != 'prediction':
             return
 
+        # ── Robot EE source: prediction đã ở base_link frame ─────────────────
+        if msg.header.frame_id == 'base_link':
+            p_base = np.array([msg.x, msg.y, msg.z])
+            self._publish_robot_ee_target(p_base)
+            return
+
+        # ── Legacy camera path (giữ nguyên toàn bộ) ──────────────────────────
         # Lấy tọa độ theo prediction_step
         if hasattr(msg, 'pred_x') and len(msg.pred_x) > 0:
             step = min(self._pred_step, len(msg.pred_x) - 1)
@@ -648,6 +678,52 @@ class CoordTransformNode(Node):
             state.smoothed_p_cam[2] = alpha_z * target_p_cam[2] + (1.0 - alpha_z) * state.smoothed_p_cam[2]
 
         return state.smoothed_p_cam.copy()  # Fix #1: LUÔN trả về bản sao
+
+    def _publish_robot_ee_target(self, p_base: np.ndarray):
+        """
+        Publish target pose trực tiếp từ robot EE (đã ở base_link frame).
+        Bỏ qua toàn bộ camera→base transform. Chỉ giữ:
+        - Workspace safety clamp
+        - Rate limiting
+        """
+        if not self._running:
+            return
+
+        # Safety clamp — giới hạn trong workspace robot
+        p_clamped, was_clamped = self._clamp_to_workspace(p_base)
+        if was_clamped:
+            self.get_logger().warn(
+                f'[EE] Tọa độ bị clamp: {p_base.round(3)} → {p_clamped.round(3)}',
+                throttle_duration_sec=1.0,
+            )
+
+        # Rate-limiting — giới hạn bước nhảy tọa độ mỗi frame
+        if self._last_p_base is not None:
+            for i in range(3):
+                delta = p_clamped[i] - self._last_p_base[i]
+                if abs(delta) > self._filter_max_rate:
+                    p_clamped[i] = self._last_p_base[i] + self._filter_max_rate * np.sign(delta)
+        self._last_p_base = p_clamped.copy()
+
+        # Tạo và publish PoseStamped
+        target = PoseStamped()
+        target.header.frame_id = 'base_link'
+        target.header.stamp = self.get_clock().now().to_msg()
+        target.pose.position.x = float(p_clamped[0])
+        target.pose.position.y = float(p_clamped[1])
+        target.pose.position.z = float(p_clamped[2])
+        target.pose.orientation.x = float(self._ee_orient[0])
+        target.pose.orientation.y = float(self._ee_orient[1])
+        target.pose.orientation.z = float(self._ee_orient[2])
+        target.pose.orientation.w = float(self._ee_orient[3])
+
+        self._target_pub.publish(target)
+        self._debug_pub.publish(target)
+
+        self.get_logger().info(
+            f'[{self._mode.upper()}/EE] base{p_clamped.round(3)}',
+            throttle_duration_sec=2.0,
+        )
 
     def _transform_and_publish_target(self, p_cam_to_use: np.ndarray):
         """Tính toán target pose từ p_cam đã lọc và gửi xuống robot"""

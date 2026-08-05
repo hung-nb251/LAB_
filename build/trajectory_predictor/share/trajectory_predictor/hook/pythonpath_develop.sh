@@ -1,3 +1,3 @@
 # generated from colcon_core/shell/template/hook_prepend_value.sh.em
 
-_colcon_prepend_unique_value PYTHONPATH "/home/duy/cocarry_ws/build/trajectory_predictor"
+_colcon_prepend_unique_value PYTHONPATH "/home/hungnb/cocarry_ws/build/trajectory_predictor"

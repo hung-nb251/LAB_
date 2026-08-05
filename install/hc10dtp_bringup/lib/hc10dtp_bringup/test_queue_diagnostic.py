@@ -1,1 +1,1 @@
-/home/duy/cocarry_ws/src/hc10dtp_bringup/scripts/test_queue_diagnostic.py
+/home/hungnb/cocarry_ws/src/hc10dtp_bringup/scripts/test_queue_diagnostic.py

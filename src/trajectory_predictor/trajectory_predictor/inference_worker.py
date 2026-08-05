@@ -115,11 +115,18 @@ def main():
                     kwargs.pop('quantization_config', None)
                     super().__init__(*args, **kwargs)
 
+            class CompatInputLayer(tf.keras.layers.InputLayer):
+                def __init__(self, *args, **kwargs):
+                    kwargs.pop('batch_shape', None)
+                    kwargs.pop('optional', None)
+                    super().__init__(*args, **kwargs)
+
             custom_objects = {
                 'Dense': CompatDense,
                 'GRU': CompatGRU,
                 'LSTM': CompatLSTM,
                 'SimpleRNN': CompatSimpleRNN,
+                'InputLayer': CompatInputLayer,
             }
 
             current_model = keras_load(path, compile=False, custom_objects=custom_objects)

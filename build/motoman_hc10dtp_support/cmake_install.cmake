@@ -1,8 +1,8 @@
-# Install script for directory: /home/duy/cocarry_ws/src/motoman_ros2_support_packages/motoman_hc10dtp_support
+# Install script for directory: /home/hungnb/cocarry_ws/src/motoman_hc10dtp_support
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/duy/cocarry_ws/install/motoman_hc10dtp_support")
+  set(CMAKE_INSTALL_PREFIX "/home/hungnb/cocarry_ws/install/motoman_hc10dtp_support")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -37,8 +37,13 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
   set(CMAKE_CROSSCOMPILING "FALSE")
 endif()
 
+# Set default install directory permissions.
+if(NOT DEFINED CMAKE_OBJDUMP)
+  set(CMAKE_OBJDUMP "/usr/bin/objdump")
+endif()
+
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  include("/home/duy/cocarry_ws/build/motoman_hc10dtp_support/ament_cmake_symlink_install/ament_cmake_symlink_install.cmake")
+  include("/home/hungnb/cocarry_ws/build/motoman_hc10dtp_support/ament_cmake_symlink_install/ament_cmake_symlink_install.cmake")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -49,5 +54,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/duy/cocarry_ws/build/motoman_hc10dtp_support/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/hungnb/cocarry_ws/build/motoman_hc10dtp_support/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

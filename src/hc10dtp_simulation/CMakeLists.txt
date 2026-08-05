@@ -10,7 +10,7 @@ install(PROGRAMS
 )
 
 # Install launch files
-install(DIRECTORY launch config
+install(DIRECTORY launch
   DESTINATION share/${PROJECT_NAME}
 )
 

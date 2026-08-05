@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces
+CMAKE_SOURCE_DIR = /home/hungnb/cocarry_ws/src/motoros2_interfaces
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/duy/cocarry_ws/build/motoros2_interfaces
+CMAKE_BINARY_DIR = /home/hungnb/cocarry_ws/build/motoros2_interfaces
 
 # Utility rule file for ament_cmake_python_symlink_motoros2_interfaces.
 
@@ -67,7 +67,7 @@ include CMakeFiles/ament_cmake_python_symlink_motoros2_interfaces.dir/compiler_d
 include CMakeFiles/ament_cmake_python_symlink_motoros2_interfaces.dir/progress.make
 
 CMakeFiles/ament_cmake_python_symlink_motoros2_interfaces:
-	/usr/bin/cmake -E create_symlink /home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_generator_py/motoros2_interfaces /home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_python/motoros2_interfaces/motoros2_interfaces
+	/usr/bin/cmake -E create_symlink /home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_generator_py/motoros2_interfaces /home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_python/motoros2_interfaces/motoros2_interfaces
 
 ament_cmake_python_symlink_motoros2_interfaces: CMakeFiles/ament_cmake_python_symlink_motoros2_interfaces
 ament_cmake_python_symlink_motoros2_interfaces: CMakeFiles/ament_cmake_python_symlink_motoros2_interfaces.dir/build.make
@@ -82,6 +82,6 @@ CMakeFiles/ament_cmake_python_symlink_motoros2_interfaces.dir/clean:
 .PHONY : CMakeFiles/ament_cmake_python_symlink_motoros2_interfaces.dir/clean
 
 CMakeFiles/ament_cmake_python_symlink_motoros2_interfaces.dir/depend:
-	cd /home/duy/cocarry_ws/build/motoros2_interfaces && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces /home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces /home/duy/cocarry_ws/build/motoros2_interfaces /home/duy/cocarry_ws/build/motoros2_interfaces /home/duy/cocarry_ws/build/motoros2_interfaces/CMakeFiles/ament_cmake_python_symlink_motoros2_interfaces.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/hungnb/cocarry_ws/build/motoros2_interfaces && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/hungnb/cocarry_ws/src/motoros2_interfaces /home/hungnb/cocarry_ws/src/motoros2_interfaces /home/hungnb/cocarry_ws/build/motoros2_interfaces /home/hungnb/cocarry_ws/build/motoros2_interfaces /home/hungnb/cocarry_ws/build/motoros2_interfaces/CMakeFiles/ament_cmake_python_symlink_motoros2_interfaces.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/ament_cmake_python_symlink_motoros2_interfaces.dir/depend
 

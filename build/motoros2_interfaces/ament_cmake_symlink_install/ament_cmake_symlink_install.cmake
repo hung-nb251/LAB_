@@ -23,7 +23,7 @@ function(ament_cmake_symlink_install_directory cmake_current_source_dir)
 
   # make destination absolute path and ensure that it exists
   if(NOT IS_ABSOLUTE "${ARG_DESTINATION}")
-    set(ARG_DESTINATION "/home/duy/cocarry_ws/install/motoros2_interfaces/${ARG_DESTINATION}")
+    set(ARG_DESTINATION "/home/hungnb/cocarry_ws/install/motoros2_interfaces/${ARG_DESTINATION}")
   endif()
   if(NOT EXISTS "${ARG_DESTINATION}")
     file(MAKE_DIRECTORY "${ARG_DESTINATION}")
@@ -128,7 +128,7 @@ function(ament_cmake_symlink_install_files cmake_current_source_dir)
 
   # make destination an absolute path and ensure that it exists
   if(NOT IS_ABSOLUTE "${ARG_DESTINATION}")
-    set(ARG_DESTINATION "/home/duy/cocarry_ws/install/motoros2_interfaces/${ARG_DESTINATION}")
+    set(ARG_DESTINATION "/home/hungnb/cocarry_ws/install/motoros2_interfaces/${ARG_DESTINATION}")
   endif()
   if(NOT EXISTS "${ARG_DESTINATION}")
     file(MAKE_DIRECTORY "${ARG_DESTINATION}")
@@ -186,7 +186,7 @@ function(ament_cmake_symlink_install_programs cmake_current_source_dir)
 
   # make destination an absolute path and ensure that it exists
   if(NOT IS_ABSOLUTE "${ARG_DESTINATION}")
-    set(ARG_DESTINATION "/home/duy/cocarry_ws/install/motoros2_interfaces/${ARG_DESTINATION}")
+    set(ARG_DESTINATION "/home/hungnb/cocarry_ws/install/motoros2_interfaces/${ARG_DESTINATION}")
   endif()
   if(NOT EXISTS "${ARG_DESTINATION}")
     file(MAKE_DIRECTORY "${ARG_DESTINATION}")
@@ -256,7 +256,7 @@ function(ament_cmake_symlink_install_targets)
 
     # make destination an absolute path and ensure that it exists
     if(NOT IS_ABSOLUTE "${destination}")
-      set(destination "/home/duy/cocarry_ws/install/motoros2_interfaces/${destination}")
+      set(destination "/home/hungnb/cocarry_ws/install/motoros2_interfaces/${destination}")
     endif()
     if(NOT EXISTS "${destination}")
       file(MAKE_DIRECTORY "${destination}")
@@ -315,329 +315,332 @@ message(STATUS "Execute custom install script")
 
 # begin of custom install code
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_index/share/ament_index/resource_index/rosidl_interfaces/motoros2_interfaces" "DESTINATION" "share/ament_index/resource_index/rosidl_interfaces")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_index/share/ament_index/resource_index/rosidl_interfaces/motoros2_interfaces" "DESTINATION" "share/ament_index/resource_index/rosidl_interfaces")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_index/share/ament_index/resource_index/rosidl_interfaces/motoros2_interfaces" "DESTINATION" "share/ament_index/resource_index/rosidl_interfaces")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_index/share/ament_index/resource_index/rosidl_interfaces/motoros2_interfaces" "DESTINATION" "share/ament_index/resource_index/rosidl_interfaces")
 
-# install(DIRECTORY "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_generator_c/motoros2_interfaces/" "DESTINATION" "include/motoros2_interfaces/motoros2_interfaces" "PATTERN" "*.h")
-ament_cmake_symlink_install_directory("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" DIRECTORY "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_generator_c/motoros2_interfaces/" "DESTINATION" "include/motoros2_interfaces/motoros2_interfaces" "PATTERN" "*.h")
+# install(DIRECTORY "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_generator_c/motoros2_interfaces/" "DESTINATION" "include/motoros2_interfaces/motoros2_interfaces" "PATTERN" "*.h")
+ament_cmake_symlink_install_directory("/home/hungnb/cocarry_ws/src/motoros2_interfaces" DIRECTORY "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_generator_c/motoros2_interfaces/" "DESTINATION" "include/motoros2_interfaces/motoros2_interfaces" "PATTERN" "*.h")
 
 # install(FILES "/opt/ros/humble/lib/python3.10/site-packages/ament_package/template/environment_hook/library_path.sh" "DESTINATION" "share/motoros2_interfaces/environment")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/opt/ros/humble/lib/python3.10/site-packages/ament_package/template/environment_hook/library_path.sh" "DESTINATION" "share/motoros2_interfaces/environment")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/opt/ros/humble/lib/python3.10/site-packages/ament_package/template/environment_hook/library_path.sh" "DESTINATION" "share/motoros2_interfaces/environment")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/library_path.dsv" "DESTINATION" "share/motoros2_interfaces/environment")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/library_path.dsv" "DESTINATION" "share/motoros2_interfaces/environment")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/library_path.dsv" "DESTINATION" "share/motoros2_interfaces/environment")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/library_path.dsv" "DESTINATION" "share/motoros2_interfaces/environment")
 
-# install(DIRECTORY "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_typesupport_fastrtps_c/motoros2_interfaces/" "DESTINATION" "include/motoros2_interfaces/motoros2_interfaces" "PATTERN_EXCLUDE" "*.cpp")
-ament_cmake_symlink_install_directory("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" DIRECTORY "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_typesupport_fastrtps_c/motoros2_interfaces/" "DESTINATION" "include/motoros2_interfaces/motoros2_interfaces" "PATTERN_EXCLUDE" "*.cpp")
+# install(DIRECTORY "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_typesupport_fastrtps_c/motoros2_interfaces/" "DESTINATION" "include/motoros2_interfaces/motoros2_interfaces" "PATTERN_EXCLUDE" "*.cpp")
+ament_cmake_symlink_install_directory("/home/hungnb/cocarry_ws/src/motoros2_interfaces" DIRECTORY "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_typesupport_fastrtps_c/motoros2_interfaces/" "DESTINATION" "include/motoros2_interfaces/motoros2_interfaces" "PATTERN_EXCLUDE" "*.cpp")
 
-# install(DIRECTORY "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_generator_cpp/motoros2_interfaces/" "DESTINATION" "include/motoros2_interfaces/motoros2_interfaces" "PATTERN" "*.hpp")
-ament_cmake_symlink_install_directory("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" DIRECTORY "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_generator_cpp/motoros2_interfaces/" "DESTINATION" "include/motoros2_interfaces/motoros2_interfaces" "PATTERN" "*.hpp")
+# install(DIRECTORY "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_generator_cpp/motoros2_interfaces/" "DESTINATION" "include/motoros2_interfaces/motoros2_interfaces" "PATTERN" "*.hpp")
+ament_cmake_symlink_install_directory("/home/hungnb/cocarry_ws/src/motoros2_interfaces" DIRECTORY "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_generator_cpp/motoros2_interfaces/" "DESTINATION" "include/motoros2_interfaces/motoros2_interfaces" "PATTERN" "*.hpp")
 
-# install(DIRECTORY "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_typesupport_fastrtps_cpp/motoros2_interfaces/" "DESTINATION" "include/motoros2_interfaces/motoros2_interfaces" "PATTERN_EXCLUDE" "*.cpp")
-ament_cmake_symlink_install_directory("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" DIRECTORY "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_typesupport_fastrtps_cpp/motoros2_interfaces/" "DESTINATION" "include/motoros2_interfaces/motoros2_interfaces" "PATTERN_EXCLUDE" "*.cpp")
+# install(DIRECTORY "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_typesupport_fastrtps_cpp/motoros2_interfaces/" "DESTINATION" "include/motoros2_interfaces/motoros2_interfaces" "PATTERN_EXCLUDE" "*.cpp")
+ament_cmake_symlink_install_directory("/home/hungnb/cocarry_ws/src/motoros2_interfaces" DIRECTORY "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_typesupport_fastrtps_cpp/motoros2_interfaces/" "DESTINATION" "include/motoros2_interfaces/motoros2_interfaces" "PATTERN_EXCLUDE" "*.cpp")
 
-# install(DIRECTORY "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_typesupport_introspection_c/motoros2_interfaces/" "DESTINATION" "include/motoros2_interfaces/motoros2_interfaces" "PATTERN" "*.h")
-ament_cmake_symlink_install_directory("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" DIRECTORY "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_typesupport_introspection_c/motoros2_interfaces/" "DESTINATION" "include/motoros2_interfaces/motoros2_interfaces" "PATTERN" "*.h")
+# install(DIRECTORY "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_typesupport_introspection_c/motoros2_interfaces/" "DESTINATION" "include/motoros2_interfaces/motoros2_interfaces" "PATTERN" "*.h")
+ament_cmake_symlink_install_directory("/home/hungnb/cocarry_ws/src/motoros2_interfaces" DIRECTORY "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_typesupport_introspection_c/motoros2_interfaces/" "DESTINATION" "include/motoros2_interfaces/motoros2_interfaces" "PATTERN" "*.h")
 
-# install(DIRECTORY "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_typesupport_introspection_cpp/motoros2_interfaces/" "DESTINATION" "include/motoros2_interfaces/motoros2_interfaces" "PATTERN" "*.hpp")
-ament_cmake_symlink_install_directory("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" DIRECTORY "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_typesupport_introspection_cpp/motoros2_interfaces/" "DESTINATION" "include/motoros2_interfaces/motoros2_interfaces" "PATTERN" "*.hpp")
+# install(DIRECTORY "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_typesupport_introspection_cpp/motoros2_interfaces/" "DESTINATION" "include/motoros2_interfaces/motoros2_interfaces" "PATTERN" "*.hpp")
+ament_cmake_symlink_install_directory("/home/hungnb/cocarry_ws/src/motoros2_interfaces" DIRECTORY "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_typesupport_introspection_cpp/motoros2_interfaces/" "DESTINATION" "include/motoros2_interfaces/motoros2_interfaces" "PATTERN" "*.hpp")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/pythonpath.sh" "DESTINATION" "share/motoros2_interfaces/environment")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/pythonpath.sh" "DESTINATION" "share/motoros2_interfaces/environment")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/pythonpath.sh" "DESTINATION" "share/motoros2_interfaces/environment")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/pythonpath.sh" "DESTINATION" "share/motoros2_interfaces/environment")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/pythonpath.dsv" "DESTINATION" "share/motoros2_interfaces/environment")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/pythonpath.dsv" "DESTINATION" "share/motoros2_interfaces/environment")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/pythonpath.dsv" "DESTINATION" "share/motoros2_interfaces/environment")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/pythonpath.dsv" "DESTINATION" "share/motoros2_interfaces/environment")
 
-# install(DIRECTORY "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_python/motoros2_interfaces/motoros2_interfaces.egg-info/" "DESTINATION" "local/lib/python3.10/dist-packages/motoros2_interfaces-0.2.0-py3.10.egg-info")
-ament_cmake_symlink_install_directory("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" DIRECTORY "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_python/motoros2_interfaces/motoros2_interfaces.egg-info/" "DESTINATION" "local/lib/python3.10/dist-packages/motoros2_interfaces-0.2.0-py3.10.egg-info")
+# install(DIRECTORY "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_python/motoros2_interfaces/motoros2_interfaces.egg-info/" "DESTINATION" "local/lib/python3.10/dist-packages/motoros2_interfaces-0.2.0-py3.10.egg-info")
+ament_cmake_symlink_install_directory("/home/hungnb/cocarry_ws/src/motoros2_interfaces" DIRECTORY "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_python/motoros2_interfaces/motoros2_interfaces.egg-info/" "DESTINATION" "local/lib/python3.10/dist-packages/motoros2_interfaces-0.2.0-py3.10.egg-info")
 
-# install(DIRECTORY "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_generator_py/motoros2_interfaces/" "DESTINATION" "local/lib/python3.10/dist-packages/motoros2_interfaces" "PATTERN_EXCLUDE" "*.pyc" "PATTERN_EXCLUDE" "__pycache__")
-ament_cmake_symlink_install_directory("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" DIRECTORY "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_generator_py/motoros2_interfaces/" "DESTINATION" "local/lib/python3.10/dist-packages/motoros2_interfaces" "PATTERN_EXCLUDE" "*.pyc" "PATTERN_EXCLUDE" "__pycache__")
+# install(DIRECTORY "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_generator_py/motoros2_interfaces/" "DESTINATION" "local/lib/python3.10/dist-packages/motoros2_interfaces" "PATTERN_EXCLUDE" "*.pyc" "PATTERN_EXCLUDE" "__pycache__")
+ament_cmake_symlink_install_directory("/home/hungnb/cocarry_ws/src/motoros2_interfaces" DIRECTORY "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_generator_py/motoros2_interfaces/" "DESTINATION" "local/lib/python3.10/dist-packages/motoros2_interfaces" "PATTERN_EXCLUDE" "*.pyc" "PATTERN_EXCLUDE" "__pycache__")
 
 # install("TARGETS" "motoros2_interfaces__rosidl_typesupport_fastrtps_c__pyext" "DESTINATION" "local/lib/python3.10/dist-packages/motoros2_interfaces")
-include("/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_symlink_install_targets_0_${CMAKE_INSTALL_CONFIG_NAME}.cmake")
+include("/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_symlink_install_targets_0_${CMAKE_INSTALL_CONFIG_NAME}.cmake")
 
 # install("TARGETS" "motoros2_interfaces__rosidl_typesupport_introspection_c__pyext" "DESTINATION" "local/lib/python3.10/dist-packages/motoros2_interfaces")
-include("/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_symlink_install_targets_1_${CMAKE_INSTALL_CONFIG_NAME}.cmake")
+include("/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_symlink_install_targets_1_${CMAKE_INSTALL_CONFIG_NAME}.cmake")
 
 # install("TARGETS" "motoros2_interfaces__rosidl_typesupport_c__pyext" "DESTINATION" "local/lib/python3.10/dist-packages/motoros2_interfaces")
-include("/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_symlink_install_targets_2_${CMAKE_INSTALL_CONFIG_NAME}.cmake")
+include("/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_symlink_install_targets_2_${CMAKE_INSTALL_CONFIG_NAME}.cmake")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_index/share/ament_index/resource_index/rust_packages/motoros2_interfaces" "DESTINATION" "share/ament_index/resource_index/rust_packages")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_index/share/ament_index/resource_index/rust_packages/motoros2_interfaces" "DESTINATION" "share/ament_index/resource_index/rust_packages")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_index/share/ament_index/resource_index/rust_packages/motoros2_interfaces" "DESTINATION" "share/ament_index/resource_index/rust_packages")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_index/share/ament_index/resource_index/rust_packages/motoros2_interfaces" "DESTINATION" "share/ament_index/resource_index/rust_packages")
 
-# install(DIRECTORY "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_generator_rs/motoros2_interfaces/rust" "DESTINATION" "share/motoros2_interfaces")
-ament_cmake_symlink_install_directory("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" DIRECTORY "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_generator_rs/motoros2_interfaces/rust" "DESTINATION" "share/motoros2_interfaces")
+# install(DIRECTORY "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_generator_rs/motoros2_interfaces/rust" "DESTINATION" "share/motoros2_interfaces")
+ament_cmake_symlink_install_directory("/home/hungnb/cocarry_ws/src/motoros2_interfaces" DIRECTORY "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_generator_rs/motoros2_interfaces/rust" "DESTINATION" "share/motoros2_interfaces")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/AlarmInfo.idl" "DESTINATION" "share/motoros2_interfaces/msg")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/AlarmInfo.idl" "DESTINATION" "share/motoros2_interfaces/msg")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/AlarmInfo.idl" "DESTINATION" "share/motoros2_interfaces/msg")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/AlarmInfo.idl" "DESTINATION" "share/motoros2_interfaces/msg")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/AlarmCauseRemedy.idl" "DESTINATION" "share/motoros2_interfaces/msg")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/AlarmCauseRemedy.idl" "DESTINATION" "share/motoros2_interfaces/msg")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/AlarmCauseRemedy.idl" "DESTINATION" "share/motoros2_interfaces/msg")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/AlarmCauseRemedy.idl" "DESTINATION" "share/motoros2_interfaces/msg")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/ErrorInfo.idl" "DESTINATION" "share/motoros2_interfaces/msg")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/ErrorInfo.idl" "DESTINATION" "share/motoros2_interfaces/msg")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/ErrorInfo.idl" "DESTINATION" "share/motoros2_interfaces/msg")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/ErrorInfo.idl" "DESTINATION" "share/motoros2_interfaces/msg")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/InformJobCrudResultCodes.idl" "DESTINATION" "share/motoros2_interfaces/msg")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/InformJobCrudResultCodes.idl" "DESTINATION" "share/motoros2_interfaces/msg")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/InformJobCrudResultCodes.idl" "DESTINATION" "share/motoros2_interfaces/msg")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/InformJobCrudResultCodes.idl" "DESTINATION" "share/motoros2_interfaces/msg")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/InitTrajEnum.idl" "DESTINATION" "share/motoros2_interfaces/msg")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/InitTrajEnum.idl" "DESTINATION" "share/motoros2_interfaces/msg")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/InitTrajEnum.idl" "DESTINATION" "share/motoros2_interfaces/msg")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/InitTrajEnum.idl" "DESTINATION" "share/motoros2_interfaces/msg")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/IoResultCodes.idl" "DESTINATION" "share/motoros2_interfaces/msg")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/IoResultCodes.idl" "DESTINATION" "share/motoros2_interfaces/msg")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/IoResultCodes.idl" "DESTINATION" "share/motoros2_interfaces/msg")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/IoResultCodes.idl" "DESTINATION" "share/motoros2_interfaces/msg")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/MotionReadyEnum.idl" "DESTINATION" "share/motoros2_interfaces/msg")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/MotionReadyEnum.idl" "DESTINATION" "share/motoros2_interfaces/msg")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/MotionReadyEnum.idl" "DESTINATION" "share/motoros2_interfaces/msg")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/MotionReadyEnum.idl" "DESTINATION" "share/motoros2_interfaces/msg")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/QueueResultEnum.idl" "DESTINATION" "share/motoros2_interfaces/msg")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/QueueResultEnum.idl" "DESTINATION" "share/motoros2_interfaces/msg")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/QueueResultEnum.idl" "DESTINATION" "share/motoros2_interfaces/msg")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/QueueResultEnum.idl" "DESTINATION" "share/motoros2_interfaces/msg")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/SelectionResultCodes.idl" "DESTINATION" "share/motoros2_interfaces/msg")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/SelectionResultCodes.idl" "DESTINATION" "share/motoros2_interfaces/msg")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/SelectionResultCodes.idl" "DESTINATION" "share/motoros2_interfaces/msg")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/msg/SelectionResultCodes.idl" "DESTINATION" "share/motoros2_interfaces/msg")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/GetActiveAlarmInfo.idl" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/GetActiveAlarmInfo.idl" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/GetActiveAlarmInfo.idl" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/GetActiveAlarmInfo.idl" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/ListInformJobs.idl" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/ListInformJobs.idl" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/ListInformJobs.idl" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/ListInformJobs.idl" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/QueueTrajPoint.idl" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/QueueTrajPoint.idl" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/QueueTrajPoint.idl" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/QueueTrajPoint.idl" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/ReadMRegister.idl" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/ReadMRegister.idl" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/ReadMRegister.idl" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/ReadMRegister.idl" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/ReadSingleIO.idl" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/ReadSingleIO.idl" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/ReadSingleIO.idl" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/ReadSingleIO.idl" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/ReadGroupIO.idl" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/ReadGroupIO.idl" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/ReadGroupIO.idl" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/ReadGroupIO.idl" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/ResetError.idl" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/ResetError.idl" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/ResetError.idl" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/ResetError.idl" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/SelectMotionTool.idl" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/SelectMotionTool.idl" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/SelectMotionTool.idl" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/SelectMotionTool.idl" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/StartTrajMode.idl" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/StartTrajMode.idl" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/StartTrajMode.idl" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/StartTrajMode.idl" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/StartPointQueueMode.idl" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/StartPointQueueMode.idl" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/StartPointQueueMode.idl" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/StartPointQueueMode.idl" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/WriteMRegister.idl" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/WriteMRegister.idl" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/WriteMRegister.idl" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/WriteMRegister.idl" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/WriteSingleIO.idl" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/WriteSingleIO.idl" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/WriteSingleIO.idl" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/WriteSingleIO.idl" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/WriteGroupIO.idl" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/WriteGroupIO.idl" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/WriteGroupIO.idl" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_adapter/motoros2_interfaces/srv/WriteGroupIO.idl" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/msg/AlarmInfo.msg" "DESTINATION" "share/motoros2_interfaces/msg")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/msg/AlarmInfo.msg" "DESTINATION" "share/motoros2_interfaces/msg")
+# install(FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/msg/AlarmInfo.msg" "DESTINATION" "share/motoros2_interfaces/msg")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/msg/AlarmInfo.msg" "DESTINATION" "share/motoros2_interfaces/msg")
 
-# install(FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/msg/AlarmCauseRemedy.msg" "DESTINATION" "share/motoros2_interfaces/msg")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/msg/AlarmCauseRemedy.msg" "DESTINATION" "share/motoros2_interfaces/msg")
+# install(FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/msg/AlarmCauseRemedy.msg" "DESTINATION" "share/motoros2_interfaces/msg")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/msg/AlarmCauseRemedy.msg" "DESTINATION" "share/motoros2_interfaces/msg")
 
-# install(FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/msg/ErrorInfo.msg" "DESTINATION" "share/motoros2_interfaces/msg")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/msg/ErrorInfo.msg" "DESTINATION" "share/motoros2_interfaces/msg")
+# install(FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/msg/ErrorInfo.msg" "DESTINATION" "share/motoros2_interfaces/msg")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/msg/ErrorInfo.msg" "DESTINATION" "share/motoros2_interfaces/msg")
 
-# install(FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/msg/InformJobCrudResultCodes.msg" "DESTINATION" "share/motoros2_interfaces/msg")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/msg/InformJobCrudResultCodes.msg" "DESTINATION" "share/motoros2_interfaces/msg")
+# install(FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/msg/InformJobCrudResultCodes.msg" "DESTINATION" "share/motoros2_interfaces/msg")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/msg/InformJobCrudResultCodes.msg" "DESTINATION" "share/motoros2_interfaces/msg")
 
-# install(FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/msg/InitTrajEnum.msg" "DESTINATION" "share/motoros2_interfaces/msg")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/msg/InitTrajEnum.msg" "DESTINATION" "share/motoros2_interfaces/msg")
+# install(FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/msg/InitTrajEnum.msg" "DESTINATION" "share/motoros2_interfaces/msg")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/msg/InitTrajEnum.msg" "DESTINATION" "share/motoros2_interfaces/msg")
 
-# install(FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/msg/IoResultCodes.msg" "DESTINATION" "share/motoros2_interfaces/msg")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/msg/IoResultCodes.msg" "DESTINATION" "share/motoros2_interfaces/msg")
+# install(FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/msg/IoResultCodes.msg" "DESTINATION" "share/motoros2_interfaces/msg")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/msg/IoResultCodes.msg" "DESTINATION" "share/motoros2_interfaces/msg")
 
-# install(FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/msg/MotionReadyEnum.msg" "DESTINATION" "share/motoros2_interfaces/msg")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/msg/MotionReadyEnum.msg" "DESTINATION" "share/motoros2_interfaces/msg")
+# install(FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/msg/MotionReadyEnum.msg" "DESTINATION" "share/motoros2_interfaces/msg")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/msg/MotionReadyEnum.msg" "DESTINATION" "share/motoros2_interfaces/msg")
 
-# install(FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/msg/QueueResultEnum.msg" "DESTINATION" "share/motoros2_interfaces/msg")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/msg/QueueResultEnum.msg" "DESTINATION" "share/motoros2_interfaces/msg")
+# install(FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/msg/QueueResultEnum.msg" "DESTINATION" "share/motoros2_interfaces/msg")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/msg/QueueResultEnum.msg" "DESTINATION" "share/motoros2_interfaces/msg")
 
-# install(FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/msg/SelectionResultCodes.msg" "DESTINATION" "share/motoros2_interfaces/msg")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/msg/SelectionResultCodes.msg" "DESTINATION" "share/motoros2_interfaces/msg")
+# install(FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/msg/SelectionResultCodes.msg" "DESTINATION" "share/motoros2_interfaces/msg")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/msg/SelectionResultCodes.msg" "DESTINATION" "share/motoros2_interfaces/msg")
 
-# install(FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/srv/GetActiveAlarmInfo.srv" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/srv/GetActiveAlarmInfo.srv" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/srv/GetActiveAlarmInfo.srv" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/srv/GetActiveAlarmInfo.srv" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/GetActiveAlarmInfo_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/GetActiveAlarmInfo_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/GetActiveAlarmInfo_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/GetActiveAlarmInfo_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/GetActiveAlarmInfo_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/GetActiveAlarmInfo_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/GetActiveAlarmInfo_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/GetActiveAlarmInfo_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/srv/ListInformJobs.srv" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/srv/ListInformJobs.srv" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/srv/ListInformJobs.srv" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/srv/ListInformJobs.srv" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ListInformJobs_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ListInformJobs_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ListInformJobs_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ListInformJobs_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ListInformJobs_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ListInformJobs_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ListInformJobs_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ListInformJobs_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/srv/QueueTrajPoint.srv" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/srv/QueueTrajPoint.srv" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/srv/QueueTrajPoint.srv" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/srv/QueueTrajPoint.srv" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/QueueTrajPoint_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/QueueTrajPoint_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/QueueTrajPoint_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/QueueTrajPoint_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/QueueTrajPoint_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/QueueTrajPoint_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/QueueTrajPoint_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/QueueTrajPoint_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/srv/ReadMRegister.srv" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/srv/ReadMRegister.srv" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/srv/ReadMRegister.srv" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/srv/ReadMRegister.srv" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ReadMRegister_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ReadMRegister_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ReadMRegister_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ReadMRegister_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ReadMRegister_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ReadMRegister_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ReadMRegister_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ReadMRegister_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/srv/ReadSingleIO.srv" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/srv/ReadSingleIO.srv" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/srv/ReadSingleIO.srv" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/srv/ReadSingleIO.srv" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ReadSingleIO_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ReadSingleIO_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ReadSingleIO_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ReadSingleIO_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ReadSingleIO_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ReadSingleIO_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ReadSingleIO_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ReadSingleIO_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/srv/ReadGroupIO.srv" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/srv/ReadGroupIO.srv" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/srv/ReadGroupIO.srv" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/srv/ReadGroupIO.srv" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ReadGroupIO_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ReadGroupIO_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ReadGroupIO_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ReadGroupIO_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ReadGroupIO_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ReadGroupIO_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ReadGroupIO_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ReadGroupIO_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/srv/ResetError.srv" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/srv/ResetError.srv" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/srv/ResetError.srv" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/srv/ResetError.srv" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ResetError_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ResetError_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ResetError_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ResetError_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ResetError_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ResetError_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ResetError_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/ResetError_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/srv/SelectMotionTool.srv" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/srv/SelectMotionTool.srv" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/srv/SelectMotionTool.srv" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/srv/SelectMotionTool.srv" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/SelectMotionTool_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/SelectMotionTool_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/SelectMotionTool_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/SelectMotionTool_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/SelectMotionTool_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/SelectMotionTool_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/SelectMotionTool_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/SelectMotionTool_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/srv/StartTrajMode.srv" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/srv/StartTrajMode.srv" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/srv/StartTrajMode.srv" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/srv/StartTrajMode.srv" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/StartTrajMode_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/StartTrajMode_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/StartTrajMode_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/StartTrajMode_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/StartTrajMode_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/StartTrajMode_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/StartTrajMode_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/StartTrajMode_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/srv/StartPointQueueMode.srv" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/srv/StartPointQueueMode.srv" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/srv/StartPointQueueMode.srv" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/srv/StartPointQueueMode.srv" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/StartPointQueueMode_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/StartPointQueueMode_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/StartPointQueueMode_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/StartPointQueueMode_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/StartPointQueueMode_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/StartPointQueueMode_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/StartPointQueueMode_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/StartPointQueueMode_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/srv/WriteMRegister.srv" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/srv/WriteMRegister.srv" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/srv/WriteMRegister.srv" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/srv/WriteMRegister.srv" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/WriteMRegister_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/WriteMRegister_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/WriteMRegister_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/WriteMRegister_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/WriteMRegister_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/WriteMRegister_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/WriteMRegister_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/WriteMRegister_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/srv/WriteSingleIO.srv" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/srv/WriteSingleIO.srv" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/srv/WriteSingleIO.srv" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/srv/WriteSingleIO.srv" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/WriteSingleIO_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/WriteSingleIO_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/WriteSingleIO_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/WriteSingleIO_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/WriteSingleIO_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/WriteSingleIO_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/WriteSingleIO_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/WriteSingleIO_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/srv/WriteGroupIO.srv" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/srv/WriteGroupIO.srv" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/srv/WriteGroupIO.srv" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/srv/WriteGroupIO.srv" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/WriteGroupIO_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/WriteGroupIO_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/WriteGroupIO_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/WriteGroupIO_Request.msg" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/WriteGroupIO_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/WriteGroupIO_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/WriteGroupIO_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/WriteGroupIO_Response.msg" "DESTINATION" "share/motoros2_interfaces/srv")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/motoros2_interfaces" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/motoros2_interfaces" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/motoros2_interfaces" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/motoros2_interfaces" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_index/share/ament_index/resource_index/parent_prefix_path/motoros2_interfaces" "DESTINATION" "share/ament_index/resource_index/parent_prefix_path")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_index/share/ament_index/resource_index/parent_prefix_path/motoros2_interfaces" "DESTINATION" "share/ament_index/resource_index/parent_prefix_path")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_index/share/ament_index/resource_index/parent_prefix_path/motoros2_interfaces" "DESTINATION" "share/ament_index/resource_index/parent_prefix_path")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_index/share/ament_index/resource_index/parent_prefix_path/motoros2_interfaces" "DESTINATION" "share/ament_index/resource_index/parent_prefix_path")
 
 # install(FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/ament_prefix_path.sh" "DESTINATION" "share/motoros2_interfaces/environment")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/ament_prefix_path.sh" "DESTINATION" "share/motoros2_interfaces/environment")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/ament_prefix_path.sh" "DESTINATION" "share/motoros2_interfaces/environment")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/ament_prefix_path.dsv" "DESTINATION" "share/motoros2_interfaces/environment")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/ament_prefix_path.dsv" "DESTINATION" "share/motoros2_interfaces/environment")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/ament_prefix_path.dsv" "DESTINATION" "share/motoros2_interfaces/environment")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/ament_prefix_path.dsv" "DESTINATION" "share/motoros2_interfaces/environment")
 
 # install(FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/path.sh" "DESTINATION" "share/motoros2_interfaces/environment")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/path.sh" "DESTINATION" "share/motoros2_interfaces/environment")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/path.sh" "DESTINATION" "share/motoros2_interfaces/environment")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/path.dsv" "DESTINATION" "share/motoros2_interfaces/environment")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/path.dsv" "DESTINATION" "share/motoros2_interfaces/environment")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/path.dsv" "DESTINATION" "share/motoros2_interfaces/environment")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/path.dsv" "DESTINATION" "share/motoros2_interfaces/environment")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/local_setup.bash" "DESTINATION" "share/motoros2_interfaces")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/local_setup.bash" "DESTINATION" "share/motoros2_interfaces")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/local_setup.bash" "DESTINATION" "share/motoros2_interfaces")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/local_setup.bash" "DESTINATION" "share/motoros2_interfaces")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/local_setup.sh" "DESTINATION" "share/motoros2_interfaces")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/local_setup.sh" "DESTINATION" "share/motoros2_interfaces")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/local_setup.sh" "DESTINATION" "share/motoros2_interfaces")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/local_setup.sh" "DESTINATION" "share/motoros2_interfaces")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/local_setup.zsh" "DESTINATION" "share/motoros2_interfaces")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/local_setup.zsh" "DESTINATION" "share/motoros2_interfaces")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/local_setup.zsh" "DESTINATION" "share/motoros2_interfaces")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/local_setup.zsh" "DESTINATION" "share/motoros2_interfaces")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/local_setup.dsv" "DESTINATION" "share/motoros2_interfaces")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/local_setup.dsv" "DESTINATION" "share/motoros2_interfaces")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/local_setup.dsv" "DESTINATION" "share/motoros2_interfaces")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/local_setup.dsv" "DESTINATION" "share/motoros2_interfaces")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/package.dsv" "DESTINATION" "share/motoros2_interfaces")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/package.dsv" "DESTINATION" "share/motoros2_interfaces")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/package.dsv" "DESTINATION" "share/motoros2_interfaces")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/package.dsv" "DESTINATION" "share/motoros2_interfaces")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_index/share/ament_index/resource_index/packages/motoros2_interfaces" "DESTINATION" "share/ament_index/resource_index/packages")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_index/share/ament_index/resource_index/packages/motoros2_interfaces" "DESTINATION" "share/ament_index/resource_index/packages")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_index/share/ament_index/resource_index/packages/motoros2_interfaces" "DESTINATION" "share/ament_index/resource_index/packages")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_index/share/ament_index/resource_index/packages/motoros2_interfaces" "DESTINATION" "share/ament_index/resource_index/packages")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/rosidl_cmake-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/rosidl_cmake-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/rosidl_cmake-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/rosidl_cmake-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_export_dependencies/ament_cmake_export_dependencies-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_export_dependencies/ament_cmake_export_dependencies-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_export_dependencies/ament_cmake_export_dependencies-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_export_dependencies/ament_cmake_export_dependencies-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_export_include_directories/ament_cmake_export_include_directories-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_export_include_directories/ament_cmake_export_include_directories-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_export_include_directories/ament_cmake_export_include_directories-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_export_include_directories/ament_cmake_export_include_directories-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_export_libraries/ament_cmake_export_libraries-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_export_libraries/ament_cmake_export_libraries-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_export_libraries/ament_cmake_export_libraries-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_export_libraries/ament_cmake_export_libraries-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_export_targets/ament_cmake_export_targets-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_export_targets/ament_cmake_export_targets-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_export_targets/ament_cmake_export_targets-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_export_targets/ament_cmake_export_targets-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/rosidl_cmake_export_typesupport_targets-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/rosidl_cmake_export_typesupport_targets-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/rosidl_cmake_export_typesupport_targets-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/rosidl_cmake_export_typesupport_targets-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
 
-# install(FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_core/motoros2_interfacesConfig.cmake" "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_core/motoros2_interfacesConfig-version.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_core/motoros2_interfacesConfig.cmake" "/home/duy/cocarry_ws/build/motoros2_interfaces/ament_cmake_core/motoros2_interfacesConfig-version.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/rosidl_cmake_aggregate_target-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/rosidl_cmake_aggregate_target-extras.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
 
-# install(FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/package.xml" "DESTINATION" "share/motoros2_interfaces")
-ament_cmake_symlink_install_files("/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces" FILES "/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/package.xml" "DESTINATION" "share/motoros2_interfaces")
+# install(FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_core/motoros2_interfacesConfig.cmake" "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_core/motoros2_interfacesConfig-version.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_core/motoros2_interfacesConfig.cmake" "/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_core/motoros2_interfacesConfig-version.cmake" "DESTINATION" "share/motoros2_interfaces/cmake")
+
+# install(FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/package.xml" "DESTINATION" "share/motoros2_interfaces")
+ament_cmake_symlink_install_files("/home/hungnb/cocarry_ws/src/motoros2_interfaces" FILES "/home/hungnb/cocarry_ws/src/motoros2_interfaces/package.xml" "DESTINATION" "share/motoros2_interfaces")

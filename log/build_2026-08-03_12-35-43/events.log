@@ -1,0 +1,96 @@
+[0.000000] (-) TimerEvent: {}
+[0.000280] (-) JobUnselected: {'identifier': 'coord_transform'}
+[0.000299] (-) JobUnselected: {'identifier': 'experiment_logger'}
+[0.000310] (-) JobUnselected: {'identifier': 'hc10dtp_bringup'}
+[0.000318] (-) JobUnselected: {'identifier': 'hc10dtp_moveit_config'}
+[0.000326] (-) JobUnselected: {'identifier': 'hc10dtp_simulation'}
+[0.000333] (-) JobUnselected: {'identifier': 'hrc_bringup'}
+[0.000342] (-) JobUnselected: {'identifier': 'human_hand_msgs'}
+[0.000350] (-) JobUnselected: {'identifier': 'motoman'}
+[0.000358] (-) JobUnselected: {'identifier': 'motoman_ar2010_support'}
+[0.000366] (-) JobUnselected: {'identifier': 'motoman_es_support'}
+[0.000374] (-) JobUnselected: {'identifier': 'motoman_gp110_support'}
+[0.000382] (-) JobUnselected: {'identifier': 'motoman_gp12_support'}
+[0.000389] (-) JobUnselected: {'identifier': 'motoman_gp165r_support'}
+[0.000397] (-) JobUnselected: {'identifier': 'motoman_gp180_support'}
+[0.000404] (-) JobUnselected: {'identifier': 'motoman_gp200r_support'}
+[0.000412] (-) JobUnselected: {'identifier': 'motoman_gp20hl_support'}
+[0.000419] (-) JobUnselected: {'identifier': 'motoman_gp215_support'}
+[0.000426] (-) JobUnselected: {'identifier': 'motoman_gp225_support'}
+[0.000434] (-) JobUnselected: {'identifier': 'motoman_gp250_support'}
+[0.000442] (-) JobUnselected: {'identifier': 'motoman_gp25_support'}
+[0.000450] (-) JobUnselected: {'identifier': 'motoman_gp35l_support'}
+[0.000458] (-) JobUnselected: {'identifier': 'motoman_gp4_support'}
+[0.000465] (-) JobUnselected: {'identifier': 'motoman_gp50_support'}
+[0.000473] (-) JobUnselected: {'identifier': 'motoman_gp70l_support'}
+[0.000480] (-) JobUnselected: {'identifier': 'motoman_gp7_support'}
+[0.000488] (-) JobUnselected: {'identifier': 'motoman_gp88_support'}
+[0.000495] (-) JobUnselected: {'identifier': 'motoman_gp8_support'}
+[0.000503] (-) JobUnselected: {'identifier': 'motoman_gp8l_support'}
+[0.000510] (-) JobUnselected: {'identifier': 'motoman_hc10_support'}
+[0.000518] (-) JobUnselected: {'identifier': 'motoman_hc10dtp_support'}
+[0.000525] (-) JobUnselected: {'identifier': 'motoman_hc20_support'}
+[0.000532] (-) JobUnselected: {'identifier': 'motoman_ma2010_support'}
+[0.000540] (-) JobUnselected: {'identifier': 'motoman_mh110_support'}
+[0.000547] (-) JobUnselected: {'identifier': 'motoman_mh12_support'}
+[0.000555] (-) JobUnselected: {'identifier': 'motoman_mh50_support'}
+[0.000562] (-) JobUnselected: {'identifier': 'motoman_mh5_support'}
+[0.000570] (-) JobUnselected: {'identifier': 'motoman_motomini_support'}
+[0.000578] (-) JobUnselected: {'identifier': 'motoman_motopos_d500_support'}
+[0.000586] (-) JobUnselected: {'identifier': 'motoman_motopos_mh1655_support'}
+[0.000593] (-) JobUnselected: {'identifier': 'motoman_mpx1950_support'}
+[0.000601] (-) JobUnselected: {'identifier': 'motoman_ms210_support'}
+[0.000609] (-) JobUnselected: {'identifier': 'motoman_resources'}
+[0.000616] (-) JobUnselected: {'identifier': 'motoman_sda10f_support'}
+[0.000624] (-) JobUnselected: {'identifier': 'motoman_sia10d_support'}
+[0.000631] (-) JobUnselected: {'identifier': 'motoman_sia10f_support'}
+[0.000638] (-) JobUnselected: {'identifier': 'motoman_sia20d_support'}
+[0.000646] (-) JobUnselected: {'identifier': 'motoman_sia30d_support'}
+[0.000653] (-) JobUnselected: {'identifier': 'motoman_sia50_support'}
+[0.000661] (-) JobUnselected: {'identifier': 'motoman_sia5d_support'}
+[0.000668] (-) JobUnselected: {'identifier': 'motoman_up50n_support'}
+[0.000676] (-) JobUnselected: {'identifier': 'motoros2_interfaces'}
+[0.000683] (-) JobUnselected: {'identifier': 'predictor_ui'}
+[0.000690] (-) JobUnselected: {'identifier': 'realsense_tracker'}
+[0.000698] (-) JobUnselected: {'identifier': 'trajectory_predictor'}
+[0.000708] (kinect_tracker) JobQueued: {'identifier': 'kinect_tracker', 'dependencies': OrderedDict([('human_hand_msgs', '/home/hungnb/cocarry_ws/install/human_hand_msgs')])}
+[0.000721] (kinect_tracker) JobStarted: {'identifier': 'kinect_tracker'}
+[0.099216] (-) TimerEvent: {}
+[0.199542] (-) TimerEvent: {}
+[0.299874] (-) TimerEvent: {}
+[0.400176] (-) TimerEvent: {}
+[0.492595] (kinect_tracker) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'egg_info', '--egg-base', '../../build/kinect_tracker', 'build', '--build-base', '/home/hungnb/cocarry_ws/build/kinect_tracker/build', 'install', '--record', '/home/hungnb/cocarry_ws/build/kinect_tracker/install.log', '--install-scripts', '$base/lib/realsense_tracker', '--single-version-externally-managed', 'install_data'], 'cwd': '/home/hungnb/cocarry_ws/src/kinect_tracker', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'VSCODE_CWD': '/home/hungnb/Antigravity IDE', 'USER': 'hungnb', 'ANTIGRAVITY_SOURCE_METADATA': '{"tool":{"conversationId":"1122a8c2-b252-491d-90a5-32f4a11f6359","stepIndex":859,"toolCall":{"id":"3fn3qugn","name":"run_command","argumentsJson":"{\\"CommandLine\\":\\"colcon build --packages-select kinect_tracker\\",\\"Cwd\\":\\"/home/hungnb/cocarry_ws\\",\\"WaitMsBeforeAsync\\":2000,\\"toolAction\\":\\"Building kinect_tracker\\",\\"toolSummary\\":\\"Build kinect tracker\\"}","thinkingSignature":"Ev0ICvoIARFNMg97ZKTxdHgbkI21iU3JJyHjBgaiIH5fsy53FWgwzGTaZRFPEAB5ZRz75GJ03fJSLNYe6QGvzg4W2f5rLHjHxePXc15709En48RGrYly/BQ3rBnS6HRNafHM6ekLFwvYJhVfs2JQ8BnEB/9JTy7uNjDU5SXwNOkt+L2GsJym96zzbOwMS3EPnYjFubB5Rc9TQvEy6ltVoUzR6DzShnq1w4DWX7wR/CR8xtQX9hmoCT9bh8RN22Wng/IreBoJjZWkgVntIE5Y2ZWQi9I6JjSN8gnIPYcV2aBwvzix3ZIc9Ck3kIXjlYU0uNrzeF5POeBN8dqCa1WyrQHpM1BGO8rHpm27WBVx1CEXXXC8S0gWx7x+l2C2tIRQzMYSUJvn6oh4V8Skgi35/eku/Pbrj3z0N2wMAQgq2Ra7jKxB2Wm3M91kNcZZyXok2xjNQoqmidND2D06LilBeQU5HVQygsCsp/e5EYsGSVCDpHqEEUbcXnFbF+H/uIge63NSTxKce/7OxFjLeI/hhbJiWvBtW5q0CA/IahYHLqAdNjqbaAs/vgYq3gReypvCGWd/kA30oD0AHEtP+30uQIvKCMrIptCrE7di2Zo+M0PVPG6pRhovlWsmrEOfTH48iMjMC9mq65zqpehwrWKyDMEbwIzFyVEWe+ocRvEdi2kvto71mL8zPqe+fCnL48s8EIXG1hImK3HgjIh9ZelnJGODYohN+4AfMTbFvpcGVp+UWYmF2aCS2MH2QyCH8+PQfxU/B3YtfbPmjWOnpkwrj3nLF3iUUwb9Hc4KrQvEdzVMhjBy1GPcO0XKAjbGXy5d0KSqE8UYxCjVgj8cDjVbAlc+XB4ReWuxIPEc5errWgjfZZ5G6mc2qeWh96hSBPLq3+rujKbaNB3ib8eQQ+DvA6pCaDpYHFxgJ1C/KJzI9KSRABp9e0+c9yqMqJJreEHk7SCdG3GS4/RLSG7M+WL1ZYDDXiyNPmjgF+nBJSzrVfSLOw9jOYPJxiGGgjwcWgXiwuiFb8bvqXynjMAkrbBUA2vY3ysG+CyZ/bojsypkYLEnQ24KtGioPjPkdVfxr91inyiNEIoX6Y0Wyb0BdgZd97kCVV32hazy7EN7mSbQ2zVhsiYEhXSB09hitzJlYG8/5pd0rsDiAYkzKl6R4KaNdz4ac5rRbWuiPwwIRunZ7XX+5ro65XEY0SAmugh6yvt60IuqCU9Iv0gNCzTTBuh8HpXZoFOW1xybI4tlSlW/eIlXPuTYJMWdDU5sWTmfBFFpG26toK5KZNUzv+80fTavJdahxdX+9la2cVqMBSDz02nI3+xONdcdkUBxP3lp/3FBJux34743s76dA0rMiJ7eOOoovhZzD4fIPHaN6J2SMr03wmMAgWL6jnmChbG1i0e2YxqIiRk4C0mdkwofMrtGFpHEUHHWw3s04Mi/hPpLS4lo4BwkyXXVp8eaQtwKxBVy/EyVPxTWu4cev3MZ6eAZSqvVX0RJc2//9uSE1vU6AtHcsTh4rnSyPPTDktt08uoa","originalName":"run_command"}}}', 'LC_TIME': 'vi_VN', 'VSCODE_NLS_CONFIG': '{"userLocale":"en-us","osLocale":"en-us","resolvedLanguage":"en","defaultMessagesFile":"/home/hungnb/Antigravity IDE/resources/app/out/nls.messages.json","locale":"en-us","availableLanguages":{}}', 'XDG_SESSION_TYPE': 'wayland', 'ROS_PACKAGE_PATH': '/home/hungnb/cocarry_ws/install/human_hand_msgs/share', 'SHLVL': '0', 'LD_LIBRARY_PATH': '/home/hungnb/cocarry_ws/install/human_hand_msgs/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib', 'HOME': '/home/hungnb', 'CHROME_DESKTOP': 'antigravity-ide.desktop', 'DESKTOP_SESSION': 'ubuntu', 'VSCODE_IPC_HOOK': '/run/user/1000/vscode-dd55634b-1.10-main.sock', 'ROS_PYTHON_VERSION': '3', 'GNOME_SHELL_SESSION_MODE': 'ubuntu', 'GTK_MODULES': 'gail:atk-bridge', 'PAGER': 'cat', 'LC_MONETARY': 'vi_VN', 'MANAGERPID': '1562', 'DBUS_STARTER_BUS_TYPE': 'session', 'SYSTEMD_EXEC_PID': '1714', 'IM_CONFIG_CHECK_ENV': '1', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus,guid=92f09d1639389ac3cee7e61d6a6fc187', 'ANTIGRAVITY_AGENT': '1', 'GIO_LAUNCHED_DESKTOP_FILE_PID': '2407', 'IM_CONFIG_PHASE': '1', 'WAYLAND_DISPLAY': 'wayland-0', 'ROS_DISTRO': 'humble', 'LOGNAME': 'hungnb', '_': '/home/hungnb/.local/bin/colcon', 'JOURNAL_STREAM': '8:13024', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'PKG_CONFIG_PATH': '/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/x86_64-linux-gnu/pkgconfig:/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/pkgconfig', 'USERNAME': 'hungnb', 'TERM': 'dumb', 'GNOME_DESKTOP_SESSION_ID': 'this-is-deprecated', 'FC_FONTATIONS': '1', 'ROS_LOCALHOST_ONLY': '0', 'ANTIGRAVITY_EDITOR_APP_ROOT': '/home/hungnb/Antigravity IDE/resources/app', 'PATH': '/home/hungnb/.gemini/antigravity-ide/bin:/home/hungnb/.local/bin:/opt/ros/humble/bin:/home/hungnb/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin', 'SESSION_MANAGER': 'local/hungnb-XiaoXinPro-14c-AHP10R:@/tmp/.ICE-unix/1714,unix/hungnb-XiaoXinPro-14c-AHP10R:/tmp/.ICE-unix/1714', 'INVOCATION_ID': '3dbcd8f000374590ab27996b745d9bc9', 'XDG_MENU_PREFIX': 'gnome-', 'LC_ADDRESS': 'vi_VN', 'GNOME_SETUP_DISPLAY': ':1', 'XDG_RUNTIME_DIR': '/run/user/1000', 'GDK_BACKEND': 'wayland', 'DISPLAY': ':0', 'LANG': 'en_US.UTF-8', 'XDG_CURRENT_DESKTOP': 'ubuntu:GNOME', 'LC_TELEPHONE': 'vi_VN', 'XMODIFIERS': '@im=ibus', 'XDG_SESSION_DESKTOP': 'ubuntu', 'XAUTHORITY': '/run/user/1000/.mutter-Xwaylandauth.4HAZS3', 'LS_COLORS': '', 'SSH_AGENT_LAUNCHER': 'gnome-keyring', 'SSH_AUTH_SOCK': '/run/user/1000/keyring/ssh', 'AMENT_PREFIX_PATH': '/opt/ros/humble', 'SHELL': '/bin/bash', 'ANTIGRAVITY_LS_ADDRESS': 'localhost:37779', 'LC_NAME': 'vi_VN', 'QT_ACCESSIBILITY': '1', 'GDMSESSION': 'ubuntu', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'LC_MEASUREMENT': 'vi_VN', 'LC_IDENTIFICATION': 'vi_VN', 'GIT_PAGER': 'cat', 'QT_IM_MODULE': 'ibus', 'ANTIGRAVITY_TRAJECTORY_ID': 'b193d9bd-4375-45f9-84e3-9ffe99c5f08b', 'PWD': '/home/hungnb/cocarry_ws/build/kinect_tracker', 'XDG_CONFIG_DIRS': '/etc/xdg/xdg-ubuntu:/etc/xdg', 'VSCODE_CODE_CACHE_PATH': '/home/hungnb/.config/Antigravity IDE/CachedData/e0b7a2bcf575cfba10528c4e7c10bd3ce2d7769a', 'DBUS_STARTER_ADDRESS': 'unix:path=/run/user/1000/bus,guid=92f09d1639389ac3cee7e61d6a6fc187', 'XDG_DATA_DIRS': '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/hungnb/cocarry_ws/build/kinect_tracker/prefix_override:/home/hungnb/.local/lib/python3.10/site-packages/colcon_core/task/python/colcon_distutils_commands:/home/hungnb/cocarry_ws/install/kinect_tracker/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/install/human_hand_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages', 'LC_NUMERIC': 'vi_VN', 'LC_PAPER': 'vi_VN', 'COLCON': '1', 'ANTIGRAVITY_CSRF_TOKEN': '9725c0f7-b351-4c94-9e14-e89c33f9ca07', 'VSCODE_PID': '2407', 'CMAKE_PREFIX_PATH': '/home/hungnb/cocarry_ws/install/human_hand_msgs'}, 'shell': False}
+[0.500291] (-) TimerEvent: {}
+[0.600612] (-) TimerEvent: {}
+[0.635034] (kinect_tracker) StdoutLine: {'line': b'running egg_info\n'}
+[0.635337] (kinect_tracker) StdoutLine: {'line': b'creating ../../build/kinect_tracker/kinect_tracker.egg-info\n'}
+[0.635472] (kinect_tracker) StdoutLine: {'line': b'writing ../../build/kinect_tracker/kinect_tracker.egg-info/PKG-INFO\n'}
+[0.635597] (kinect_tracker) StdoutLine: {'line': b'writing dependency_links to ../../build/kinect_tracker/kinect_tracker.egg-info/dependency_links.txt\n'}
+[0.635754] (kinect_tracker) StdoutLine: {'line': b'writing entry points to ../../build/kinect_tracker/kinect_tracker.egg-info/entry_points.txt\n'}
+[0.635847] (kinect_tracker) StdoutLine: {'line': b'writing requirements to ../../build/kinect_tracker/kinect_tracker.egg-info/requires.txt\n'}
+[0.635906] (kinect_tracker) StdoutLine: {'line': b'writing top-level names to ../../build/kinect_tracker/kinect_tracker.egg-info/top_level.txt\n'}
+[0.635962] (kinect_tracker) StdoutLine: {'line': b"writing manifest file '../../build/kinect_tracker/kinect_tracker.egg-info/SOURCES.txt'\n"}
+[0.636706] (kinect_tracker) StdoutLine: {'line': b"reading manifest file '../../build/kinect_tracker/kinect_tracker.egg-info/SOURCES.txt'\n"}
+[0.637103] (kinect_tracker) StdoutLine: {'line': b"writing manifest file '../../build/kinect_tracker/kinect_tracker.egg-info/SOURCES.txt'\n"}
+[0.637182] (kinect_tracker) StdoutLine: {'line': b'running build\n'}
+[0.637219] (kinect_tracker) StdoutLine: {'line': b'running build_py\n'}
+[0.637276] (kinect_tracker) StdoutLine: {'line': b'creating /home/hungnb/cocarry_ws/build/kinect_tracker/build\n'}
+[0.637315] (kinect_tracker) StdoutLine: {'line': b'creating /home/hungnb/cocarry_ws/build/kinect_tracker/build/lib\n'}
+[0.637357] (kinect_tracker) StdoutLine: {'line': b'creating /home/hungnb/cocarry_ws/build/kinect_tracker/build/lib/kinect_tracker\n'}
+[0.637398] (kinect_tracker) StdoutLine: {'line': b'copying kinect_tracker/__init__.py -> /home/hungnb/cocarry_ws/build/kinect_tracker/build/lib/kinect_tracker\n'}
+[0.637438] (kinect_tracker) StdoutLine: {'line': b'copying kinect_tracker/kinect_node.py -> /home/hungnb/cocarry_ws/build/kinect_tracker/build/lib/kinect_tracker\n'}
+[0.637550] (kinect_tracker) StdoutLine: {'line': b'running install\n'}
+[0.637731] (kinect_tracker) StdoutLine: {'line': b'running install_lib\n'}
+[0.638097] (kinect_tracker) StdoutLine: {'line': b'creating /home/hungnb/cocarry_ws/install/kinect_tracker/lib/python3.10/site-packages/kinect_tracker\n'}
+[0.638142] (kinect_tracker) StdoutLine: {'line': b'copying /home/hungnb/cocarry_ws/build/kinect_tracker/build/lib/kinect_tracker/__init__.py -> /home/hungnb/cocarry_ws/install/kinect_tracker/lib/python3.10/site-packages/kinect_tracker\n'}
+[0.638200] (kinect_tracker) StdoutLine: {'line': b'copying /home/hungnb/cocarry_ws/build/kinect_tracker/build/lib/kinect_tracker/kinect_node.py -> /home/hungnb/cocarry_ws/install/kinect_tracker/lib/python3.10/site-packages/kinect_tracker\n'}
+[0.638494] (kinect_tracker) StdoutLine: {'line': b'byte-compiling /home/hungnb/cocarry_ws/install/kinect_tracker/lib/python3.10/site-packages/kinect_tracker/__init__.py to __init__.cpython-310.pyc\n'}
+[0.638634] (kinect_tracker) StdoutLine: {'line': b'byte-compiling /home/hungnb/cocarry_ws/install/kinect_tracker/lib/python3.10/site-packages/kinect_tracker/kinect_node.py to kinect_node.cpython-310.pyc\n'}
+[0.640086] (kinect_tracker) StdoutLine: {'line': b'running install_data\n'}
+[0.640161] (kinect_tracker) StdoutLine: {'line': b'creating /home/hungnb/cocarry_ws/install/kinect_tracker/share/ament_index\n'}
+[0.640253] (kinect_tracker) StdoutLine: {'line': b'creating /home/hungnb/cocarry_ws/install/kinect_tracker/share/ament_index/resource_index\n'}
+[0.640327] (kinect_tracker) StdoutLine: {'line': b'creating /home/hungnb/cocarry_ws/install/kinect_tracker/share/ament_index/resource_index/packages\n'}
+[0.640436] (kinect_tracker) StderrLine: {'line': b"error: can't copy 'resource/kinect_tracker': doesn't exist or not a regular file\n"}
+[0.659053] (kinect_tracker) CommandEnded: {'returncode': 1}
+[0.659456] (kinect_tracker) JobEnded: {'identifier': 'kinect_tracker', 'rc': 1}
+[0.669817] (-) EventReactorShutdown: {}

@@ -1,4 +1,4 @@
 import sys
 if sys.prefix == '/usr':
     sys.real_prefix = sys.prefix
-    sys.prefix = sys.exec_prefix = '/home/duy/cocarry_ws/install/realsense_tracker'
+    sys.prefix = sys.exec_prefix = '/home/hungnb/cocarry_ws/install/realsense_tracker'

@@ -1,1 +1,0 @@
-/home/duy/cocarry_ws/build/industrial_msgs/rosidl_generator_cpp/industrial_msgs/msg/detail/device_info__struct.hpp

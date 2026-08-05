@@ -1,0 +1,4 @@
+[INFO] [1785830438.539608254] [predictor_ui]: [UI] Node started
+[INFO] [1785830490.930485704] [predictor_ui]: [UI] Capture Init Pose thành công: Captured Init Pose! P_init=(-0.162, 0.280, 0.379), Cam_init=(-0.020, -0.024, -0.020), Noise_Tol=41.4mm
+Orientation=(0.998, 0.064, -0.000, 0.000)
+[INFO] [1785830554.815214601] [predictor_ui]: [UI] Auto-disabled robot on Stop Run

@@ -76,8 +76,6 @@ class RealSenseTrackerNode(Node):
 
         self.is_running = True
 
-        self.thread = threading.Thread(target=self.tracking_loop, daemon=True)
-        self.thread.start()
         self.get_logger().info('RealSense Tracker Node Started.')
 
     def calibrate_cb(self, request, response):
@@ -255,8 +253,13 @@ class RealSenseTrackerNode(Node):
 def main(args=None):
     rclpy.init(args=args)
     node = RealSenseTrackerNode()
+    
+    # Run ROS spin in a background thread so cv2.imshow can run in the main thread
+    spin_thread = threading.Thread(target=rclpy.spin, args=(node,), daemon=True)
+    spin_thread.start()
+    
     try:
-        rclpy.spin(node)
+        node.tracking_loop()
     except KeyboardInterrupt:
         pass
     finally:

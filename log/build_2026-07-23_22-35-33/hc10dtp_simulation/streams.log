@@ -1,0 +1,28 @@
+[0.018s] Invoking command in '/home/hungnb/cocarry_ws/build/hc10dtp_simulation': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_bringup:/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_bringup:/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:/opt/ros/humble /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/hc10dtp_simulation -- -j16 -l16
+[0.029s] -- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.114s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.169s] -- Configuring done
+[0.171s] -- Generating done
+[0.173s] -- Build files have been written to: /home/hungnb/cocarry_ws/build/hc10dtp_simulation
+[0.802s] Invoked command in '/home/hungnb/cocarry_ws/build/hc10dtp_simulation' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_bringup:/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_bringup:/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:/opt/ros/humble /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/hc10dtp_simulation -- -j16 -l16
+[0.804s] Invoking command in '/home/hungnb/cocarry_ws/build/hc10dtp_simulation': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_bringup:/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_bringup:/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:/opt/ros/humble /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/hc10dtp_simulation
+[0.975s] -- Install configuration: ""
+[0.975s] -- Execute custom install script
+[0.975s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/hc10dtp_simulation/lib/hc10dtp_simulation/motoros2_mock_node.py
+[0.975s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/launch/sim_start.launch.py
+[0.975s] -- Symlinking: /home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/ament_index/resource_index/package_run_dependencies/hc10dtp_simulation
+[0.975s] -- Symlinking: /home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/ament_index/resource_index/parent_prefix_path/hc10dtp_simulation
+[0.975s] -- Symlinking: /home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/environment/ament_prefix_path.sh
+[0.975s] -- Symlinking: /home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/environment/ament_prefix_path.dsv
+[0.975s] -- Symlinking: /home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/environment/path.sh
+[0.975s] -- Symlinking: /home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/environment/path.dsv
+[0.975s] -- Symlinking: /home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/local_setup.bash
+[0.975s] -- Symlinking: /home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/local_setup.sh
+[0.975s] -- Symlinking: /home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/local_setup.zsh
+[0.975s] -- Symlinking: /home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/local_setup.dsv
+[0.975s] -- Symlinking: /home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/package.dsv
+[0.975s] -- Symlinking: /home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/ament_index/resource_index/packages/hc10dtp_simulation
+[0.975s] -- Symlinking: /home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/cmake/hc10dtp_simulationConfig.cmake
+[0.975s] -- Symlinking: /home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/cmake/hc10dtp_simulationConfig-version.cmake
+[0.976s] -- Symlinking: /home/hungnb/cocarry_ws/install/hc10dtp_simulation/share/hc10dtp_simulation/package.xml
+[0.982s] Invoked command in '/home/hungnb/cocarry_ws/build/hc10dtp_simulation' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_bringup:/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/hc10dtp_bringup:/home/hungnb/cocarry_ws/install/hc10dtp_moveit_config:/opt/ros/humble /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/hc10dtp_simulation

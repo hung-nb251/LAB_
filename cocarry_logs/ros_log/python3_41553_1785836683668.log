@@ -1,0 +1,32 @@
+[INFO] [1785836683.749673040] [coord_transform]: CoordTransformNode khởi động.
+  Object offset (cam frame): [0.05 0.   0.1 ]
+  Translation cam→base:      [0.5 0.  1.2]
+  EE orientation (xyzw):     [0.0, 1.0, 0.0, 0.0]
+  Prediction step:           5
+  Axis remap:                [0, 1, 2]
+  Axis sign:                 [-1.0, 1.0, 1.0]
+  Workspace X: (-1.0, 1.0), Y: (-0.5, 1.3), Z: (0.05, 1.5)
+  Filter outlier_threshold:  0.15m
+  Filter median_size_y:      3
+  Filter deadband_tol:       15.0mm
+  Filter stationary_thresh:  3 frames
+  Filter max_rate:           5.0cm/frame
+  Filter EMA moving(x,y,z):  (1.0,0.8,1.0)
+  Filter EMA hold  (x,y,z):  (0.08,0.02,0.05)
+[WARN] [1785836748.959910076] [coord_transform]: Outlier rejected #1 (jumped 2213.3mm). Ignoring.
+[WARN] [1785836748.991336897] [coord_transform]: Outlier rejected #2 (jumped 2205.2mm). Ignoring.
+[WARN] [1785836749.026356997] [coord_transform]: Outlier rejected #3 (jumped 2245.7mm). Ignoring.
+[WARN] [1785836749.058201676] [coord_transform]: Outlier rejected #4 (jumped 2230.4mm). Ignoring.
+[INFO] [1785836749.090820063] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1785836773.138750446] [coord_transform]: Chưa nhận được vị trí hiện tại của robot từ /cartesian_streamer/current_pose
+[WARN] [1785836789.768101000] [coord_transform]: Chưa nhận được vị trí hiện tại của robot từ /cartesian_streamer/current_pose
+[INFO] [1785836798.082610906] [coord_transform]: Trạng thái tracking: STOPPED
+[INFO] [1785836845.422680343] [coord_transform]: Trạng thái tracking: STOPPED
+[WARN] [1785836852.222486856] [coord_transform]: Chưa nhận được vị trí hiện tại của robot từ /cartesian_streamer/current_pose
+[WARN] [1785836856.756204882] [coord_transform]: Chưa nhận được vị trí hiện tại của robot từ /cartesian_streamer/current_pose
+[WARN] [1785836868.139635359] [coord_transform]: Outlier rejected #1 (jumped 153.6mm). Ignoring.
+[WARN] [1785836873.748991889] [coord_transform]: Outlier rejected #1 (jumped 233.2mm). Ignoring.
+[WARN] [1785836873.780704748] [coord_transform]: Outlier rejected #2 (jumped 221.3mm). Ignoring.
+[WARN] [1785836873.815652133] [coord_transform]: Outlier rejected #3 (jumped 244.9mm). Ignoring.
+[WARN] [1785836873.844604409] [coord_transform]: Outlier rejected #4 (jumped 294.7mm). Ignoring.
+[INFO] [1785836873.884294742] [coord_transform]: Too many outliers (5). Resetting filter to new position.

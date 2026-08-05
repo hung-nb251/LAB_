@@ -1,1 +1,0 @@
-/home/duy/cocarry_ws/build/industrial_msgs/rosidl_generator_rs/industrial_msgs/rust/build.rs

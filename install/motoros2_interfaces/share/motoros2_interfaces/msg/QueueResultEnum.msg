@@ -1,1 +1,1 @@
-/home/duy/cocarry_ws/src/yaskawa-global/motoros2_interfaces/msg/QueueResultEnum.msg
+/home/hungnb/cocarry_ws/src/motoros2_interfaces/msg/QueueResultEnum.msg
