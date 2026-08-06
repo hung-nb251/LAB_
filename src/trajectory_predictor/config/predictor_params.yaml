@@ -23,3 +23,15 @@ trajectory_predictor:
     # Behavior
     auto_start: false           # Start predicting immediately on launch
     clear_on_tracking_lost: 1.0 # Clear buffer if no data for N seconds
+
+    # ── Hybrid GRU+MJM ──────────────────────────────────────────────────────
+    # Bật bằng cách click nút "GRU+MJM" trên UI (publish /predictor/hybrid_cmd)
+    mjm:
+      enabled: false       # false = GRU thuần; true = kích hoạt Hybrid khi Start Run
+      t_switch: 5.0        # T_SWITCH (giây): tính từ khi Start Run (prediction bật)
+      goal_x: -0.0578      # X_f của phương trình MJM (tọa độ đích robot, base frame)
+      goal_y:  0.7138      # X_f
+      goal_z:  0.0         # X_f
+      fitts_a: 4.4455      # Fitts' Law hệ số hằng số a (s)
+      fitts_b: 1.4248      # Fitts' Law hệ số độ dốc b (s)
+      fitts_w: 0.3         # Fitts' Law target width W (m)

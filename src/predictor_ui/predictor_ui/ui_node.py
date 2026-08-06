@@ -80,6 +80,7 @@ class PredictorUiNode(Node):
         self._is_calibrated = False
         self._is_init_pose_captured = False
         self._backend_mode = 'UNKNOWN'
+        self._hybrid_state = 'OFF'
         self._trajectory_mode = 'ground_truth'  # 'ground_truth' or 'prediction'
         self._is_running = False
         self._external_stop_requested = False
@@ -93,10 +94,13 @@ class PredictorUiNode(Node):
             HandPrediction, '/ml/predicted_position', self._cb_pred, 10)
         self.create_subscription(
             Bool, '/run_status', self._cb_run_status, 10)
+        self.create_subscription(
+            String, '/predictor/hybrid_state', self._cb_hybrid_state, 10)
 
         # ── Publishers ───────────────────────────────────────────────────────
         self._model_pub = self.create_publisher(String, '/predictor/model_cmd', 5)
         self._run_status_pub = self.create_publisher(Bool, '/run_status', 5)
+        self._hybrid_cmd_pub = self.create_publisher(String, '/predictor/hybrid_cmd', 5)
 
         # ── Service clients ──────────────────────────────────────────────────
         self._logger_cli = self.create_client(SetBool, '/logger/toggle')
@@ -188,6 +192,10 @@ class PredictorUiNode(Node):
             self.get_logger().info('[UI] Received external Stop Run command (e.g. Target Snap)')
             self._external_stop_requested = True
 
+    def _cb_hybrid_state(self, msg: String):
+        with self._lock:
+            self._hybrid_state = msg.data
+
     def get_buffers(self):
         with self._lock:
             return (
@@ -195,7 +203,7 @@ class PredictorUiNode(Node):
                 # list(self._raw['x']),  list(self._raw['y']),  list(self._raw['z']),
                 list(self._pred['x']), list(self._pred['y']), list(self._pred['z']),
                 self._inf_ms, self._model_name, self._buf_size,
-                self._fps_meas, self._fps_pred,
+                self._fps_meas, self._fps_pred, self._hybrid_state
             )
 
     # ── Service calls ────────────────────────────────────────────────────────
@@ -247,6 +255,13 @@ class PredictorUiNode(Node):
         msg.data = model_name
         self._model_pub.publish(msg)
         self.get_logger().info(f'[UI] Model cmd → {model_name}')
+
+    def send_hybrid_cmd(self, cmd: str):
+        """Publish lệnh bật/tắt Hybrid GRU+MJM mode."""
+        msg = String()
+        msg.data = cmd
+        self._hybrid_cmd_pub.publish(msg)
+        self.get_logger().info(f'[UI] Hybrid cmd → {cmd}')
 
     def call_calibrate(self):
         if not self._calib_cli.service_is_ready():
@@ -379,9 +394,12 @@ class DashboardWindow:
         self._lbl_fps = QtWidgets.QLabel('FPS: 0 | 0')
         self._lbl_buf = QtWidgets.QLabel('Buf: 0')
         self._lbl_backend = QtWidgets.QLabel('Backend: UNKNOWN')
+        self._lbl_hybrid = QtWidgets.QLabel('Mode: OFF')
         for lbl in [self._lbl_model, self._lbl_inf, self._lbl_fps, self._lbl_buf, self._lbl_backend]:
             lbl.setStyleSheet('color: #a0f0a0; font-size: 13px; font-weight: bold;')
             top.addWidget(lbl)
+        self._lbl_hybrid.setStyleSheet('color: #a0f0a0; font-size: 13px; font-weight: bold; background: transparent; padding: 2px;')
+        top.addWidget(self._lbl_hybrid)
         top.addStretch()
         main_layout.addLayout(top)
 
@@ -435,20 +453,42 @@ class DashboardWindow:
         # Model buttons
         model_grp = QtWidgets.QGroupBox('Model')
         model_grp.setStyleSheet(
-            'QGroupBox { color: #e0e0e0; border: 1px solid #555; border-radius: 4px; margin-top: 6px; }'
-            'QGroupBox::title { subcontrol-origin: margin; left: 8px; }'
+            'QGroupBox { color: #e0e0e0; border: 1px solid #555; border-radius: 4px; margin-top: 15px; padding-top: 4px; }'
+            'QGroupBox::title { subcontrol-origin: margin; left: 8px; top: 0px; }'
         )
         mg_l = QtWidgets.QHBoxLayout(model_grp)
-        for m in ['RNN', 'GRU', 'LSTM']:
-            btn = QtWidgets.QPushButton(m)
-            btn.setFixedWidth(70)
-            btn.setStyleSheet(
-                'QPushButton { background: #16213e; color: #e0e0e0; border: 1px solid #0f3460; '
-                'border-radius: 4px; padding: 4px; } '
-                'QPushButton:hover { background: #0f3460; }'
-            )
-            btn.clicked.connect(lambda checked, n=m.lower(): node.send_model_cmd(n))
-            mg_l.addWidget(btn)
+
+        # Nút GRU — chỉ dùng GRU (Hybrid OFF)
+        btn_gru = QtWidgets.QPushButton('GRU')
+        btn_gru.setToolTip('Chỉ dùng GRU dự đoán. Hybrid mode tắt.')
+        btn_gru.setStyleSheet(
+            'QPushButton { background: #16213e; color: #e0e0e0; border: 1px solid #0f3460; '
+            'border-radius: 4px; padding: 4px 8px; } '
+            'QPushButton:hover { background: #0f3460; }'
+        )
+        btn_gru.clicked.connect(lambda: (
+            node.send_model_cmd('gru'),
+            node.send_hybrid_cmd('hybrid_off'),
+        ))
+        mg_l.addWidget(btn_gru)
+
+        # Nút GRU+MJM — bật Hybrid (GRU 5s -> Minimum Jerk về GOAL)
+        btn_grumjm = QtWidgets.QPushButton('GRU+MJM')
+        btn_grumjm.setToolTip(
+            'Hybrid mode: GRU dự đoán 5 giây đầu (FOLLOWER),\n'
+            'sau đó Minimum Jerk Model dẫn robot về GOAL (LEADER).\n'
+            'T_SWITCH bắt đầu đếm khi nhấn Start Run.'
+        )
+        btn_grumjm.setStyleSheet(
+            'QPushButton { background: #7d4e00; color: #ffe082; border: 1px solid #ff8f00; '
+            'border-radius: 4px; padding: 4px 8px; font-weight: bold; } '
+            'QPushButton:hover { background: #ffaa00; color: #222; border: 1px solid #ffcc00; }'
+        )
+        btn_grumjm.clicked.connect(lambda: (
+            node.send_model_cmd('gru'),
+            node.send_hybrid_cmd('hybrid_on'),
+        ))
+        mg_l.addWidget(btn_grumjm)
         row_1 = QtWidgets.QHBoxLayout()
         row_1.addWidget(model_grp)
         row_1.addStretch()
@@ -456,20 +496,18 @@ class DashboardWindow:
         # Trajectory mode selector
         traj_grp = QtWidgets.QGroupBox('Trajectory Mode')
         traj_grp.setStyleSheet(
-            'QGroupBox { color: #e0e0e0; border: 1px solid #555; border-radius: 4px; margin-top: 6px; }'
-            'QGroupBox::title { subcontrol-origin: margin; left: 8px; }'
+            'QGroupBox { color: #e0e0e0; border: 1px solid #555; border-radius: 4px; margin-top: 15px; padding-top: 4px; }'
+            'QGroupBox::title { subcontrol-origin: margin; left: 8px; top: 0px; }'
         )
         traj_l = QtWidgets.QHBoxLayout(traj_grp)
-        self.btn_traj_gt = QtWidgets.QPushButton('📍 Ground Truth')
-        self.btn_traj_gt.setFixedWidth(120)
+        self.btn_traj_gt = QtWidgets.QPushButton('Ground Truth')
         self.btn_traj_gt.setCheckable(True)
         self.btn_traj_gt.setChecked(True)
         self.btn_traj_gt.setStyleSheet(self._btn_style('#1a6b2e', '#2ba347'))
         self.btn_traj_gt.clicked.connect(lambda: self._set_trajectory_mode('ground_truth'))
         traj_l.addWidget(self.btn_traj_gt)
         
-        self.btn_traj_pred = QtWidgets.QPushButton('🧠 Prediction')
-        self.btn_traj_pred.setFixedWidth(120)
+        self.btn_traj_pred = QtWidgets.QPushButton('Prediction')
         self.btn_traj_pred.setCheckable(True)
         self.btn_traj_pred.setStyleSheet(self._btn_style('#6c3483', '#8e44ad'))
         self.btn_traj_pred.clicked.connect(lambda: self._set_trajectory_mode('prediction'))
@@ -478,22 +516,19 @@ class DashboardWindow:
         row_1.addStretch()
 
         # Run toggle
-        self.btn_pred = QtWidgets.QPushButton('▶ Start Run')
-        self.btn_pred.setFixedWidth(160)
+        self.btn_pred = QtWidgets.QPushButton('Start Run')
         self.btn_pred.setCheckable(True)
         self.btn_pred.setStyleSheet(self._btn_style('#1a6b2e', '#2ba347'))
         self.btn_pred.clicked.connect(self._toggle_run)
         row_1.addWidget(self.btn_pred)
 
         # Calibrate Button
-        self.btn_calib = QtWidgets.QPushButton('⌖ Calibrate Camera')
-        self.btn_calib.setFixedWidth(150)
+        self.btn_calib = QtWidgets.QPushButton('Calibrate Camera')
         self.btn_calib.setStyleSheet(self._btn_style('#2980b9', '#3498db'))
         self.btn_calib.clicked.connect(self._do_calibrate)
         row_1.addWidget(self.btn_calib)
 
-        self.btn_capture = QtWidgets.QPushButton('📌 Capture Init Pose')
-        self.btn_capture.setFixedWidth(165)
+        self.btn_capture = QtWidgets.QPushButton('Capture Init Pose')
         self.btn_capture.setStyleSheet(self._btn_style('#145a86', '#1f78b4'))
         self.btn_capture.clicked.connect(self._do_capture_init_pose)
         row_1.addWidget(self.btn_capture)
@@ -502,33 +537,28 @@ class DashboardWindow:
 
         row_2 = QtWidgets.QHBoxLayout()
 
-        self.btn_enable_robot = QtWidgets.QPushButton('⚡ Enable Robot')
-        self.btn_enable_robot.setFixedWidth(145)
+        self.btn_enable_robot = QtWidgets.QPushButton('Enable Robot')
         self.btn_enable_robot.setStyleSheet(self._btn_style('#125c2b', '#1f8a3a'))
         self.btn_enable_robot.clicked.connect(self._enable_robot)
         row_2.addWidget(self.btn_enable_robot)
 
-        self.btn_disable_robot = QtWidgets.QPushButton('⛔ Disable Robot')
-        self.btn_disable_robot.setFixedWidth(145)
+        self.btn_disable_robot = QtWidgets.QPushButton('Disable Robot')
         self.btn_disable_robot.setStyleSheet(self._btn_style('#7b241c', '#922b21'))
         self.btn_disable_robot.clicked.connect(self._disable_robot)
         row_2.addWidget(self.btn_disable_robot)
 
-        self.btn_soft_stop = QtWidgets.QPushButton('🛑 Soft Stop')
-        self.btn_soft_stop.setFixedWidth(120)
+        self.btn_soft_stop = QtWidgets.QPushButton('Soft Stop')
         self.btn_soft_stop.setStyleSheet(self._btn_style('#8e0000', '#c0392b'))
         self.btn_soft_stop.clicked.connect(self._soft_stop)
         row_2.addWidget(self.btn_soft_stop)
 
-        self.btn_go_home = QtWidgets.QPushButton('🏠 Go Home')
-        self.btn_go_home.setFixedWidth(120)
+        self.btn_go_home = QtWidgets.QPushButton('Go Home')
         self.btn_go_home.setStyleSheet(self._btn_style('#6c3483', '#8e44ad'))
         self.btn_go_home.clicked.connect(self._go_home)
         row_2.addWidget(self.btn_go_home)
 
         # Draw control toggle
-        self.btn_draw = QtWidgets.QPushButton('⏹ Stop Draw')
-        self.btn_draw.setFixedWidth(130)
+        self.btn_draw = QtWidgets.QPushButton('Stop Draw')
         self.btn_draw.setCheckable(True)
         self.btn_draw.setChecked(True)
         self.btn_draw.setStyleSheet(self._btn_style('#8e44ad', '#9b59b6'))
@@ -536,8 +566,7 @@ class DashboardWindow:
         row_2.addWidget(self.btn_draw)
 
         # Draw clear
-        self.btn_clear = QtWidgets.QPushButton('🔄 Reset Draw')
-        self.btn_clear.setFixedWidth(130)
+        self.btn_clear = QtWidgets.QPushButton('Reset Draw')
         self.btn_clear.setStyleSheet(self._btn_style('#f39c12', '#f1c40f'))
         self.btn_clear.clicked.connect(self._do_clear_draw)
         row_2.addWidget(self.btn_clear)
@@ -561,10 +590,10 @@ class DashboardWindow:
     @staticmethod
     def _btn_style(bg_off, bg_on):
         return (
-            f'QPushButton {{ background: {bg_off}; color: #e0e0e0; border: none; '
+            f'QPushButton {{ background: {bg_off}; color: #e0e0e0; border: 1px solid {bg_off}; '
             f'border-radius: 4px; padding: 6px 10px; font-weight: bold; }}'
-            f'QPushButton:checked {{ background: {bg_on}; }}'
-            f'QPushButton:hover {{ opacity: 0.85; }}'
+            f'QPushButton:checked {{ background: {bg_on}; border: 1px solid {bg_on}; }}'
+            f'QPushButton:hover {{ background: {bg_on}; border: 1px solid #fff; color: #fff; }}'
         )
 
     def _toggle_run(self, checked):
@@ -595,7 +624,7 @@ class DashboardWindow:
         
         self.node.call_logger_toggle(checked)
         self.node._is_running = checked
-        self.btn_pred.setText('⏸ Stop Run' if checked else '▶ Start Run')
+        self.btn_pred.setText('Stop Run' if checked else 'Start Run')
         
         # Notify transform_node whether we are running
         run_msg = Bool()
@@ -711,7 +740,7 @@ class DashboardWindow:
         (mx, my, mz,
          # rx, ry, rz,
          px, py, pz,
-         inf_ms, model, buf, fps_m, fps_p) = self.node.get_buffers()
+         inf_ms, model, buf, fps_m, fps_p, hybrid_state) = self.node.get_buffers()
 
         axes_m = [mx, my, mz]
         # axes_r = [rx, ry, rz]
@@ -739,7 +768,16 @@ class DashboardWindow:
         self._lbl_fps.setText(f'Actual: {fps_m:.1f} Hz | Predicted: {fps_p:.1f} Hz')
         self._lbl_buf.setText(f'Buf: {buf}')
         mode = self.node.detect_backend_mode()      
-        self._lbl_backend.setText(f'Mode: {mode}')
+        self._lbl_backend.setText(f'Backend: {mode}')
+
+        # Update hybrid state label
+        self._lbl_hybrid.setText(f'Mode: {hybrid_state}')
+        if hybrid_state == 'LEADER':
+            self._lbl_hybrid.setStyleSheet('color: #ffffff; font-size: 14px; font-weight: bold; background: #c0392b; border-radius: 4px; padding: 2px 6px;')
+        elif hybrid_state == 'FOLLOWER':
+            self._lbl_hybrid.setStyleSheet('color: #ffffff; font-size: 14px; font-weight: bold; background: #2ba347; border-radius: 4px; padding: 2px 6px;')
+        else:
+            self._lbl_hybrid.setStyleSheet('color: #a0f0a0; font-size: 13px; font-weight: bold; background: transparent; padding: 2px;')
 
     def exec(self):
         return self.app.exec()

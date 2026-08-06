@@ -7,6 +7,11 @@ Predictor Node — ROS 2 node quản lý inference worker subprocess.
 - Spawn inference_worker.py trong venv Python qua stdin/stdout JSON.
 - Publish kết quả lên /ml/predicted_position (HandPrediction).
 - Service /predictor/set_model để đổi model, /predictor/toggle để bật/tắt.
+
+Hybrid GRU+MJM:
+- Pha FOLLOWER (0→T_SWITCH s): GRU dự đoán bình thường.
+- Pha LEADER  (T_SWITCH trở đi): MJM thay thế GRU, GRU worker nhàn rỗi
+  (không gửi lệnh predict → tiết kiệm tài nguyên TF inference).
 """
 
 import json
@@ -17,12 +22,20 @@ import threading
 import time
 from collections import deque
 
+import numpy as np
+
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
 from std_srvs.srv import SetBool
 
 from human_hand_msgs.msg import HandState, HandPrediction, SystemStatus
+
+# Hybrid math utilities (Fitts' Law + Minimum Jerk Model)
+try:
+    from .hybrid_math import fitts_law_duration, minimum_jerk_positions
+except ImportError:
+    from hybrid_math import fitts_law_duration, minimum_jerk_positions
 
 
 class PredictorNode(Node):
@@ -45,6 +58,16 @@ class PredictorNode(Node):
         self.declare_parameter('model_files.lstm', 'lstm_model_Ts3.h5')
         # Path tới Python venv (nếu có), nếu không dùng sys.executable
         self.declare_parameter('venv_python', '')
+
+        # ── Hybrid GRU+MJM parameters ────────────────────────────────────────
+        self.declare_parameter('mjm.enabled', False)
+        self.declare_parameter('mjm.t_switch', 5.0)
+        self.declare_parameter('mjm.goal_x', -0.0578)
+        self.declare_parameter('mjm.goal_y',  0.7138)
+        self.declare_parameter('mjm.goal_z',  0.0)
+        self.declare_parameter('mjm.fitts_a', 4.4455)
+        self.declare_parameter('mjm.fitts_b', 1.4248)
+        self.declare_parameter('mjm.fitts_w', 0.3)
 
         # ── Output filter parameters ─────────────────────────────────────────
         # Proximity clamp: max deviation from last measured position (m)
@@ -79,6 +102,20 @@ class PredictorNode(Node):
             'lstm': self.get_parameter('model_files.lstm').value,
         }
 
+        # ── Hybrid GRU+MJM config ────────────────────────────────────────────
+        self._hybrid_enabled  = self.get_parameter('mjm.enabled').value
+        self._t_switch        = self.get_parameter('mjm.t_switch').value
+        self._goal            = np.array([
+            self.get_parameter('mjm.goal_x').value,
+            self.get_parameter('mjm.goal_y').value,
+            self.get_parameter('mjm.goal_z').value,
+        ])
+        self._fitts_a         = self.get_parameter('mjm.fitts_a').value
+        self._fitts_b         = self.get_parameter('mjm.fitts_b').value
+        self._fitts_w         = self.get_parameter('mjm.fitts_w').value
+        # dt = 1/30 s (nhất quán với Kinect ~30Hz)
+        self._mjm_dt          = 1.0 / 30.0
+
         # ── State ────────────────────────────────────────────────────────────
         self._buffer: deque = deque(maxlen=self.window_size)
         self._last_data_time = 0.0
@@ -98,6 +135,16 @@ class PredictorNode(Node):
         self._smoothed_vel = [0.0, 0.0, 0.0]
         self._vel_ema_alpha = 0.3
 
+        # ── Hybrid GRU+MJM state ─────────────────────────────────────────────
+        # Pha FOLLOWER: GRU predict bình thường, ghi nhớ output cuối làm x_switch.
+        # Pha LEADER:   Ngừng gửi lệnh predict cho GRU (tiết kiệm TF inference),
+        #               thay thế bằng MJM timer 30Hz.
+        self._hybrid_phase       = 'FOLLOWER'  # 'FOLLOWER' | 'LEADER'
+        self._hybrid_start_time  = 0.0         # time.time() khi _predicting -> True
+        self._x_switch           = None        # [x,y,z] — GRU output cuối pha FOLLOWER
+        self._mjm_trajectory     = []          # list of [x,y,z]
+        self._mjm_step_idx       = 0
+
         # ── Prediction Hold state ─────────────────────────────────────────────
         # Phát hiện khi tay đứng yên → khóa output prediction = vị trí tay
         # thay vì chạy GRU (loại bỏ hoàn toàn nhiễu dự đoán khi tay dừng)
@@ -114,6 +161,8 @@ class PredictorNode(Node):
             HandPrediction, '/ml/predicted_position', 10)
         self.status_pub = self.create_publisher(
             SystemStatus, '/ml/predictor_status', 10)
+        self.hybrid_state_pub = self.create_publisher(
+            String, '/predictor/hybrid_state', 5)
 
         # ── Subscribers ──────────────────────────────────────────────────────
         self.create_subscription(HandState, '/hand_position', self._on_hand, 10)
@@ -123,6 +172,9 @@ class PredictorNode(Node):
 
         # Model switch command từ UI hay bridge
         self.create_subscription(String, '/predictor/model_cmd', self._on_model_cmd, 5)
+
+        # Hybrid mode toggle từ UI (GRU+MJM button)
+        self.create_subscription(String, '/predictor/hybrid_cmd', self._on_hybrid_cmd, 5)
 
         # Trajectory mode to automatically sync predicting state
         self.create_subscription(String, '/trajectory_mode', self._on_trajectory_mode, 10)
@@ -134,6 +186,8 @@ class PredictorNode(Node):
         # ── Timers ───────────────────────────────────────────────────────────
         self.create_timer(1.0, self._publish_status)
         self.create_timer(self.clear_timeout, self._check_stale)
+        # MJM tick timer: 30Hz (1/30s) — nhất quán với Kinect camera rate
+        self.create_timer(self._mjm_dt, self._mjm_tick)
 
         # ── Launch inference worker ──────────────────────────────────────────
         self._launch_worker()
@@ -256,7 +310,11 @@ class PredictorNode(Node):
             elif rtype == 'predict':
                 pred = resp.get('prediction')
                 if pred and len(pred) == 3:
-                    self._publish_prediction(pred, resp.get('inference_ms', 0.0))
+                    if self._hybrid_phase == 'FOLLOWER':
+                        # Ghi nhớ output GRU cuối cùng làm x_switch cho MJM
+                        self._x_switch = pred[:]
+                        self._publish_prediction(pred, resp.get('inference_ms', 0.0))
+                    # Pha LEADER: bỏ qua output GRU (MJM timer đã đảm nhận)
 
             elif rtype == 'info':
                 self.get_logger().info(f'[Worker] {resp.get("message", "")}')
@@ -305,10 +363,17 @@ class PredictorNode(Node):
         if mode == 'prediction':
             if not self._predicting:
                 self._predicting = True
+                # Bắt đầu đếm T_SWITCH từ đây
+                self._hybrid_start_time = time.time()
+                self._hybrid_phase = 'FOLLOWER'
+                self._x_switch = None
+                self._mjm_trajectory = []
+                self._mjm_step_idx = 0
                 self.get_logger().info('[Predictor] Auto-enabled prediction mode via /trajectory_mode')
         else:
             if self._predicting:
                 self._predicting = False
+                self._hybrid_phase = 'FOLLOWER'
                 self._buffer.clear()
                 self._last_filtered = None
                 self._filter_reject_count = 0
@@ -353,47 +418,62 @@ class PredictorNode(Node):
             self._buffer.append([x, y, z])
 
         # ── Prediction Hold: phát hiện tay đứng yên ──────────────────────
-        self._hold_recent.append([x, y, z])
-        if len(self._hold_recent) >= 5:
-            import numpy as _np
-            recent = _np.array(self._hold_recent)
-            max_std = float(_np.max(_np.std(recent, axis=0)))
+        # Pha LEADER: skip toàn bộ HOLD logic — MJM timer đã publish,
+        # HOLD chen vào sẽ gây oscillation với MJM.
+        if not (self._hybrid_enabled and self._hybrid_phase == 'LEADER'):
+            self._hold_recent.append([x, y, z])
+            if len(self._hold_recent) >= 5:
+                import numpy as _np
+                recent = _np.array(self._hold_recent)
+                max_std = float(_np.max(_np.std(recent, axis=0)))
 
-            if self._hold_active:
-                # Đang HOLD → kiểm tra xem tay đã bắt đầu di chuyển chưa
-                mean_pos = _np.mean(recent, axis=0)
-                dev = float(_np.linalg.norm(mean_pos - _np.array(self._hold_position)))
-                if dev > self._HOLD_RELEASE_THRESH:
-                    self._hold_active = False
-                    self._hold_stationary_count = 0
-                    self.get_logger().info(
-                        f'[Pred HOLD OFF] Tay di chuyển (dev={dev*1000:.1f}mm). Thả hold.')
+                if self._hold_active:
+                    # Đang HOLD → kiểm tra xem tay đã bắt đầu di chuyển chưa
+                    mean_pos = _np.mean(recent, axis=0)
+                    dev = float(_np.linalg.norm(mean_pos - _np.array(self._hold_position)))
+                    if dev > self._HOLD_RELEASE_THRESH:
+                        self._hold_active = False
+                        self._hold_stationary_count = 0
+                        self.get_logger().info(
+                            f'[Pred HOLD OFF] Tay di chuyển (dev={dev*1000:.1f}mm). Thả hold.')
+                    else:
+                        # Vẫn HOLD → publish vị trí khóa, KHÔNG chạy GRU
+                        self._publish_prediction(list(self._hold_position), 0.0)
+                        return
                 else:
-                    # Vẫn HOLD → publish vị trí khóa, KHÔNG chạy GRU
-                    self._publish_prediction(list(self._hold_position), 0.0)
-                    return
-            else:
-                # Chưa HOLD → kiểm tra ổn định
-                if max_std < self._HOLD_STD_THRESH:
-                    self._hold_stationary_count += 1
-                else:
-                    self._hold_stationary_count = 0
+                    # Chưa HOLD → kiểm tra ổn định
+                    if max_std < self._HOLD_STD_THRESH:
+                        self._hold_stationary_count += 1
+                    else:
+                        self._hold_stationary_count = 0
 
-                if self._hold_stationary_count >= self._HOLD_ENTER_FRAMES:
-                    self._hold_active = True
-                    self._hold_position = list(_np.mean(recent, axis=0))
-                    self._last_filtered = list(self._hold_position)  # sync EMA state
-                    self.get_logger().info(
-                        f'[Pred HOLD ON] Tay đứng yên (std={max_std*1000:.1f}mm). '
-                        f'Khóa tại ({self._hold_position[0]:.4f}, '
-                        f'{self._hold_position[1]:.4f}, {self._hold_position[2]:.4f})')
-                    # Bắt đầu hold ngay
-                    self._publish_prediction(list(self._hold_position), 0.0)
-                    return
+                    if self._hold_stationary_count >= self._HOLD_ENTER_FRAMES:
+                        self._hold_active = True
+                        self._hold_position = list(_np.mean(recent, axis=0))
+                        self._last_filtered = list(self._hold_position)  # sync EMA state
+                        self.get_logger().info(
+                            f'[Pred HOLD ON] Tay đứng yên (std={max_std*1000:.1f}mm). '
+                            f'Khóa tại ({self._hold_position[0]:.4f}, '
+                            f'{self._hold_position[1]:.4f}, {self._hold_position[2]:.4f})')
+                        # Bắt đầu hold ngay
+                        self._publish_prediction(list(self._hold_position), 0.0)
+                        return
 
-        # ── Gửi dữ liệu cho GRU (chỉ khi KHÔNG hold) ────────────────────
+        # ── Kiểm tra chuyển pha FOLLOWER → LEADER ──────────────────────────
+        # Chỉ kiểm tra khi đang FOLLOWER — guard chống gọi lại nhiều lần
+        if self._hybrid_enabled and self._predicting and self._hybrid_phase == 'FOLLOWER':
+            elapsed = time.time() - self._hybrid_start_time
+            if elapsed >= self._t_switch:
+                self._trigger_leader_phase()
+                return  # MJM timer sẽ xử lý từ đây
+
+        # ── Gửi dữ liệu cho GRU (chỉ khi KHÔNG hold và FOLLOWER) ──────────
+        # Pha LEADER: KHÔNG gửi lệnh predict cho GRU → worker nhàn rỗi,
+        # tiết kiệm tài nguyên TF inference. MJM timer đảm nhận việc publish.
         if not self._predicting or not self._worker_ready:
             return
+        if self._hybrid_enabled and self._hybrid_phase == 'LEADER':
+            return  # GRU đã nhàn rỗi — MJM timer lo phần còn lại
 
         if 0 < len(self._buffer) < self.window_size:
             first_point = list(self._buffer[0])
@@ -405,6 +485,61 @@ class PredictorNode(Node):
             return
 
         self._send_to_worker({'cmd': 'predict', 'data': padded})
+
+    # ── Hybrid GRU+MJM methods ───────────────────────────────────────────────
+
+    def _on_hybrid_cmd(self, msg: String):
+        """Nhận lệnh bật/tắt Hybrid mode từ /predictor/hybrid_cmd (UI button GRU+MJM)."""
+        if msg.data == 'hybrid_on':
+            self._hybrid_enabled = True
+            self.get_logger().info('[Hybrid] Mode ENABLED (GRU+MJM). Timer T_SWITCH sẽ bắt đầu khi Start Run.')
+        elif msg.data == 'hybrid_off':
+            self._hybrid_enabled = False
+            self._hybrid_phase = 'FOLLOWER'
+            self._mjm_trajectory = []
+            self._mjm_step_idx = 0
+            self.get_logger().info('[Hybrid] Mode DISABLED (GRU only)')
+
+    def _trigger_leader_phase(self):
+        """Chuyển sang pha LEADER: tính MJM từ x_switch về GOAL."""
+        x_0 = np.array(self._x_switch if self._x_switch is not None else self._last_meas,
+                        dtype=np.float64)
+        t_f = fitts_law_duration(
+            x_0, self._goal,
+            a=self._fitts_a, b=self._fitts_b, w=self._fitts_w,
+        )
+        positions = minimum_jerk_positions(x_0, self._goal, t_f, self._mjm_dt)
+        self._mjm_trajectory = positions.tolist()
+        self._mjm_step_idx = 0
+        self._hybrid_phase = 'LEADER'
+
+        # Reset HOLD state để tránh chen vào MJM khi tay đang đứng yên tại điểm chuyển pha
+        self._hold_active = False
+        self._hold_stationary_count = 0
+        self._hold_position = None
+        self._hold_recent.clear()
+
+        self.get_logger().info(
+            f'[Hybrid] FOLLOWER -> LEADER | '
+            f'x_0=({x_0[0]:.4f},{x_0[1]:.4f},{x_0[2]:.4f}) | '
+            f'GOAL=({self._goal[0]:.4f},{self._goal[1]:.4f},{self._goal[2]:.4f}) | '
+            f't_f={t_f:.2f}s | {len(positions)} steps @ 30Hz | '
+            f'GRU worker dừng gửi lệnh predict (tiết kiệm tài nguyên)'
+        )
+
+    def _mjm_tick(self):
+        """Timer 30Hz: publish điểm MJM khi pha LEADER."""
+        if self._hybrid_phase != 'LEADER' or not self._predicting:
+            return
+        if not self._mjm_trajectory:
+            return
+        if self._mjm_step_idx < len(self._mjm_trajectory):
+            pos = self._mjm_trajectory[self._mjm_step_idx]
+            self._publish_prediction(pos, 0.0)
+            self._mjm_step_idx += 1
+        else:
+            # Hết trajectory → giữ robot tại GOAL
+            self._publish_prediction(list(self._goal), 0.0)
 
     def _on_model_cmd(self, msg: String):
         """Nhận lệnh đổi model từ /predictor/model_cmd."""
@@ -420,7 +555,15 @@ class PredictorNode(Node):
         self._predicting = request.data
         response.success = True
         response.message = 'Predicting STARTED' if self._predicting else 'Predicting STOPPED'
-        if not self._predicting:
+        if self._predicting:
+            # Bắt đầu đếm T_SWITCH từ đây (khi Start Run)
+            self._hybrid_start_time = time.time()
+            self._hybrid_phase = 'FOLLOWER'
+            self._x_switch = None
+            self._mjm_trajectory = []
+            self._mjm_step_idx = 0
+        else:
+            self._hybrid_phase = 'FOLLOWER'
             self._buffer.clear()
             self._last_filtered = None
             self._filter_reject_count = 0
@@ -479,8 +622,11 @@ class PredictorNode(Node):
     # ── Publishing ───────────────────────────────────────────────────────────
 
     def _publish_prediction(self, pred: list, inf_ms: float):
-        # Apply output filter if enabled
-        if self._filter_enabled:
+        # Pha LEADER: bypass toàn bộ output filter — quỹ đạo MJM là pure math,
+        # không bị ảnh hưởng bởi proximity clamp hay EMA từ camera.
+        if self._hybrid_enabled and self._hybrid_phase == 'LEADER':
+            filtered = pred
+        elif self._filter_enabled:
             filtered = self._filter_prediction(pred)
             # Periodic debug log (every 100 predictions)
             self._filter_log_counter += 1
@@ -499,7 +645,12 @@ class PredictorNode(Node):
 
         msg = HandPrediction()
         msg.header.stamp = self.get_clock().now().to_msg()
-        msg.header.frame_id = 'world'
+        # Pha LEADER: tọa độ MJM đã ở base_link frame, báo cho transform_node
+        # biết để bypass camera filter và TARGET SNAP, đi thẳng tới robot.
+        if self._hybrid_enabled and self._hybrid_phase == 'LEADER':
+            msg.header.frame_id = 'base_link'
+        else:
+            msg.header.frame_id = 'world'
         msg.x = float(filtered[0])
         msg.y = float(filtered[1])
         msg.z = float(filtered[2])
@@ -510,6 +661,14 @@ class PredictorNode(Node):
         self.pred_pub.publish(msg)
 
     def _publish_status(self):
+        if hasattr(self, '_hybrid_enabled'):
+            if self._hybrid_enabled and self._predicting:
+                self.hybrid_state_pub.publish(String(data=self._hybrid_phase))
+            elif self._hybrid_enabled:
+                self.hybrid_state_pub.publish(String(data='READY'))
+            else:
+                self.hybrid_state_pub.publish(String(data='OFF'))
+
         status = SystemStatus()
         status.header.stamp = self.get_clock().now().to_msg()
         status.node_name = 'trajectory_predictor'

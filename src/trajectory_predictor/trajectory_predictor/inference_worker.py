@@ -132,7 +132,7 @@ def main():
             current_model = keras_load(path, compile=False, custom_objects=custom_objects)
             current_model_name = name
             dummy = np.zeros((1, window_size, num_features), dtype=np.float32)
-            current_model.predict(dummy, verbose=0)
+            current_model.predict_on_batch(dummy)
             return True, f"Model '{name}' loaded OK"
         except Exception as e:
             return False, f"Load error: {e}"
