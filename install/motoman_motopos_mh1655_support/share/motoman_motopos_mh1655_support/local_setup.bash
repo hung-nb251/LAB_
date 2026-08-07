@@ -1,0 +1,1 @@
+/home/hungnb/cocarry_ws/build/motoman_motopos_mh1655_support/ament_cmake_environment_hooks/local_setup.bash

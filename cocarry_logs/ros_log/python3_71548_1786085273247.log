@@ -1,0 +1,44 @@
+[INFO] [1786085273.323275716] [trajectory_predictor]: [Predictor] Worker launched (pid=71832)
+[INFO] [1786085273.323655616] [trajectory_predictor]: [Predictor] Started | model=svgp | window=10 | auto_start=True
+  Output Filter: enabled=True, ema_alpha=0.2, max_dev=0.08, max_rate=0.04
+[WARN] [1786085274.457328487] [trajectory_predictor]: [Worker STDERR] /usr/lib/python3/dist-packages/scipy/__init__.py:146: UserWarning: A NumPy version >=1.17.3 and <1.25.0 is required for this version of SciPy (detected version 1.26.4
+[WARN] [1786085274.457757641] [trajectory_predictor]: [Worker STDERR] warnings.warn(f"A NumPy version >={np_minversion} and <{np_maxversion}"
+[ERROR] [1786085275.218056054] [trajectory_predictor]: [Predictor] Worker NOT READY: Scalers not found in /home/hungnb/cocarry_ws/src/GRU-Model
+[INFO] [1786085309.395116472] [trajectory_predictor]: [Predictor] Switching model → svgp
+[INFO] [1786085309.395708675] [trajectory_predictor]: [Hybrid] Mode DISABLED (GRU only)
+[INFO] [1786085342.302952522] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.0s)
+[INFO] [1786085357.736977336] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786085362.589265703] [trajectory_predictor]: [Predictor] Predicting STARTED
+[INFO] [1786085363.880823303] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=5.9mm). Khóa tại (0.1649, 0.0769, 0.0452)
+[INFO] [1786085363.881156875] [trajectory_predictor]: [Filter] raw=(0.1649,0.0769,0.0452) → filt=(0.1649,0.0769,0.0452) Δ=(0.0000,0.0000,0.0000)
+[INFO] [1786085364.151084866] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=30.7mm). Thả hold.
+[INFO] [1786085380.723638436] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786085382.526625738] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786085387.304221419] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.8s)
+[INFO] [1786085395.303344820] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.1s)
+[INFO] [1786085403.303708064] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.8s)
+[INFO] [1786085409.303159623] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.8s)
+[INFO] [1786085412.302653293] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.2s)
+[INFO] [1786085417.303245073] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.2s)
+[INFO] [1786085418.095357881] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786085425.302889874] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.6s)
+[INFO] [1786085433.303756470] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.1s)
+[INFO] [1786085443.303814672] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.5s)
+[INFO] [1786085451.303286455] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.8s)
+[INFO] [1786085456.302785875] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.1s)
+[INFO] [1786085460.303085601] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.3s)
+[INFO] [1786085466.304054748] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.8s)
+[INFO] [1786085471.303586214] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.9s)
+[INFO] [1786085478.303024314] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.9s)
+[INFO] [1786085490.302869081] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.4s)
+[INFO] [1786085492.302661401] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.9s)
+[INFO] [1786085505.302678493] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.3s)
+[INFO] [1786085511.304578644] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.7s)
+[INFO] [1786085524.303620234] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.5s)
+[INFO] [1786085527.304878694] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.4s)
+[INFO] [1786085530.303683023] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.2s)
+[INFO] [1786085541.303500955] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.2s)
+[INFO] [1786085547.303483576] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.0s)
+[INFO] [1786085556.304080905] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.7s)
+[INFO] [1786085562.303575545] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.9s)
+[INFO] [1786085564.303002004] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.6s)

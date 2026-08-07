@@ -25,18 +25,16 @@ trajectory_predictor:
   ros__parameters:
     auto_start: false
     clear_on_tracking_lost: 1.0
-    default_model: gru
+    default_model: svgp
     filter:
       ema_alpha: 0.2
       enabled: true
       max_deviation: 0.08
       max_rate: 0.04
-    model_dir: /home/hungnb/cocarry_ws/src/GRU-Model
+    model_dir: /home/hungnb/cocarry_ws/pHRI_Models/svgp_hri_rbf+m52
     model_files:
-      gru: gru_model_Ts5.h5
-      lstm: lstm_model_Ts5.h5
-      rnn: rnn_model_Ts5.h5
-    num_features: 6
-    scaler_x_file: scaler_x_Ts5.pkl
-    scaler_y_file: scaler_y_Ts5.pkl
-    window_size: 20
+      svgp: svgp_model.pkl
+    num_features: 3
+    scaler_x_file: scaler_x.pkl
+    scaler_y_file: scaler_y.pkl
+    window_size: 10

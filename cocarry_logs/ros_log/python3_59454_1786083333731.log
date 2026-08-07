@@ -1,0 +1,147 @@
+[INFO] [1786083333.821653663] [experiment_logger]: ✓ STARTED in-memory logging. Target file: /home/hungnb/cocarry_ws/cocarry_logs/experiment_GROUND_TRUTH_20260807_131533.csv
+[INFO] [1786083333.836389513] [experiment_logger]: Logger ready.
+[INFO] [1786083336.986011114] [experiment_logger]: Trajectory mode: prediction
+[INFO] [1786083351.878412054] [experiment_logger]: Trajectory mode: prediction
+[INFO] [1786083401.501094951] [experiment_logger]: Service called: /logger/toggle with data=True
+[INFO] [1786083440.339483712] [experiment_logger]: Service called: /logger/toggle with data=False
+[INFO] [1786083440.339861970] [experiment_logger]: Writing 1924 rows from memory to /home/hungnb/cocarry_ws/cocarry_logs/experiment_GROUND_TRUTH_20260807_131533.csv...
+[INFO] [1786083440.351204663] [experiment_logger]: ✓ Successfully wrote logs to disk.
+[INFO] [1786083440.353292039] [experiment_logger]: Stopped logging. Saved 1924 rows to /home/hungnb/cocarry_ws/cocarry_logs/experiment_GROUND_TRUTH_20260807_131533.csv
+[INFO] [1786083440.367946408] [experiment_logger]: 
+============================================================
+EXPERIMENT METRICS
+  File: experiment_GROUND_TRUTH_20260807_131533.csv
+  Total samples: 1924
+  Task completion time: 106.54 s
+  --- Prediction Accuracy (over 1924 samples) ---
+  Avg Inference Time: 32.96 ms
+  Mean Squared Error (MSE): 0.239817 m²
+  Mean Absolute Error (MAE - 3D): 0.2511 m
+      MAE X: 0.0417 m
+      MAE Y: 0.2234 m
+      MAE Z: 0.0297 m
+  --- Trajectory Smoothness (Robot EE) ---
+  Mean Jerk (3D): 20.7990 m/s³
+      Jerk X: 4.6825 m/s³
+      Jerk Y: 13.9783 m/s³
+      Jerk Z: 10.6232 m/s³
+  Max Jerk (3D): 127.7915 m/s³
+  RMS Jerk (3D): 33.9518 m/s³
+============================================================
+[INFO] [1786083441.629202787] [experiment_logger]: Service called: /logger/toggle with data=False
+[INFO] [1786083463.783703839] [experiment_logger]: Service called: /logger/toggle with data=False
+[INFO] [1786083474.198359918] [experiment_logger]: Trajectory mode: prediction
+[INFO] [1786083484.053257458] [experiment_logger]: Service called: /logger/toggle with data=False
+[INFO] [1786083518.672274244] [experiment_logger]: Service called: /logger/toggle with data=True
+[INFO] [1786083518.672728053] [experiment_logger]: ✓ STARTED in-memory logging. Target file: /home/hungnb/cocarry_ws/cocarry_logs/experiment_SVGP_20260807_131838.csv
+[INFO] [1786083534.082619305] [experiment_logger]: Service called: /logger/toggle with data=False
+[INFO] [1786083534.083044371] [experiment_logger]: Writing 1396 rows from memory to /home/hungnb/cocarry_ws/cocarry_logs/experiment_SVGP_20260807_131838.csv...
+[INFO] [1786083534.094156619] [experiment_logger]: ✓ Successfully wrote logs to disk.
+[INFO] [1786083534.096849649] [experiment_logger]: Stopped logging. Saved 1396 rows to /home/hungnb/cocarry_ws/cocarry_logs/experiment_SVGP_20260807_131838.csv
+[INFO] [1786083534.106083582] [experiment_logger]: 
+============================================================
+EXPERIMENT METRICS
+  File: experiment_SVGP_20260807_131838.csv
+  Total samples: 1396
+  Task completion time: 15.41 s
+  --- Prediction Accuracy (over 1396 samples) ---
+  Avg Inference Time: 3.43 ms
+  Mean Squared Error (MSE): 0.129085 m²
+  Mean Absolute Error (MAE - 3D): 0.3020 m
+      MAE X: 0.1100 m
+      MAE Y: 0.2388 m
+      MAE Z: 0.0498 m
+  --- Trajectory Smoothness (Robot EE) ---
+  Mean Jerk (3D): 4.8277 m/s³
+      Jerk X: 0.7797 m/s³
+      Jerk Y: 2.7776 m/s³
+      Jerk Z: 2.5649 m/s³
+  Max Jerk (3D): 83.4666 m/s³
+  RMS Jerk (3D): 9.8285 m/s³
+============================================================
+[INFO] [1786083596.541164170] [experiment_logger]: Service called: /logger/toggle with data=True
+[INFO] [1786083596.543456120] [experiment_logger]: ✓ STARTED in-memory logging. Target file: /home/hungnb/cocarry_ws/cocarry_logs/experiment_SVGP_20260807_131956.csv
+[INFO] [1786083612.795373042] [experiment_logger]: Service called: /logger/toggle with data=False
+[INFO] [1786083612.796028389] [experiment_logger]: Writing 1423 rows from memory to /home/hungnb/cocarry_ws/cocarry_logs/experiment_SVGP_20260807_131956.csv...
+[INFO] [1786083612.812923708] [experiment_logger]: ✓ Successfully wrote logs to disk.
+[INFO] [1786083612.817987778] [experiment_logger]: Stopped logging. Saved 1423 rows to /home/hungnb/cocarry_ws/cocarry_logs/experiment_SVGP_20260807_131956.csv
+[INFO] [1786083612.826950396] [experiment_logger]: 
+============================================================
+EXPERIMENT METRICS
+  File: experiment_SVGP_20260807_131956.csv
+  Total samples: 1423
+  Task completion time: 16.25 s
+  --- Prediction Accuracy (over 1423 samples) ---
+  Avg Inference Time: 3.42 ms
+  Mean Squared Error (MSE): 0.173500 m²
+  Mean Absolute Error (MAE - 3D): 0.3573 m
+      MAE X: 0.2224 m
+      MAE Y: 0.2187 m
+      MAE Z: 0.0482 m
+  --- Trajectory Smoothness (Robot EE) ---
+  Mean Jerk (3D): 11.5591 m/s³
+      Jerk X: 1.9260 m/s³
+      Jerk Y: 5.7609 m/s³
+      Jerk Z: 8.3884 m/s³
+  Max Jerk (3D): 64.0081 m/s³
+  RMS Jerk (3D): 16.6950 m/s³
+============================================================
+[INFO] [1786084117.388959112] [experiment_logger]: Trajectory mode: prediction
+[INFO] [1786084123.022352493] [experiment_logger]: Service called: /logger/toggle with data=False
+[INFO] [1786084139.148877103] [experiment_logger]: Service called: /logger/toggle with data=True
+[INFO] [1786084139.149628090] [experiment_logger]: ✓ STARTED in-memory logging. Target file: /home/hungnb/cocarry_ws/cocarry_logs/experiment_SVGP_20260807_132859.csv
+[INFO] [1786084153.493856704] [experiment_logger]: Service called: /logger/toggle with data=False
+[INFO] [1786084153.494531839] [experiment_logger]: Writing 1260 rows from memory to /home/hungnb/cocarry_ws/cocarry_logs/experiment_SVGP_20260807_132859.csv...
+[INFO] [1786084153.501381954] [experiment_logger]: ✓ Successfully wrote logs to disk.
+[INFO] [1786084153.504738913] [experiment_logger]: Stopped logging. Saved 1260 rows to /home/hungnb/cocarry_ws/cocarry_logs/experiment_SVGP_20260807_132859.csv
+[INFO] [1786084153.513973806] [experiment_logger]: 
+============================================================
+EXPERIMENT METRICS
+  File: experiment_SVGP_20260807_132859.csv
+  Total samples: 1260
+  Task completion time: 14.34 s
+  --- Prediction Accuracy (over 1260 samples) ---
+  Avg Inference Time: 3.90 ms
+  Mean Squared Error (MSE): 0.163593 m²
+  Mean Absolute Error (MAE - 3D): 0.3526 m
+      MAE X: 0.0621 m
+      MAE Y: 0.3140 m
+      MAE Z: 0.0722 m
+  --- Trajectory Smoothness (Robot EE) ---
+  Mean Jerk (3D): 8.0008 m/s³
+      Jerk X: 3.3450 m/s³
+      Jerk Y: 4.3289 m/s³
+      Jerk Z: 4.1111 m/s³
+  Max Jerk (3D): 118.9029 m/s³
+  RMS Jerk (3D): 17.4390 m/s³
+============================================================
+[INFO] [1786084193.293380150] [experiment_logger]: Service called: /logger/toggle with data=True
+[INFO] [1786084193.293821928] [experiment_logger]: ✓ STARTED in-memory logging. Target file: /home/hungnb/cocarry_ws/cocarry_logs/experiment_SVGP_20260807_132953.csv
+[INFO] [1786084206.110216001] [experiment_logger]: Service called: /logger/toggle with data=False
+[INFO] [1786084206.110628484] [experiment_logger]: Writing 265 rows from memory to /home/hungnb/cocarry_ws/cocarry_logs/experiment_SVGP_20260807_132953.csv...
+[INFO] [1786084206.112604326] [experiment_logger]: ✓ Successfully wrote logs to disk.
+[INFO] [1786084206.113299899] [experiment_logger]: Stopped logging. Saved 265 rows to /home/hungnb/cocarry_ws/cocarry_logs/experiment_SVGP_20260807_132953.csv
+[INFO] [1786084206.115455318] [experiment_logger]: 
+============================================================
+EXPERIMENT METRICS
+  File: experiment_SVGP_20260807_132953.csv
+  Total samples: 265
+  Task completion time: 12.82 s
+  --- Prediction Accuracy (over 265 samples) ---
+  Avg Inference Time: 0.00 ms
+  Mean Squared Error (MSE): 0.175822 m²
+  Mean Absolute Error (MAE - 3D): 0.3595 m
+      MAE X: 0.0579 m
+      MAE Y: 0.3300 m
+      MAE Z: 0.0652 m
+  --- Trajectory Smoothness (Robot EE) ---
+  Mean Jerk (3D): 4.3760 m/s³
+      Jerk X: 1.6268 m/s³
+      Jerk Y: 3.2788 m/s³
+      Jerk Z: 1.3493 m/s³
+  Max Jerk (3D): 30.0664 m/s³
+  RMS Jerk (3D): 7.4414 m/s³
+============================================================
+[INFO] [1786084223.407904928] [experiment_logger]: Service called: /logger/toggle with data=False
+[INFO] [1786084232.542550684] [experiment_logger]: Service called: /logger/toggle with data=True
+[INFO] [1786084232.543251697] [experiment_logger]: ✓ STARTED in-memory logging. Target file: /home/hungnb/cocarry_ws/cocarry_logs/experiment_SVGP_20260807_133032.csv

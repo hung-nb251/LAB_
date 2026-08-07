@@ -1,0 +1,41 @@
+-- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/hungnb/cocarry_ws/build/motoman_gp110_support
+-- Install configuration: ""
+-- Execute custom install script
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/ament_index/resource_index/package_run_dependencies/motoman_gp110_support
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/ament_index/resource_index/parent_prefix_path/motoman_gp110_support
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/environment/ament_prefix_path.sh
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/environment/ament_prefix_path.dsv
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/environment/path.sh
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/environment/path.dsv
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/local_setup.bash
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/local_setup.sh
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/local_setup.zsh
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/local_setup.dsv
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/package.dsv
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/ament_index/resource_index/packages/motoman_gp110_support
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/cmake/motoman_gp110_supportConfig.cmake
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/cmake/motoman_gp110_supportConfig-version.cmake
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/package.xml
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/config/opw_parameters_gp110.yaml
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/launch/view_gp110.launch.xml
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/meshes/gp110/collision/base_link.stl
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/meshes/gp110/collision/link_1.stl
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/meshes/gp110/collision/link_2.stl
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/meshes/gp110/collision/link_3.stl
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/meshes/gp110/collision/link_4.stl
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/meshes/gp110/collision/link_5.stl
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/meshes/gp110/collision/link_6.stl
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/meshes/gp110/visual/base_link.stl
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/meshes/gp110/visual/link_1.stl
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/meshes/gp110/visual/link_2.stl
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/meshes/gp110/visual/link_3.stl
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/meshes/gp110/visual/link_4.stl
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/meshes/gp110/visual/link_5.stl
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/meshes/gp110/visual/link_6.stl
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/urdf/gp110.xacro
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp110_support/share/motoman_gp110_support/urdf/gp110_macro.xacro

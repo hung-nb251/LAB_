@@ -458,24 +458,24 @@ class DashboardWindow:
         )
         mg_l = QtWidgets.QHBoxLayout(model_grp)
 
-        # Nút GRU — chỉ dùng GRU (Hybrid OFF)
-        btn_gru = QtWidgets.QPushButton('GRU')
-        btn_gru.setToolTip('Chỉ dùng GRU dự đoán. Hybrid mode tắt.')
+        # Nút SVGP — chỉ dùng SVGP (Hybrid OFF)
+        btn_gru = QtWidgets.QPushButton('SVGP')
+        btn_gru.setToolTip('Chỉ dùng SVGP dự đoán. Hybrid mode tắt.')
         btn_gru.setStyleSheet(
             'QPushButton { background: #16213e; color: #e0e0e0; border: 1px solid #0f3460; '
             'border-radius: 4px; padding: 4px 8px; } '
             'QPushButton:hover { background: #0f3460; }'
         )
         btn_gru.clicked.connect(lambda: (
-            node.send_model_cmd('gru'),
+            node.send_model_cmd('svgp'),
             node.send_hybrid_cmd('hybrid_off'),
         ))
         mg_l.addWidget(btn_gru)
 
-        # Nút GRU+MJM — bật Hybrid (GRU 5s -> Minimum Jerk về GOAL)
-        btn_grumjm = QtWidgets.QPushButton('GRU+MJM')
+        # Nút SVGP+MJM — bật Hybrid (SVGP 5s -> Minimum Jerk về GOAL)
+        btn_grumjm = QtWidgets.QPushButton('SVGP+MJM')
         btn_grumjm.setToolTip(
-            'Hybrid mode: GRU dự đoán 5 giây đầu (FOLLOWER),\n'
+            'Hybrid mode: SVGP dự đoán 5 giây đầu (FOLLOWER),\n'
             'sau đó Minimum Jerk Model dẫn robot về GOAL (LEADER).\n'
             'T_SWITCH bắt đầu đếm khi nhấn Start Run.'
         )
@@ -485,7 +485,7 @@ class DashboardWindow:
             'QPushButton:hover { background: #ffaa00; color: #222; border: 1px solid #ffcc00; }'
         )
         btn_grumjm.clicked.connect(lambda: (
-            node.send_model_cmd('gru'),
+            node.send_model_cmd('svgp'),
             node.send_hybrid_cmd('hybrid_on'),
         ))
         mg_l.addWidget(btn_grumjm)

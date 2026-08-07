@@ -1,0 +1,2 @@
+source;share/motoman_gp50_support/environment/ament_prefix_path.sh
+source;share/motoman_gp50_support/environment/path.sh

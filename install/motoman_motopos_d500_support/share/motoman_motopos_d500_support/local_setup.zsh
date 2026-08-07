@@ -1,0 +1,1 @@
+/home/hungnb/cocarry_ws/build/motoman_motopos_d500_support/ament_cmake_environment_hooks/local_setup.zsh

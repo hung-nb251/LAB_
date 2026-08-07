@@ -56,6 +56,7 @@ class PredictorNode(Node):
         self.declare_parameter('model_files.rnn', 'rnn_model_Ts3.h5')
         self.declare_parameter('model_files.gru', 'gru_model_Ts3.h5')
         self.declare_parameter('model_files.lstm', 'lstm_model_Ts3.h5')
+        self.declare_parameter('model_files.svgp', 'svgp_model.pkl')
         # Path tới Python venv (nếu có), nếu không dùng sys.executable
         self.declare_parameter('venv_python', '')
 
@@ -100,6 +101,7 @@ class PredictorNode(Node):
             'rnn': self.get_parameter('model_files.rnn').value,
             'gru': self.get_parameter('model_files.gru').value,
             'lstm': self.get_parameter('model_files.lstm').value,
+            'svgp': self.get_parameter('model_files.svgp').value,
         }
 
         # ── Hybrid GRU+MJM config ────────────────────────────────────────────
@@ -417,47 +419,7 @@ class PredictorNode(Node):
         else:
             self._buffer.append([x, y, z])
 
-        # ── Prediction Hold: phát hiện tay đứng yên ──────────────────────
-        # Pha LEADER: skip toàn bộ HOLD logic — MJM timer đã publish,
-        # HOLD chen vào sẽ gây oscillation với MJM.
-        if not (self._hybrid_enabled and self._hybrid_phase == 'LEADER'):
-            self._hold_recent.append([x, y, z])
-            if len(self._hold_recent) >= 5:
-                import numpy as _np
-                recent = _np.array(self._hold_recent)
-                max_std = float(_np.max(_np.std(recent, axis=0)))
-
-                if self._hold_active:
-                    # Đang HOLD → kiểm tra xem tay đã bắt đầu di chuyển chưa
-                    mean_pos = _np.mean(recent, axis=0)
-                    dev = float(_np.linalg.norm(mean_pos - _np.array(self._hold_position)))
-                    if dev > self._HOLD_RELEASE_THRESH:
-                        self._hold_active = False
-                        self._hold_stationary_count = 0
-                        self.get_logger().info(
-                            f'[Pred HOLD OFF] Tay di chuyển (dev={dev*1000:.1f}mm). Thả hold.')
-                    else:
-                        # Vẫn HOLD → publish vị trí khóa, KHÔNG chạy GRU
-                        self._publish_prediction(list(self._hold_position), 0.0)
-                        return
-                else:
-                    # Chưa HOLD → kiểm tra ổn định
-                    if max_std < self._HOLD_STD_THRESH:
-                        self._hold_stationary_count += 1
-                    else:
-                        self._hold_stationary_count = 0
-
-                    if self._hold_stationary_count >= self._HOLD_ENTER_FRAMES:
-                        self._hold_active = True
-                        self._hold_position = list(_np.mean(recent, axis=0))
-                        self._last_filtered = list(self._hold_position)  # sync EMA state
-                        self.get_logger().info(
-                            f'[Pred HOLD ON] Tay đứng yên (std={max_std*1000:.1f}mm). '
-                            f'Khóa tại ({self._hold_position[0]:.4f}, '
-                            f'{self._hold_position[1]:.4f}, {self._hold_position[2]:.4f})')
-                        # Bắt đầu hold ngay
-                        self._publish_prediction(list(self._hold_position), 0.0)
-                        return
+        # ── Prediction Hold: Disabled ──────────────────────────────────────
 
         # ── Kiểm tra chuyển pha FOLLOWER → LEADER ──────────────────────────
         # Chỉ kiểm tra khi đang FOLLOWER — guard chống gọi lại nhiều lần

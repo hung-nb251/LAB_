@@ -1,0 +1,23 @@
+-- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/hungnb/cocarry_ws/build/motoman
+-- Install configuration: ""
+-- Execute custom install script
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman/share/ament_index/resource_index/package_run_dependencies/motoman
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman/share/ament_index/resource_index/parent_prefix_path/motoman
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman/share/motoman/environment/ament_prefix_path.sh
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman/share/motoman/environment/ament_prefix_path.dsv
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman/share/motoman/environment/path.sh
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman/share/motoman/environment/path.dsv
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman/share/motoman/local_setup.bash
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman/share/motoman/local_setup.sh
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman/share/motoman/local_setup.zsh
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman/share/motoman/local_setup.dsv
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman/share/motoman/package.dsv
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman/share/ament_index/resource_index/packages/motoman
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman/share/motoman/cmake/motomanConfig.cmake
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman/share/motoman/cmake/motomanConfig-version.cmake
+-- Symlinking: /home/hungnb/cocarry_ws/install/motoman/share/motoman/package.xml

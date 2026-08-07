@@ -4,6 +4,7 @@ setup.py
 config/predictor_params.yaml
 resource/trajectory_predictor
 trajectory_predictor/__init__.py
+trajectory_predictor/hybrid_math.py
 trajectory_predictor/inference_worker.py
 trajectory_predictor/model_manager.py
 trajectory_predictor/predictor_node.py

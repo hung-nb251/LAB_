@@ -1,0 +1,1 @@
+/home/hungnb/cocarry_ws/build/motoman_motomini_support/ament_cmake_core/motoman_motomini_supportConfig-version.cmake

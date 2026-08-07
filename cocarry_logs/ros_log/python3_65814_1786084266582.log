@@ -1,0 +1,15 @@
+[INFO] [1786084266.698717132] [trajectory_predictor]: [Predictor] Worker launched (pid=66079)
+[INFO] [1786084266.699415340] [trajectory_predictor]: [Predictor] Started | model=svgp | window=10 | auto_start=True
+  Output Filter: enabled=True, ema_alpha=0.2, max_dev=0.08, max_rate=0.04
+[WARN] [1786084267.847775891] [trajectory_predictor]: [Worker STDERR] /usr/lib/python3/dist-packages/scipy/__init__.py:146: UserWarning: A NumPy version >=1.17.3 and <1.25.0 is required for this version of SciPy (detected version 1.26.4
+[WARN] [1786084267.848407785] [trajectory_predictor]: [Worker STDERR] warnings.warn(f"A NumPy version >={np_minversion} and <{np_maxversion}"
+[ERROR] [1786084268.604097877] [trajectory_predictor]: [Predictor] Worker NOT READY: Scalers not found in /home/hungnb/cocarry_ws/src/GRU-Model
+[INFO] [1786084275.906118866] [trajectory_predictor]: [Predictor] Switching model → svgp
+[INFO] [1786084275.906625365] [trajectory_predictor]: [Hybrid] Mode DISABLED (GRU only)
+[INFO] [1786084276.913054482] [trajectory_predictor]: [Predictor] Switching model → svgp
+[INFO] [1786084276.913683782] [trajectory_predictor]: [Hybrid] Mode DISABLED (GRU only)
+[INFO] [1786084290.673048600] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.1s)
+[INFO] [1786084306.057028395] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786084311.671893268] [trajectory_predictor]: [Predictor] Predicting STARTED
+[INFO] [1786084326.703324683] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786084334.672690041] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.5s)

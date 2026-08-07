@@ -91,49 +91,59 @@ def main():
         if not os.path.exists(path):
             return False, f"File not found: {path}"
         try:
-            import tensorflow as tf
+            if path.endswith('.pkl'):
+                import gpflow
+                with open(path, 'rb') as f:
+                    current_model = pickle.load(f)
+                current_model_name = name
+                # Warm-up inference để xác nhận model OK
+                dummy = np.zeros((1, window_size * num_features), dtype=np.float64)
+                current_model.predict_f(dummy)
+                return True, f"GPflow model '{name}' loaded OK"
+            else:
+                import tensorflow as tf
 
-            # Create a compatibility wrapper for Dense that strips new kwargs
-            # (e.g. quantization_config) not recognized by older model configs
-            class CompatDense(tf.keras.layers.Dense):
-                def __init__(self, *args, **kwargs):
-                    kwargs.pop('quantization_config', None)
-                    super().__init__(*args, **kwargs)
+                # Create a compatibility wrapper for Dense that strips new kwargs
+                # (e.g. quantization_config) not recognized by older model configs
+                class CompatDense(tf.keras.layers.Dense):
+                    def __init__(self, *args, **kwargs):
+                        kwargs.pop('quantization_config', None)
+                        super().__init__(*args, **kwargs)
 
-            class CompatGRU(tf.keras.layers.GRU):
-                def __init__(self, *args, **kwargs):
-                    kwargs.pop('quantization_config', None)
-                    super().__init__(*args, **kwargs)
+                class CompatGRU(tf.keras.layers.GRU):
+                    def __init__(self, *args, **kwargs):
+                        kwargs.pop('quantization_config', None)
+                        super().__init__(*args, **kwargs)
 
-            class CompatLSTM(tf.keras.layers.LSTM):
-                def __init__(self, *args, **kwargs):
-                    kwargs.pop('quantization_config', None)
-                    super().__init__(*args, **kwargs)
+                class CompatLSTM(tf.keras.layers.LSTM):
+                    def __init__(self, *args, **kwargs):
+                        kwargs.pop('quantization_config', None)
+                        super().__init__(*args, **kwargs)
 
-            class CompatSimpleRNN(tf.keras.layers.SimpleRNN):
-                def __init__(self, *args, **kwargs):
-                    kwargs.pop('quantization_config', None)
-                    super().__init__(*args, **kwargs)
+                class CompatSimpleRNN(tf.keras.layers.SimpleRNN):
+                    def __init__(self, *args, **kwargs):
+                        kwargs.pop('quantization_config', None)
+                        super().__init__(*args, **kwargs)
 
-            class CompatInputLayer(tf.keras.layers.InputLayer):
-                def __init__(self, *args, **kwargs):
-                    kwargs.pop('batch_shape', None)
-                    kwargs.pop('optional', None)
-                    super().__init__(*args, **kwargs)
+                class CompatInputLayer(tf.keras.layers.InputLayer):
+                    def __init__(self, *args, **kwargs):
+                        kwargs.pop('batch_shape', None)
+                        kwargs.pop('optional', None)
+                        super().__init__(*args, **kwargs)
 
-            custom_objects = {
-                'Dense': CompatDense,
-                'GRU': CompatGRU,
-                'LSTM': CompatLSTM,
-                'SimpleRNN': CompatSimpleRNN,
-                'InputLayer': CompatInputLayer,
-            }
+                custom_objects = {
+                    'Dense': CompatDense,
+                    'GRU': CompatGRU,
+                    'LSTM': CompatLSTM,
+                    'SimpleRNN': CompatSimpleRNN,
+                    'InputLayer': CompatInputLayer,
+                }
 
-            current_model = keras_load(path, compile=False, custom_objects=custom_objects)
-            current_model_name = name
-            dummy = np.zeros((1, window_size, num_features), dtype=np.float32)
-            current_model.predict_on_batch(dummy)
-            return True, f"Model '{name}' loaded OK"
+                current_model = keras_load(path, compile=False, custom_objects=custom_objects)
+                current_model_name = name
+                dummy = np.zeros((1, window_size, num_features), dtype=np.float32)
+                current_model.predict_on_batch(dummy)
+                return True, f"Model '{name}' loaded OK"
         except Exception as e:
             return False, f"Load error: {e}"
 
@@ -240,12 +250,18 @@ def main():
                 input_scaled = scale_input(input_batch)
 
                 t0 = time.time()
-                # Fast branch: predict_on_batch avoids __call__ retracing overhead and verbose loop overhead
-                pred_tensor = current_model.predict_on_batch(input_scaled)
-                if isinstance(pred_tensor, list):
-                    pred_scaled = [t.numpy() if hasattr(t, 'numpy') else t for t in pred_tensor]
+                if hasattr(current_model, 'predict_f'):
+                    # SVGP: flatten window to (1, window_size * num_features)
+                    input_flat = input_scaled.flatten().reshape(1, -1).astype(np.float64)
+                    mean_tensor, _ = current_model.predict_f(input_flat)
+                    pred_scaled = mean_tensor.numpy()
                 else:
-                    pred_scaled = pred_tensor.numpy() if hasattr(pred_tensor, 'numpy') else pred_tensor
+                    # Keras models (GRU/LSTM/RNN): predict_on_batch
+                    pred_tensor = current_model.predict_on_batch(input_scaled)
+                    if isinstance(pred_tensor, list):
+                        pred_scaled = [t.numpy() if hasattr(t, 'numpy') else t for t in pred_tensor]
+                    else:
+                        pred_scaled = pred_tensor.numpy() if hasattr(pred_tensor, 'numpy') else pred_tensor
                 inference_ms = (time.time() - t0) * 1000.0
 
                 prediction = inverse_scale_output(pred_scaled)
