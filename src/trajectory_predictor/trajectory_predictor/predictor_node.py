@@ -146,6 +146,7 @@ class PredictorNode(Node):
         self._x_switch           = None        # [x,y,z] — GRU output cuối pha FOLLOWER
         self._mjm_trajectory     = []          # list of [x,y,z]
         self._mjm_step_idx       = 0
+        self._predict_epoch      = 0           # tăng khi chuyển LEADER → invalidate stale responses
 
         # ── Prediction Hold state ─────────────────────────────────────────────
         # Phát hiện khi tay đứng yên → khóa output prediction = vị trí tay
@@ -312,11 +313,12 @@ class PredictorNode(Node):
             elif rtype == 'predict':
                 pred = resp.get('prediction')
                 if pred and len(pred) == 3:
-                    if self._hybrid_phase == 'FOLLOWER':
-                        # Ghi nhớ output GRU cuối cùng làm x_switch cho MJM
+                    # Dùng epoch để loại bỏ stale response khi đã chuyển LEADER.
+                    # Worker chạy async → response cũ có thể đến sau khi phase đã đổi.
+                    resp_epoch = resp.get('epoch', -1)
+                    if resp_epoch == self._predict_epoch and self._hybrid_phase != 'LEADER':
                         self._x_switch = pred[:]
                         self._publish_prediction(pred, resp.get('inference_ms', 0.0))
-                    # Pha LEADER: bỏ qua output GRU (MJM timer đã đảm nhận)
 
             elif rtype == 'info':
                 self.get_logger().info(f'[Worker] {resp.get("message", "")}')
@@ -371,6 +373,7 @@ class PredictorNode(Node):
                 self._x_switch = None
                 self._mjm_trajectory = []
                 self._mjm_step_idx = 0
+                self._predict_epoch += 1  # invalidate stale responses từ run trước
                 self.get_logger().info('[Predictor] Auto-enabled prediction mode via /trajectory_mode')
         else:
             if self._predicting:
@@ -445,8 +448,7 @@ class PredictorNode(Node):
             padded = list(self._buffer)
         else:
             return
-
-        self._send_to_worker({'cmd': 'predict', 'data': padded})
+        self._send_to_worker({'cmd': 'predict', 'data': padded, 'epoch': self._predict_epoch})
 
     # ── Hybrid GRU+MJM methods ───────────────────────────────────────────────
 
@@ -464,6 +466,9 @@ class PredictorNode(Node):
 
     def _trigger_leader_phase(self):
         """Chuyển sang pha LEADER: tính MJM từ x_switch về GOAL."""
+        # Tăng epoch → invalidate toàn bộ SVGP response đang trong pipe
+        self._predict_epoch += 1
+        self._hybrid_phase = 'LEADER'  # set sớm trước khi tính toán
         x_0 = np.array(self._x_switch if self._x_switch is not None else self._last_meas,
                         dtype=np.float64)
         t_f = fitts_law_duration(
@@ -473,7 +478,6 @@ class PredictorNode(Node):
         positions = minimum_jerk_positions(x_0, self._goal, t_f, self._mjm_dt)
         self._mjm_trajectory = positions.tolist()
         self._mjm_step_idx = 0
-        self._hybrid_phase = 'LEADER'
 
         # Reset HOLD state để tránh chen vào MJM khi tay đang đứng yên tại điểm chuyển pha
         self._hold_active = False
@@ -524,6 +528,7 @@ class PredictorNode(Node):
             self._x_switch = None
             self._mjm_trajectory = []
             self._mjm_step_idx = 0
+            self._predict_epoch += 1  # invalidate stale responses từ run trước
         else:
             self._hybrid_phase = 'FOLLOWER'
             self._buffer.clear()

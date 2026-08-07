@@ -463,6 +463,8 @@ class CoordTransformNode(Node):
             # Full reset state để tránh kế thừa trạng thái cũ giữa các mode
             self._actual_filter.reset()
             self._pred_filter.reset()
+            # Reset MJM timestamp để SVGP hoạt động ngay khi bắt đầu run mới
+            self._last_mjm_time = 0
 
     def _on_hand_state(self, msg: HandState):
         """Xử lý HandState cho cả 2 mode để luôn cập nhật quỹ đạo thực tế (UI)"""
@@ -516,9 +518,19 @@ class CoordTransformNode(Node):
             return
 
         # ── Robot EE source: prediction đã ở base_link frame ─────────────────
+        # Đây là MJM message → ghi timestamp, gửi thẳng tới robot, bypass filter
         if msg.header.frame_id == 'base_link':
+            self._last_mjm_time = self.get_clock().now().nanoseconds
             p_base = np.array([msg.x, msg.y, msg.z])
             self._publish_robot_ee_target(p_base)
+            return
+
+        # Nếu đang pha LEADER (MJM đang publish, dựa trên timestamp gần đây),
+        # bỏ qua SVGP message (frame_id=world) để tránh 2 luồng xen kẽ gây răng cưa.
+        # Timeout 200ms: nếu không có MJM message trong 200ms → tự reset về SVGP
+        now_ns = self.get_clock().now().nanoseconds
+        mjm_age_ms = (now_ns - getattr(self, '_last_mjm_time', 0)) / 1e6
+        if mjm_age_ms < 200.0:
             return
 
         # ── Legacy camera path (giữ nguyên toàn bộ) ──────────────────────────

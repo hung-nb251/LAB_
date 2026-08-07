@@ -265,9 +265,13 @@ def main():
                 inference_ms = (time.time() - t0) * 1000.0
 
                 prediction = inverse_scale_output(pred_scaled)
-                send_response({"type": "predict", "prediction": prediction,
-                                "inference_ms": inference_ms,
-                                "model_name": current_model_name})
+                send_response({
+                    "type": "predict",
+                    "prediction": prediction,
+                    "inference_ms": inference_ms,
+                    "model_name": current_model_name,
+                    "epoch": cmd.get("epoch", -1),  # echo epoch để lọc stale response
+                })
             except Exception as e:
                 print(f"DEBUG: Predict error: {e}", file=sys.stderr)
                 send_response({"type": "predict", "prediction": None,

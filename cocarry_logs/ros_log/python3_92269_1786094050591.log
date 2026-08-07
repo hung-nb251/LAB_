@@ -1,0 +1,38 @@
+[INFO] [1786094050.670014220] [trajectory_predictor]: [Predictor] Worker launched (pid=92529)
+[INFO] [1786094050.670508683] [trajectory_predictor]: [Predictor] Started | model=svgp | window=10 | auto_start=True
+  Output Filter: enabled=True, ema_alpha=0.5, max_dev=0.08, max_rate=0.02
+[WARN] [1786094051.798350843] [trajectory_predictor]: [Worker STDERR] /usr/lib/python3/dist-packages/scipy/__init__.py:146: UserWarning: A NumPy version >=1.17.3 and <1.25.0 is required for this version of SciPy (detected version 1.26.4
+[WARN] [1786094051.799106789] [trajectory_predictor]: [Worker STDERR] warnings.warn(f"A NumPy version >={np_minversion} and <{np_maxversion}"
+[WARN] [1786094052.602148695] [trajectory_predictor]: [Worker STDERR] /home/hungnb/.local/lib/python3.10/site-packages/sklearn/base.py:442: InconsistentVersionWarning: Trying to unpickle estimator StandardScaler from version 1.7.1 when using version 1.7.2. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+[WARN] [1786094052.602718440] [trajectory_predictor]: [Worker STDERR] https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+[WARN] [1786094052.603147529] [trajectory_predictor]: [Worker STDERR] warnings.warn(
+[INFO] [1786094052.608023204] [trajectory_predictor]: [Worker] TF 2.15.0 and sklearn loaded
+[INFO] [1786094053.661795081] [trajectory_predictor]: [Predictor] Worker READY | model=svgp
+[INFO] [1786094070.181990795] [trajectory_predictor]: [Filter] raw=(0.2028,-1.8429,0.0039) → filt=(0.2028,-2.4200,0.0039) Δ=(0.0000,0.5771,0.0000)
+[INFO] [1786094074.578331966] [trajectory_predictor]: [Predictor] Switching model → svgp
+[INFO] [1786094074.578824154] [trajectory_predictor]: [Hybrid] Mode ENABLED (GRU+MJM). Timer T_SWITCH sẽ bắt đầu khi Start Run.
+[INFO] [1786094074.593191740] [trajectory_predictor]: [Hybrid] FOLLOWER -> LEADER | x_0=(0.1958,-1.7902,-0.0153) | GOAL=(-0.0578,0.7138,0.0000) | t_f=10.24s | 308 steps @ 30Hz | GRU worker dừng gửi lệnh predict (tiết kiệm tài nguyên)
+[INFO] [1786094074.636349810] [trajectory_predictor]: [Predictor] Model switched to svgp
+[INFO] [1786094077.636341042] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786094084.804913550] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786094094.752682155] [trajectory_predictor]: [Predictor] Predicting STARTED
+[INFO] [1786094097.150288984] [trajectory_predictor]: [Filter] raw=(-0.0506,0.3316,0.2803) → filt=(-0.0466,0.2593,0.2777) Δ=(0.0041,0.0724,0.0026)
+[INFO] [1786094099.783962493] [trajectory_predictor]: [Hybrid] FOLLOWER -> LEADER | x_0=(-0.0696,0.9384,0.4046) | GOAL=(-0.0578,0.7138,0.0000) | t_f=6.76s | 203 steps @ 30Hz | GRU worker dừng gửi lệnh predict (tiết kiệm tài nguyên)
+[INFO] [1786094104.644685768] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.8s)
+[INFO] [1786094108.846443611] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786094113.644120358] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.2s)
+[INFO] [1786094117.643991470] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.2s)
+[INFO] [1786094122.644006658] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.8s)
+[INFO] [1786094134.916090751] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786094143.644303121] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 2.0s)
+[INFO] [1786094165.065007885] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786094208.326948963] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786094213.974394107] [trajectory_predictor]: [Predictor] Predicting STARTED
+[INFO] [1786094215.469516473] [trajectory_predictor]: [Filter] raw=(0.0368,0.0091,0.0527) → filt=(0.0359,0.0125,0.0519) Δ=(0.0009,0.0034,0.0008)
+[INFO] [1786094219.020868779] [trajectory_predictor]: [Hybrid] FOLLOWER -> LEADER | x_0=(-0.0103,0.4498,0.4562) | GOAL=(-0.0578,0.7138,0.0000) | t_f=7.04s | 212 steps @ 30Hz | GRU worker dừng gửi lệnh predict (tiết kiệm tài nguyên)
+[INFO] [1786094228.124867135] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786094230.481651284] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786094258.643994028] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.7s)
+[INFO] [1786094555.644293005] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.7s)
+[INFO] [1786094559.644366930] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.3s)
+[INFO] [1786094562.644528183] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 2.0s)

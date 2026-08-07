@@ -1,0 +1,15 @@
+[INFO] [1786090079.217226629] [predictor_ui]: [UI] Node started
+[INFO] [1786090103.125696830] [predictor_ui]: [UI] Trajectory mode set to: prediction
+[INFO] [1786090104.410477540] [predictor_ui]: [UI] Model cmd → svgp
+[INFO] [1786090104.410809463] [predictor_ui]: [UI] Hybrid cmd → hybrid_on
+[INFO] [1786090118.451399655] [predictor_ui]: [UI] Capture Init Pose thành công: Captured Init Pose! P_init=(-0.162, 0.280, 0.379), Cam_init=(0.001, -0.041, 0.000), Noise_Tol=60.0mm
+Orientation=(0.998, 0.064, -0.000, 0.000)
+[INFO] [1786090149.665310829] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786090222.035969283] [predictor_ui]: [UI] Capture Init Pose thành công: Captured Init Pose! P_init=(-0.162, 0.280, 0.379), Cam_init=(-0.002, -0.021, -0.002), Noise_Tol=60.0mm
+Orientation=(0.998, 0.064, -0.000, 0.000)
+[INFO] [1786090253.702555058] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786090340.497323003] [predictor_ui]: [UI] Trajectory mode set to: prediction
+[INFO] [1786090341.772552398] [predictor_ui]: [UI] Model cmd → svgp
+[INFO] [1786090341.772876837] [predictor_ui]: [UI] Hybrid cmd → hybrid_on
+[INFO] [1786090361.523142462] [predictor_ui]: [UI] Capture Init Pose thành công: Captured Init Pose! P_init=(-0.162, 0.280, 0.379), Cam_init=(0.000, 0.031, 0.002), Noise_Tol=60.0mm
+Orientation=(0.998, 0.064, -0.000, 0.000)

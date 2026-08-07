@@ -1,0 +1,15 @@
+[INFO] [1786090402.658072998] [trajectory_predictor]: [Predictor] Worker launched (pid=85859)
+[INFO] [1786090402.658516481] [trajectory_predictor]: [Predictor] Started | model=svgp | window=10 | auto_start=True
+  Output Filter: enabled=True, ema_alpha=0.5, max_dev=0.08, max_rate=0.02
+[WARN] [1786090403.802797375] [trajectory_predictor]: [Worker STDERR] /usr/lib/python3/dist-packages/scipy/__init__.py:146: UserWarning: A NumPy version >=1.17.3 and <1.25.0 is required for this version of SciPy (detected version 1.26.4
+[WARN] [1786090403.803963075] [trajectory_predictor]: [Worker STDERR] warnings.warn(f"A NumPy version >={np_minversion} and <{np_maxversion}"
+[ERROR] [1786090404.599179263] [trajectory_predictor]: [Predictor] Worker NOT READY: Scalers not found in /home/hungnb/cocarry_ws/src/GRU-Model
+[INFO] [1786090427.091120249] [trajectory_predictor]: [Predictor] Switching model → svgp
+[INFO] [1786090427.091892800] [trajectory_predictor]: [Hybrid] Mode ENABLED (GRU+MJM). Timer T_SWITCH sẽ bắt đầu khi Start Run.
+[INFO] [1786090427.121507382] [trajectory_predictor]: [Hybrid] FOLLOWER -> LEADER | x_0=(-0.1147,-2.1810,-0.1695) | GOAL=(-0.0578,0.7138,0.0000) | t_f=10.53s | 317 steps @ 30Hz | GRU worker dừng gửi lệnh predict (tiết kiệm tài nguyên)
+[INFO] [1786090430.917219859] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786090439.880754209] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786090447.807845885] [trajectory_predictor]: [Predictor] Predicting STARTED
+[INFO] [1786090452.834621575] [trajectory_predictor]: [Hybrid] FOLLOWER -> LEADER | x_0=(-0.0792,0.5630,0.4526) | GOAL=(-0.0578,0.7138,0.0000) | t_f=6.83s | 205 steps @ 30Hz | GRU worker dừng gửi lệnh predict (tiết kiệm tài nguyên)
+[INFO] [1786090462.459074872] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786090468.637502493] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.3s)

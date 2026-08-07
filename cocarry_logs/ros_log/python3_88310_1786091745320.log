@@ -1,0 +1,24 @@
+[INFO] [1786091745.425739078] [coord_transform]: CoordTransformNode khởi động.
+  Object offset (cam frame): [0.05 0.   0.1 ]
+  Translation cam→base:      [0.5 0.  1.2]
+  EE orientation (xyzw):     [0.0, 1.0, 0.0, 0.0]
+  Prediction step:           5
+  Axis remap:                [0, 1, 2]
+  Axis sign:                 [-1.0, 1.0, 1.0]
+  Workspace X: (-1.0, 1.0), Y: (-0.5, 1.3), Z: (0.05, 1.5)
+  Filter outlier_threshold:  0.15m
+  Filter median_size_y:      3
+  Filter deadband_tol:       15.0mm
+  Filter stationary_thresh:  3 frames
+  Filter max_rate:           5.0cm/frame
+  Filter EMA moving(x,y,z):  (1.0,0.8,1.0)
+  Filter EMA hold  (x,y,z):  (0.08,0.02,0.05)
+[WARN] [1786091772.533861231] [coord_transform]: Outlier rejected #1 (jumped 426.3mm). Ignoring.
+[WARN] [1786091772.967803309] [coord_transform]: Outlier rejected #1 (jumped 183.5mm). Ignoring.
+[WARN] [1786091773.002724247] [coord_transform]: Outlier rejected #2 (jumped 164.2mm). Ignoring.
+[WARN] [1786091773.069377632] [coord_transform]: Outlier rejected #3 (jumped 416.9mm). Ignoring.
+[WARN] [1786091773.101362336] [coord_transform]: Outlier rejected #4 (jumped 447.3mm). Ignoring.
+[INFO] [1786091773.135151663] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[INFO] [1786091821.971823715] [coord_transform]: Trạng thái tracking: STOPPED
+[INFO] [1786091824.557193328] [coord_transform]: Đã chuyển mode: ground_truth -> prediction
+[INFO] [1786091829.407869429] [coord_transform]: Trạng thái tracking: STOPPED

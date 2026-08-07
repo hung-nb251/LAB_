@@ -1,0 +1,25 @@
+[INFO] [1786092970.425988291] [trajectory_predictor]: [Predictor] Worker launched (pid=91188)
+[INFO] [1786092970.426358669] [trajectory_predictor]: [Predictor] Started | model=svgp | window=10 | auto_start=True
+  Output Filter: enabled=True, ema_alpha=0.5, max_dev=0.08, max_rate=0.02
+[WARN] [1786092971.532719637] [trajectory_predictor]: [Worker STDERR] /usr/lib/python3/dist-packages/scipy/__init__.py:146: UserWarning: A NumPy version >=1.17.3 and <1.25.0 is required for this version of SciPy (detected version 1.26.4
+[WARN] [1786092971.533421558] [trajectory_predictor]: [Worker STDERR] warnings.warn(f"A NumPy version >={np_minversion} and <{np_maxversion}"
+[ERROR] [1786092972.279294167] [trajectory_predictor]: [Predictor] Worker NOT READY: Scalers not found in /home/hungnb/cocarry_ws/src/GRU-Model
+[INFO] [1786093023.831243208] [trajectory_predictor]: [Predictor] Switching model → svgp
+[INFO] [1786093023.832476771] [trajectory_predictor]: [Hybrid] Mode DISABLED (GRU only)
+[INFO] [1786093051.190922391] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786093055.800121618] [trajectory_predictor]: [Predictor] Predicting STARTED
+[INFO] [1786093067.290198176] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786093069.848058868] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786093074.411009072] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.4s)
+[INFO] [1786093094.172308958] [trajectory_predictor]: [Predictor] Auto-enabled prediction mode via /trajectory_mode
+[INFO] [1786093099.547613339] [trajectory_predictor]: [Predictor] Switching model → svgp
+[INFO] [1786093099.548114143] [trajectory_predictor]: [Hybrid] Mode ENABLED (GRU+MJM). Timer T_SWITCH sẽ bắt đầu khi Start Run.
+[INFO] [1786093103.141795623] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786093108.412022038] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.2s)
+[INFO] [1786093132.776647344] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786093137.358739141] [trajectory_predictor]: [Predictor] Predicting STARTED
+[INFO] [1786093142.393101126] [trajectory_predictor]: [Hybrid] FOLLOWER -> LEADER | x_0=(0.0360,0.9630,0.4245) | GOAL=(-0.0578,0.7138,0.0000) | t_f=6.92s | 208 steps @ 30Hz | GRU worker dừng gửi lệnh predict (tiết kiệm tài nguyên)
+[INFO] [1786093150.393653199] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786093155.410887451] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.7s)
+[INFO] [1786093166.540774203] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[WARN] [1786093362.545928230] [trajectory_predictor]: Failed to get parameters: ('Invalid access to undeclared parameter(s)', 'hybrid.t_switch')

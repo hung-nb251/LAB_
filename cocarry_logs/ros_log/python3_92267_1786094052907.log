@@ -1,0 +1,4 @@
+[INFO] [1786094053.083024776] [realsense_tracker]: RealSense Tracker Node Started.
+[INFO] [1786094080.732211947] [realsense_tracker]: Calibrated successfully. Origin set to (0.139, 0.087, 2.490)
+[INFO] [1786094160.969368992] [realsense_tracker]: Calibrated successfully. Origin set to (0.156, 0.081, 2.440)
+[INFO] [1786094184.873482981] [realsense_tracker]: Calibrated successfully. Origin set to (0.144, 0.079, 2.379)

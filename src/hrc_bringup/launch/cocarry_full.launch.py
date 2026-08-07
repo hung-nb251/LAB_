@@ -57,7 +57,7 @@ def generate_launch_description():
     # ── Launch arguments ──────────────────────────────────────────────────
     model_dir_arg = DeclareLaunchArgument(
         'model_dir',
-        default_value=os.path.expanduser('~/cocarry_ws/src/GRU-Model'),
+        default_value=os.path.expanduser('~/cocarry_ws/pHRI_Models/svgp_hri_rbf+m52'),
         description='Path to directory containing .h5 models and .pkl scalers')
 
     log_dir_arg = DeclareLaunchArgument(
