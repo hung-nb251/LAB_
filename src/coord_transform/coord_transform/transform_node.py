@@ -517,30 +517,36 @@ class CoordTransformNode(Node):
         if self._mode != 'prediction':
             return
 
-        # ── Robot EE source: prediction đã ở base_link frame ─────────────────
-        # Đây là MJM message → ghi timestamp, gửi thẳng tới robot, bypass filter
-        if msg.header.frame_id == 'base_link':
+        p_cam = np.array([msg.x, msg.y, msg.z])
+
+        # ── Phân biệt MJM vs SVGP bằng inference_time_ms ─────────────────────
+        # MJM là toán học thuần túy: inference_time_ms == 0.0
+        # SVGP là AI: inference_time_ms > 0.0
+        is_mjm = (msg.inference_time_ms == 0.0)
+
+        if is_mjm:
+            # ── MJM path ──────────────────────────────────────────────────────
+            # Ghi timestamp để chặn các message SVGP cũ còn sót trong pipeline
             self._last_mjm_time = self.get_clock().now().nanoseconds
-            p_base = np.array([msg.x, msg.y, msg.z])
-            self._publish_robot_ee_target(p_base)
+            # MJM đã được tính toán hoàn hảo (pure math) → bypass EMA filter
+            # và Target Snap. Nhưng VẪN đi qua _transform_and_publish_target()
+            # để áp dụng đúng: _obj_offset + axis_remap + R_cam_to_base + workspace clamp.
+            self._transform_and_publish_target(p_cam)
             return
 
-        # Nếu đang pha LEADER (MJM đang publish, dựa trên timestamp gần đây),
-        # bỏ qua SVGP message (frame_id=world) để tránh 2 luồng xen kẽ gây răng cưa.
+        # ── Chặn SVGP message cũ khi MJM đã kích hoạt ───────────────────────
         # Timeout 200ms: nếu không có MJM message trong 200ms → tự reset về SVGP
         now_ns = self.get_clock().now().nanoseconds
         mjm_age_ms = (now_ns - getattr(self, '_last_mjm_time', 0)) / 1e6
         if mjm_age_ms < 200.0:
             return
 
-        # ── Legacy camera path (giữ nguyên toàn bộ) ──────────────────────────
+        # ── SVGP path (legacy camera path, giữ nguyên toàn bộ) ───────────────
         # Lấy tọa độ theo prediction_step
         if hasattr(msg, 'pred_x') and len(msg.pred_x) > 0:
             step = min(self._pred_step, len(msg.pred_x) - 1)
             p_cam = np.array([msg.pred_x[step], msg.pred_y[step], msg.pred_z[step]])
-        else:
-            p_cam = np.array([msg.x, msg.y, msg.z])
-            
+
         # Lọc quỹ đạo dự đoán bằng state riêng
         p_cam_filtered = self._apply_filter(p_cam, self._pred_filter)
         if p_cam_filtered is None:
@@ -554,7 +560,7 @@ class CoordTransformNode(Node):
                 self._actual_filter.hold_p_cam is not None):
             actual_hold = self._actual_filter.hold_p_cam
             dist_pred_to_actual = np.linalg.norm(p_cam_filtered - actual_hold)
-            
+
             if not self._pred_snap_active:
                 self.get_logger().info(
                     f'[SNAP ON] Tay thực tế đứng yên. Ép dừng robot (GRU đang lệch {dist_pred_to_actual*100:.1f}cm).',
@@ -570,6 +576,7 @@ class CoordTransformNode(Node):
         # ─────────────────────────────────────────────────────────────────────
 
         self._transform_and_publish_target(p_cam_filtered)
+
 
     def _apply_filter(self, p_cam: np.ndarray, state: CameraFilterState):
         """Hàm dùng chung để áp dụng các bộ lọc (outlier, median, deadband, EMA)"""

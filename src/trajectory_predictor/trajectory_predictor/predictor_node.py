@@ -317,8 +317,13 @@ class PredictorNode(Node):
                     # Worker chạy async → response cũ có thể đến sau khi phase đã đổi.
                     resp_epoch = resp.get('epoch', -1)
                     if resp_epoch == self._predict_epoch and self._hybrid_phase != 'LEADER':
-                        self._x_switch = pred[:]
                         self._publish_prediction(pred, resp.get('inference_ms', 0.0))
+                        # Lưu _last_filtered (output đã qua EMA/rate-limiter) làm điểm nối
+                        # cho MJM, KHÔNG dùng raw pred để tránh cú giật tại điểm chuyển pha.
+                        if self._last_filtered is not None:
+                            self._x_switch = self._last_filtered[:]
+                        else:
+                            self._x_switch = pred[:]
 
             elif rtype == 'info':
                 self.get_logger().info(f'[Worker] {resp.get("message", "")}')
@@ -612,12 +617,10 @@ class PredictorNode(Node):
 
         msg = HandPrediction()
         msg.header.stamp = self.get_clock().now().to_msg()
-        # Pha LEADER: tọa độ MJM đã ở base_link frame, báo cho transform_node
-        # biết để bypass camera filter và TARGET SNAP, đi thẳng tới robot.
-        if self._hybrid_enabled and self._hybrid_phase == 'LEADER':
-            msg.header.frame_id = 'base_link'
-        else:
-            msg.header.frame_id = 'world'
+        # Luôn dùng frame_id='world' (camera frame) để transform_node
+        # áp dụng đầy đủ: _obj_offset + R_cam_to_base + t_cam_to_base.
+        # MJM (inference_time_ms==0.0) và SVGP đều ở camera frame.
+        msg.header.frame_id = 'world'
         msg.x = float(filtered[0])
         msg.y = float(filtered[1])
         msg.z = float(filtered[2])

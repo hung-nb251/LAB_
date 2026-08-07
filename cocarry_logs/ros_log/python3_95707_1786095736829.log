@@ -59,3 +59,6 @@
 [INFO] [1786095808.589378733] [cartesian_streamer]: Enable: StartPointQueueMode...
 [INFO] [1786095808.595904451] [cartesian_streamer]: StartPointQueueMode response: code=103, msg="The controller is in E-Stop"
 [ERROR] [1786095808.596643456] [cartesian_streamer]: StartPointQueueMode FAILED: The controller is in E-Stop
+[INFO] [1786097275.600785918] [cartesian_streamer]: Graceful shutdown: tắt Point Queue Mode trước khi thoát...
+[INFO] [1786097275.601331329] [cartesian_streamer]: Robot chưa enable, không cần stop_traj_mode.
+[INFO] [1786097275.601658427] [cartesian_streamer]: Shutdown hoàn tất. Tủ điện sẽ KHÔNG bị alarm.

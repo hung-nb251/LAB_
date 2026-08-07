@@ -83,11 +83,17 @@ class ExperimentLoggerNode(Node):
             self._on_robot_ee_pose, 10)
         # Robot joint states for velocity/torque (effort)
         self.create_subscription(JointState, '/joint_states', self._on_joint_states, 10)
+        # Hybrid state from predictor
+        self.create_subscription(String, '/predictor/hybrid_state', self._on_hybrid_state, 10)
+        self._hybrid_state = 'OFF'
 
         # Service to toggle recording
         self.toggle_srv = self.create_service(SetBool, '/logger/toggle', self._srv_toggle)
 
         self.get_logger().info('Logger ready.')
+
+    def _on_hybrid_state(self, msg: String):
+        self._hybrid_state = msg.data.upper()
 
     def _start_logging(self):
         try:
@@ -97,6 +103,8 @@ class ExperimentLoggerNode(Node):
                 model_tag = 'GROUND_TRUTH'
             else:
                 model_tag = str(self.current_model).upper() if self.current_model else "UNKNOWN"
+                if self._hybrid_state != 'OFF':
+                    model_tag += "+MJM"
             self.csv_path = os.path.join(self.log_dir, f'experiment_{model_tag}_{ts}.csv')
             
             # Ensure directory exists once more
@@ -129,7 +137,7 @@ class ExperimentLoggerNode(Node):
                     'inference_ms', 'buffer_size',
                     'robot_ee_x', 'robot_ee_y', 'robot_ee_z',
                     'j1_vel', 'j2_vel', 'j3_vel', 'j4_vel', 'j5_vel', 'j6_vel',
-                    'j1_eff', 'j2_eff', 'j3_eff', 'j4_eff', 'j5_eff', 'j6_eff'
+                    'j1_eff', 'j2_eff', 'j3_eff', 'j4_eff', 'j5_eff', 'j6_eff', 'role'
                 ])
                 writer.writerows(self._log_buffer)
             self.get_logger().info(f'✓ Successfully wrote logs to disk.')
@@ -261,7 +269,10 @@ class ExperimentLoggerNode(Node):
             old_path = self.csv_path
             dir_name = os.path.dirname(old_path)
             file_name = os.path.basename(old_path)
-            new_file_name = file_name.replace('UNKNOWN', new_model_name.upper())
+            new_model_tag = new_model_name.upper()
+            if self._hybrid_state != 'OFF':
+                new_model_tag += "+MJM"
+            new_file_name = file_name.replace('UNKNOWN+MJM', new_model_tag).replace('UNKNOWN', new_model_tag)
             new_path = os.path.join(dir_name, new_file_name)
 
             if old_path == new_path:
@@ -311,6 +322,12 @@ class ExperimentLoggerNode(Node):
                 jv[i] = f'{vels[i]:.6f}'
             for i in range(min(6, len(effs))):
                 je[i] = f'{effs[i]:.6f}'
+        role = self._hybrid_state
+        if pred and role not in ['OFF', 'READY']:
+            if pred.inference_time_ms == 0.0:
+                role = 'LEADER'
+            else:
+                role = 'FOLLOWER'
 
         self._log_buffer.append([
             now_ns, wall, self._trajectory_mode,
@@ -319,7 +336,7 @@ class ExperimentLoggerNode(Node):
             inf_ms, buf,
             rex, rey, rez,
             jv[0], jv[1], jv[2], jv[3], jv[4], jv[5],
-            je[0], je[1], je[2], je[3], je[4], je[5]
+            je[0], je[1], je[2], je[3], je[4], je[5], role
         ])
         self.row_count += 1
 
