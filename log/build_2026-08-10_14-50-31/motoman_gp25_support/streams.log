@@ -1,0 +1,55 @@
+[0.050s] Invoking command in '/home/hungnb/cocarry_ws/build/motoman_gp25_support': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/motoman_gp25_support -- -j16 -l16
+[0.143s] Invoked command in '/home/hungnb/cocarry_ws/build/motoman_gp25_support' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/motoman_gp25_support -- -j16 -l16
+[0.143s] Invoking command in '/home/hungnb/cocarry_ws/build/motoman_gp25_support': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/motoman_gp25_support
+[0.176s] -- Install configuration: ""
+[0.176s] -- Execute custom install script
+[0.176s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/ament_index/resource_index/package_run_dependencies/motoman_gp25_support
+[0.176s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/ament_index/resource_index/parent_prefix_path/motoman_gp25_support
+[0.176s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/environment/ament_prefix_path.sh
+[0.176s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/environment/ament_prefix_path.dsv
+[0.176s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/environment/path.sh
+[0.176s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/environment/path.dsv
+[0.176s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/local_setup.bash
+[0.176s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/local_setup.sh
+[0.176s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/local_setup.zsh
+[0.176s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/local_setup.dsv
+[0.177s] -- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/package.dsv
+[0.177s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/ament_index/resource_index/packages/motoman_gp25_support
+[0.177s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/cmake/motoman_gp25_supportConfig.cmake
+[0.178s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/cmake/motoman_gp25_supportConfig-version.cmake
+[0.178s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/package.xml
+[0.178s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/config/opw_parameters_gp25.yaml
+[0.178s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/config/opw_parameters_gp25_12.yaml
+[0.178s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/config/opw_parameters_gp25_20.yaml
+[0.179s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/launch/view_gp25.launch.xml
+[0.179s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/launch/view_gp25_12.launch.xml
+[0.179s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/launch/view_gp25_20.launch.xml
+[0.179s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/meshes/gp25/collision/base_link.stl
+[0.179s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/meshes/gp25/collision/link_1.stl
+[0.179s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/meshes/gp25/collision/link_2.stl
+[0.179s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/meshes/gp25/collision/link_3.stl
+[0.179s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/meshes/gp25/collision/link_4.stl
+[0.179s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/meshes/gp25/collision/link_5.stl
+[0.179s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/meshes/gp25/collision/link_6.stl
+[0.179s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/meshes/gp25/visual/base_link.dae
+[0.179s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/meshes/gp25/visual/link_1.dae
+[0.179s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/meshes/gp25/visual/link_2.dae
+[0.179s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/meshes/gp25/visual/link_3.dae
+[0.179s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/meshes/gp25/visual/link_4.dae
+[0.180s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/meshes/gp25/visual/link_5.dae
+[0.180s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/meshes/gp25/visual/link_6.dae
+[0.180s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/meshes/gp25_12/collision/link_4.stl
+[0.180s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/meshes/gp25_12/visual/link_4.dae
+[0.180s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/meshes/gp25_20/collision/link_4.stl
+[0.180s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/meshes/gp25_20/collision/link_5.stl
+[0.180s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/meshes/gp25_20/collision/link_6.stl
+[0.180s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/meshes/gp25_20/visual/link_4.dae
+[0.180s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/meshes/gp25_20/visual/link_5.dae
+[0.180s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/meshes/gp25_20/visual/link_6.dae
+[0.180s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/urdf/gp25.xacro
+[0.180s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/urdf/gp25_12.xacro
+[0.180s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/urdf/gp25_12_macro.xacro
+[0.180s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/urdf/gp25_20.xacro
+[0.180s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/urdf/gp25_20_macro.xacro
+[0.180s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp25_support/share/motoman_gp25_support/urdf/gp25_macro.xacro
+[0.306s] Invoked command in '/home/hungnb/cocarry_ws/build/motoman_gp25_support' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/motoman_gp25_support

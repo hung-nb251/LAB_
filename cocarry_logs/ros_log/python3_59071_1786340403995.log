@@ -169,3 +169,6 @@ Orientation=(0.998, 0.064, -0.000, 0.000)
 [WARN] [1786340823.851115187] [coord_transform]: Outlier rejected #3 (jumped 2038.0mm). Ignoring.
 [WARN] [1786340927.781574892] [coord_transform]: Outlier rejected #4 (jumped 2346.3mm). Ignoring.
 [INFO] [1786340927.808902219] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786340997.671370203] [coord_transform]: Outlier rejected #1 (jumped 341.8mm). Ignoring.
+[WARN] [1786341066.662716964] [coord_transform]: Outlier rejected #1 (jumped 230.7mm). Ignoring.
+[WARN] [1786341122.444365567] [coord_transform]: Outlier rejected #1 (jumped 253.4mm). Ignoring.

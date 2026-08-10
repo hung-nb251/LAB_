@@ -22,7 +22,7 @@ from datetime import datetime
 
 import rclpy
 from rclpy.node import Node
-from geometry_msgs.msg import PoseStamped
+from geometry_msgs.msg import PoseStamped, PointStamped
 from sensor_msgs.msg import JointState
 from std_msgs.msg import String
 from std_srvs.srv import SetBool
@@ -69,9 +69,11 @@ class ExperimentLoggerNode(Node):
 
         # Latest data (quick-and-dirty sync: log on each prediction)
         self.last_meas = None
+        self.last_filt = None
 
         # Subscribers
         self.create_subscription(HandState, '/hand_position', self._on_hand, 10)
+        self.create_subscription(PointStamped, '/coord_transform/filtered_hand_position', self._on_filtered_hand, 10)
         self.create_subscription(HandPrediction, '/ml/predicted_position', self._on_prediction, 10)
         # Stop command from bridge (scenario_id string from Windows)
         self.create_subscription(String, '/bridge/stop_command', self._on_stop_command, 5)
@@ -131,7 +133,7 @@ class ExperimentLoggerNode(Node):
                 writer = csv.writer(f)
                 writer.writerow([
                     'ros_timestamp_ns', 'wall_time', 'trajectory_mode',
-                    'meas_x', 'meas_y', 'meas_z', 'is_tracked',
+                    'meas_x', 'meas_y', 'meas_z', 'filt_x', 'filt_y', 'filt_z', 'is_tracked',
                     'pred_x', 'pred_y', 'pred_z',
                     'mae_x', 'mae_y', 'mae_z',
                     'inference_ms', 'buffer_size',
@@ -247,7 +249,10 @@ class ExperimentLoggerNode(Node):
         # Ở ground_truth mode: ghi row ngay từ hand data (không cần chờ prediction)
         if (self._trajectory_mode == 'ground_truth'
                 and self.is_logging):
-            self._write_row(msg, None)
+            self._write_row(self.last_meas, self.last_filt, None)
+
+    def _on_filtered_hand(self, msg: PointStamped):
+        self.last_filt = msg
 
     def _on_prediction(self, msg: HandPrediction):
         new_model = msg.model_name
@@ -261,7 +266,7 @@ class ExperimentLoggerNode(Node):
         # Ở prediction mode: ghi row khi nhận prediction
         if (self._trajectory_mode == 'prediction'
                 and self.is_logging):
-            self._write_row(self.last_meas, msg)
+            self._write_row(self.last_meas, self.last_filt, msg)
 
     def _rename_current_log(self, new_model_name):
         """Đổi tên file trong bộ nhớ để thêm tên model chính xác (chưa ghi đĩa)."""
@@ -283,7 +288,7 @@ class ExperimentLoggerNode(Node):
         except Exception as e:
             self.get_logger().error(f'Failed to update target log path: {e}')
 
-    def _write_row(self, meas, pred):
+    def _write_row(self, meas, filt, pred):
         now_ns = self.get_clock().now().nanoseconds
         wall = datetime.now().isoformat()
 
@@ -293,16 +298,20 @@ class ExperimentLoggerNode(Node):
             mx, my, mz = f'{meas.x:.6f}', f'{meas.y:.6f}', f'{meas.z:.6f}'
             tracked = str(meas.is_tracked)
 
+        fx = fy = fz = ''
+        if filt:
+            fx, fy, fz = f'{filt.point.x:.6f}', f'{filt.point.y:.6f}', f'{filt.point.z:.6f}'
+
         px = py = pz = inf_ms = buf = ''
         mae_x = mae_y = mae_z = ''
         if pred:
             px, py, pz = f'{pred.x:.6f}', f'{pred.y:.6f}', f'{pred.z:.6f}'
             inf_ms = f'{pred.inference_time_ms:.2f}'
             buf = str(pred.buffer_size)
-            if meas:
-                mae_x = f'{abs(pred.x - meas.x):.6f}'
-                mae_y = f'{abs(pred.y - meas.y):.6f}'
-                mae_z = f'{abs(pred.z - meas.z):.6f}'
+            if filt:
+                mae_x = f'{abs(pred.x - filt.point.x):.6f}'
+                mae_y = f'{abs(pred.y - filt.point.y):.6f}'
+                mae_z = f'{abs(pred.z - filt.point.z):.6f}'
 
         # Robot EE pose
         rex = rey = rez = ''
@@ -331,7 +340,7 @@ class ExperimentLoggerNode(Node):
 
         self._log_buffer.append([
             now_ns, wall, self._trajectory_mode,
-            mx, my, mz, tracked,
+            mx, my, mz, fx, fy, fz, tracked,
             px, py, pz, mae_x, mae_y, mae_z,
             inf_ms, buf,
             rex, rey, rez,
@@ -369,9 +378,9 @@ class ExperimentLoggerNode(Node):
                     # Prediction metrics (only for prediction mode rows)
                     try:
                         inf_ms = float(row['inference_ms'])
-                        mx = float(row['meas_x'])
-                        my = float(row['meas_y'])
-                        mz = float(row['meas_z'])
+                        mx = float(row['filt_x'])
+                        my = float(row['filt_y'])
+                        mz = float(row['filt_z'])
                         px_val = float(row['pred_x'])
                         py_val = float(row['pred_y'])
                         pz_val = float(row['pred_z'])

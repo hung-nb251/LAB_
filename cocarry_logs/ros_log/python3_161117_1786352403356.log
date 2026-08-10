@@ -1,0 +1,21 @@
+[INFO] [1786352403.463445306] [predictor_ui]: [UI] Node started
+[INFO] [1786352524.235492880] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786352534.841942150] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786352581.057190413] [predictor_ui]: [UI] Capture Init Pose thành công: Captured Init Pose! P_init=(-0.161, 0.282, 0.379), Cam_init=(-0.021, -0.006, 0.010), Noise_Tol=60.0mm
+Orientation=(0.998, 0.064, 0.000, -0.002)
+[INFO] [1786352589.955707693] [predictor_ui]: [UI] Trajectory mode set to: prediction
+[INFO] [1786352593.252791243] [predictor_ui]: [UI] Model cmd → svgp
+[INFO] [1786352593.253118287] [predictor_ui]: [UI] Hybrid cmd → hybrid_off
+[INFO] [1786352666.849556803] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786352688.360105405] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786352736.937511696] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786352750.274918038] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786352807.328221309] [predictor_ui]: [UI] Trajectory mode set to: prediction
+[INFO] [1786352810.889758846] [predictor_ui]: [UI] Model cmd → svgp
+[INFO] [1786352810.890030971] [predictor_ui]: [UI] Hybrid cmd → hybrid_on
+[INFO] [1786352852.953891440] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786352880.359748810] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786352969.027602468] [predictor_ui]: [UI] Capture Init Pose thành công: Captured Init Pose! P_init=(-0.162, 0.280, 0.379), Cam_init=(0.023, -0.038, -0.008), Noise_Tol=54.0mm
+Orientation=(0.998, 0.064, -0.000, 0.000)
+[INFO] [1786353021.336372203] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786353034.692639117] [predictor_ui]: [UI] Using standalone go_home.py script for real robot

@@ -106,7 +106,8 @@ class GoHomeNode(Node):
         res = self.call_service_sync(
             cli, StartPointQueueMode.Request(), 'start_point_queue_mode')
         if not res or res.result_code.value not in (0, 1):
-            self.get_logger().error('start_point_queue_mode FAILED!')
+            err_msg = res.message if res else "No response"
+            self.get_logger().error(f'start_point_queue_mode FAILED! Lỗi: {err_msg}')
             return
         self.get_logger().info('✓ Point Queue Mode ACTIVE — Servo ON!')
         time.sleep(1.5)  # Đợi servo ổn định

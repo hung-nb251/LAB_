@@ -28,7 +28,7 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
 from std_srvs.srv import SetBool
-
+from geometry_msgs.msg import PointStamped
 from human_hand_msgs.msg import HandState, HandPrediction, SystemStatus
 
 # Hybrid math utilities (Fitts' Law + Minimum Jerk Model)
@@ -168,7 +168,9 @@ class PredictorNode(Node):
             String, '/predictor/hybrid_state', 5)
 
         # ── Subscribers ──────────────────────────────────────────────────────
-        self.create_subscription(HandState, '/hand_position', self._on_hand, 10)
+        # Lắng nghe duy nhất dữ liệu ĐÃ LỌC (EMA) từ transform_node.
+        # (Đã bỏ hoàn toàn /hand_position thô để tránh lỗi double-buffering)
+        self.create_subscription(PointStamped, '/coord_transform/filtered_hand_position', self._on_filtered_hand, 10)
         # Nếu bridge publish tọa độ thô (trước khi predict), cũng lắng nghe
         self.create_subscription(
             HandPrediction, '/predicted_position', self._on_bridge_data, 10)
@@ -349,11 +351,10 @@ class PredictorNode(Node):
 
     # ── ROS Callbacks ────────────────────────────────────────────────────────
 
-    def _on_hand(self, msg: HandState):
-        """Nhận tọa độ từ /hand_position (HandState)."""
-        if not msg.is_tracked:
-            return
-        self._ingest_point(msg.x, msg.y, msg.z)
+    def _on_filtered_hand(self, msg: PointStamped):
+        """Nhận tọa độ ĐÃ LỌC từ /coord_transform/filtered_hand_position."""
+        # PointStamped không có cờ is_tracked, nhưng được xuất từ bộ lọc tức là tay đang có
+        self._ingest_point(msg.point.x, msg.point.y, msg.point.z)
 
     def _on_bridge_data(self, msg: HandPrediction):
         """

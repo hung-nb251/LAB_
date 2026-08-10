@@ -38,3 +38,12 @@ trajectory_predictor:
     scaler_x_file: scaler_x.pkl
     scaler_y_file: scaler_y.pkl
     window_size: 10
+    mjm:
+      enabled: true
+      t_switch: 6.0
+      goal_x: -0.0578
+      goal_y:  0.7138
+      goal_z:  0.0
+      fitts_a: 3.5971
+      fitts_b: 0.6635
+      fitts_w: 0.3

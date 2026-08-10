@@ -1,0 +1,53 @@
+[INFO] [1786354830.315847158] [trajectory_predictor]: [Predictor] Worker launched (pid=170952)
+[INFO] [1786354830.316324301] [trajectory_predictor]: [Predictor] Started | model=svgp | window=10 | auto_start=True
+  Output Filter: enabled=True, ema_alpha=0.5, max_dev=0.08, max_rate=0.02
+[WARN] [1786354831.478449073] [trajectory_predictor]: [Worker STDERR] /usr/lib/python3/dist-packages/scipy/__init__.py:146: UserWarning: A NumPy version >=1.17.3 and <1.25.0 is required for this version of SciPy (detected version 1.26.4
+[WARN] [1786354831.479163000] [trajectory_predictor]: [Worker STDERR] warnings.warn(f"A NumPy version >={np_minversion} and <{np_maxversion}"
+[INFO] [1786354832.353448438] [trajectory_predictor]: [Worker] TF 2.15.0 and sklearn loaded
+[INFO] [1786354833.351043684] [trajectory_predictor]: [Predictor] Worker READY | model=svgp
+[INFO] [1786354839.254871304] [trajectory_predictor]: [Hybrid] FOLLOWER -> LEADER | x_0=(-0.3129,-2.3330,-0.2009) | GOAL=(-0.0578,0.7138,0.0000) | t_f=6.48s | 195 steps @ 30Hz | GRU worker dừng gửi lệnh predict (tiết kiệm tài nguyên)
+[INFO] [1786354862.164118433] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786354866.240989350] [trajectory_predictor]: [Predictor] Auto-enabled prediction mode via /trajectory_mode
+[INFO] [1786354866.294996404] [trajectory_predictor]: [Filter] raw=(0.2093,-0.1243,-0.0265) → filt=(0.0528,-0.1243,-0.0265) Δ=(0.1565,0.0000,0.0000)
+[INFO] [1786354870.055717157] [trajectory_predictor]: [Predictor] Switching model → svgp
+[INFO] [1786354870.056218716] [trajectory_predictor]: [Hybrid] Mode ENABLED (GRU+MJM). Timer T_SWITCH sẽ bắt đầu khi Start Run.
+[INFO] [1786354870.078658887] [trajectory_predictor]: [Predictor] Model switched to svgp
+[INFO] [1786354872.241849143] [trajectory_predictor]: [Hybrid] FOLLOWER -> LEADER | x_0=(0.0578,-0.0821,-0.0183) | GOAL=(-0.0578,0.7138,0.0000) | t_f=5.20s | 157 steps @ 30Hz | GRU worker dừng gửi lệnh predict (tiết kiệm tài nguyên)
+[INFO] [1786354873.856680365] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786354915.302685987] [trajectory_predictor]: [Predictor] Predicting STARTED
+[INFO] [1786354916.036059260] [trajectory_predictor]: [Filter] raw=(0.1110,-0.0334,-0.0054) → filt=(0.1110,-0.0334,-0.0054) Δ=(0.0000,0.0000,0.0000)
+[INFO] [1786354921.314907747] [trajectory_predictor]: [Hybrid] FOLLOWER -> LEADER | x_0=(0.0765,0.5592,0.4031) | GOAL=(-0.0578,0.7138,0.0000) | t_f=4.65s | 140 steps @ 30Hz | GRU worker dừng gửi lệnh predict (tiết kiệm tài nguyên)
+[INFO] [1786354927.729968601] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786354929.018119580] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786354934.294219156] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.6s)
+[INFO] [1786354937.294847245] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.2s)
+[INFO] [1786354977.553269817] [trajectory_predictor]: [Predictor] Predicting STARTED
+[INFO] [1786354979.513716391] [trajectory_predictor]: [Filter] raw=(0.0665,0.1206,0.1292) → filt=(0.0668,0.1156,0.1248) Δ=(0.0002,0.0050,0.0045)
+[INFO] [1786354983.568379526] [trajectory_predictor]: [Hybrid] FOLLOWER -> LEADER | x_0=(0.0333,0.7732,0.3668) | GOAL=(-0.0578,0.7138,0.0000) | t_f=4.49s | 135 steps @ 30Hz | GRU worker dừng gửi lệnh predict (tiết kiệm tài nguyên)
+[INFO] [1786354989.406326765] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786354991.203651033] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786355039.518607032] [trajectory_predictor]: [Predictor] Predicting STARTED
+[INFO] [1786355042.881239570] [trajectory_predictor]: [Filter] raw=(0.0473,0.0577,0.2634) → filt=(0.0508,0.0526,0.2587) Δ=(0.0034,0.0052,0.0047)
+[INFO] [1786355045.540950538] [trajectory_predictor]: [Hybrid] FOLLOWER -> LEADER | x_0=(0.0743,0.5131,0.4193) | GOAL=(-0.0578,0.7138,0.0000) | t_f=4.72s | 142 steps @ 30Hz | GRU worker dừng gửi lệnh predict (tiết kiệm tài nguyên)
+[INFO] [1786355052.422156135] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786355053.975577844] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786355105.418901260] [trajectory_predictor]: [Predictor] Predicting STARTED
+[INFO] [1786355106.443407634] [trajectory_predictor]: [Filter] raw=(0.1106,-0.0304,0.0119) → filt=(0.1106,-0.0304,0.0119) Δ=(0.0000,0.0000,0.0000)
+[INFO] [1786355111.423012799] [trajectory_predictor]: [Hybrid] FOLLOWER -> LEADER | x_0=(0.2159,0.6569,0.3133) | GOAL=(-0.0578,0.7138,0.0000) | t_f=4.58s | 138 steps @ 30Hz | GRU worker dừng gửi lệnh predict (tiết kiệm tài nguyên)
+[INFO] [1786355117.054982612] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786355144.293628666] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.1s)
+[INFO] [1786355146.294036597] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.8s)
+[INFO] [1786355154.293739850] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.1s)
+[INFO] [1786355159.294368903] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.5s)
+[INFO] [1786355161.294110171] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.6s)
+[INFO] [1786355178.768874661] [trajectory_predictor]: [Predictor] Predicting STARTED
+[INFO] [1786355181.095984430] [trajectory_predictor]: [Filter] raw=(0.1008,0.0042,0.0145) → filt=(0.1008,0.0042,0.0145) Δ=(0.0000,0.0000,0.0000)
+[INFO] [1786355184.774114780] [trajectory_predictor]: [Hybrid] FOLLOWER -> LEADER | x_0=(0.0726,0.3458,0.3356) | GOAL=(-0.0578,0.7138,0.0000) | t_f=4.78s | 144 steps @ 30Hz | GRU worker dừng gửi lệnh predict (tiết kiệm tài nguyên)
+[INFO] [1786355185.917459152] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786355188.745710031] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786355211.382925544] [trajectory_predictor]: [Predictor] Predicting STARTED
+[INFO] [1786355214.693884795] [trajectory_predictor]: [Filter] raw=(0.1228,0.3080,0.3668) → filt=(0.1211,0.2999,0.3606) Δ=(0.0017,0.0081,0.0062)
+[INFO] [1786355217.385922195] [trajectory_predictor]: [Hybrid] FOLLOWER -> LEADER | x_0=(0.1746,0.6143,0.4314) | GOAL=(-0.0578,0.7138,0.0000) | t_f=4.75s | 143 steps @ 30Hz | GRU worker dừng gửi lệnh predict (tiết kiệm tài nguyên)
+[INFO] [1786355223.210198929] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786355225.032419859] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786355238.294507603] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.8s)

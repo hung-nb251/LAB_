@@ -1,0 +1,8 @@
+[INFO] [1786352202.558742232] [predictor_ui]: [UI] Node started
+[INFO] [1786352247.597621000] [predictor_ui]: [UI] Trajectory mode set to: ground_truth
+[INFO] [1786352251.627659853] [predictor_ui]: [UI] Trajectory mode set to: prediction
+[INFO] [1786352257.713717805] [predictor_ui]: [UI] Model cmd → svgp
+[INFO] [1786352257.714117967] [predictor_ui]: [UI] Hybrid cmd → hybrid_off
+[INFO] [1786352287.689433270] [predictor_ui]: [UI] Capture Init Pose thành công: Captured Init Pose! P_init=(0.431, 0.450, 0.710), Cam_init=(0.000, 0.000, 0.000), Noise_Tol=5.0mm
+Orientation=(0.838, 0.233, 0.475, -0.133)
+[INFO] [1786352297.001471280] [predictor_ui]: [UI] Using standalone go_home.py script for real robot

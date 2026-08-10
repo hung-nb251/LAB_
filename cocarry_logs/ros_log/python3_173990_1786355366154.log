@@ -1,0 +1,12 @@
+[INFO] [1786355366.213797047] [trajectory_predictor]: [Predictor] Worker launched (pid=174195)
+[INFO] [1786355366.214378078] [trajectory_predictor]: [Predictor] Started | model=svgp | window=10 | auto_start=True
+  Output Filter: enabled=True, ema_alpha=0.5, max_dev=0.08, max_rate=0.02
+[WARN] [1786355367.345449182] [trajectory_predictor]: [Worker STDERR] /usr/lib/python3/dist-packages/scipy/__init__.py:146: UserWarning: A NumPy version >=1.17.3 and <1.25.0 is required for this version of SciPy (detected version 1.26.4
+[WARN] [1786355367.346080558] [trajectory_predictor]: [Worker STDERR] warnings.warn(f"A NumPy version >={np_minversion} and <{np_maxversion}"
+[INFO] [1786355368.235337649] [trajectory_predictor]: [Worker] TF 2.15.0 and sklearn loaded
+[INFO] [1786355369.215313442] [trajectory_predictor]: [Predictor] Worker READY | model=svgp
+[INFO] [1786355417.571822812] [trajectory_predictor]: [Hybrid] FOLLOWER -> LEADER | x_0=(0.1723,-1.6950,-0.0956) | GOAL=(-0.0578,0.7138,0.0000) | t_f=6.26s | 188 steps @ 30Hz | GRU worker dừng gửi lệnh predict (tiết kiệm tài nguyên)
+[INFO] [1786355419.195103296] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.1s)
+[INFO] [1786355438.195099387] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.7s)
+[INFO] [1786355443.195127579] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.4s)
+[INFO] [1786355448.195271973] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.8s)

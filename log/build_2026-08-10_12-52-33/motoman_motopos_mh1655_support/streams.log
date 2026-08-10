@@ -1,0 +1,30 @@
+[0.351s] Invoking command in '/home/hungnb/cocarry_ws/build/motoman_motopos_mh1655_support': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/motoman_motopos_mh1655_support -- -j16 -l16
+[0.590s] Invoked command in '/home/hungnb/cocarry_ws/build/motoman_motopos_mh1655_support' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/motoman_motopos_mh1655_support -- -j16 -l16
+[0.592s] Invoking command in '/home/hungnb/cocarry_ws/build/motoman_motopos_mh1655_support': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/motoman_motopos_mh1655_support
+[0.625s] -- Install configuration: ""
+[0.625s] -- Execute custom install script
+[0.625s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_motopos_mh1655_support/share/ament_index/resource_index/package_run_dependencies/motoman_motopos_mh1655_support
+[0.626s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_motopos_mh1655_support/share/ament_index/resource_index/parent_prefix_path/motoman_motopos_mh1655_support
+[0.626s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_motopos_mh1655_support/share/motoman_motopos_mh1655_support/environment/ament_prefix_path.sh
+[0.627s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_motopos_mh1655_support/share/motoman_motopos_mh1655_support/environment/ament_prefix_path.dsv
+[0.628s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_motopos_mh1655_support/share/motoman_motopos_mh1655_support/environment/path.sh
+[0.628s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_motopos_mh1655_support/share/motoman_motopos_mh1655_support/environment/path.dsv
+[0.628s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_motopos_mh1655_support/share/motoman_motopos_mh1655_support/local_setup.bash
+[0.628s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_motopos_mh1655_support/share/motoman_motopos_mh1655_support/local_setup.sh
+[0.628s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_motopos_mh1655_support/share/motoman_motopos_mh1655_support/local_setup.zsh
+[0.628s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_motopos_mh1655_support/share/motoman_motopos_mh1655_support/local_setup.dsv
+[0.628s] -- Symlinking: /home/hungnb/cocarry_ws/install/motoman_motopos_mh1655_support/share/motoman_motopos_mh1655_support/package.dsv
+[0.630s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_motopos_mh1655_support/share/ament_index/resource_index/packages/motoman_motopos_mh1655_support
+[0.630s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_motopos_mh1655_support/share/motoman_motopos_mh1655_support/cmake/motoman_motopos_mh1655_supportConfig.cmake
+[0.630s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_motopos_mh1655_support/share/motoman_motopos_mh1655_support/cmake/motoman_motopos_mh1655_supportConfig-version.cmake
+[0.632s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_motopos_mh1655_support/share/motoman_motopos_mh1655_support/package.xml
+[0.633s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_motopos_mh1655_support/share/motoman_motopos_mh1655_support/launch/view_motopos_mh1655.launch.xml
+[0.633s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_motopos_mh1655_support/share/motoman_motopos_mh1655_support/meshes/motopos_mh1655/collision/base_link.stl
+[0.633s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_motopos_mh1655_support/share/motoman_motopos_mh1655_support/meshes/motopos_mh1655/collision/link_1.stl
+[0.633s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_motopos_mh1655_support/share/motoman_motopos_mh1655_support/meshes/motopos_mh1655/collision/pedestal.stl
+[0.633s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_motopos_mh1655_support/share/motoman_motopos_mh1655_support/meshes/motopos_mh1655/visual/base_link.stl
+[0.633s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_motopos_mh1655_support/share/motoman_motopos_mh1655_support/meshes/motopos_mh1655/visual/link_1.stl
+[0.634s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_motopos_mh1655_support/share/motoman_motopos_mh1655_support/meshes/motopos_mh1655/visual/pedestal.stl
+[0.635s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_motopos_mh1655_support/share/motoman_motopos_mh1655_support/urdf/motopos_mh1655.xacro
+[0.635s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_motopos_mh1655_support/share/motoman_motopos_mh1655_support/urdf/motopos_mh1655_macro.xacro
+[0.688s] Invoked command in '/home/hungnb/cocarry_ws/build/motoman_motopos_mh1655_support' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/motoman_motopos_mh1655_support
