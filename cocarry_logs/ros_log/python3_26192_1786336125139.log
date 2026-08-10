@@ -1,0 +1,27 @@
+[INFO] [1786336125.220930246] [trajectory_predictor]: [Predictor] Worker launched (pid=26459)
+[INFO] [1786336125.221328669] [trajectory_predictor]: [Predictor] Started | model=svgp | window=10 | auto_start=True
+  Output Filter: enabled=True, ema_alpha=0.15, max_dev=0.08, max_rate=0.01
+[WARN] [1786336126.371326592] [trajectory_predictor]: [Worker STDERR] /usr/lib/python3/dist-packages/scipy/__init__.py:146: UserWarning: A NumPy version >=1.17.3 and <1.25.0 is required for this version of SciPy (detected version 1.26.4
+[WARN] [1786336126.372072222] [trajectory_predictor]: [Worker STDERR] warnings.warn(f"A NumPy version >={np_minversion} and <{np_maxversion}"
+[WARN] [1786336127.208646957] [trajectory_predictor]: [Worker STDERR] /home/hungnb/.local/lib/python3.10/site-packages/sklearn/base.py:442: InconsistentVersionWarning: Trying to unpickle estimator StandardScaler from version 1.7.1 when using version 1.7.2. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+[WARN] [1786336127.209284325] [trajectory_predictor]: [Worker STDERR] https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+[WARN] [1786336127.209791771] [trajectory_predictor]: [Worker STDERR] warnings.warn(
+[INFO] [1786336127.215038726] [trajectory_predictor]: [Worker] TF 2.15.0 and sklearn loaded
+[INFO] [1786336128.241318402] [trajectory_predictor]: [Predictor] Worker READY | model=svgp
+[INFO] [1786336145.993471458] [trajectory_predictor]: [Filter] raw=(0.0253,-0.1399,0.0167) → filt=(0.0253,-0.1399,0.0167) Δ=(0.0000,0.0000,0.0000)
+[INFO] [1786336148.200945476] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.7s)
+[INFO] [1786336151.230204152] [trajectory_predictor]: [Filter] raw=(0.2375,-1.5555,0.0002) → filt=(0.1658,-0.2899,0.0012) Δ=(0.0717,1.2656,0.0010)
+[INFO] [1786336157.901018974] [trajectory_predictor]: [Filter] raw=(0.2345,-1.5489,-0.0022) → filt=(0.1598,-0.5899,-0.0025) Δ=(0.0747,0.9589,0.0003)
+[INFO] [1786336160.644071008] [trajectory_predictor]: [Predictor] Switching model → svgp
+[INFO] [1786336160.644602409] [trajectory_predictor]: [Hybrid] Mode DISABLED (GRU only)
+[INFO] [1786336160.665143320] [trajectory_predictor]: [Predictor] Model switched to svgp
+[INFO] [1786336164.580178570] [trajectory_predictor]: [Filter] raw=(0.0367,0.0856,0.0095) → filt=(0.0641,-0.6979,0.0077) Δ=(0.0274,0.7835,0.0018)
+[INFO] [1786336169.089589031] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786336192.264056019] [trajectory_predictor]: [Predictor] Predicting STARTED
+[INFO] [1786336194.435440653] [trajectory_predictor]: [Filter] raw=(-0.0426,0.1701,0.2573) → filt=(-0.0199,0.0555,0.1098) Δ=(0.0227,0.1145,0.1475)
+[INFO] [1786336201.236237571] [trajectory_predictor]: [Filter] raw=(-0.0082,0.8371,0.1758) → filt=(-0.0204,0.3555,0.2416) Δ=(0.0121,0.4816,0.0658)
+[INFO] [1786336207.913955494] [trajectory_predictor]: [Filter] raw=(0.1298,0.6922,0.4328) → filt=(0.2099,0.6536,0.2101) Δ=(0.0801,0.0386,0.2227)
+[INFO] [1786336214.616956579] [trajectory_predictor]: [Filter] raw=(0.0478,0.3858,0.1500) → filt=(-0.0488,0.5150,0.1573) Δ=(0.0965,0.1292,0.0073)
+[INFO] [1786336217.111832508] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786336222.200966652] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.9s)
+[INFO] [1786336225.063907702] [trajectory_predictor]: [Predictor] Predicting STOPPED

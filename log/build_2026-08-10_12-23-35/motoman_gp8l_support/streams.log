@@ -1,0 +1,39 @@
+[0.128s] Invoking command in '/home/hungnb/cocarry_ws/build/motoman_gp8l_support': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/motoman_gp8l_support -- -j16 -l16
+[0.196s] Invoked command in '/home/hungnb/cocarry_ws/build/motoman_gp8l_support' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/motoman_gp8l_support -- -j16 -l16
+[0.197s] Invoking command in '/home/hungnb/cocarry_ws/build/motoman_gp8l_support': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/motoman_gp8l_support
+[0.226s] -- Install configuration: ""
+[0.226s] -- Execute custom install script
+[0.226s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/ament_index/resource_index/package_run_dependencies/motoman_gp8l_support
+[0.226s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/ament_index/resource_index/parent_prefix_path/motoman_gp8l_support
+[0.226s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/environment/ament_prefix_path.sh
+[0.226s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/environment/ament_prefix_path.dsv
+[0.226s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/environment/path.sh
+[0.226s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/environment/path.dsv
+[0.226s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/local_setup.bash
+[0.226s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/local_setup.sh
+[0.226s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/local_setup.zsh
+[0.226s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/local_setup.dsv
+[0.226s] -- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/package.dsv
+[0.229s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/ament_index/resource_index/packages/motoman_gp8l_support
+[0.229s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/cmake/motoman_gp8l_supportConfig.cmake
+[0.229s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/cmake/motoman_gp8l_supportConfig-version.cmake
+[0.229s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/package.xml
+[0.229s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/config/opw_parameters_gp8l.yaml
+[0.229s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/launch/view_gp8l.launch.xml
+[0.230s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/meshes/gp8l/collision/base_link.stl
+[0.230s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/meshes/gp8l/collision/link_1.stl
+[0.230s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/meshes/gp8l/collision/link_2.stl
+[0.230s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/meshes/gp8l/collision/link_3.stl
+[0.230s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/meshes/gp8l/collision/link_4.stl
+[0.230s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/meshes/gp8l/collision/link_5.stl
+[0.230s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/meshes/gp8l/collision/link_6.stl
+[0.230s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/meshes/gp8l/visual/base_link.dae
+[0.230s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/meshes/gp8l/visual/link_1.dae
+[0.230s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/meshes/gp8l/visual/link_2.dae
+[0.230s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/meshes/gp8l/visual/link_3.dae
+[0.230s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/meshes/gp8l/visual/link_4.dae
+[0.230s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/meshes/gp8l/visual/link_5.dae
+[0.230s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/meshes/gp8l/visual/link_6.dae
+[0.231s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/urdf/gp8l.xacro
+[0.231s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8l_support/share/motoman_gp8l_support/urdf/gp8l_macro.xacro
+[0.554s] Invoked command in '/home/hungnb/cocarry_ws/build/motoman_gp8l_support' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/motoman_gp8l_support

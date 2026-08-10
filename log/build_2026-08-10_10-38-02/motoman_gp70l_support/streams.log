@@ -1,0 +1,46 @@
+[0.150s] Invoking command in '/home/hungnb/cocarry_ws/build/motoman_gp70l_support': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake /home/hungnb/cocarry_ws/src/motoman_ros2_support_packages/motoman_gp70l_support -DCMAKE_INSTALL_PREFIX=/home/hungnb/cocarry_ws/install/motoman_gp70l_support
+[0.176s] -- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.355s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.463s] -- Configuring done
+[0.468s] -- Generating done
+[0.470s] -- Build files have been written to: /home/hungnb/cocarry_ws/build/motoman_gp70l_support
+[0.485s] Invoked command in '/home/hungnb/cocarry_ws/build/motoman_gp70l_support' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake /home/hungnb/cocarry_ws/src/motoman_ros2_support_packages/motoman_gp70l_support -DCMAKE_INSTALL_PREFIX=/home/hungnb/cocarry_ws/install/motoman_gp70l_support
+[0.487s] Invoking command in '/home/hungnb/cocarry_ws/build/motoman_gp70l_support': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/motoman_gp70l_support -- -j16 -l16
+[0.564s] Invoked command in '/home/hungnb/cocarry_ws/build/motoman_gp70l_support' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/motoman_gp70l_support -- -j16 -l16
+[0.565s] Invoking command in '/home/hungnb/cocarry_ws/build/motoman_gp70l_support': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/motoman_gp70l_support
+[0.583s] -- Install configuration: ""
+[0.583s] -- Execute custom install script
+[0.583s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/ament_index/resource_index/package_run_dependencies/motoman_gp70l_support
+[0.584s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/ament_index/resource_index/parent_prefix_path/motoman_gp70l_support
+[0.585s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/environment/ament_prefix_path.sh
+[0.585s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/environment/ament_prefix_path.dsv
+[0.585s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/environment/path.sh
+[0.585s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/environment/path.dsv
+[0.585s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/local_setup.bash
+[0.585s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/local_setup.sh
+[0.585s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/local_setup.zsh
+[0.585s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/local_setup.dsv
+[0.585s] -- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/package.dsv
+[0.588s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/ament_index/resource_index/packages/motoman_gp70l_support
+[0.588s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/cmake/motoman_gp70l_supportConfig.cmake
+[0.588s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/cmake/motoman_gp70l_supportConfig-version.cmake
+[0.588s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/package.xml
+[0.588s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/config/opw_parameters_gp70l.yaml
+[0.588s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/launch/view_gp70l.launch.xml
+[0.588s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/meshes/gp70l/collision/base_link.stl
+[0.589s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/meshes/gp70l/collision/link_1.stl
+[0.589s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/meshes/gp70l/collision/link_2.stl
+[0.589s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/meshes/gp70l/collision/link_3.stl
+[0.589s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/meshes/gp70l/collision/link_4.stl
+[0.589s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/meshes/gp70l/collision/link_5.stl
+[0.589s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/meshes/gp70l/collision/link_6.stl
+[0.589s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/meshes/gp70l/visual/base_link.dae
+[0.589s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/meshes/gp70l/visual/link_1.dae
+[0.589s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/meshes/gp70l/visual/link_2.dae
+[0.589s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/meshes/gp70l/visual/link_3.dae
+[0.589s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/meshes/gp70l/visual/link_4.dae
+[0.589s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/meshes/gp70l/visual/link_5.dae
+[0.589s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/meshes/gp70l/visual/link_6.dae
+[0.590s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/urdf/gp70l.xacro
+[0.590s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp70l_support/share/motoman_gp70l_support/urdf/gp70l_macro.xacro
+[0.666s] Invoked command in '/home/hungnb/cocarry_ws/build/motoman_gp70l_support' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/motoman_gp70l_support

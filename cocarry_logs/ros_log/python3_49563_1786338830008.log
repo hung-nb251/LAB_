@@ -1,0 +1,33 @@
+[INFO] [1786338830.075115998] [trajectory_predictor]: [Predictor] Worker launched (pid=49820)
+[INFO] [1786338830.075594584] [trajectory_predictor]: [Predictor] Started | model=svgp | window=10 | auto_start=True
+  Output Filter: enabled=True, ema_alpha=0.5, max_dev=0.08, max_rate=0.02
+[WARN] [1786338831.257052533] [trajectory_predictor]: [Worker STDERR] /usr/lib/python3/dist-packages/scipy/__init__.py:146: UserWarning: A NumPy version >=1.17.3 and <1.25.0 is required for this version of SciPy (detected version 1.26.4
+[WARN] [1786338831.257431496] [trajectory_predictor]: [Worker STDERR] warnings.warn(f"A NumPy version >={np_minversion} and <{np_maxversion}"
+[WARN] [1786338832.091647536] [trajectory_predictor]: [Worker STDERR] /home/hungnb/.local/lib/python3.10/site-packages/sklearn/base.py:442: InconsistentVersionWarning: Trying to unpickle estimator StandardScaler from version 1.7.1 when using version 1.7.2. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+[WARN] [1786338832.092090740] [trajectory_predictor]: [Worker STDERR] https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+[WARN] [1786338832.092458630] [trajectory_predictor]: [Worker STDERR] warnings.warn(
+[INFO] [1786338832.097225857] [trajectory_predictor]: [Worker] TF 2.15.0 and sklearn loaded
+[INFO] [1786338833.122353420] [trajectory_predictor]: [Predictor] Worker READY | model=svgp
+[INFO] [1786338851.467409090] [trajectory_predictor]: [Filter] raw=(0.1776,-1.7686,0.0071) → filt=(0.1776,-2.2440,0.0071) Δ=(0.0000,0.4754,0.0000)
+[INFO] [1786338855.772574530] [trajectory_predictor]: [Predictor] Switching model → svgp
+[INFO] [1786338855.773923561] [trajectory_predictor]: [Hybrid] Mode DISABLED (GRU only)
+[INFO] [1786338855.806557946] [trajectory_predictor]: [Predictor] Model switched to svgp
+[INFO] [1786338858.134997042] [trajectory_predictor]: [Filter] raw=(0.1762,-1.7581,-0.0080) → filt=(0.1759,-2.2296,-0.0080) Δ=(0.0003,0.4715,0.0000)
+[INFO] [1786338864.806816143] [trajectory_predictor]: [Filter] raw=(0.0329,-0.0711,0.0081) → filt=(0.0349,-0.8441,0.0075) Δ=(0.0020,0.7730,0.0006)
+[INFO] [1786338868.808501096] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786338873.159168625] [trajectory_predictor]: [Predictor] Predicting STARTED
+[INFO] [1786338875.852256449] [trajectory_predictor]: [Filter] raw=(-0.0503,0.1598,0.3588) → filt=(-0.0500,0.1547,0.3506) Δ=(0.0003,0.0051,0.0082)
+[INFO] [1786338882.520625043] [trajectory_predictor]: [Filter] raw=(0.0542,0.6657,0.1866) → filt=(0.0513,0.6650,0.1885) Δ=(0.0029,0.0007,0.0019)
+[INFO] [1786338889.209476636] [trajectory_predictor]: [Filter] raw=(0.0519,0.4335,0.1772) → filt=(0.0532,0.4357,0.1684) Δ=(0.0013,0.0022,0.0088)
+[INFO] [1786338895.902379553] [trajectory_predictor]: [Filter] raw=(-0.1503,0.1782,0.3034) → filt=(-0.1511,0.2367,0.3017) Δ=(0.0008,0.0585,0.0017)
+[INFO] [1786338902.669936593] [trajectory_predictor]: [Filter] raw=(0.0900,0.4760,0.6093) → filt=(0.0924,0.4756,0.6064) Δ=(0.0024,0.0004,0.0030)
+[INFO] [1786338909.373444513] [trajectory_predictor]: [Filter] raw=(0.0453,-0.1380,0.0307) → filt=(0.0395,-0.1222,0.0459) Δ=(0.0058,0.0157,0.0152)
+[INFO] [1786338917.055355639] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 2.0s)
+[INFO] [1786338918.221218231] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786338926.055846428] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.4s)
+[WARN] [1786339000.386074097] [trajectory_predictor]: [Worker STDERR] Traceback (most recent call last):
+[WARN] [1786339000.386465667] [trajectory_predictor]: [Worker STDERR] File "/home/hungnb/cocarry_ws/build/trajectory_predictor/trajectory_predictor/inference_worker.py", line 282, in <module>
+[WARN] [1786339000.386883381] [trajectory_predictor]: [Worker STDERR] main()
+[WARN] [1786339000.387351458] [trajectory_predictor]: [Worker STDERR] File "/home/hungnb/cocarry_ws/build/trajectory_predictor/trajectory_predictor/inference_worker.py", line 207, in main
+[WARN] [1786339000.387829992] [trajectory_predictor]: [Worker STDERR] for line in sys.stdin:
+[WARN] [1786339000.388296156] [trajectory_predictor]: [Worker STDERR] KeyboardInterrupt
