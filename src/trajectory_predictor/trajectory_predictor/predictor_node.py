@@ -373,8 +373,8 @@ class PredictorNode(Node):
         if mode == 'prediction':
             if not self._predicting:
                 self._predicting = True
-                # Bắt đầu đếm T_SWITCH từ đây
-                self._hybrid_start_time = time.time()
+                # Chờ frame data đầu tiên mới bắt đầu đếm T_SWITCH
+                self._hybrid_start_time = 0.0
                 self._hybrid_phase = 'FOLLOWER'
                 self._x_switch = None
                 self._mjm_trajectory = []
@@ -393,6 +393,11 @@ class PredictorNode(Node):
     def _ingest_point(self, x: float, y: float, z: float):
         now = time.time()
         
+        # Bắt đầu đếm thời gian FOLLOWER từ frame data đầu tiên thay vì từ lúc bấm nút
+        if self._predicting and self._hybrid_enabled and self._hybrid_phase == 'FOLLOWER':
+            if getattr(self, '_hybrid_start_time', 0.0) == 0.0:
+                self._hybrid_start_time = now
+
         # Calculate velocity if we have a previous data point
         if self._last_data_time > 0:
             dt = now - self._last_data_time
@@ -528,8 +533,8 @@ class PredictorNode(Node):
         response.success = True
         response.message = 'Predicting STARTED' if self._predicting else 'Predicting STOPPED'
         if self._predicting:
-            # Bắt đầu đếm T_SWITCH từ đây (khi Start Run)
-            self._hybrid_start_time = time.time()
+            # Chờ frame data đầu tiên mới đếm T_SWITCH
+            self._hybrid_start_time = 0.0
             self._hybrid_phase = 'FOLLOWER'
             self._x_switch = None
             self._mjm_trajectory = []
