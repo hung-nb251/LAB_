@@ -1,0 +1,39 @@
+[0.095s] Invoking command in '/home/hungnb/cocarry_ws/build/motoman_gp8_support': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/motoman_gp8_support -- -j16 -l16
+[0.181s] Invoked command in '/home/hungnb/cocarry_ws/build/motoman_gp8_support' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/motoman_gp8_support -- -j16 -l16
+[0.181s] Invoking command in '/home/hungnb/cocarry_ws/build/motoman_gp8_support': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/motoman_gp8_support
+[0.202s] -- Install configuration: ""
+[0.202s] -- Execute custom install script
+[0.203s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/ament_index/resource_index/package_run_dependencies/motoman_gp8_support
+[0.203s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/ament_index/resource_index/parent_prefix_path/motoman_gp8_support
+[0.203s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/environment/ament_prefix_path.sh
+[0.203s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/environment/ament_prefix_path.dsv
+[0.203s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/environment/path.sh
+[0.203s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/environment/path.dsv
+[0.203s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/local_setup.bash
+[0.203s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/local_setup.sh
+[0.203s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/local_setup.zsh
+[0.203s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/local_setup.dsv
+[0.203s] -- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/package.dsv
+[0.203s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/ament_index/resource_index/packages/motoman_gp8_support
+[0.203s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/cmake/motoman_gp8_supportConfig.cmake
+[0.203s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/cmake/motoman_gp8_supportConfig-version.cmake
+[0.203s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/package.xml
+[0.203s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/config/opw_parameters_gp8.yaml
+[0.203s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/launch/view_gp8.launch.xml
+[0.203s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/meshes/collision/base_link.stl
+[0.203s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/meshes/collision/link_1.stl
+[0.203s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/meshes/collision/link_2.stl
+[0.203s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/meshes/collision/link_3.stl
+[0.204s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/meshes/collision/link_4.stl
+[0.204s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/meshes/collision/link_5.stl
+[0.204s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/meshes/collision/link_6.stl
+[0.204s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/meshes/visual/base_link.stl
+[0.204s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/meshes/visual/link_1.stl
+[0.204s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/meshes/visual/link_2.stl
+[0.204s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/meshes/visual/link_3.stl
+[0.204s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/meshes/visual/link_4.stl
+[0.204s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/meshes/visual/link_5.stl
+[0.204s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/meshes/visual/link_6.stl
+[0.204s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/urdf/gp8.xacro
+[0.204s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp8_support/share/motoman_gp8_support/urdf/gp8_macro.xacro
+[0.472s] Invoked command in '/home/hungnb/cocarry_ws/build/motoman_gp8_support' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/motoman_gp8_support

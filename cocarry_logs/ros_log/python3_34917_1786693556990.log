@@ -1,0 +1,30 @@
+[INFO] [1786693557.068909672] [go_home_node]: Đang chờ /joint_states...
+[INFO] [1786693557.135818638] [go_home_node]: Joints hiện tại: ['1.3917', '1.0163', '0.4220', '0.0001', '-1.0064', '-1.2645']
+[INFO] [1786693557.136225553] [go_home_node]: Gọi stop_traj_mode...
+[INFO] [1786693557.887826020] [go_home_node]: Gọi reset_error...
+[INFO] [1786693558.406795249] [go_home_node]: Gọi start_point_queue_mode...
+[INFO] [1786693559.187647536] [go_home_node]: ✓ Point Queue Mode ACTIVE — Servo ON!
+[INFO] [1786693560.689849720] [go_home_node]: Gửi seed point...
+[INFO] [1786693560.715775096] [go_home_node]: ✓ Seed point accepted.
+[INFO] [1786693561.016959111] [go_home_node]: Di chuyển về Home trong 2.5s (50 points @ 20Hz)...
+[WARN] [1786693566.802800006] [go_home_node]: Point 34 rejected: code=2
+[WARN] [1786693566.854947556] [go_home_node]: Point 35 rejected: code=2
+[WARN] [1786693566.893516115] [go_home_node]: Point 36 rejected: code=2
+[WARN] [1786693566.935663203] [go_home_node]: Point 37 rejected: code=2
+[WARN] [1786693566.973836979] [go_home_node]: Point 38 rejected: code=2
+[WARN] [1786693567.018819748] [go_home_node]: Point 39 rejected: code=2
+[WARN] [1786693567.058699573] [go_home_node]: Point 40 rejected: code=2
+[WARN] [1786693567.103807467] [go_home_node]: Point 41 rejected: code=2
+[WARN] [1786693567.252675097] [go_home_node]: Point 42 rejected: code=2
+[WARN] [1786693567.289803949] [go_home_node]: Point 43 rejected: code=2
+[WARN] [1786693567.331659648] [go_home_node]: Point 44 rejected: code=2
+[WARN] [1786693567.423539786] [go_home_node]: Point 45 rejected: code=2
+[WARN] [1786693567.467054466] [go_home_node]: Point 46 rejected: code=2
+[WARN] [1786693567.500855170] [go_home_node]: Point 47 rejected: code=2
+[WARN] [1786693567.552636522] [go_home_node]: Point 48 rejected: code=2
+[WARN] [1786693567.590508120] [go_home_node]: Point 49 rejected: code=2
+[WARN] [1786693567.625092277] [go_home_node]: Point 50 rejected: code=2
+[INFO] [1786693567.658959326] [go_home_node]: ✓ Đã gửi 10/50 points. Robot đang di chuyển về Home...
+[INFO] [1786693571.163140738] [go_home_node]: Thoát Point Queue Mode (stop_traj_mode)...
+[INFO] [1786693571.208969638] [go_home_node]: ✓ stop_traj_mode thành công. Tủ điện sạch sẽ.
+[INFO] [1786693571.209203758] [go_home_node]: ✓ Đã về Home an toàn! Controller đã thoát queue mode.
