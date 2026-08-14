@@ -1,0 +1,25 @@
+[INFO] [1786696072.850352607] [predictor_ui]: [UI] Node started
+[INFO] [1786696080.104784815] [predictor_ui]: [UI] Trajectory mode set to: prediction
+[INFO] [1786696084.394819130] [predictor_ui]: [UI] Model cmd → svgp
+[INFO] [1786696084.395183176] [predictor_ui]: [UI] Hybrid cmd → hybrid_on
+[INFO] [1786696132.673526868] [predictor_ui]: [UI] Capture Init Pose thành công: Captured Init Pose! P_init=(-0.162, 0.280, 0.379), Cam_init=(0.165, -0.186, -0.013), Noise_Tol=60.0mm
+Orientation=(0.998, 0.064, -0.000, 0.000)
+[INFO] [1786696154.183416287] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786696248.235432043] [predictor_ui]: [UI] Capture Init Pose thành công: Captured Init Pose! P_init=(-0.162, 0.280, 0.379), Cam_init=(0.247, -0.241, 0.015), Noise_Tol=60.0mm
+Orientation=(0.998, 0.064, -0.000, 0.000)
+[INFO] [1786696269.960609336] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786696303.446488650] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786696374.308773397] [predictor_ui]: [UI] Capture Init Pose thành công: Captured Init Pose! P_init=(-0.162, 0.280, 0.379), Cam_init=(-0.001, 0.011, 0.001), Noise_Tol=40.0mm
+Orientation=(0.998, 0.064, -0.000, 0.000)
+[INFO] [1786696384.018623842] [predictor_ui]: [UI] Capture Init Pose thành công: Captured Init Pose! P_init=(-0.162, 0.280, 0.379), Cam_init=(0.237, -0.233, -0.003), Noise_Tol=60.0mm
+Orientation=(0.998, 0.064, -0.000, 0.000)
+[INFO] [1786696404.981611002] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786696448.938764960] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786696471.407324505] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786696502.674257054] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786696528.040338804] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786696573.651493430] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786696613.681862932] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786696806.173378830] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786696854.264989057] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786696940.473079151] [predictor_ui]: [UI] Auto-disabled robot on Stop Run

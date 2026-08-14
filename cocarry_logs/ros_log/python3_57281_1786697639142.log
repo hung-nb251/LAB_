@@ -1,0 +1,57 @@
+[INFO] [1786697639.237504315] [predictor_ui]: [UI] Node started
+[INFO] [1786697647.254087459] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786697659.588995946] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786697664.877705207] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786697708.214586829] [predictor_ui]: [UI] Trajectory mode set to: ground_truth
+[INFO] [1786697731.192986828] [predictor_ui]: [UI] Capture Init Pose thành công: Captured Init Pose! P_init=(-0.162, 0.309, 0.388), Cam_init=(0.217, -0.257, -0.005), Noise_Tol=60.0mm
+Orientation=(0.988, -0.154, -0.004, -0.029)
+[INFO] [1786697760.110835168] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786697771.116591649] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786697782.136094136] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786697791.873358232] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786697850.668632463] [predictor_ui]: [UI] Trajectory mode set to: prediction
+[INFO] [1786697853.499083204] [predictor_ui]: [UI] Model cmd → svgp
+[INFO] [1786697853.499462274] [predictor_ui]: [UI] Hybrid cmd → hybrid_on
+[INFO] [1786697881.487491818] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786697950.019334066] [predictor_ui]: [UI] Trajectory mode set to: prediction
+[INFO] [1786697955.892789708] [predictor_ui]: [UI] Trajectory mode set to: prediction
+[INFO] [1786697958.440381577] [predictor_ui]: [UI] Model cmd → svgp
+[INFO] [1786697958.440710783] [predictor_ui]: [UI] Hybrid cmd → hybrid_off
+[INFO] [1786697979.917840941] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786697999.401193130] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786698008.301113334] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786698059.075528413] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786698107.441017686] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786698149.747603444] [predictor_ui]: [UI] Trajectory mode set to: prediction
+[INFO] [1786698153.076254305] [predictor_ui]: [UI] Model cmd → svgp
+[INFO] [1786698153.076590295] [predictor_ui]: [UI] Hybrid cmd → hybrid_on
+[INFO] [1786698184.300015824] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786698270.018029912] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786698348.016740856] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786698418.447681132] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786698465.305679807] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786698604.216281361] [predictor_ui]: [UI] Capture Init Pose thành công: Captured Init Pose! P_init=(-0.162, 0.309, 0.388), Cam_init=(0.196, -0.303, 0.011), Noise_Tol=60.0mm
+Orientation=(0.988, -0.154, -0.004, -0.029)
+[INFO] [1786698702.153396273] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786698768.336477244] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786698847.555238920] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786698913.336915671] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786698958.594546756] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786699003.645339505] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786699007.015087711] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786699068.495722146] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786699133.340356101] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786699207.356335200] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786699259.624269188] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786699316.041129681] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786699462.421155410] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786699566.141893450] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786699652.900449235] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786699796.372277996] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786699851.810128843] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786699932.573267773] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786699998.296990168] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786700269.016080273] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786700341.658095575] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786700388.348700544] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786700439.167017504] [predictor_ui]: [UI] Auto-disabled robot on Stop Run

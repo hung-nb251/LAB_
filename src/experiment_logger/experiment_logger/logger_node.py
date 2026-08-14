@@ -308,10 +308,10 @@ class ExperimentLoggerNode(Node):
             px, py, pz = f'{pred.x:.6f}', f'{pred.y:.6f}', f'{pred.z:.6f}'
             inf_ms = f'{pred.inference_time_ms:.2f}'
             buf = str(pred.buffer_size)
-            if filt:
-                mae_x = f'{abs(pred.x - filt.point.x):.6f}'
-                mae_y = f'{abs(pred.y - filt.point.y):.6f}'
-                mae_z = f'{abs(pred.z - filt.point.z):.6f}'
+            if meas:
+                mae_x = f'{abs(pred.x - meas.x):.6f}'
+                mae_y = f'{abs(pred.y - meas.y):.6f}'
+                mae_z = f'{abs(pred.z - meas.z):.6f}'
 
         # Robot EE pose
         rex = rey = rez = ''
