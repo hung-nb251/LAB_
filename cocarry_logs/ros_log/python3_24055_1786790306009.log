@@ -1,0 +1,16 @@
+[INFO] [1786790306.086575480] [trajectory_predictor]: [Predictor] Worker launched (pid=24325)
+[INFO] [1786790306.086988435] [trajectory_predictor]: [Predictor] Started | model=svgp | window=10 | auto_start=True
+  Output Filter: enabled=True, ema_alpha=1.0, max_dev=0.08, max_rate=0.02
+[WARN] [1786790307.217763349] [trajectory_predictor]: [Worker STDERR] /usr/lib/python3/dist-packages/scipy/__init__.py:146: UserWarning: A NumPy version >=1.17.3 and <1.25.0 is required for this version of SciPy (detected version 1.26.4
+[WARN] [1786790307.218099059] [trajectory_predictor]: [Worker STDERR] warnings.warn(f"A NumPy version >={np_minversion} and <{np_maxversion}"
+[INFO] [1786790308.101686054] [trajectory_predictor]: [Worker] TF 2.15.0 and sklearn loaded
+[INFO] [1786790309.223435186] [trajectory_predictor]: [Predictor] Worker READY | model=svgp
+[INFO] [1786790330.443538108] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786790333.471879230] [trajectory_predictor]: [Predictor] Auto-enabled prediction mode via /trajectory_mode
+[INFO] [1786790333.472661498] [trajectory_predictor]: [Predictor] Switching model → svgp
+[INFO] [1786790333.473075605] [trajectory_predictor]: [Hybrid] Mode DISABLED (GRU only)
+[INFO] [1786790333.489228165] [trajectory_predictor]: [Predictor] Model switched to svgp
+[INFO] [1786790340.526074212] [trajectory_predictor]: [Predictor] Switching model → svgp
+[INFO] [1786790340.526513396] [trajectory_predictor]: [Hybrid] Mode ENABLED (GRU+MJM). Timer T_SWITCH sẽ bắt đầu khi Start Run.
+[INFO] [1786790340.542559087] [trajectory_predictor]: [Predictor] Model switched to svgp
+[INFO] [1786790344.555442026] [trajectory_predictor]: [Predictor] Predicting STOPPED

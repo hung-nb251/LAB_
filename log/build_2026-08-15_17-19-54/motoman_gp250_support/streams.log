@@ -1,0 +1,33 @@
+[0.706s] Invoking command in '/home/hungnb/cocarry_ws/build/motoman_gp250_support': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_gp215_support:/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_gp215_support:/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake /home/hungnb/cocarry_ws/src/motoman_ros2_support_packages/motoman_gp250_support -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/hungnb/cocarry_ws/install/motoman_gp250_support
+[0.919s] -- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.919s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.920s] -- Configuring done
+[0.920s] -- Generating done
+[0.920s] -- Build files have been written to: /home/hungnb/cocarry_ws/build/motoman_gp250_support
+[0.961s] Invoked command in '/home/hungnb/cocarry_ws/build/motoman_gp250_support' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_gp215_support:/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_gp215_support:/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake /home/hungnb/cocarry_ws/src/motoman_ros2_support_packages/motoman_gp250_support -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/hungnb/cocarry_ws/install/motoman_gp250_support
+[0.962s] Invoking command in '/home/hungnb/cocarry_ws/build/motoman_gp250_support': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_gp215_support:/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_gp215_support:/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/motoman_gp250_support -- -j16 -l16
+[1.005s] Invoked command in '/home/hungnb/cocarry_ws/build/motoman_gp250_support' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_gp215_support:/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_gp215_support:/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/motoman_gp250_support -- -j16 -l16
+[1.007s] Invoking command in '/home/hungnb/cocarry_ws/build/motoman_gp250_support': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_gp215_support:/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_gp215_support:/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/motoman_gp250_support
+[1.014s] -- Install configuration: ""
+[1.015s] -- Execute custom install script
+[1.015s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp250_support/share/ament_index/resource_index/package_run_dependencies/motoman_gp250_support
+[1.015s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp250_support/share/ament_index/resource_index/parent_prefix_path/motoman_gp250_support
+[1.015s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp250_support/share/motoman_gp250_support/environment/ament_prefix_path.sh
+[1.016s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp250_support/share/motoman_gp250_support/environment/ament_prefix_path.dsv
+[1.016s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp250_support/share/motoman_gp250_support/environment/path.sh
+[1.016s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp250_support/share/motoman_gp250_support/environment/path.dsv
+[1.016s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp250_support/share/motoman_gp250_support/local_setup.bash
+[1.016s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp250_support/share/motoman_gp250_support/local_setup.sh
+[1.016s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp250_support/share/motoman_gp250_support/local_setup.zsh
+[1.016s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp250_support/share/motoman_gp250_support/local_setup.dsv
+[1.016s] -- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp250_support/share/motoman_gp250_support/package.dsv
+[1.024s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp250_support/share/ament_index/resource_index/packages/motoman_gp250_support
+[1.025s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp250_support/share/motoman_gp250_support/cmake/motoman_gp250_supportConfig.cmake
+[1.025s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp250_support/share/motoman_gp250_support/cmake/motoman_gp250_supportConfig-version.cmake
+[1.025s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp250_support/share/motoman_gp250_support/package.xml
+[1.025s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp250_support/share/motoman_gp250_support/launch/view_gp250.launch.xml
+[1.025s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp250_support/share/motoman_gp250_support/meshes/gp250/collision/link_3.stl
+[1.025s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp250_support/share/motoman_gp250_support/meshes/gp250/visual/link_3.dae
+[1.026s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp250_support/share/motoman_gp250_support/urdf/gp250.xacro
+[1.026s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp250_support/share/motoman_gp250_support/urdf/gp250_macro.xacro
+[1.029s] Invoked command in '/home/hungnb/cocarry_ws/build/motoman_gp250_support' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_gp215_support:/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_gp215_support:/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/motoman_gp250_support

@@ -28,7 +28,7 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
 from std_srvs.srv import SetBool
-
+from geometry_msgs.msg import Point, PointStamped
 from human_hand_msgs.msg import HandState, HandPrediction, SystemStatus
 
 # Hybrid math utilities (Fitts' Law + Minimum Jerk Model)
@@ -168,6 +168,7 @@ class PredictorNode(Node):
             String, '/predictor/hybrid_state', 5)
 
         # ── Subscribers ──────────────────────────────────────────────────────
+        # Lắng nghe dữ liệu thô (meas) từ /hand_position để phục vụ cơ chế Hold và tránh trễ (như bản gốc của GRU).
         self.create_subscription(HandState, '/hand_position', self._on_hand, 10)
         # Nếu bridge publish tọa độ thô (trước khi predict), cũng lắng nghe
         self.create_subscription(
@@ -175,6 +176,9 @@ class PredictorNode(Node):
 
         # Model switch command từ UI hay bridge
         self.create_subscription(String, '/predictor/model_cmd', self._on_model_cmd, 5)
+
+        # Cập nhật Goal động từ UI
+        self.create_subscription(Point, '/predictor/goal_cmd', self._on_goal_cmd, 10)
 
         # Hybrid mode toggle từ UI (GRU+MJM button)
         self.create_subscription(String, '/predictor/hybrid_cmd', self._on_hybrid_cmd, 5)
@@ -350,7 +354,7 @@ class PredictorNode(Node):
     # ── ROS Callbacks ────────────────────────────────────────────────────────
 
     def _on_hand(self, msg: HandState):
-        """Nhận tọa độ từ /hand_position (HandState)."""
+        """Nhận tọa độ thô từ /hand_position (HandState)."""
         if not msg.is_tracked:
             return
         self._ingest_point(msg.x, msg.y, msg.z)
@@ -372,8 +376,8 @@ class PredictorNode(Node):
         if mode == 'prediction':
             if not self._predicting:
                 self._predicting = True
-                # Bắt đầu đếm T_SWITCH từ đây
-                self._hybrid_start_time = time.time()
+                # Chờ frame data đầu tiên mới bắt đầu đếm T_SWITCH
+                self._hybrid_start_time = 0.0
                 self._hybrid_phase = 'FOLLOWER'
                 self._x_switch = None
                 self._mjm_trajectory = []
@@ -392,6 +396,11 @@ class PredictorNode(Node):
     def _ingest_point(self, x: float, y: float, z: float):
         now = time.time()
         
+        # Bắt đầu đếm thời gian FOLLOWER từ frame data đầu tiên thay vì từ lúc bấm nút
+        if self._predicting and self._hybrid_enabled and self._hybrid_phase == 'FOLLOWER':
+            if getattr(self, '_hybrid_start_time', 0.0) == 0.0:
+                self._hybrid_start_time = now
+
         # Calculate velocity if we have a previous data point
         if self._last_data_time > 0:
             dt = now - self._last_data_time
@@ -427,7 +436,43 @@ class PredictorNode(Node):
         else:
             self._buffer.append([x, y, z])
 
-        # ── Prediction Hold: Disabled ──────────────────────────────────────
+        # ── Prediction Hold: phát hiện tay đứng yên ──────────────────────
+        self._hold_recent.append([x, y, z])
+        if len(self._hold_recent) >= 5:
+            import numpy as _np
+            recent = _np.array(self._hold_recent)
+            max_std = float(_np.max(_np.std(recent, axis=0)))
+
+            if self._hold_active:
+                # Đang HOLD → kiểm tra xem tay đã bắt đầu di chuyển chưa
+                mean_pos = _np.mean(recent, axis=0)
+                dev = float(_np.linalg.norm(mean_pos - _np.array(self._hold_position)))
+                if dev > self._HOLD_RELEASE_THRESH:
+                    self._hold_active = False
+                    self._hold_stationary_count = 0
+                    self.get_logger().info(
+                        f'[Pred HOLD OFF] Tay di chuyển (dev={dev*1000:.1f}mm). Thả hold.')
+                else:
+                    # Vẫn HOLD → publish vị trí khóa, KHÔNG chạy GRU
+                    self._publish_prediction(list(self._hold_position), 0.0)
+                    return
+            else:
+                # Chưa HOLD → kiểm tra ổn định
+                if max_std < self._HOLD_STD_THRESH:
+                    self._hold_stationary_count += 1
+                else:
+                    self._hold_stationary_count = 0
+
+                if self._hold_stationary_count >= self._HOLD_ENTER_FRAMES:
+                    self._hold_active = True
+                    self._hold_position = list(_np.mean(recent, axis=0))
+                    self._last_filtered = list(self._hold_position)  # sync EMA state
+                    self.get_logger().info(
+                        f'[Pred HOLD ON] Tay đứng yên (std={max_std*1000:.1f}mm). '
+                        f'Khóa tại ({self._hold_position[0]:.4f}, '
+                        f'{self._hold_position[1]:.4f}, {self._hold_position[2]:.4f})')
+                    self._publish_prediction(list(self._hold_position), 0.0)
+                    return
 
         # ── Kiểm tra chuyển pha FOLLOWER → LEADER ──────────────────────────
         # Chỉ kiểm tra khi đang FOLLOWER — guard chống gọi lại nhiều lần
@@ -508,6 +553,10 @@ class PredictorNode(Node):
             pos = self._mjm_trajectory[self._mjm_step_idx]
             self._publish_prediction(pos, 0.0)
             self._mjm_step_idx += 1
+            
+            # In ra log 1 lần duy nhất khi vừa chạm tới step cuối cùng
+            if self._mjm_step_idx == len(self._mjm_trajectory):
+                self.get_logger().info('✅ [MJM] ĐÃ CHẠM ĐÍCH (GOAL REACHED)!')
         else:
             # Hết trajectory → giữ robot tại GOAL
             self._publish_prediction(list(self._goal), 0.0)
@@ -522,13 +571,18 @@ class PredictorNode(Node):
         self.get_logger().info(f'[Predictor] Switching model → {model_name}')
         self._send_to_worker({'cmd': 'load_model', 'model_name': model_name})
 
+    def _on_goal_cmd(self, msg: Point):
+        """Cập nhật tọa độ Goal động từ UI."""
+        self._goal = np.array([msg.x, msg.y, msg.z])
+        self.get_logger().info(f'[Predictor] Dynamic Goal set to → ({msg.x:.4f}, {msg.y:.4f}, {msg.z:.4f})')
+
     def _srv_toggle(self, request, response):
         self._predicting = request.data
         response.success = True
         response.message = 'Predicting STARTED' if self._predicting else 'Predicting STOPPED'
         if self._predicting:
-            # Bắt đầu đếm T_SWITCH từ đây (khi Start Run)
-            self._hybrid_start_time = time.time()
+            # Chờ frame data đầu tiên mới đếm T_SWITCH
+            self._hybrid_start_time = 0.0
             self._hybrid_phase = 'FOLLOWER'
             self._x_switch = None
             self._mjm_trajectory = []

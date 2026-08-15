@@ -133,6 +133,7 @@ rosidl_typesupport_c/motoros2_interfaces/msg/alarm_info__type_support.cpp: /opt/
 rosidl_typesupport_c/motoros2_interfaces/msg/alarm_info__type_support.cpp: /opt/ros/humble/share/geometry_msgs/msg/Vector3.idl
 rosidl_typesupport_c/motoros2_interfaces/msg/alarm_info__type_support.cpp: /opt/ros/humble/share/geometry_msgs/msg/Vector3Stamped.idl
 rosidl_typesupport_c/motoros2_interfaces/msg/alarm_info__type_support.cpp: /opt/ros/humble/share/geometry_msgs/msg/VelocityStamped.idl
+rosidl_typesupport_c/motoros2_interfaces/msg/alarm_info__type_support.cpp: /opt/ros/humble/share/geometry_msgs/msg/VelocityWithCovarianceStamped.idl
 rosidl_typesupport_c/motoros2_interfaces/msg/alarm_info__type_support.cpp: /opt/ros/humble/share/geometry_msgs/msg/Wrench.idl
 rosidl_typesupport_c/motoros2_interfaces/msg/alarm_info__type_support.cpp: /opt/ros/humble/share/geometry_msgs/msg/WrenchStamped.idl
 rosidl_typesupport_c/motoros2_interfaces/msg/alarm_info__type_support.cpp: /opt/ros/humble/share/std_msgs/msg/Bool.idl

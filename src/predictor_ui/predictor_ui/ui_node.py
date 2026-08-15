@@ -25,7 +25,7 @@ from trajectory_msgs.msg import JointTrajectoryPoint
 from builtin_interfaces.msg import Duration
 
 from human_hand_msgs.msg import HandState, HandPrediction
-from geometry_msgs.msg import PointStamped
+from geometry_msgs.msg import Point, PointStamped
 
 try:
     import pyqtgraph as pg
@@ -101,6 +101,7 @@ class PredictorUiNode(Node):
         self._model_pub = self.create_publisher(String, '/predictor/model_cmd', 5)
         self._run_status_pub = self.create_publisher(Bool, '/run_status', 5)
         self._hybrid_cmd_pub = self.create_publisher(String, '/predictor/hybrid_cmd', 5)
+        self._goal_pub = self.create_publisher(Point, '/predictor/goal_cmd', 5)
 
         # ── Service clients ──────────────────────────────────────────────────
         self._logger_cli = self.create_client(SetBool, '/logger/toggle')
@@ -382,7 +383,7 @@ class DashboardWindow:
 
         self.win = QtWidgets.QWidget()
         self.win.setWindowTitle('HRC Trajectory Dashboard — Ubuntu')
-        self.win.resize(1200, 750)
+        self.win.resize(1600, 900)
         self.win.setStyleSheet('background: #1a1a2e; color: #e0e0e0;')
 
         main_layout = QtWidgets.QVBoxLayout(self.win)
@@ -404,8 +405,10 @@ class DashboardWindow:
         main_layout.addLayout(top)
 
         # ── Plots ─────────────────────────────────────────────────────────
+        mid_layout = QtWidgets.QHBoxLayout()
+
         self.gw = pg.GraphicsLayoutWidget()
-        self.gw.setFixedHeight(520)
+        self.gw.setFixedHeight(650)
         plots_data = [('X axis (m)', 'meas_x', 'pred_x'),
                       ('Y axis (m)', 'meas_y', 'pred_y'),
                       ('Z axis (m)', 'meas_z', 'pred_z')]
@@ -445,53 +448,42 @@ class DashboardWindow:
                                       name='Predicted')
             self.plots[i] = p
 
-        main_layout.addWidget(self.gw)
+            # Ép 3 đồ thị có tỉ lệ chiều rộng bằng nhau
+            self.gw.ci.layout.setColumnStretchFactor(i, 1)
+
+        mid_layout.addWidget(self.gw, stretch=6)
+
+        self.right_panel = QtWidgets.QVBoxLayout()
+        
+        self.btn_set_goal = QtWidgets.QPushButton('Set Goal')
+        self.btn_set_goal.setStyleSheet(self._btn_style('#b9770e', '#f39c12'))
+        self.btn_set_goal.setToolTip('Lưu lại vị trí hiện tại làm Goal')
+        self.btn_set_goal.clicked.connect(self._do_set_goal)
+        self.right_panel.addWidget(self.btn_set_goal)
+
+        # Labels for Goal coordinates
+        lbl_style = "color: #e0e0e0; font-size: 24px; font-weight: bold; margin-top: 15px; margin-left: 10px;"
+        self.lbl_goal_x = QtWidgets.QLabel('X: -----')
+        self.lbl_goal_x.setStyleSheet(lbl_style)
+        self.right_panel.addWidget(self.lbl_goal_x)
+
+        self.lbl_goal_y = QtWidgets.QLabel('Y: -----')
+        self.lbl_goal_y.setStyleSheet(lbl_style)
+        self.right_panel.addWidget(self.lbl_goal_y)
+
+        self.lbl_goal_z = QtWidgets.QLabel('Z: -----')
+        self.lbl_goal_z.setStyleSheet(lbl_style)
+        self.right_panel.addWidget(self.lbl_goal_z)
+
+        self.right_panel.addStretch()
+        
+        mid_layout.addLayout(self.right_panel, stretch=1)
+        main_layout.addLayout(mid_layout)
 
         # ── Bottom bar: controls ──────────────────────────────────────────
         ctrl = QtWidgets.QVBoxLayout()
 
-        # Model buttons
-        model_grp = QtWidgets.QGroupBox('Model')
-        model_grp.setStyleSheet(
-            'QGroupBox { color: #e0e0e0; border: 1px solid #555; border-radius: 4px; margin-top: 15px; padding-top: 4px; }'
-            'QGroupBox::title { subcontrol-origin: margin; left: 8px; top: 0px; }'
-        )
-        mg_l = QtWidgets.QHBoxLayout(model_grp)
-
-        # Nút SVGP — chỉ dùng SVGP (Hybrid OFF)
-        btn_gru = QtWidgets.QPushButton('SVGP')
-        btn_gru.setToolTip('Chỉ dùng SVGP dự đoán. Hybrid mode tắt.')
-        btn_gru.setStyleSheet(
-            'QPushButton { background: #16213e; color: #e0e0e0; border: 1px solid #0f3460; '
-            'border-radius: 4px; padding: 4px 8px; } '
-            'QPushButton:hover { background: #0f3460; }'
-        )
-        btn_gru.clicked.connect(lambda: (
-            node.send_model_cmd('svgp'),
-            node.send_hybrid_cmd('hybrid_off'),
-        ))
-        mg_l.addWidget(btn_gru)
-
-        # Nút SVGP+MJM — bật Hybrid (SVGP 5s -> Minimum Jerk về GOAL)
-        btn_grumjm = QtWidgets.QPushButton('SVGP+MJM')
-        btn_grumjm.setToolTip(
-            'Hybrid mode: SVGP dự đoán 5 giây đầu (FOLLOWER),\n'
-            'sau đó Minimum Jerk Model dẫn robot về GOAL (LEADER).\n'
-            'T_SWITCH bắt đầu đếm khi nhấn Start Run.'
-        )
-        btn_grumjm.setStyleSheet(
-            'QPushButton { background: #7d4e00; color: #ffe082; border: 1px solid #ff8f00; '
-            'border-radius: 4px; padding: 4px 8px; font-weight: bold; } '
-            'QPushButton:hover { background: #ffaa00; color: #222; border: 1px solid #ffcc00; }'
-        )
-        btn_grumjm.clicked.connect(lambda: (
-            node.send_model_cmd('svgp'),
-            node.send_hybrid_cmd('hybrid_on'),
-        ))
-        mg_l.addWidget(btn_grumjm)
         row_1 = QtWidgets.QHBoxLayout()
-        row_1.addWidget(model_grp)
-        row_1.addStretch()
 
         # Trajectory mode selector
         traj_grp = QtWidgets.QGroupBox('Trajectory Mode')
@@ -507,11 +499,18 @@ class DashboardWindow:
         self.btn_traj_gt.clicked.connect(lambda: self._set_trajectory_mode('ground_truth'))
         traj_l.addWidget(self.btn_traj_gt)
         
-        self.btn_traj_pred = QtWidgets.QPushButton('Prediction')
-        self.btn_traj_pred.setCheckable(True)
-        self.btn_traj_pred.setStyleSheet(self._btn_style('#6c3483', '#8e44ad'))
-        self.btn_traj_pred.clicked.connect(lambda: self._set_trajectory_mode('prediction'))
-        traj_l.addWidget(self.btn_traj_pred)
+        self.btn_traj_svgp = QtWidgets.QPushButton('SVGP')
+        self.btn_traj_svgp.setCheckable(True)
+        self.btn_traj_svgp.setStyleSheet(self._btn_style('#16213e', '#0f3460'))
+        self.btn_traj_svgp.clicked.connect(lambda: self._set_trajectory_mode('svgp'))
+        traj_l.addWidget(self.btn_traj_svgp)
+
+        self.btn_traj_svgpmjm = QtWidgets.QPushButton('SVGP+MJM')
+        self.btn_traj_svgpmjm.setCheckable(True)
+        self.btn_traj_svgpmjm.setStyleSheet(self._btn_style('#7d4e00', '#ffaa00'))
+        self.btn_traj_svgpmjm.clicked.connect(lambda: self._set_trajectory_mode('svgp_mjm'))
+        traj_l.addWidget(self.btn_traj_svgpmjm)
+
         row_1.addWidget(traj_grp)
         row_1.addStretch()
 
@@ -706,16 +705,52 @@ class DashboardWindow:
             self._set_status('State: RECOVER | Go-home action server unavailable')
 
     def _set_trajectory_mode(self, mode: str):
-        self.node.set_trajectory_mode(mode)
         # Update button states
         if mode == 'ground_truth':
+            self.node.set_trajectory_mode('ground_truth')
             self.btn_traj_gt.setChecked(True)
-            self.btn_traj_pred.setChecked(False)
-            self._set_status('State: PREPARE | Trajectory mode: GROUND TRUTH (default)')
-        else:
+            self.btn_traj_svgp.setChecked(False)
+            self.btn_traj_svgpmjm.setChecked(False)
+            self._set_status('State: PREPARE | Mode: GROUND TRUTH')
+        elif mode == 'svgp':
+            self.node.set_trajectory_mode('prediction')
+            self.node.send_model_cmd('svgp')
+            self.node.send_hybrid_cmd('hybrid_off')
             self.btn_traj_gt.setChecked(False)
-            self.btn_traj_pred.setChecked(True)
-            self._set_status('State: PREPARE | Trajectory mode: PREDICTION (requires model)')
+            self.btn_traj_svgp.setChecked(True)
+            self.btn_traj_svgpmjm.setChecked(False)
+            self._set_status('State: PREPARE | Mode: SVGP')
+        elif mode == 'svgp_mjm':
+            self.node.set_trajectory_mode('prediction')
+            self.node.send_model_cmd('svgp')
+            self.node.send_hybrid_cmd('hybrid_on')
+            self.btn_traj_gt.setChecked(False)
+            self.btn_traj_svgp.setChecked(False)
+            self.btn_traj_svgpmjm.setChecked(True)
+            self._set_status('State: PREPARE | Mode: SVGP+MJM')
+
+    def _do_set_goal(self):
+        with self.node._lock:
+            if len(self.node._meas['x']) > 0:
+                gx = self.node._meas['x'][-1]
+                gy = self.node._meas['y'][-1]
+                gz = self.node._meas['z'][-1]
+            else:
+                self.node.get_logger().warn("[UI] Cannot Set Goal: No tracking data yet!")
+                return
+                
+        # Update UI Labels
+        self.lbl_goal_x.setText(f"X: {gx:.4f}")
+        self.lbl_goal_y.setText(f"Y: {gy:.4f}")
+        self.lbl_goal_z.setText(f"Z: {gz:.4f}")
+        
+        # Publish to Predictor Node
+        msg = Point()
+        msg.x = gx
+        msg.y = gy
+        msg.z = gz
+        self.node._goal_pub.publish(msg)
+        self.node.get_logger().info(f"[UI] Set Goal → ({gx:.4f}, {gy:.4f}, {gz:.4f})")
 
     def _toggle_draw(self, checked):
         self.node._is_drawing_ui = checked

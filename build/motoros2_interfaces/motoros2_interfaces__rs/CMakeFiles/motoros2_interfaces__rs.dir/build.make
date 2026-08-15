@@ -166,6 +166,7 @@ rosidl_generator_rs/motoros2_interfaces/rust/src/lib.rs: /opt/ros/humble/share/g
 rosidl_generator_rs/motoros2_interfaces/rust/src/lib.rs: /opt/ros/humble/share/geometry_msgs/msg/Vector3.idl
 rosidl_generator_rs/motoros2_interfaces/rust/src/lib.rs: /opt/ros/humble/share/geometry_msgs/msg/Vector3Stamped.idl
 rosidl_generator_rs/motoros2_interfaces/rust/src/lib.rs: /opt/ros/humble/share/geometry_msgs/msg/VelocityStamped.idl
+rosidl_generator_rs/motoros2_interfaces/rust/src/lib.rs: /opt/ros/humble/share/geometry_msgs/msg/VelocityWithCovarianceStamped.idl
 rosidl_generator_rs/motoros2_interfaces/rust/src/lib.rs: /opt/ros/humble/share/geometry_msgs/msg/Wrench.idl
 rosidl_generator_rs/motoros2_interfaces/rust/src/lib.rs: /opt/ros/humble/share/geometry_msgs/msg/WrenchStamped.idl
 rosidl_generator_rs/motoros2_interfaces/rust/src/lib.rs: /opt/ros/humble/share/std_msgs/msg/Bool.idl

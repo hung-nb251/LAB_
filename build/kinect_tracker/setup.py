@@ -1,1 +1,0 @@
-/home/hungnb/cocarry_ws/src/kinect_tracker/setup.py

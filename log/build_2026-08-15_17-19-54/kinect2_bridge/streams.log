@@ -1,0 +1,61 @@
+[0.048s] Invoking command in '/home/hungnb/cocarry_ws/build/kinect2_bridge': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/kinect2_registration:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/kinect2_registration:/opt/ros/humble LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/kinect2_registration/lib:${LD_LIBRARY_PATH} /usr/bin/cmake /home/hungnb/cocarry_ws/src/kinect2_ros2/kinect2_bridge -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/hungnb/cocarry_ws/install/kinect2_bridge
+[0.300s] -- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.300s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.300s] -- Found rclcpp: 16.0.19 (/opt/ros/humble/share/rclcpp/cmake)
+[0.300s] -- Found rosidl_generator_c: 3.1.9 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.300s] -- Found rosidl_adapter: 3.1.9 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.300s] -- Found rosidl_generator_cpp: 3.1.9 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.309s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.319s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.361s] -- Found rmw_implementation_cmake: 6.1.3 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[0.361s] -- Found rmw_fastrtps_cpp: 6.2.10 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[0.455s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.499s] -- Found sensor_msgs: 4.9.2 (/opt/ros/humble/share/sensor_msgs/cmake)
+[0.528s] -- Found kinect2_registration: 0.0.0 (/home/hungnb/cocarry_ws/install/kinect2_registration/share/kinect2_registration/cmake)
+[0.530s] -- Found tf2: 0.25.22 (/opt/ros/humble/share/tf2/cmake)
+[0.538s] -- Found tf2_ros: 0.25.22 (/opt/ros/humble/share/tf2_ros/cmake)
+[0.627s] -- Found tf2_geometry_msgs: 0.25.22 (/opt/ros/humble/share/tf2_geometry_msgs/cmake)
+[0.633s] -- Found eigen3_cmake_module: 0.1.1 (/opt/ros/humble/share/eigen3_cmake_module/cmake)
+[0.635s] -- Ensuring Eigen3 include directory is part of orocos-kdl CMake target
+[0.638s] -- Found ament_lint_auto: 0.12.15 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[0.715s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[0.715s] -- Configured cppcheck include dirs: /home/hungnb/cocarry_ws/src/kinect2_ros2/kinect2_bridge/include/kinect2_bridge
+[0.716s] -- Configured cppcheck exclude dirs and/or files: 
+[0.725s] -- Added test 'flake8' to check Python code syntax and style conventions
+[0.725s] -- Added test 'lint_cmake' to check CMake code style
+[0.725s] -- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257
+[0.726s] -- Added test 'uncrustify' to check C / C++ code style
+[0.726s] -- Configured uncrustify additional arguments: 
+[0.729s] -- Added test 'xmllint' to check XML markup files
+[0.730s] -- Configuring done
+[0.757s] -- Generating done
+[0.757s] -- Build files have been written to: /home/hungnb/cocarry_ws/build/kinect2_bridge
+[0.781s] Invoked command in '/home/hungnb/cocarry_ws/build/kinect2_bridge' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/kinect2_registration:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/kinect2_registration:/opt/ros/humble LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/kinect2_registration/lib:${LD_LIBRARY_PATH} /usr/bin/cmake /home/hungnb/cocarry_ws/src/kinect2_ros2/kinect2_bridge -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/hungnb/cocarry_ws/install/kinect2_bridge
+[0.782s] Invoking command in '/home/hungnb/cocarry_ws/build/kinect2_bridge': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/kinect2_registration:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/kinect2_registration:/opt/ros/humble LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/kinect2_registration/lib:${LD_LIBRARY_PATH} /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/kinect2_bridge -- -j16 -l16
+[1.029s] [35m[1mConsolidate compiler generated dependencies of target kinect2_bridge_node[0m
+[1.029s] [100%] Built target kinect2_bridge_node
+[1.096s] Invoked command in '/home/hungnb/cocarry_ws/build/kinect2_bridge' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/kinect2_registration:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/kinect2_registration:/opt/ros/humble LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/kinect2_registration/lib:${LD_LIBRARY_PATH} /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/kinect2_bridge -- -j16 -l16
+[1.097s] Invoking command in '/home/hungnb/cocarry_ws/build/kinect2_bridge': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/kinect2_registration:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/kinect2_registration:/opt/ros/humble LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/kinect2_registration/lib:${LD_LIBRARY_PATH} /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/kinect2_bridge
+[1.145s] -- Install configuration: ""
+[1.150s] -- Execute custom install script
+[1.150s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_bridge/lib/kinect2_bridge/kinect2_bridge_node
+[1.151s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_bridge/share/kinect2_bridge//launch/kinect2_bridge_launch.yaml
+[1.151s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_bridge/share/kinect2_bridge//launch/rtabmap.launch.py
+[1.151s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_bridge/include/kinect2_bridge/kinect2_definitions.h
+[1.154s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_bridge/share/ament_index/resource_index/package_run_dependencies/kinect2_bridge
+[1.155s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_bridge/share/ament_index/resource_index/parent_prefix_path/kinect2_bridge
+[1.159s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_bridge/share/kinect2_bridge/environment/ament_prefix_path.sh
+[1.160s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_bridge/share/kinect2_bridge/environment/ament_prefix_path.dsv
+[1.160s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_bridge/share/kinect2_bridge/environment/path.sh
+[1.160s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_bridge/share/kinect2_bridge/environment/path.dsv
+[1.160s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_bridge/share/kinect2_bridge/local_setup.bash
+[1.167s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_bridge/share/kinect2_bridge/local_setup.sh
+[1.168s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_bridge/share/kinect2_bridge/local_setup.zsh
+[1.168s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_bridge/share/kinect2_bridge/local_setup.dsv
+[1.168s] -- Symlinking: /home/hungnb/cocarry_ws/install/kinect2_bridge/share/kinect2_bridge/package.dsv
+[1.168s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_bridge/share/ament_index/resource_index/packages/kinect2_bridge
+[1.168s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_bridge/share/kinect2_bridge/cmake/ament_cmake_export_include_directories-extras.cmake
+[1.168s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_bridge/share/kinect2_bridge/cmake/kinect2_bridgeConfig.cmake
+[1.169s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_bridge/share/kinect2_bridge/cmake/kinect2_bridgeConfig-version.cmake
+[1.169s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_bridge/share/kinect2_bridge/package.xml
+[1.249s] Invoked command in '/home/hungnb/cocarry_ws/build/kinect2_bridge' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/kinect2_registration:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/kinect2_registration:/opt/ros/humble LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/kinect2_registration/lib:${LD_LIBRARY_PATH} /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/kinect2_bridge

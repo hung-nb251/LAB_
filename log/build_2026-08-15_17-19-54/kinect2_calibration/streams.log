@@ -1,0 +1,57 @@
+[0.891s] Invoking command in '/home/hungnb/cocarry_ws/build/kinect2_calibration': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/kinect2_bridge:/home/hungnb/cocarry_ws/install/kinect2_registration:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/kinect2_bridge:/home/hungnb/cocarry_ws/install/kinect2_registration:/opt/ros/humble LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/kinect2_registration/lib:${LD_LIBRARY_PATH} /usr/bin/cmake /home/hungnb/cocarry_ws/src/kinect2_ros2/kinect2_calibration -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/hungnb/cocarry_ws/install/kinect2_calibration
+[0.901s] -- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+[1.031s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[1.038s] -- Found rclcpp: 16.0.19 (/opt/ros/humble/share/rclcpp/cmake)
+[1.061s] -- Found rosidl_generator_c: 3.1.9 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[1.062s] -- Found rosidl_adapter: 3.1.9 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[1.069s] -- Found rosidl_generator_cpp: 3.1.9 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[1.076s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[1.087s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[1.121s] -- Found rmw_implementation_cmake: 6.1.3 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[1.123s] -- Found rmw_fastrtps_cpp: 6.2.10 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[1.232s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[1.287s] -- Found cv_bridge: 3.2.1 (/opt/ros/humble/share/cv_bridge/cmake)
+[1.312s] -- Found message_filters: 4.3.19 (/opt/ros/humble/share/message_filters/cmake)
+[1.314s] -- Found image_transport: 3.1.13 (/opt/ros/humble/share/image_transport/cmake)
+[1.332s] -- Found compressed_image_transport: 2.5.5 (/opt/ros/humble/share/compressed_image_transport/cmake)
+[1.332s] -- Found compressed_depth_image_transport: 2.5.5 (/opt/ros/humble/share/compressed_depth_image_transport/cmake)
+[1.333s] -- Found kinect2_bridge: 0.0.0 (/home/hungnb/cocarry_ws/install/kinect2_bridge/share/kinect2_bridge/cmake)
+[1.334s] -- Found kinect2_registration: 0.0.0 (/home/hungnb/cocarry_ws/install/kinect2_registration/share/kinect2_registration/cmake)
+[1.338s] -- Found ament_lint_auto: 0.12.15 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[1.395s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[1.395s] -- Configured cppcheck include dirs: /home/hungnb/cocarry_ws/src/kinect2_ros2/kinect2_calibration/include
+[1.395s] -- Configured cppcheck exclude dirs and/or files: 
+[1.395s] -- Added test 'flake8' to check Python code syntax and style conventions
+[1.395s] -- Added test 'lint_cmake' to check CMake code style
+[1.396s] -- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257
+[1.397s] -- Added test 'uncrustify' to check C / C++ code style
+[1.397s] -- Configured uncrustify additional arguments: 
+[1.397s] -- Added test 'xmllint' to check XML markup files
+[1.398s] -- Configuring done
+[1.414s] -- Generating done
+[1.418s] -- Build files have been written to: /home/hungnb/cocarry_ws/build/kinect2_calibration
+[1.429s] Invoked command in '/home/hungnb/cocarry_ws/build/kinect2_calibration' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/kinect2_bridge:/home/hungnb/cocarry_ws/install/kinect2_registration:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/kinect2_bridge:/home/hungnb/cocarry_ws/install/kinect2_registration:/opt/ros/humble LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/kinect2_registration/lib:${LD_LIBRARY_PATH} /usr/bin/cmake /home/hungnb/cocarry_ws/src/kinect2_ros2/kinect2_calibration -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/hungnb/cocarry_ws/install/kinect2_calibration
+[1.431s] Invoking command in '/home/hungnb/cocarry_ws/build/kinect2_calibration': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/kinect2_bridge:/home/hungnb/cocarry_ws/install/kinect2_registration:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/kinect2_bridge:/home/hungnb/cocarry_ws/install/kinect2_registration:/opt/ros/humble LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/kinect2_registration/lib:${LD_LIBRARY_PATH} /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/kinect2_calibration -- -j16 -l16
+[1.476s] [35m[1mConsolidate compiler generated dependencies of target kinect2_calibration_node[0m
+[1.499s] [100%] Built target kinect2_calibration_node
+[1.511s] Invoked command in '/home/hungnb/cocarry_ws/build/kinect2_calibration' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/kinect2_bridge:/home/hungnb/cocarry_ws/install/kinect2_registration:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/kinect2_bridge:/home/hungnb/cocarry_ws/install/kinect2_registration:/opt/ros/humble LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/kinect2_registration/lib:${LD_LIBRARY_PATH} /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/kinect2_calibration -- -j16 -l16
+[1.513s] Invoking command in '/home/hungnb/cocarry_ws/build/kinect2_calibration': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/kinect2_bridge:/home/hungnb/cocarry_ws/install/kinect2_registration:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/kinect2_bridge:/home/hungnb/cocarry_ws/install/kinect2_registration:/opt/ros/humble LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/kinect2_registration/lib:${LD_LIBRARY_PATH} /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/kinect2_calibration
+[1.521s] -- Install configuration: ""
+[1.521s] -- Execute custom install script
+[1.521s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_calibration/lib/kinect2_calibration/kinect2_calibration_node
+[1.522s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_calibration/share/ament_index/resource_index/package_run_dependencies/kinect2_calibration
+[1.522s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_calibration/share/ament_index/resource_index/parent_prefix_path/kinect2_calibration
+[1.522s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_calibration/share/kinect2_calibration/environment/ament_prefix_path.sh
+[1.522s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_calibration/share/kinect2_calibration/environment/ament_prefix_path.dsv
+[1.522s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_calibration/share/kinect2_calibration/environment/path.sh
+[1.522s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_calibration/share/kinect2_calibration/environment/path.dsv
+[1.522s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_calibration/share/kinect2_calibration/local_setup.bash
+[1.522s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_calibration/share/kinect2_calibration/local_setup.sh
+[1.523s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_calibration/share/kinect2_calibration/local_setup.zsh
+[1.523s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_calibration/share/kinect2_calibration/local_setup.dsv
+[1.523s] -- Symlinking: /home/hungnb/cocarry_ws/install/kinect2_calibration/share/kinect2_calibration/package.dsv
+[1.532s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_calibration/share/ament_index/resource_index/packages/kinect2_calibration
+[1.532s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_calibration/share/kinect2_calibration/cmake/kinect2_calibrationConfig.cmake
+[1.533s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_calibration/share/kinect2_calibration/cmake/kinect2_calibrationConfig-version.cmake
+[1.533s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/kinect2_calibration/share/kinect2_calibration/package.xml
+[1.535s] Invoked command in '/home/hungnb/cocarry_ws/build/kinect2_calibration' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/kinect2_bridge:/home/hungnb/cocarry_ws/install/kinect2_registration:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/kinect2_bridge:/home/hungnb/cocarry_ws/install/kinect2_registration:/opt/ros/humble LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/kinect2_registration/lib:${LD_LIBRARY_PATH} /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/kinect2_calibration
