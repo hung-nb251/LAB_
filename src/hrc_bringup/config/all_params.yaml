@@ -27,11 +27,11 @@ trajectory_predictor:
     clear_on_tracking_lost: 1.0
     default_model: svgp
     filter:
-      ema_alpha: 1.0
+      ema_alpha: 0.3
       enabled: true
       max_deviation: 0.08
       max_rate: 0.02
-    model_dir: /home/hungnb/cocarry_ws/pHRI_Models/svgp_h3_m50
+    model_dir: /home/hungnb/cocarry_ws/pHRI_Models/svgp_h5_m50_raw
     model_files:
       svgp: svgp_model.pkl
     num_features: 3

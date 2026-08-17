@@ -1,0 +1,296 @@
+[INFO] [1786950496.412470485] [cartesian_streamer]: CartesianStreamer khởi động (chờ Enable Robot từ UI).
+  Stream rate:       15 Hz (period=66.7ms)
+  Queue dt:          0.067 s
+  Prebuffer points:  3
+  Retry backoff:     66.0 ms
+  Gửi PoseStamped lên: /cartesian_streamer/target_pose
+  Gửi XYZ lên:        /cartesian_streamer/target_xyz
+  Nhận EE pose tại:   /cartesian_streamer/current_pose
+[INFO] [1786950496.890394114] [cartesian_streamer]: Chờ /joint_states...
+[INFO] [1786950497.313909125] [cartesian_streamer]: Nhận joint_states: ['1.571', '0.124', '-1.049', '0.000', '-0.398', '-1.444']
+[INFO] [1786950497.391360637] [cartesian_streamer]: ⚡ Simulation mode: Bỏ qua FK cross-validation, ÉP DÙNG Local IK.
+   (MoveIt không có planning library trong môi trường giả lập)
+[INFO] [1786950497.392048082] [cartesian_streamer]: Đã nhận joint_states. EE hiện tại: (-0.1620, 0.2801, 0.3785). IK mode: Local DLS. Chờ Enable Robot từ UI...
+[INFO] [1786950519.945793778] [cartesian_streamer]: Disable Robot: dừng stream, tắt traj mode...
+[INFO] [1786950519.946548151] [cartesian_streamer]: ✗ Robot DISABLED.
+[INFO] [1786950535.572520030] [cartesian_streamer]: Disable Robot: dừng stream, tắt traj mode...
+[INFO] [1786950535.573966322] [cartesian_streamer]: ✗ Robot DISABLED.
+[INFO] [1786950537.625016092] [cartesian_streamer]: Enable Robot: bắt đầu chuỗi khởi động...
+[INFO] [1786950537.625557928] [cartesian_streamer]: Enable: reset_error...
+[INFO] [1786950537.627487356] [cartesian_streamer]: reset_error: code=1, msg="Mock: Error Reset OK"
+[INFO] [1786950537.627771379] [cartesian_streamer]: Enable: stop_traj_mode (giải phóng mode cũ)...
+[INFO] [1786950537.629111973] [cartesian_streamer]: stop_traj_mode: success=True, code=N/A, msg="Mock: OK"
+[INFO] [1786950537.629527252] [cartesian_streamer]: Enable: chờ 1.5s để hệ thống ổn định trước khi start queue...
+[INFO] [1786950539.130589987] [cartesian_streamer]: Enable: StartPointQueueMode...
+[INFO] [1786950539.132958189] [cartesian_streamer]: StartPointQueueMode response: code=1, msg="Mock: Queue Mode Started"
+[INFO] [1786950539.133247531] [cartesian_streamer]: ✓ Robot ENABLED — Point Queue Mode active. Servo ON!
+[INFO] [1786950539.190472222] [cartesian_streamer]: Runtime rate: state=seeding, tick_hz=0.0, queue_send_hz=0.0, ack_hz=0.0, busy_hz=0.0, retry_count=0, reject_count=0, inter_ack_ms=0.0, max_joint_delta=0.000, cumul_time=0.00s, hold_count=0, ik_mode=Local, ik_avg_ms=0.00, ik_fails=0
+[INFO] [1786950539.191063872] [cartesian_streamer]: Bootstrap EE pose via FK: (-0.1620, 0.2801, 0.3785)
+[INFO] [1786950539.191384533] [cartesian_streamer]: Đang stream qua service: /queue_traj_point
+[INFO] [1786950539.191794172] [cartesian_streamer]: Đã gửi seed point (current joints, t=0), chờ ACK...
+[INFO] [1786950539.193292853] [cartesian_streamer]: Seed ACK nhận được, bắt đầu prebuffer.
+[INFO] [1786950539.193580202] [cartesian_streamer]: Queue accepted sample#1: svc=/queue_traj_point, t_cumul=0.0000s, code=1, msg="Mock: Point accepted (0)", hold=False
+[INFO] [1786950539.258359362] [cartesian_streamer]: Queue accepted sample#2: svc=/queue_traj_point, t_cumul=0.0650s, code=1, msg="Mock: Point accepted (1)", hold=True
+[INFO] [1786950539.325002368] [cartesian_streamer]: Queue accepted sample#3: svc=/queue_traj_point, t_cumul=0.1320s, code=1, msg="Mock: Point accepted (2)", hold=True
+[INFO] [1786950539.394092734] [cartesian_streamer]: Pre-buffer hoàn tất (3 points), bắt đầu stream ổn định. Đang chờ target...
+[INFO] [1786950539.394497133] [cartesian_streamer]: Queue accepted sample#4: svc=/queue_traj_point, t_cumul=0.1991s, code=1, msg="Mock: Point accepted (3)", hold=True
+[INFO] [1786950539.458886161] [cartesian_streamer]: Queue accepted sample#5: svc=/queue_traj_point, t_cumul=0.2654s, code=1, msg="Mock: Point accepted (4)", hold=True
+[INFO] [1786950540.458734368] [cartesian_streamer]: QueueTrajPoint accepted #20: t=1.265s, hold=True
+[INFO] [1786950541.793842827] [cartesian_streamer]: QueueTrajPoint accepted #40: t=2.598s, hold=True
+[INFO] [1786950543.125441241] [cartesian_streamer]: QueueTrajPoint accepted #60: t=3.932s, hold=True
+[INFO] [1786950544.257272607] [cartesian_streamer]: Runtime rate: state=streaming, tick_hz=15.0, queue_send_hz=15.0, ack_hz=15.0, busy_hz=0.0, retry_count=0, reject_count=0, inter_ack_ms=66.7, max_joint_delta=0.000, cumul_time=5.00s, hold_count=75, ik_mode=Local, ik_avg_ms=0.00, ik_fails=0
+[INFO] [1786950544.458555628] [cartesian_streamer]: QueueTrajPoint accepted #80: t=5.265s, hold=True
+[INFO] [1786950545.794462756] [cartesian_streamer]: QueueTrajPoint accepted #100: t=6.599s, hold=True
+[INFO] [1786950547.127306854] [cartesian_streamer]: QueueTrajPoint accepted #120: t=7.932s, hold=True
+[INFO] [1786950548.459191496] [cartesian_streamer]: QueueTrajPoint accepted #140: t=9.265s, hold=True
+[INFO] [1786950549.323938193] [cartesian_streamer]: Runtime rate: state=streaming, tick_hz=15.0, queue_send_hz=15.0, ack_hz=15.0, busy_hz=0.0, retry_count=0, reject_count=0, inter_ack_ms=66.6, max_joint_delta=0.000, cumul_time=10.07s, hold_count=151, ik_mode=Local, ik_avg_ms=0.00, ik_fails=0
+[INFO] [1786950549.794557670] [cartesian_streamer]: QueueTrajPoint accepted #160: t=10.599s, hold=True
+[INFO] [1786950551.125240267] [cartesian_streamer]: QueueTrajPoint accepted #180: t=11.932s, hold=True
+[INFO] [1786950552.458524709] [cartesian_streamer]: QueueTrajPoint accepted #200: t=13.265s, hold=True
+[INFO] [1786950552.791242979] [cartesian_streamer]: IK OK → Δmax=0.0000 rad, joints: [1.571, 0.124, -1.049, 0.000, -0.398, -1.444]
+[WARN] [1786950552.857164074] [cartesian_streamer]: QueueTrajPoint đã được accept nhưng joint_states hầu như không đổi. Kiểm tra: 1) Robot ở mode AUTO? 2) Servo ON? 3) E-stop cleared?
+[INFO] [1786950553.798379351] [cartesian_streamer]: QueueTrajPoint accepted #220: t=14.603s, hold=False
+[INFO] [1786950554.324080692] [cartesian_streamer]: Runtime rate: state=streaming, tick_hz=15.0, queue_send_hz=15.0, ack_hz=15.0, busy_hz=0.0, retry_count=0, reject_count=0, inter_ack_ms=66.7, max_joint_delta=0.055, cumul_time=15.07s, hold_count=0, ik_mode=Local, ik_avg_ms=0.54, ik_fails=0
+[INFO] [1786950554.392311840] [cartesian_streamer]: IK delta clamped → joints: [1.578, 0.066, -0.968, -0.000, -0.514, -1.451]
+[INFO] [1786950554.792758521] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.544, 0.021, -0.859, 0.000, -0.547, -1.417]
+[INFO] [1786950555.128658937] [cartesian_streamer]: QueueTrajPoint accepted #240: t=15.934s, hold=False
+[INFO] [1786950556.458509986] [cartesian_streamer]: IK delta clamped → joints: [1.477, 0.066, -0.511, 0.000, -0.680, -1.349]
+[INFO] [1786950556.463308827] [cartesian_streamer]: QueueTrajPoint accepted #260: t=17.268s, hold=False
+[INFO] [1786950556.858479455] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.458, 0.127, -0.431, 0.000, -0.712, -1.331]
+[INFO] [1786950557.798495587] [cartesian_streamer]: QueueTrajPoint accepted #280: t=18.605s, hold=False
+[INFO] [1786950558.459657149] [cartesian_streamer]: IK delta clamped → joints: [1.371, 0.396, -0.111, 0.000, -0.840, -1.244]
+[INFO] [1786950558.925007396] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.378, 0.498, -0.018, 0.000, -0.877, -1.251]
+[INFO] [1786950559.129169750] [cartesian_streamer]: QueueTrajPoint accepted #300: t=19.934s, hold=False
+[INFO] [1786950559.326535360] [cartesian_streamer]: Runtime rate: state=streaming, tick_hz=15.0, queue_send_hz=15.0, ack_hz=15.0, busy_hz=0.0, retry_count=0, reject_count=0, inter_ack_ms=66.8, max_joint_delta=0.090, cumul_time=20.08s, hold_count=0, ik_mode=Local, ik_avg_ms=0.91, ik_fails=0
+[INFO] [1786950560.461501290] [cartesian_streamer]: QueueTrajPoint accepted #320: t=21.268s, hold=False
+[INFO] [1786950560.525274903] [cartesian_streamer]: IK delta clamped → joints: [1.306, 0.780, 0.302, 0.000, -1.005, -1.179]
+[INFO] [1786950560.926017597] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.306, 0.831, 0.382, 0.000, -1.037, -1.179]
+[INFO] [1786950561.797127748] [cartesian_streamer]: QueueTrajPoint accepted #340: t=22.603s, hold=False
+[INFO] [1786950562.525521254] [cartesian_streamer]: IK delta clamped → joints: [1.292, 1.046, 0.702, 0.000, -1.165, -1.164]
+[INFO] [1786950562.926238101] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.292, 1.029, 0.782, 0.000, -1.197, -1.164]
+[INFO] [1786950563.127387378] [cartesian_streamer]: QueueTrajPoint accepted #360: t=23.934s, hold=False
+[INFO] [1786950564.205720333] [cartesian_streamer]: Disable Robot: dừng stream, tắt traj mode...
+[INFO] [1786950564.206319158] [cartesian_streamer]: ✗ Robot DISABLED.
+[INFO] [1786950581.204299367] [cartesian_streamer]: Enable Robot: bắt đầu chuỗi khởi động...
+[INFO] [1786950581.204566429] [cartesian_streamer]: Enable: reset_error...
+[INFO] [1786950581.205752650] [cartesian_streamer]: reset_error: code=1, msg="Mock: Error Reset OK"
+[INFO] [1786950581.205981571] [cartesian_streamer]: Enable: stop_traj_mode (giải phóng mode cũ)...
+[INFO] [1786950581.206781174] [cartesian_streamer]: stop_traj_mode: success=True, code=N/A, msg="Mock: OK"
+[INFO] [1786950581.207005015] [cartesian_streamer]: Enable: chờ 1.5s để hệ thống ổn định trước khi start queue...
+[INFO] [1786950582.708164359] [cartesian_streamer]: Enable: StartPointQueueMode...
+[INFO] [1786950582.710252927] [cartesian_streamer]: StartPointQueueMode response: code=1, msg="Mock: Queue Mode Started"
+[INFO] [1786950582.710584260] [cartesian_streamer]: ✓ Robot ENABLED — Point Queue Mode active. Servo ON!
+[INFO] [1786950582.725352201] [cartesian_streamer]: Runtime rate: state=seeding, tick_hz=3.2, queue_send_hz=3.2, ack_hz=3.2, busy_hz=0.0, retry_count=0, reject_count=0, inter_ack_ms=66.6, max_joint_delta=0.090, cumul_time=0.00s, hold_count=0, ik_mode=Local, ik_avg_ms=0.90, ik_fails=0
+[WARN] [1786950582.725689776] [cartesian_streamer]: Target stream stale: không có target mới trong 18.5s
+[WARN] [1786950582.725985361] [cartesian_streamer]: QueueTrajPoint đã được accept nhưng joint_states hầu như không đổi. Kiểm tra: 1) Robot ở mode AUTO? 2) Servo ON? 3) E-stop cleared?
+[INFO] [1786950582.726707680] [cartesian_streamer]: Bootstrap EE pose via FK: (-0.1620, 0.2801, 0.3785)
+[INFO] [1786950582.727781800] [cartesian_streamer]: Đã gửi seed point (current joints, t=0), chờ ACK...
+[INFO] [1786950582.729836944] [cartesian_streamer]: Seed ACK nhận được, bắt đầu prebuffer.
+[INFO] [1786950582.925345598] [cartesian_streamer]: Pre-buffer hoàn tất (3 points), bắt đầu stream ổn định. Đang chờ target...
+[INFO] [1786950582.925915320] [cartesian_streamer]: QueueTrajPoint accepted #380: t=0.197s, hold=True
+[INFO] [1786950584.258961659] [cartesian_streamer]: QueueTrajPoint accepted #400: t=1.530s, hold=True
+[INFO] [1786950585.591885608] [cartesian_streamer]: QueueTrajPoint accepted #420: t=2.863s, hold=True
+[INFO] [1786950585.729737161] [cartesian_streamer]: IK OK → Δmax=0.0043 rad, joints: [1.572, 0.124, -1.049, 0.004, -0.394, -1.446]
+[INFO] [1786950586.928681002] [cartesian_streamer]: QueueTrajPoint accepted #440: t=4.198s, hold=False
+[INFO] [1786950587.191942393] [cartesian_streamer]: IK delta clamped → joints: [1.608, 0.079, -0.962, -0.000, -0.511, -1.481]
+[INFO] [1786950587.790563058] [cartesian_streamer]: Runtime rate: state=streaming, tick_hz=15.0, queue_send_hz=15.0, ack_hz=15.0, busy_hz=0.0, retry_count=0, reject_count=0, inter_ack_ms=309.6, max_joint_delta=0.090, cumul_time=5.00s, hold_count=0, ik_mode=Local, ik_avg_ms=0.88, ik_fails=0
+[INFO] [1786950587.792647419] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.571, 0.026, -0.804, -0.000, -0.559, -1.444]
+[INFO] [1786950588.263346928] [cartesian_streamer]: QueueTrajPoint accepted #460: t=5.534s, hold=False
+[INFO] [1786950589.193877807] [cartesian_streamer]: IK delta clamped → joints: [1.400, 0.114, -0.524, 0.000, -0.671, -1.272]
+[INFO] [1786950589.595533849] [cartesian_streamer]: QueueTrajPoint accepted #480: t=6.865s, hold=False
+[INFO] [1786950589.794360767] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.393, 0.201, -0.404, 0.000, -0.719, -1.266]
+[INFO] [1786950590.932265830] [cartesian_streamer]: QueueTrajPoint accepted #500: t=8.203s, hold=False
+[INFO] [1786950591.258397074] [cartesian_streamer]: IK delta clamped → joints: [1.331, 0.451, -0.111, 0.000, -0.836, -1.204]
+[INFO] [1786950591.858471207] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.329, 0.582, 0.010, 0.000, -0.885, -1.202]
+[INFO] [1786950592.261735623] [cartesian_streamer]: QueueTrajPoint accepted #520: t=9.533s, hold=False
+[INFO] [1786950592.856945675] [cartesian_streamer]: Runtime rate: state=streaming, tick_hz=15.0, queue_send_hz=15.0, ack_hz=15.0, busy_hz=0.0, retry_count=0, reject_count=0, inter_ack_ms=66.7, max_joint_delta=0.090, cumul_time=10.07s, hold_count=0, ik_mode=Local, ik_avg_ms=0.95, ik_fails=0
+[INFO] [1786950593.324797140] [cartesian_streamer]: IK delta clamped → joints: [1.322, 0.921, 0.302, 0.000, -1.002, -1.195]
+[INFO] [1786950593.595779928] [cartesian_streamer]: QueueTrajPoint accepted #540: t=10.867s, hold=False
+[INFO] [1786950593.859772883] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.306, 1.028, 0.410, 0.000, -1.045, -1.179]
+[INFO] [1786950594.414580654] [cartesian_streamer]: Local IK không hội tụ (fail #1)
+[INFO] [1786950594.853648938] [cartesian_streamer]: Disable Robot: dừng stream, tắt traj mode...
+[INFO] [1786950594.854229821] [cartesian_streamer]: ✗ Robot DISABLED.
+[INFO] [1786950620.034991216] [cartesian_streamer]: Disable Robot: dừng stream, tắt traj mode...
+[INFO] [1786950620.035896492] [cartesian_streamer]: ✗ Robot DISABLED.
+[INFO] [1786950624.205772049] [cartesian_streamer]: Enable Robot: bắt đầu chuỗi khởi động...
+[INFO] [1786950624.206048901] [cartesian_streamer]: Enable: reset_error...
+[INFO] [1786950624.207644748] [cartesian_streamer]: reset_error: code=1, msg="Mock: Error Reset OK"
+[INFO] [1786950624.207950304] [cartesian_streamer]: Enable: stop_traj_mode (giải phóng mode cũ)...
+[INFO] [1786950624.209101694] [cartesian_streamer]: stop_traj_mode: success=True, code=N/A, msg="Mock: OK"
+[INFO] [1786950624.209360902] [cartesian_streamer]: Enable: chờ 1.5s để hệ thống ổn định trước khi start queue...
+[INFO] [1786950625.710117969] [cartesian_streamer]: Enable: StartPointQueueMode...
+[INFO] [1786950625.712211494] [cartesian_streamer]: StartPointQueueMode response: code=1, msg="Mock: Queue Mode Started"
+[INFO] [1786950625.713869319] [cartesian_streamer]: ✓ Robot ENABLED — Point Queue Mode active. Servo ON!
+[INFO] [1786950625.724237308] [cartesian_streamer]: Runtime rate: state=seeding, tick_hz=0.9, queue_send_hz=0.9, ack_hz=0.9, busy_hz=0.0, retry_count=0, reject_count=0, inter_ack_ms=67.4, max_joint_delta=0.090, cumul_time=0.00s, hold_count=0, ik_mode=Local, ik_avg_ms=1.40, ik_fails=7
+[WARN] [1786950625.724736529] [cartesian_streamer]: Target stream stale: không có target mới trong 30.9s
+[WARN] [1786950625.725032277] [cartesian_streamer]: QueueTrajPoint đã được accept nhưng joint_states hầu như không đổi. Kiểm tra: 1) Robot ở mode AUTO? 2) Servo ON? 3) E-stop cleared?
+[INFO] [1786950625.725779715] [cartesian_streamer]: Bootstrap EE pose via FK: (-0.1620, 0.2801, 0.3785)
+[INFO] [1786950625.727229327] [cartesian_streamer]: Đã gửi seed point (current joints, t=0), chờ ACK...
+[INFO] [1786950625.730160622] [cartesian_streamer]: Seed ACK nhận được, bắt đầu prebuffer.
+[INFO] [1786950625.795113334] [cartesian_streamer]: QueueTrajPoint accepted #560: t=0.064s, hold=True
+[INFO] [1786950625.926283642] [cartesian_streamer]: Pre-buffer hoàn tất (3 points), bắt đầu stream ổn định. Đang chờ target...
+[INFO] [1786950627.125697156] [cartesian_streamer]: QueueTrajPoint accepted #580: t=1.397s, hold=True
+[INFO] [1786950628.458494304] [cartesian_streamer]: QueueTrajPoint accepted #600: t=2.730s, hold=True
+[INFO] [1786950628.929239530] [cartesian_streamer]: IK OK → Δmax=0.0099 rad, joints: [1.573, 0.124, -1.047, 0.010, -0.395, -1.450]
+[INFO] [1786950629.796472063] [cartesian_streamer]: QueueTrajPoint accepted #620: t=4.066s, hold=False
+[INFO] [1786950629.924923952] [cartesian_streamer]: IK delta clamped → joints: [1.637, 0.082, -0.962, 0.000, -0.512, -1.509]
+[INFO] [1786950630.790326580] [cartesian_streamer]: Runtime rate: state=streaming, tick_hz=15.0, queue_send_hz=15.0, ack_hz=15.0, busy_hz=0.0, retry_count=0, reject_count=0, inter_ack_ms=472.5, max_joint_delta=0.090, cumul_time=5.00s, hold_count=0, ik_mode=Local, ik_avg_ms=1.36, ik_fails=7
+[INFO] [1786950630.991765036] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.580, 0.050, -0.712, -0.000, -0.597, -1.453]
+[INFO] [1786950631.130074290] [cartesian_streamer]: QueueTrajPoint accepted #640: t=5.399s, hold=False
+[INFO] [1786950631.925100529] [cartesian_streamer]: IK delta clamped → joints: [1.484, 0.116, -0.525, 0.000, -0.672, -1.357]
+[INFO] [1786950632.461704712] [cartesian_streamer]: QueueTrajPoint accepted #660: t=6.733s, hold=False
+[INFO] [1786950632.996462860] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.456, 0.278, -0.311, 0.000, -0.757, -1.329]
+[INFO] [1786950633.797051052] [cartesian_streamer]: QueueTrajPoint accepted #680: t=8.069s, hold=False
+[INFO] [1786950633.927634304] [cartesian_streamer]: IK delta clamped → joints: [1.408, 0.446, -0.125, 0.000, -0.832, -1.281]
+[INFO] [1786950635.060142469] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.409, 0.708, 0.102, 0.000, -0.923, -1.282]
+[INFO] [1786950635.127739844] [cartesian_streamer]: QueueTrajPoint accepted #700: t=9.400s, hold=False
+[INFO] [1786950635.790785195] [cartesian_streamer]: Runtime rate: state=streaming, tick_hz=15.0, queue_send_hz=15.0, ack_hz=15.0, busy_hz=0.0, retry_count=0, reject_count=0, inter_ack_ms=66.7, max_joint_delta=0.090, cumul_time=10.00s, hold_count=0, ik_mode=Local, ik_avg_ms=1.30, ik_fails=7
+[INFO] [1786950635.948873781] [cartesian_streamer]: Local IK không hội tụ (fail #1)
+[INFO] [1786950636.480216087] [cartesian_streamer]: QueueTrajPoint accepted #720: t=10.751s, hold=True
+[WARN] [1786950636.546692824] [cartesian_streamer]: Local IK failed 10x liên tiếp! Fallback sang MoveIt! IK...
+[INFO] [1786950636.548282021] [cartesian_streamer]: IK delta clamped → joints: [1.406, 0.902, 0.275, 0.000, -0.992, -1.279]
+[INFO] [1786950637.085772842] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.406, 0.944, 0.383, 0.000, -1.035, -1.279]
+[INFO] [1786950637.816591654] [cartesian_streamer]: QueueTrajPoint accepted #740: t=12.088s, hold=False
+[WARN] [1786950638.615936084] [cartesian_streamer]: Local IK failed 41x liên tiếp! Fallback sang MoveIt! IK...
+[INFO] [1786950638.617058992] [cartesian_streamer]: IK delta clamped → joints: [1.406, 0.944, 0.689, 0.000, -1.157, -1.279]
+[INFO] [1786950639.097636620] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.406, 0.944, 0.783, 0.000, -1.195, -1.279]
+[INFO] [1786950639.434481654] [cartesian_streamer]: QueueTrajPoint accepted #760: t=13.704s, hold=False
+[WARN] [1786950640.618600650] [cartesian_streamer]: Local IK failed 65x liên tiếp! Fallback sang MoveIt! IK...
+[INFO] [1786950640.620777235] [cartesian_streamer]: IK delta clamped → joints: [1.406, 0.944, 1.015, 0.000, -1.316, -1.279]
+[INFO] [1786950640.857307051] [cartesian_streamer]: Runtime rate: state=streaming, tick_hz=15.0, queue_send_hz=13.8, ack_hz=13.8, busy_hz=0.0, retry_count=0, reject_count=0, inter_ack_ms=72.7, max_joint_delta=0.090, cumul_time=15.07s, hold_count=0, ik_mode=Local, ik_avg_ms=4.56, ik_fails=75
+[INFO] [1786950640.891361074] [cartesian_streamer]: QueueTrajPoint accepted #780: t=15.140s, hold=False
+[INFO] [1786950641.149437788] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.406, 0.944, 1.015, 0.000, -1.358, -1.279]
+[INFO] [1786950641.318230141] [cartesian_streamer]: Disable Robot: dừng stream, tắt traj mode...
+[INFO] [1786950641.318694166] [cartesian_streamer]: ✗ Robot DISABLED.
+[INFO] [1786950673.794283201] [cartesian_streamer]: Enable Robot: bắt đầu chuỗi khởi động...
+[INFO] [1786950673.794575734] [cartesian_streamer]: Enable: reset_error...
+[INFO] [1786950673.796388357] [cartesian_streamer]: reset_error: code=1, msg="Mock: Error Reset OK"
+[INFO] [1786950673.796712990] [cartesian_streamer]: Enable: stop_traj_mode (giải phóng mode cũ)...
+[INFO] [1786950673.798484375] [cartesian_streamer]: stop_traj_mode: success=True, code=N/A, msg="Mock: OK"
+[INFO] [1786950673.798834276] [cartesian_streamer]: Enable: chờ 1.5s để hệ thống ổn định trước khi start queue...
+[INFO] [1786950675.299840809] [cartesian_streamer]: Enable: StartPointQueueMode...
+[INFO] [1786950675.302485614] [cartesian_streamer]: StartPointQueueMode response: code=1, msg="Mock: Queue Mode Started"
+[INFO] [1786950675.303507123] [cartesian_streamer]: ✓ Robot ENABLED — Point Queue Mode active. Servo ON!
+[INFO] [1786950675.323869019] [cartesian_streamer]: Runtime rate: state=seeding, tick_hz=0.2, queue_send_hz=0.2, ack_hz=0.2, busy_hz=0.0, retry_count=0, reject_count=0, inter_ack_ms=66.6, max_joint_delta=0.090, cumul_time=0.00s, hold_count=0, ik_mode=Local, ik_avg_ms=4.81, ik_fails=82
+[WARN] [1786950675.324190036] [cartesian_streamer]: Target stream stale: không có target mới trong 34.0s
+[WARN] [1786950675.324508868] [cartesian_streamer]: QueueTrajPoint đã được accept nhưng joint_states hầu như không đổi. Kiểm tra: 1) Robot ở mode AUTO? 2) Servo ON? 3) E-stop cleared?
+[INFO] [1786950675.325047315] [cartesian_streamer]: Bootstrap EE pose via FK: (-0.1620, 0.2801, 0.3785)
+[INFO] [1786950675.325698775] [cartesian_streamer]: Đã gửi seed point (current joints, t=0), chờ ACK...
+[INFO] [1786950675.329088717] [cartesian_streamer]: Seed ACK nhận được, bắt đầu prebuffer.
+[INFO] [1786950675.525373580] [cartesian_streamer]: Pre-buffer hoàn tất (3 points), bắt đầu stream ổn định. Đang chờ target...
+[INFO] [1786950676.194777779] [cartesian_streamer]: QueueTrajPoint accepted #800: t=0.865s, hold=True
+[INFO] [1786950677.460749241] [cartesian_streamer]: IK OK → Δmax=0.0061 rad, joints: [1.572, 0.123, -1.049, 0.004, -0.392, -1.449]
+[INFO] [1786950677.528893010] [cartesian_streamer]: QueueTrajPoint accepted #820: t=2.200s, hold=False
+[INFO] [1786950678.791757880] [cartesian_streamer]: IK delta clamped → joints: [1.608, 0.079, -0.986, 0.000, -0.503, -1.481]
+[INFO] [1786950678.861423649] [cartesian_streamer]: QueueTrajPoint accepted #840: t=3.533s, hold=False
+[INFO] [1786950679.525508048] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.573, 0.014, -0.793, -0.000, -0.562, -1.446]
+[INFO] [1786950680.196529806] [cartesian_streamer]: QueueTrajPoint accepted #860: t=4.869s, hold=False
+[INFO] [1786950680.324282641] [cartesian_streamer]: Runtime rate: state=streaming, tick_hz=15.0, queue_send_hz=15.0, ack_hz=15.0, busy_hz=0.0, retry_count=0, reject_count=0, inter_ack_ms=519.7, max_joint_delta=0.090, cumul_time=4.93s, hold_count=0, ik_mode=Local, ik_avg_ms=4.48, ik_fails=82
+[INFO] [1786950680.858064676] [cartesian_streamer]: IK delta clamped → joints: [1.463, 0.096, -0.526, 0.000, -0.669, -1.336]
+[INFO] [1786950681.525692604] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.460, 0.194, -0.393, 0.000, -0.722, -1.333]
+[INFO] [1786950681.528166628] [cartesian_streamer]: QueueTrajPoint accepted #880: t=6.201s, hold=False
+[INFO] [1786950682.860344710] [cartesian_streamer]: QueueTrajPoint accepted #900: t=7.533s, hold=False
+[INFO] [1786950682.925174493] [cartesian_streamer]: IK delta clamped → joints: [1.396, 0.455, -0.113, 0.000, -0.834, -1.269]
+[INFO] [1786950683.526505781] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.408, 0.590, 0.007, 0.000, -0.882, -1.281]
+[INFO] [1786950684.195713812] [cartesian_streamer]: QueueTrajPoint accepted #920: t=8.868s, hold=False
+[INFO] [1786950684.993765860] [cartesian_streamer]: IK delta clamped → joints: [1.410, 0.923, 0.301, 0.000, -0.999, -1.283]
+[INFO] [1786950685.390658570] [cartesian_streamer]: Runtime rate: state=streaming, tick_hz=15.0, queue_send_hz=15.0, ack_hz=15.0, busy_hz=0.0, retry_count=0, reject_count=0, inter_ack_ms=66.7, max_joint_delta=0.090, cumul_time=10.00s, hold_count=0, ik_mode=Local, ik_avg_ms=4.04, ik_fails=82
+[INFO] [1786950685.420002050] [cartesian_streamer]: Local IK không hội tụ (fail #1)
+[INFO] [1786950685.549873474] [cartesian_streamer]: QueueTrajPoint accepted #940: t=10.223s, hold=True
+[INFO] [1786950685.955452005] [cartesian_streamer]: Disable Robot: dừng stream, tắt traj mode...
+[INFO] [1786950685.959004567] [cartesian_streamer]: ✗ Robot DISABLED.
+[INFO] [1786950714.311776127] [cartesian_streamer]: Enable Robot: bắt đầu chuỗi khởi động...
+[INFO] [1786950714.312056117] [cartesian_streamer]: Enable: reset_error...
+[INFO] [1786950714.313811967] [cartesian_streamer]: reset_error: code=1, msg="Mock: Error Reset OK"
+[INFO] [1786950714.314153152] [cartesian_streamer]: Enable: stop_traj_mode (giải phóng mode cũ)...
+[INFO] [1786950714.315353172] [cartesian_streamer]: stop_traj_mode: success=True, code=N/A, msg="Mock: OK"
+[INFO] [1786950714.315636217] [cartesian_streamer]: Enable: chờ 1.5s để hệ thống ổn định trước khi start queue...
+[INFO] [1786950715.816458095] [cartesian_streamer]: Enable: StartPointQueueMode...
+[INFO] [1786950715.818307363] [cartesian_streamer]: StartPointQueueMode response: code=1, msg="Mock: Queue Mode Started"
+[INFO] [1786950715.818672984] [cartesian_streamer]: ✓ Robot ENABLED — Point Queue Mode active. Servo ON!
+[INFO] [1786950715.857188830] [cartesian_streamer]: Runtime rate: state=seeding, tick_hz=0.3, queue_send_hz=0.3, ack_hz=0.3, busy_hz=0.0, retry_count=0, reject_count=0, inter_ack_ms=70.2, max_joint_delta=0.000, cumul_time=0.00s, hold_count=0, ik_mode=Local, ik_avg_ms=4.34, ik_fails=91
+[WARN] [1786950715.857642398] [cartesian_streamer]: Target stream stale: không có target mới trong 29.9s
+[WARN] [1786950715.857976731] [cartesian_streamer]: QueueTrajPoint đã được accept nhưng joint_states hầu như không đổi. Kiểm tra: 1) Robot ở mode AUTO? 2) Servo ON? 3) E-stop cleared?
+[INFO] [1786950715.858583468] [cartesian_streamer]: Bootstrap EE pose via FK: (-0.1620, 0.2801, 0.3785)
+[INFO] [1786950715.859150090] [cartesian_streamer]: Đã gửi seed point (current joints, t=0), chờ ACK...
+[INFO] [1786950715.861139873] [cartesian_streamer]: Seed ACK nhận được, bắt đầu prebuffer.
+[INFO] [1786950716.058918061] [cartesian_streamer]: Pre-buffer hoàn tất (3 points), bắt đầu stream ổn định. Đang chờ target...
+[INFO] [1786950716.725315840] [cartesian_streamer]: QueueTrajPoint accepted #960: t=0.865s, hold=True
+[INFO] [1786950718.058816482] [cartesian_streamer]: QueueTrajPoint accepted #980: t=2.198s, hold=True
+[INFO] [1786950719.394485786] [cartesian_streamer]: QueueTrajPoint accepted #1000: t=3.531s, hold=True
+[WARN] [1786950720.009989459] [cartesian_streamer]: Local IK failed 10x liên tiếp! Fallback sang MoveIt! IK...
+[INFO] [1786950720.010679345] [cartesian_streamer]: IK delta clamped → joints: [1.501, 0.194, -0.979, 0.000, -0.488, -1.354]
+[INFO] [1786950720.011974785] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.501, 0.194, -0.979, 0.000, -0.488, -1.354]
+[INFO] [1786950720.726480671] [cartesian_streamer]: QueueTrajPoint accepted #1020: t=4.866s, hold=False
+[INFO] [1786950720.924867938] [cartesian_streamer]: Runtime rate: state=streaming, tick_hz=15.0, queue_send_hz=15.0, ack_hz=15.0, busy_hz=0.0, retry_count=0, reject_count=0, inter_ack_ms=459.2, max_joint_delta=0.090, cumul_time=5.00s, hold_count=0, ik_mode=Local, ik_avg_ms=4.29, ik_fails=92
+[INFO] [1786950722.058153262] [cartesian_streamer]: IK delta clamped → joints: [1.571, 0.081, -0.742, -0.000, -0.596, -1.444]
+[INFO] [1786950722.058540093] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.571, 0.081, -0.742, -0.000, -0.596, -1.444]
+[INFO] [1786950722.060398689] [cartesian_streamer]: QueueTrajPoint accepted #1040: t=6.200s, hold=False
+[INFO] [1786950723.396306239] [cartesian_streamer]: QueueTrajPoint accepted #1060: t=7.536s, hold=False
+[INFO] [1786950724.125823781] [cartesian_streamer]: IK delta clamped → joints: [1.459, 0.310, -0.329, 0.000, -0.762, -1.332]
+[INFO] [1786950724.126301425] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.459, 0.310, -0.329, 0.000, -0.762, -1.332]
+[INFO] [1786950724.727724746] [cartesian_streamer]: QueueTrajPoint accepted #1080: t=8.867s, hold=False
+[INFO] [1786950725.924507550] [cartesian_streamer]: Runtime rate: state=streaming, tick_hz=15.0, queue_send_hz=15.0, ack_hz=15.0, busy_hz=0.0, retry_count=0, reject_count=0, inter_ack_ms=66.7, max_joint_delta=0.090, cumul_time=10.00s, hold_count=0, ik_mode=Local, ik_avg_ms=3.93, ik_fails=92
+[INFO] [1786950726.060460819] [cartesian_streamer]: QueueTrajPoint accepted #1100: t=10.200s, hold=False
+[INFO] [1786950726.191527567] [cartesian_streamer]: IK delta clamped → joints: [1.397, 0.681, 0.085, 0.000, -0.927, -1.270]
+[INFO] [1786950726.191946490] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.397, 0.681, 0.085, 0.000, -0.927, -1.270]
+[INFO] [1786950727.400460741] [cartesian_streamer]: QueueTrajPoint accepted #1120: t=11.540s, hold=False
+[INFO] [1786950727.550840028] [cartesian_streamer]: Local IK không hội tụ (fail #1)
+[WARN] [1786950728.146024149] [cartesian_streamer]: Local IK failed 10x liên tiếp! Fallback sang MoveIt! IK...
+[INFO] [1786950728.212934982] [cartesian_streamer]: IK delta clamped → joints: [1.393, 1.003, 0.366, 0.000, -1.039, -1.266]
+[INFO] [1786950728.213546490] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.393, 1.003, 0.366, 0.000, -1.039, -1.266]
+[INFO] [1786950728.820709493] [cartesian_streamer]: QueueTrajPoint accepted #1140: t=12.958s, hold=False
+[INFO] [1786950729.335467075] [cartesian_streamer]: Disable Robot: dừng stream, tắt traj mode...
+[INFO] [1786950729.336399338] [cartesian_streamer]: ✗ Robot DISABLED.
+[INFO] [1786950732.769686774] [cartesian_streamer]: Disable Robot: dừng stream, tắt traj mode...
+[INFO] [1786950732.770165540] [cartesian_streamer]: ✗ Robot DISABLED.
+[INFO] [1786950746.093971071] [cartesian_streamer]: Enable Robot: bắt đầu chuỗi khởi động...
+[INFO] [1786950746.094256922] [cartesian_streamer]: Enable: reset_error...
+[INFO] [1786950746.095440313] [cartesian_streamer]: reset_error: code=1, msg="Mock: Error Reset OK"
+[INFO] [1786950746.095751792] [cartesian_streamer]: Enable: stop_traj_mode (giải phóng mode cũ)...
+[INFO] [1786950746.096963847] [cartesian_streamer]: stop_traj_mode: success=True, code=N/A, msg="Mock: OK"
+[INFO] [1786950746.097396546] [cartesian_streamer]: Enable: chờ 1.5s để hệ thống ổn định trước khi start queue...
+[INFO] [1786950747.598596825] [cartesian_streamer]: Enable: StartPointQueueMode...
+[INFO] [1786950747.600866021] [cartesian_streamer]: StartPointQueueMode response: code=1, msg="Mock: Queue Mode Started"
+[INFO] [1786950747.601238246] [cartesian_streamer]: ✓ Robot ENABLED — Point Queue Mode active. Servo ON!
+[INFO] [1786950747.656718491] [cartesian_streamer]: Runtime rate: state=seeding, tick_hz=2.4, queue_send_hz=2.3, ack_hz=2.3, busy_hz=0.0, retry_count=0, reject_count=0, inter_ack_ms=71.6, max_joint_delta=0.090, cumul_time=0.00s, hold_count=0, ik_mode=Local, ik_avg_ms=4.50, ik_fails=117
+[WARN] [1786950747.657112086] [cartesian_streamer]: Target stream stale: không có target mới trong 18.3s
+[WARN] [1786950747.657425029] [cartesian_streamer]: QueueTrajPoint đã được accept nhưng joint_states hầu như không đổi. Kiểm tra: 1) Robot ở mode AUTO? 2) Servo ON? 3) E-stop cleared?
+[INFO] [1786950747.658245903] [cartesian_streamer]: Bootstrap EE pose via FK: (-0.1620, 0.2801, 0.3785)
+[INFO] [1786950747.659385310] [cartesian_streamer]: Đã gửi seed point (current joints, t=0), chờ ACK...
+[INFO] [1786950747.660884759] [cartesian_streamer]: Seed ACK nhận được, bắt đầu prebuffer.
+[INFO] [1786950747.858905141] [cartesian_streamer]: Pre-buffer hoàn tất (3 points), bắt đầu stream ổn định. Đang chờ target...
+[INFO] [1786950748.524879400] [cartesian_streamer]: QueueTrajPoint accepted #1160: t=0.864s, hold=True
+[INFO] [1786950749.859508737] [cartesian_streamer]: QueueTrajPoint accepted #1180: t=2.198s, hold=True
+[WARN] [1786950750.077722556] [cartesian_streamer]: Local IK failed 26x liên tiếp! Fallback sang MoveIt! IK...
+[INFO] [1786950750.079498659] [cartesian_streamer]: IK delta clamped → joints: [1.501, 0.194, -0.979, 0.000, -0.488, -1.354]
+[INFO] [1786950750.079831690] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.501, 0.194, -0.979, 0.000, -0.488, -1.354]
+[INFO] [1786950751.193308003] [cartesian_streamer]: QueueTrajPoint accepted #1200: t=3.532s, hold=False
+[INFO] [1786950752.124965815] [cartesian_streamer]: IK delta clamped → joints: [1.600, 0.018, -0.805, -0.000, -0.569, -1.472]
+[INFO] [1786950752.125417771] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.600, 0.018, -0.805, -0.000, -0.569, -1.472]
+[INFO] [1786950752.527869140] [cartesian_streamer]: QueueTrajPoint accepted #1220: t=4.867s, hold=False
+[INFO] [1786950752.657394151] [cartesian_streamer]: Runtime rate: state=streaming, tick_hz=15.0, queue_send_hz=15.0, ack_hz=15.0, busy_hz=0.0, retry_count=0, reject_count=0, inter_ack_ms=309.6, max_joint_delta=0.090, cumul_time=4.93s, hold_count=0, ik_mode=Local, ik_avg_ms=4.34, ik_fails=118
+[INFO] [1786950753.861874243] [cartesian_streamer]: QueueTrajPoint accepted #1240: t=6.201s, hold=False
+[INFO] [1786950754.191569769] [cartesian_streamer]: IK delta clamped → joints: [1.468, 0.133, -0.391, 0.000, -0.735, -1.341]
+[INFO] [1786950754.191892921] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.468, 0.133, -0.391, 0.000, -0.735, -1.341]
+[INFO] [1786950755.194454247] [cartesian_streamer]: QueueTrajPoint accepted #1260: t=7.533s, hold=False
+[INFO] [1786950756.194460278] [cartesian_streamer]: IK delta clamped → joints: [1.435, 0.434, 0.009, 0.000, -0.895, -1.308]
+[INFO] [1786950756.194840348] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.435, 0.434, 0.009, 0.000, -0.895, -1.308]
+[INFO] [1786950756.528112419] [cartesian_streamer]: QueueTrajPoint accepted #1280: t=8.867s, hold=False
+[INFO] [1786950757.657252015] [cartesian_streamer]: Runtime rate: state=streaming, tick_hz=15.0, queue_send_hz=15.0, ack_hz=15.0, busy_hz=0.0, retry_count=0, reject_count=0, inter_ack_ms=66.7, max_joint_delta=0.090, cumul_time=9.94s, hold_count=0, ik_mode=Local, ik_avg_ms=4.05, ik_fails=118
+[INFO] [1786950757.863379887] [cartesian_streamer]: QueueTrajPoint accepted #1300: t=10.202s, hold=False
+[INFO] [1786950758.259543539] [cartesian_streamer]: IK delta clamped → joints: [1.428, 0.743, 0.423, 0.000, -1.060, -1.301]
+[INFO] [1786950758.260124329] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.428, 0.743, 0.423, 0.000, -1.060, -1.301]
+[INFO] [1786950759.195999067] [cartesian_streamer]: QueueTrajPoint accepted #1320: t=11.535s, hold=False
+[INFO] [1786950759.675834489] [cartesian_streamer]: Local IK không hội tụ (fail #1)
+[WARN] [1786950760.279681312] [cartesian_streamer]: Local IK failed 10x liên tiếp! Fallback sang MoveIt! IK...
+[INFO] [1786950760.281617229] [cartesian_streamer]: IK delta clamped → joints: [1.418, 1.068, 0.703, 0.000, -1.172, -1.291]
+[INFO] [1786950760.283062165] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.418, 1.068, 0.703, 0.000, -1.172, -1.291]
+[INFO] [1786950760.639824655] [cartesian_streamer]: QueueTrajPoint accepted #1340: t=12.978s, hold=False
+[INFO] [1786950762.087616296] [cartesian_streamer]: QueueTrajPoint accepted #1360: t=14.426s, hold=False
+[WARN] [1786950762.346399871] [cartesian_streamer]: Local IK failed 38x liên tiếp! Fallback sang MoveIt! IK...
+[INFO] [1786950762.347359499] [cartesian_streamer]: IK delta clamped → joints: [1.418, 1.100, 1.025, 0.000, -1.338, -1.291]
+[INFO] [1786950762.349124141] [cartesian_streamer]: IK OK → Δmax=0.0900 rad, joints: [1.418, 1.100, 1.025, 0.000, -1.338, -1.291]
+[INFO] [1786950762.725912186] [cartesian_streamer]: Runtime rate: state=streaming, tick_hz=15.0, queue_send_hz=14.4, ack_hz=14.4, busy_hz=0.0, retry_count=0, reject_count=0, inter_ack_ms=69.7, max_joint_delta=0.090, cumul_time=15.02s, hold_count=0, ik_mode=Local, ik_avg_ms=4.75, ik_fails=161
+[INFO] [1786950762.950022650] [cartesian_streamer]: Disable Robot: dừng stream, tắt traj mode...
+[INFO] [1786950762.951924903] [cartesian_streamer]: ✗ Robot DISABLED.

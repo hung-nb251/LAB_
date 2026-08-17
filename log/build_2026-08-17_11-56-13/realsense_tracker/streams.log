@@ -1,0 +1,20 @@
+[1.832s] Invoking command in '/home/hungnb/cocarry_ws/build/realsense_tracker': CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib:${LD_LIBRARY_PATH} PKG_CONFIG_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/x86_64-linux-gnu/pkgconfig:/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/pkgconfig PYTHONPATH=/home/hungnb/cocarry_ws/build/realsense_tracker/prefix_override:/home/hungnb/.local/lib/python3.10/site-packages/colcon_core/task/python/colcon_distutils_commands:/home/hungnb/cocarry_ws/install/realsense_tracker/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/install/human_hand_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} ROS_PACKAGE_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/share /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/hungnb/cocarry_ws/build/realsense_tracker/build --no-deps symlink_data --force
+[2.017s] running develop
+[2.114s] running egg_info
+[2.114s] writing realsense_tracker.egg-info/PKG-INFO
+[2.114s] writing dependency_links to realsense_tracker.egg-info/dependency_links.txt
+[2.114s] writing entry points to realsense_tracker.egg-info/entry_points.txt
+[2.115s] writing requirements to realsense_tracker.egg-info/requires.txt
+[2.115s] writing top-level names to realsense_tracker.egg-info/top_level.txt
+[2.116s] reading manifest file 'realsense_tracker.egg-info/SOURCES.txt'
+[2.117s] writing manifest file 'realsense_tracker.egg-info/SOURCES.txt'
+[2.118s] running build_ext
+[2.118s] Creating /home/hungnb/cocarry_ws/install/realsense_tracker/lib/python3.10/site-packages/realsense-tracker.egg-link (link to .)
+[2.118s] Installing realsense_node script to /home/hungnb/cocarry_ws/install/realsense_tracker/lib/realsense_tracker
+[2.119s] 
+[2.119s] Installed /home/hungnb/cocarry_ws/build/realsense_tracker
+[2.119s] running symlink_data
+[2.119s] symbolically linking /home/hungnb/cocarry_ws/build/realsense_tracker/resource/realsense_tracker -> /home/hungnb/cocarry_ws/install/realsense_tracker/share/ament_index/resource_index/packages
+[2.119s] symbolically linking /home/hungnb/cocarry_ws/build/realsense_tracker/package.xml -> /home/hungnb/cocarry_ws/install/realsense_tracker/share/realsense_tracker
+[2.119s] symbolically linking /home/hungnb/cocarry_ws/build/realsense_tracker/models/pose_landmarker_full.task -> /home/hungnb/cocarry_ws/install/realsense_tracker/share/realsense_tracker/models
+[2.171s] Invoked command in '/home/hungnb/cocarry_ws/build/realsense_tracker' returned '0': CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs LD_LIBRARY_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib:${LD_LIBRARY_PATH} PKG_CONFIG_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/x86_64-linux-gnu/pkgconfig:/home/hungnb/cocarry_ws/install/human_hand_msgs/lib/pkgconfig PYTHONPATH=/home/hungnb/cocarry_ws/build/realsense_tracker/prefix_override:/home/hungnb/.local/lib/python3.10/site-packages/colcon_core/task/python/colcon_distutils_commands:/home/hungnb/cocarry_ws/install/realsense_tracker/lib/python3.10/site-packages:/home/hungnb/cocarry_ws/install/human_hand_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} ROS_PACKAGE_PATH=/home/hungnb/cocarry_ws/install/human_hand_msgs/share /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/hungnb/cocarry_ws/build/realsense_tracker/build --no-deps symlink_data --force

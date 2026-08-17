@@ -1,0 +1,25 @@
+[INFO] [1786962454.365537593] [predictor_ui]: [UI] Node started
+[ERROR] [1786962498.625948618] [predictor_ui]: [UI] Capture Init Pose THẤT BẠI: Chưa nhận được vị trí hiện tại của robot từ /cartesian_streamer/current_pose
+[INFO] [1786962539.989264545] [predictor_ui]: [UI] Capture Init Pose thành công: Captured Init Pose! P_init=(-0.162, 0.309, 0.388), Cam_init=(0.174, -0.305, 0.023), Noise_Tol=60.0mm
+Orientation=(0.988, -0.154, -0.004, -0.029)
+[INFO] [1786962545.102811434] [predictor_ui]: [UI] Trajectory mode set to: prediction
+[INFO] [1786962545.103288925] [predictor_ui]: [UI] Model cmd → svgp
+[INFO] [1786962545.103565506] [predictor_ui]: [UI] Hybrid cmd → hybrid_off
+[INFO] [1786962577.932624449] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786962587.974476045] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786962714.735832047] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786962725.658795936] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786962728.012996999] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786962729.578481889] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786962778.846070955] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786962794.054599863] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786962837.885569681] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786962848.613349332] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786962908.179594399] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786962950.766460009] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786962993.366174722] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786963061.388089984] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786963073.198930149] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786963080.217499949] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786963140.776338663] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786963194.958483469] [predictor_ui]: [UI] Auto-disabled robot on Stop Run

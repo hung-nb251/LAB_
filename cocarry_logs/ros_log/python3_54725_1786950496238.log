@@ -1,0 +1,261 @@
+[INFO] [1786950496.371930773] [coord_transform]: CoordTransformNode khởi động.
+  Object offset (cam frame): [0.05 0.   0.1 ]
+  Translation cam→base:      [0.5 0.  1.2]
+  EE orientation (xyzw):     [0.0, 1.0, 0.0, 0.0]
+  Prediction step:           5
+  Axis remap:                [0, 1, 2]
+  Axis sign:                 [-1.0, 1.0, 1.0]
+  Workspace X: (-1.0, 1.0), Y: (-0.5, 1.3), Z: (0.05, 1.5)
+  Filter outlier_threshold:  0.15m
+  Filter median_size_y:      3
+  Filter deadband_tol:       15.0mm
+  Filter stationary_thresh:  3 frames
+  Filter max_rate:           5.0cm/frame
+  Filter EMA moving(x,y,z):  (1.0,0.8,1.0)
+  Filter EMA hold  (x,y,z):  (0.08,0.02,0.05)
+[WARN] [1786950505.610801941] [coord_transform]: Outlier rejected #1 (jumped 233.8mm). Ignoring.
+[WARN] [1786950505.644527746] [coord_transform]: Outlier rejected #2 (jumped 206.7mm). Ignoring.
+[WARN] [1786950505.676212141] [coord_transform]: Outlier rejected #3 (jumped 197.9mm). Ignoring.
+[WARN] [1786950505.710287319] [coord_transform]: Outlier rejected #4 (jumped 230.6mm). Ignoring.
+[INFO] [1786950505.744300792] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[INFO] [1786950519.945931526] [coord_transform]: Trạng thái tracking: STOPPED
+[WARN] [1786950522.026548001] [coord_transform]: Outlier rejected #1 (jumped 2325.7mm). Ignoring.
+[WARN] [1786950522.057545472] [coord_transform]: Outlier rejected #2 (jumped 2317.7mm). Ignoring.
+[WARN] [1786950522.092784841] [coord_transform]: Outlier rejected #3 (jumped 2292.4mm). Ignoring.
+[WARN] [1786950522.125009291] [coord_transform]: Outlier rejected #4 (jumped 2292.4mm). Ignoring.
+[INFO] [1786950522.158596955] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[INFO] [1786950525.831846152] [coord_transform]: Captured Init Pose! P_init=(-0.162, 0.280, 0.379), Cam_init=(0.093, -0.013, -0.007), Noise_Tol=60.0mm
+Orientation=(0.998, 0.064, -0.000, 0.000)
+[INFO] [1786950532.739832124] [coord_transform]: Đã chuyển mode: ground_truth -> prediction
+[INFO] [1786950532.900766793] [coord_transform]: Deadband: HOLD at (0.093, -0.013, -0.007)
+[INFO] [1786950532.924048920] [coord_transform]: [SNAP ON] Tay thực tế đứng yên. Ép dừng robot (GRU đang lệch 0.0cm).
+[INFO] [1786950535.571716704] [coord_transform]: Trạng thái tracking: STOPPED
+[INFO] [1786950552.728790976] [coord_transform]: Re-sync camera init: [ 0.083 -0.009 -0.008]
+[INFO] [1786950552.729040354] [coord_transform]: Trạng thái tracking: RUNNING
+[INFO] [1786950552.772356486] [coord_transform]: [PREDICTION] Transform: cam[ 0.083 -0.009 -0.008] → base[-0.162  0.28   0.379]
+[INFO] [1786950553.956120797] [coord_transform]: Deadband: RELEASE — motion detected
+[INFO] [1786950553.969137784] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950553.985654390] [coord_transform]: Deadband: HOLD at (0.083, -0.009, -0.008)
+[INFO] [1786950553.994967574] [coord_transform]: [SNAP ON] Tay thực tế đứng yên. Ép dừng robot (GRU đang lệch 4.6cm).
+[INFO] [1786950554.017311371] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950554.805982107] [coord_transform]: [PREDICTION] Transform: cam[0.06  0.096 0.125] → base[-0.139  0.385  0.511]
+[INFO] [1786950556.809525146] [coord_transform]: [PREDICTION] Transform: cam[0.014 0.29  0.255] → base[-0.093  0.579  0.641]
+[INFO] [1786950558.838645830] [coord_transform]: [PREDICTION] Transform: cam[-0.078  0.559  0.269] → base[-0.     0.848  0.655]
+[INFO] [1786950560.844725984] [coord_transform]: [PREDICTION] Transform: cam[-0.187  0.726  0.16 ] → base[0.109 1.015 0.546]
+[INFO] [1786950562.853262939] [coord_transform]: [PREDICTION] Transform: cam[-0.224  0.805  0.019] → base[0.145 1.094 0.405]
+[INFO] [1786950564.205359294] [coord_transform]: Trạng thái tracking: STOPPED
+[WARN] [1786950565.686010267] [coord_transform]: Outlier rejected #1 (jumped 195.2mm). Ignoring.
+[WARN] [1786950565.719544186] [coord_transform]: Outlier rejected #2 (jumped 186.5mm). Ignoring.
+[WARN] [1786950566.057148447] [coord_transform]: Outlier rejected #1 (jumped 179.7mm). Ignoring.
+[WARN] [1786950566.091527708] [coord_transform]: Outlier rejected #2 (jumped 161.4mm). Ignoring.
+[WARN] [1786950566.324211698] [coord_transform]: Outlier rejected #1 (jumped 182.2mm). Ignoring.
+[WARN] [1786950566.357527791] [coord_transform]: Outlier rejected #2 (jumped 223.5mm). Ignoring.
+[WARN] [1786950566.391037268] [coord_transform]: Outlier rejected #3 (jumped 248.7mm). Ignoring.
+[WARN] [1786950566.422825030] [coord_transform]: Outlier rejected #4 (jumped 338.5mm). Ignoring.
+[INFO] [1786950566.455279405] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786950574.165778010] [coord_transform]: Outlier rejected #1 (jumped 1021.9mm). Ignoring.
+[WARN] [1786950574.199629369] [coord_transform]: Outlier rejected #2 (jumped 1013.2mm). Ignoring.
+[WARN] [1786950574.230781795] [coord_transform]: Outlier rejected #3 (jumped 1005.1mm). Ignoring.
+[WARN] [1786950574.262032685] [coord_transform]: Outlier rejected #4 (jumped 1005.1mm). Ignoring.
+[INFO] [1786950574.293982149] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[INFO] [1786950575.398460333] [coord_transform]: Deadband: HOLD at (0.083, -0.009, -0.008)
+[INFO] [1786950575.430539184] [coord_transform]: Deadband: RELEASE — motion detected
+[INFO] [1786950585.619451094] [coord_transform]: Re-sync camera init: [ 0.064 -0.017 -0.009]
+[INFO] [1786950585.619720180] [coord_transform]: Trạng thái tracking: RUNNING
+[INFO] [1786950585.660388099] [coord_transform]: Deadband: RELEASE — motion detected
+[INFO] [1786950585.660980423] [coord_transform]: [SNAP ON] Tay thực tế đứng yên. Ép dừng robot (GRU đang lệch 43.6cm).
+[INFO] [1786950585.662778845] [coord_transform]: [PREDICTION] Transform: cam[ 0.064 -0.017 -0.009] → base[-0.162  0.28   0.379]
+[INFO] [1786950586.826145622] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950586.837893559] [coord_transform]: Deadband: HOLD at (0.064, -0.017, -0.009)
+[INFO] [1786950586.864220096] [coord_transform]: [SNAP ON] Tay thực tế đứng yên. Ép dừng robot (GRU đang lệch 8.2cm).
+[INFO] [1786950586.899188880] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950587.663980945] [coord_transform]: [PREDICTION] Transform: cam[0.057 0.085 0.117] → base[-0.155  0.382  0.504]
+[INFO] [1786950589.671766410] [coord_transform]: [PREDICTION] Transform: cam[-0.048  0.338  0.229] → base[-0.049  0.635  0.616]
+[INFO] [1786950591.697871501] [coord_transform]: [PREDICTION] Transform: cam[-0.17   0.679  0.228] → base[0.072 0.976 0.615]
+[INFO] [1786950593.701838781] [coord_transform]: [PREDICTION] Transform: cam[-0.25   0.836  0.023] → base[0.152 1.133 0.41 ]
+[INFO] [1786950594.852648496] [coord_transform]: Trạng thái tracking: STOPPED
+[WARN] [1786950607.416739620] [coord_transform]: Outlier rejected #1 (jumped 252.7mm). Ignoring.
+[WARN] [1786950615.825347195] [coord_transform]: Outlier rejected #1 (jumped 436.7mm). Ignoring.
+[WARN] [1786950615.860384115] [coord_transform]: Outlier rejected #2 (jumped 478.3mm). Ignoring.
+[WARN] [1786950615.893495638] [coord_transform]: Outlier rejected #3 (jumped 505.1mm). Ignoring.
+[WARN] [1786950615.927916558] [coord_transform]: Outlier rejected #4 (jumped 500.3mm). Ignoring.
+[INFO] [1786950615.960338182] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[INFO] [1786950616.391925663] [coord_transform]: Deadband: HOLD at (0.064, -0.017, -0.009)
+[INFO] [1786950616.459346181] [coord_transform]: Deadband: RELEASE — motion detected
+[INFO] [1786950617.974992031] [coord_transform]: [SNAP ON] Tay thực tế đứng yên. Ép dừng robot (GRU đang lệch 91.2cm).
+[INFO] [1786950619.760451164] [coord_transform]: Deadband: HOLD at (0.064, -0.017, -0.009)
+[INFO] [1786950619.792370693] [coord_transform]: Deadband: RELEASE — motion detected
+[INFO] [1786950620.034767615] [coord_transform]: Trạng thái tracking: STOPPED
+[INFO] [1786950628.848660306] [coord_transform]: Re-sync camera init: [ 0.057 -0.053 -0.007]
+[INFO] [1786950628.848927049] [coord_transform]: Trạng thái tracking: RUNNING
+[INFO] [1786950628.898586863] [coord_transform]: Deadband: RELEASE — motion detected
+[INFO] [1786950628.899637052] [coord_transform]: [PREDICTION] Transform: cam[ 0.057 -0.053 -0.007] → base[-0.162  0.28   0.379]
+[INFO] [1786950629.555104278] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950629.566144489] [coord_transform]: Deadband: HOLD at (0.057, -0.053, -0.007)
+[INFO] [1786950629.589142941] [coord_transform]: [SNAP ON] Tay thực tế đứng yên. Ép dừng robot (GRU đang lệch 7.0cm).
+[INFO] [1786950629.624824860] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950630.927994574] [coord_transform]: [PREDICTION] Transform: cam[0.045 0.125 0.16 ] → base[-0.15   0.458  0.545]
+[INFO] [1786950632.940360875] [coord_transform]: [PREDICTION] Transform: cam[-0.048  0.433  0.271] → base[-0.057  0.767  0.656]
+[INFO] [1786950634.957823831] [coord_transform]: [PREDICTION] Transform: cam[-0.124  0.79   0.198] → base[0.018 1.124 0.583]
+[INFO] [1786950636.978577379] [coord_transform]: [PREDICTION] Transform: cam[-0.176  0.916 -0.042] → base[0.071 1.231 0.425]
+[INFO] [1786950638.990919370] [coord_transform]: [PREDICTION] Transform: cam[-0.252  0.908 -0.024] → base[0.121 1.241 0.361]
+[INFO] [1786950640.993326974] [coord_transform]: [PREDICTION] Transform: cam[-0.252  0.908 -0.024] → base[0.121 1.241 0.361]
+[INFO] [1786950641.317915057] [coord_transform]: Trạng thái tracking: STOPPED
+[WARN] [1786950654.763802359] [coord_transform]: Outlier rejected #1 (jumped 341.8mm). Ignoring.
+[WARN] [1786950658.057375937] [coord_transform]: Outlier rejected #1 (jumped 210.1mm). Ignoring.
+[WARN] [1786950658.093218916] [coord_transform]: Outlier rejected #2 (jumped 272.0mm). Ignoring.
+[WARN] [1786950658.123843035] [coord_transform]: Outlier rejected #3 (jumped 170.6mm). Ignoring.
+[WARN] [1786950658.160497565] [coord_transform]: Outlier rejected #4 (jumped 219.7mm). Ignoring.
+[WARN] [1786950658.757736444] [coord_transform]: Outlier rejected #1 (jumped 184.4mm). Ignoring.
+[WARN] [1786950658.789677609] [coord_transform]: Outlier rejected #2 (jumped 245.1mm). Ignoring.
+[WARN] [1786950658.827142870] [coord_transform]: Outlier rejected #3 (jumped 242.9mm). Ignoring.
+[WARN] [1786950658.859636507] [coord_transform]: Outlier rejected #4 (jumped 233.6mm). Ignoring.
+[INFO] [1786950658.895401248] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786950659.224575528] [coord_transform]: Outlier rejected #1 (jumped 268.1mm). Ignoring.
+[WARN] [1786950659.257016238] [coord_transform]: Outlier rejected #2 (jumped 439.4mm). Ignoring.
+[WARN] [1786950659.557282854] [coord_transform]: Outlier rejected #1 (jumped 352.5mm). Ignoring.
+[WARN] [1786950659.592730229] [coord_transform]: Outlier rejected #2 (jumped 231.0mm). Ignoring.
+[WARN] [1786950660.294191461] [coord_transform]: Outlier rejected #1 (jumped 233.8mm). Ignoring.
+[WARN] [1786950660.325550271] [coord_transform]: Outlier rejected #2 (jumped 287.2mm). Ignoring.
+[WARN] [1786950660.359692055] [coord_transform]: Outlier rejected #3 (jumped 157.6mm). Ignoring.
+[WARN] [1786950660.395529348] [coord_transform]: Outlier rejected #4 (jumped 155.0mm). Ignoring.
+[WARN] [1786950661.114505249] [coord_transform]: Outlier rejected #1 (jumped 192.4mm). Ignoring.
+[INFO] [1786950665.337136949] [coord_transform]: Deadband: HOLD at (0.057, -0.053, -0.007)
+[INFO] [1786950666.163812063] [coord_transform]: Deadband: RELEASE — motion detected
+[WARN] [1786950671.222987766] [coord_transform]: Outlier rejected #1 (jumped 378.6mm). Ignoring.
+[WARN] [1786950671.273371127] [coord_transform]: Outlier rejected #2 (jumped 377.2mm). Ignoring.
+[WARN] [1786950671.293251418] [coord_transform]: Outlier rejected #3 (jumped 379.0mm). Ignoring.
+[WARN] [1786950671.315684770] [coord_transform]: Outlier rejected #4 (jumped 375.2mm). Ignoring.
+[INFO] [1786950671.356016441] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[INFO] [1786950671.356505414] [coord_transform]: [SNAP ON] Tay thực tế đứng yên. Ép dừng robot (GRU đang lệch 84.2cm).
+[INFO] [1786950672.365254663] [coord_transform]: Deadband: RELEASE — motion detected
+[INFO] [1786950672.387169657] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950672.403292564] [coord_transform]: Deadband: HOLD at (0.057, -0.053, -0.007)
+[INFO] [1786950672.425196749] [coord_transform]: [SNAP ON] Tay thực tế đứng yên. Ép dừng robot (GRU đang lệch 20.5cm).
+[INFO] [1786950672.455477762] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950672.525292672] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950672.622954248] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950672.788363121] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950672.856308510] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950672.923577853] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950672.986848315] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950673.054635599] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950673.122208681] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950673.191093400] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950673.255368513] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950673.326563214] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950673.391626496] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950673.919638114] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950673.956824430] [coord_transform]: [SNAP ON] Tay thực tế đứng yên. Ép dừng robot (GRU đang lệch 6.3cm).
+[INFO] [1786950673.989472005] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950674.055499742] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950674.123301520] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950674.187158699] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950674.254703442] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950674.325912916] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950674.386334567] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950674.437311881] [coord_transform]: Deadband: RELEASE — motion detected
+[INFO] [1786950674.460128852] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950674.470120182] [coord_transform]: Deadband: HOLD at (0.057, -0.053, -0.007)
+[INFO] [1786950674.524967284] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950674.597084222] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950674.659613082] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950674.727663150] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950674.824152296] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950676.166076630] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950676.198061781] [coord_transform]: [SNAP ON] Tay thực tế đứng yên. Ép dừng robot (GRU đang lệch 6.1cm).
+[INFO] [1786950676.229521420] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950676.294858162] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950676.434952160] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950676.472929127] [coord_transform]: Deadband: HOLD at (0.057, -0.053, -0.007)
+[INFO] [1786950676.515040153] [coord_transform]: Deadband: RELEASE — motion detected
+[INFO] [1786950676.528958230] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950676.595663337] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950676.644586749] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950677.124476623] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950677.192153351] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950677.227046115] [coord_transform]: [SNAP ON] Tay thực tế đứng yên. Ép dừng robot (GRU đang lệch 6.4cm).
+[INFO] [1786950677.255480742] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950677.324150575] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950677.421855549] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950677.423467023] [coord_transform]: Re-sync camera init: [ 0.064 -0.009 -0.012]
+[INFO] [1786950677.423728827] [coord_transform]: Trạng thái tracking: RUNNING
+[INFO] [1786950677.455938074] [coord_transform]: [PREDICTION] Transform: cam[ 0.064 -0.009 -0.012] → base[-0.162  0.28   0.379]
+[INFO] [1786950678.491420375] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950679.465442118] [coord_transform]: [PREDICTION] Transform: cam[0.056 0.112 0.144] → base[-0.154  0.401  0.534]
+[INFO] [1786950681.466236407] [coord_transform]: [PREDICTION] Transform: cam[-0.007  0.35   0.254] → base[-0.091  0.639  0.645]
+[INFO] [1786950683.467301291] [coord_transform]: [PREDICTION] Transform: cam[-0.079  0.669  0.195] → base[-0.018  0.958  0.585]
+[INFO] [1786950685.467653281] [coord_transform]: [PREDICTION] Transform: cam[-0.125  0.904  0.023] → base[0.028 1.193 0.413]
+[INFO] [1786950685.941848975] [coord_transform]: Trạng thái tracking: STOPPED
+[WARN] [1786950706.690347560] [coord_transform]: Outlier rejected #1 (jumped 533.6mm). Ignoring.
+[WARN] [1786950706.724739707] [coord_transform]: Outlier rejected #2 (jumped 552.3mm). Ignoring.
+[WARN] [1786950706.759703445] [coord_transform]: Outlier rejected #3 (jumped 533.3mm). Ignoring.
+[WARN] [1786950706.791795574] [coord_transform]: Outlier rejected #4 (jumped 461.7mm). Ignoring.
+[INFO] [1786950706.826569733] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786950707.458692526] [coord_transform]: Outlier rejected #1 (jumped 326.3mm). Ignoring.
+[WARN] [1786950707.492383360] [coord_transform]: Outlier rejected #2 (jumped 322.0mm). Ignoring.
+[WARN] [1786950707.525511970] [coord_transform]: Outlier rejected #3 (jumped 319.0mm). Ignoring.
+[WARN] [1786950707.558812315] [coord_transform]: Outlier rejected #4 (jumped 337.9mm). Ignoring.
+[INFO] [1786950707.592462352] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[INFO] [1786950715.465809733] [coord_transform]: Deadband: HOLD at (0.064, -0.009, -0.012)
+[INFO] [1786950715.498960743] [coord_transform]: Deadband: RELEASE — motion detected
+[INFO] [1786950719.949865790] [coord_transform]: Re-sync camera init: [ 0.084 -0.062 -0.007]
+[INFO] [1786950719.950222615] [coord_transform]: Trạng thái tracking: RUNNING
+[INFO] [1786950719.968756414] [coord_transform]: [PREDICTION] Transform: cam[ 0.078 -0.048 -0.003] → base[-0.156  0.294  0.382]
+[INFO] [1786950720.870636863] [coord_transform]: Deadband: RELEASE — motion detected
+[INFO] [1786950722.004294574] [coord_transform]: [PREDICTION] Transform: cam[0.08  0.087 0.128] → base[-0.158  0.43   0.513]
+[INFO] [1786950724.027918627] [coord_transform]: [PREDICTION] Transform: cam[0.008 0.355 0.206] → base[-0.086  0.698  0.592]
+[INFO] [1786950726.035481147] [coord_transform]: [PREDICTION] Transform: cam[-0.078  0.598  0.193] → base[0.001 0.94  0.579]
+[INFO] [1786950728.040875365] [coord_transform]: [PREDICTION] Transform: cam[-0.115  0.86   0.036] → base[0.038 1.202 0.421]
+[INFO] [1786950729.328473962] [coord_transform]: Trạng thái tracking: STOPPED
+[INFO] [1786950732.769593107] [coord_transform]: Trạng thái tracking: STOPPED
+[INFO] [1786950737.648934980] [coord_transform]: Deadband: HOLD at (0.084, -0.062, -0.007)
+[INFO] [1786950737.682378287] [coord_transform]: Deadband: RELEASE — motion detected
+[INFO] [1786950749.973982411] [coord_transform]: Re-sync camera init: [ 0.08  -0.044 -0.002]
+[INFO] [1786950749.974231813] [coord_transform]: Trạng thái tracking: RUNNING
+[INFO] [1786950749.992447751] [coord_transform]: [PREDICTION] Transform: cam[ 0.081 -0.038 -0.002] → base[-0.163  0.286  0.379]
+[INFO] [1786950750.880477221] [coord_transform]: Deadband: RELEASE — motion detected
+[INFO] [1786950750.880988018] [coord_transform]: [SNAP ON] Tay thực tế đứng yên. Ép dừng robot (GRU đang lệch 7.7cm).
+[INFO] [1786950750.946245524] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950750.956495662] [coord_transform]: Deadband: HOLD at (0.080, -0.044, -0.002)
+[INFO] [1786950751.014493704] [coord_transform]: [SNAP OFF] Tay di chuyển lại. Trả quyền cho GRU.
+[INFO] [1786950752.016060406] [coord_transform]: [PREDICTION] Transform: cam[0.087 0.078 0.154] → base[-0.169  0.402  0.534]
+[INFO] [1786950754.023301330] [coord_transform]: [PREDICTION] Transform: cam[0.029 0.228 0.258] → base[-0.111  0.552  0.639]
+[INFO] [1786950756.024777122] [coord_transform]: [PREDICTION] Transform: cam[-0.024  0.49   0.261] → base[-0.058  0.814  0.642]
+[INFO] [1786950758.057993867] [coord_transform]: [PREDICTION] Transform: cam[-0.058  0.649  0.154] → base[-0.024  0.973  0.534]
+[INFO] [1786950760.091496671] [coord_transform]: [PREDICTION] Transform: cam[-0.116  0.92  -0.03 ] → base[0.034 1.244 0.351]
+[WARN] [1786950761.010561922] [coord_transform]: Tọa độ bị clamp: [0.06184012 1.32995495 0.27697379] → [0.06184012 1.3        0.27697379]
+[WARN] [1786950762.036324700] [coord_transform]: Tọa độ bị clamp: [0.06184012 1.32995495 0.27697379] → [0.06184012 1.3        0.27697379]
+[INFO] [1786950762.103234767] [coord_transform]: [PREDICTION] Transform: cam[-0.144  1.006 -0.104] → base[0.062 1.3   0.292]
+[INFO] [1786950762.949671515] [coord_transform]: Trạng thái tracking: STOPPED
+[WARN] [1786950765.034702394] [coord_transform]: Outlier rejected #1 (jumped 607.4mm). Ignoring.
+[WARN] [1786950765.066845478] [coord_transform]: Outlier rejected #2 (jumped 614.1mm). Ignoring.
+[WARN] [1786950765.104298109] [coord_transform]: Outlier rejected #3 (jumped 595.8mm). Ignoring.
+[WARN] [1786950765.137679177] [coord_transform]: Outlier rejected #4 (jumped 613.9mm). Ignoring.
+[INFO] [1786950765.170906204] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786950770.036284235] [coord_transform]: Outlier rejected #1 (jumped 747.7mm). Ignoring.
+[WARN] [1786950770.068981868] [coord_transform]: Outlier rejected #2 (jumped 747.7mm). Ignoring.
+[WARN] [1786950770.104349368] [coord_transform]: Outlier rejected #3 (jumped 879.4mm). Ignoring.
+[WARN] [1786950770.138508148] [coord_transform]: Outlier rejected #4 (jumped 883.7mm). Ignoring.
+[INFO] [1786950770.170492790] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786950784.246470980] [coord_transform]: Outlier rejected #1 (jumped 1549.6mm). Ignoring.
+[WARN] [1786950784.279246422] [coord_transform]: Outlier rejected #2 (jumped 1539.9mm). Ignoring.
+[WARN] [1786950785.450538150] [coord_transform]: Outlier rejected #3 (jumped 1358.5mm). Ignoring.
+[WARN] [1786950785.483857014] [coord_transform]: Outlier rejected #4 (jumped 1342.7mm). Ignoring.
+[INFO] [1786950785.549736534] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786950786.682573302] [coord_transform]: Outlier rejected #1 (jumped 305.5mm). Ignoring.
+[WARN] [1786950790.619892381] [coord_transform]: Outlier rejected #2 (jumped 303.4mm). Ignoring.
+[WARN] [1786950790.988347368] [coord_transform]: Outlier rejected #3 (jumped 280.2mm). Ignoring.
+[WARN] [1786950792.822658149] [coord_transform]: Outlier rejected #4 (jumped 291.2mm). Ignoring.
+[INFO] [1786950792.889227328] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786950797.192227262] [coord_transform]: Outlier rejected #1 (jumped 2530.8mm). Ignoring.
+[WARN] [1786950797.225788564] [coord_transform]: Outlier rejected #2 (jumped 2538.6mm). Ignoring.
+[WARN] [1786950797.258675998] [coord_transform]: Outlier rejected #3 (jumped 2535.0mm). Ignoring.
+[WARN] [1786950815.507226731] [coord_transform]: Outlier rejected #1 (jumped 278.0mm). Ignoring.
+[WARN] [1786950815.539356253] [coord_transform]: Outlier rejected #2 (jumped 276.9mm). Ignoring.
+[WARN] [1786950815.573006210] [coord_transform]: Outlier rejected #3 (jumped 274.6mm). Ignoring.
+[WARN] [1786950992.699606395] [coord_transform]: Outlier rejected #1 (jumped 249.8mm). Ignoring.
+[WARN] [1786950992.734110456] [coord_transform]: Outlier rejected #2 (jumped 252.0mm). Ignoring.
+[WARN] [1786950998.676316944] [coord_transform]: Outlier rejected #3 (jumped 252.4mm). Ignoring.
+[WARN] [1786950999.445354686] [coord_transform]: Outlier rejected #4 (jumped 245.4mm). Ignoring.
+[INFO] [1786951008.488966862] [coord_transform]: Too many outliers (5). Resetting filter to new position.

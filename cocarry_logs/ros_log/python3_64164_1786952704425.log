@@ -1,0 +1,60 @@
+[INFO] [1786952704.499594302] [experiment_logger]: ✓ STARTED in-memory logging. Target file: /home/hungnb/cocarry_ws/cocarry_logs/experiment_GROUND_TRUTH_20260817_144504.csv
+[INFO] [1786952704.525908407] [experiment_logger]: Logger ready.
+[INFO] [1786952717.249136078] [experiment_logger]: Service called: /logger/toggle with data=False
+[INFO] [1786952717.249617043] [experiment_logger]: Writing 99 rows from memory to /home/hungnb/cocarry_ws/cocarry_logs/experiment_GROUND_TRUTH_20260817_144504.csv...
+[INFO] [1786952717.250676489] [experiment_logger]: ✓ Successfully wrote logs to disk.
+[INFO] [1786952717.251148888] [experiment_logger]: Stopped logging. Saved 99 rows to /home/hungnb/cocarry_ws/cocarry_logs/experiment_GROUND_TRUTH_20260817_144504.csv
+[INFO] [1786952717.253096735] [experiment_logger]: 
+============================================================
+EXPERIMENT METRICS
+  File: experiment_GROUND_TRUTH_20260817_144504.csv
+  Total samples: 99
+  Task completion time: 12.78 s
+  Mode: GROUND TRUTH (no prediction metrics)
+  Jerk: insufficient EE data for calculation
+============================================================
+[INFO] [1786952751.071219894] [experiment_logger]: Service called: /logger/toggle with data=True
+[INFO] [1786952751.071562145] [experiment_logger]: ✓ STARTED in-memory logging. Target file: /home/hungnb/cocarry_ws/cocarry_logs/experiment_GROUND_TRUTH_20260817_144551.csv
+[INFO] [1786952755.724067649] [experiment_logger]: Service called: /logger/toggle with data=False
+[INFO] [1786952755.724376527] [experiment_logger]: Writing 139 rows from memory to /home/hungnb/cocarry_ws/cocarry_logs/experiment_GROUND_TRUTH_20260817_144551.csv...
+[INFO] [1786952755.725698081] [experiment_logger]: ✓ Successfully wrote logs to disk.
+[INFO] [1786952755.726087472] [experiment_logger]: Stopped logging. Saved 139 rows to /home/hungnb/cocarry_ws/cocarry_logs/experiment_GROUND_TRUTH_20260817_144551.csv
+[INFO] [1786952755.727930049] [experiment_logger]: 
+============================================================
+EXPERIMENT METRICS
+  File: experiment_GROUND_TRUTH_20260817_144551.csv
+  Total samples: 139
+  Task completion time: 4.65 s
+  Mode: GROUND TRUTH (no prediction metrics)
+  --- Trajectory Smoothness (Robot EE) ---
+  Mean Jerk (3D): 5.9813 m/s³
+      Jerk X: 1.1562 m/s³
+      Jerk Y: 5.3194 m/s³
+      Jerk Z: 1.5203 m/s³
+  Max Jerk (3D): 55.5401 m/s³
+  RMS Jerk (3D): 10.2044 m/s³
+============================================================
+[INFO] [1786952780.778172618] [experiment_logger]: Service called: /logger/toggle with data=False
+[INFO] [1786952805.419951343] [experiment_logger]: Trajectory mode: ground_truth
+[INFO] [1786952817.448231116] [experiment_logger]: Service called: /logger/toggle with data=True
+[INFO] [1786952817.448744694] [experiment_logger]: ✓ STARTED in-memory logging. Target file: /home/hungnb/cocarry_ws/cocarry_logs/experiment_GROUND_TRUTH_20260817_144657.csv
+[INFO] [1786952826.516281235] [experiment_logger]: Service called: /logger/toggle with data=False
+[INFO] [1786952826.516686336] [experiment_logger]: Writing 271 rows from memory to /home/hungnb/cocarry_ws/cocarry_logs/experiment_GROUND_TRUTH_20260817_144657.csv...
+[INFO] [1786952826.518723052] [experiment_logger]: ✓ Successfully wrote logs to disk.
+[INFO] [1786952826.519417925] [experiment_logger]: Stopped logging. Saved 271 rows to /home/hungnb/cocarry_ws/cocarry_logs/experiment_GROUND_TRUTH_20260817_144657.csv
+[INFO] [1786952826.521769260] [experiment_logger]: 
+============================================================
+EXPERIMENT METRICS
+  File: experiment_GROUND_TRUTH_20260817_144657.csv
+  Total samples: 271
+  Task completion time: 9.07 s
+  Mode: GROUND TRUTH (no prediction metrics)
+  --- Trajectory Smoothness (Robot EE) ---
+  Mean Jerk (3D): 3.9912 m/s³
+      Jerk X: 0.1682 m/s³
+      Jerk Y: 3.4497 m/s³
+      Jerk Z: 1.3547 m/s³
+  Max Jerk (3D): 12.9431 m/s³
+  RMS Jerk (3D): 5.0058 m/s³
+============================================================
+[INFO] [1786952857.360446400] [experiment_logger]: Service called: /logger/toggle with data=False

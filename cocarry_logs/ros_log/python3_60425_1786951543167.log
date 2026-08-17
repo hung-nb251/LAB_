@@ -1,0 +1,10 @@
+[INFO] [1786951543.278704306] [predictor_ui]: [UI] Node started
+[INFO] [1786951573.665021823] [predictor_ui]: [UI] Set Goal → (0.0702, 0.6927, -0.0477)
+[INFO] [1786951579.847302654] [predictor_ui]: [UI] Capture Init Pose thành công: Captured Init Pose! P_init=(-0.162, 0.280, 0.379), Cam_init=(0.129, -0.244, -0.010), Noise_Tol=60.0mm
+Orientation=(0.998, 0.064, -0.000, 0.000)
+[INFO] [1786951598.920887319] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786951600.742183090] [predictor_ui]: [UI] Trajectory mode set to: prediction
+[INFO] [1786951600.742582195] [predictor_ui]: [UI] Model cmd → svgp
+[INFO] [1786951600.742931325] [predictor_ui]: [UI] Hybrid cmd → hybrid_on
+[INFO] [1786951640.197704234] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786951694.466114802] [predictor_ui]: [UI] Auto-disabled robot on Stop Run

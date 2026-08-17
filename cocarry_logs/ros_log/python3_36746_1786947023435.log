@@ -1,0 +1,41 @@
+[INFO] [1786947023.505470687] [trajectory_predictor]: [Predictor] Worker launched (pid=37008)
+[INFO] [1786947023.505854357] [trajectory_predictor]: [Predictor] Started | model=svgp | window=10 | auto_start=True
+  Output Filter: enabled=True, ema_alpha=1.0, max_dev=0.08, max_rate=0.02
+[WARN] [1786947024.636143941] [trajectory_predictor]: [Worker STDERR] /usr/lib/python3/dist-packages/scipy/__init__.py:146: UserWarning: A NumPy version >=1.17.3 and <1.25.0 is required for this version of SciPy (detected version 1.26.4
+[WARN] [1786947024.636950916] [trajectory_predictor]: [Worker STDERR] warnings.warn(f"A NumPy version >={np_minversion} and <{np_maxversion}"
+[INFO] [1786947025.496385477] [trajectory_predictor]: [Worker] TF 2.15.0 and sklearn loaded
+[INFO] [1786947026.504492469] [trajectory_predictor]: [Predictor] Worker READY | model=svgp
+[INFO] [1786947065.128789915] [trajectory_predictor]: [Predictor] Switching model → svgp
+[INFO] [1786947065.129515527] [trajectory_predictor]: [Hybrid] Mode DISABLED (GRU only)
+[INFO] [1786947065.149547069] [trajectory_predictor]: [Predictor] Model switched to svgp
+[INFO] [1786947091.674484307] [trajectory_predictor]: [Filter] raw=(0.0885,0.3049,0.0431) → filt=(-0.0948,-2.4240,-0.0984) Δ=(0.1833,2.7289,0.1415)
+[INFO] [1786947098.338854328] [trajectory_predictor]: [Filter] raw=(0.1498,-0.0688,-0.0137) → filt=(0.0794,-1.4750,-0.0137) Δ=(0.0704,1.4062,0.0000)
+[INFO] [1786947103.069298896] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786947109.963319697] [trajectory_predictor]: [Predictor] Predicting STARTED
+[INFO] [1786947111.922125290] [trajectory_predictor]: [Filter] raw=(-0.0202,0.3403,0.3770) → filt=(-0.0202,0.3308,0.3770) Δ=(0.0000,0.0095,0.0000)
+[INFO] [1786947118.624581066] [trajectory_predictor]: [Filter] raw=(-0.1609,0.7883,0.1882) → filt=(-0.1609,0.7883,0.1882) Δ=(0.0000,0.0000,0.0000)
+[INFO] [1786947125.299799672] [trajectory_predictor]: [Filter] raw=(-0.1051,0.4659,0.0611) → filt=(-0.1051,0.4659,0.0611) Δ=(0.0000,0.0000,0.0000)
+[INFO] [1786947127.948436928] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=5.5mm). Khóa tại (-0.0725, 0.6494, 0.5844)
+[INFO] [1786947130.478535679] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=30.4mm). Thả hold.
+[INFO] [1786947130.643801074] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=2.7mm). Khóa tại (-0.0454, 0.6392, 0.5938)
+[INFO] [1786947131.977204561] [trajectory_predictor]: [Filter] raw=(-0.0454,0.6392,0.5938) → filt=(-0.0454,0.6392,0.5938) Δ=(0.0000,0.0000,0.0000)
+[INFO] [1786947135.581735756] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=33.6mm). Thả hold.
+[INFO] [1786947136.451965374] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=5.9mm). Khóa tại (-0.0022, 0.7464, 0.2958)
+[INFO] [1786947138.852213534] [trajectory_predictor]: [Filter] raw=(-0.0022,0.7464,0.2958) → filt=(-0.0022,0.7464,0.2958) Δ=(0.0000,0.0000,0.0000)
+[INFO] [1786947139.484462764] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=30.4mm). Thả hold.
+[INFO] [1786947145.540615756] [trajectory_predictor]: [Filter] raw=(-0.1663,0.5779,0.2759) → filt=(-0.1663,0.5779,0.2759) Δ=(0.0000,0.0000,0.0000)
+[INFO] [1786947152.218078819] [trajectory_predictor]: [Filter] raw=(0.0737,0.6781,0.4600) → filt=(0.0737,0.6781,0.4184) Δ=(0.0000,0.0000,0.0415)
+[INFO] [1786947152.797089427] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=4.0mm). Khóa tại (0.0896, 0.6326, 0.6761)
+[INFO] [1786947155.366533846] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=33.7mm). Thả hold.
+[INFO] [1786947158.888624351] [trajectory_predictor]: [Filter] raw=(0.0279,0.5193,0.1371) → filt=(0.0279,0.5193,0.1371) Δ=(0.0000,0.0000,0.0000)
+[INFO] [1786947164.949539296] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786947171.490105059] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.6s)
+[INFO] [1786947305.490668887] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.9s)
+[INFO] [1786947310.489324562] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.5s)
+[INFO] [1786947329.489788438] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.2s)
+[WARN] [1786947333.256674028] [trajectory_predictor]: [Worker STDERR] Traceback (most recent call last):
+[WARN] [1786947333.257055244] [trajectory_predictor]: [Worker STDERR] File "/home/hungnb/cocarry_ws/build/trajectory_predictor/trajectory_predictor/inference_worker.py", line 282, in <module>
+[WARN] [1786947333.257403819] [trajectory_predictor]: [Worker STDERR] main()
+[WARN] [1786947333.257795133] [trajectory_predictor]: [Worker STDERR] File "/home/hungnb/cocarry_ws/build/trajectory_predictor/trajectory_predictor/inference_worker.py", line 207, in main
+[WARN] [1786947333.258169887] [trajectory_predictor]: [Worker STDERR] for line in sys.stdin:
+[WARN] [1786947333.258556443] [trajectory_predictor]: [Worker STDERR] KeyboardInterrupt

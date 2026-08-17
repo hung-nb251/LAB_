@@ -70,11 +70,14 @@ class ExperimentLoggerNode(Node):
         # Latest data (quick-and-dirty sync: log on each prediction)
         self.last_meas = None
         self.last_filt = None
+        self.last_target = None   # target_base: lệnh gửi robot (base_link frame)
 
         # Subscribers
         self.create_subscription(HandState, '/hand_position', self._on_hand, 10)
         self.create_subscription(PointStamped, '/coord_transform/filtered_hand_position', self._on_filtered_hand, 10)
         self.create_subscription(HandPrediction, '/ml/predicted_position', self._on_prediction, 10)
+        # Target base (lệnh gửi robot, đã chuyển sang base_link frame)
+        self.create_subscription(PointStamped, '/coord_transform/target_base', self._on_target_base, 10)
         # Stop command from bridge (scenario_id string from Windows)
         self.create_subscription(String, '/bridge/stop_command', self._on_stop_command, 5)
         # Trajectory mode from UI
@@ -137,6 +140,7 @@ class ExperimentLoggerNode(Node):
                     'pred_x', 'pred_y', 'pred_z',
                     'mae_x', 'mae_y', 'mae_z',
                     'inference_ms', 'buffer_size',
+                    'target_x', 'target_y', 'target_z',
                     'robot_ee_x', 'robot_ee_y', 'robot_ee_z',
                     'j1_vel', 'j2_vel', 'j3_vel', 'j4_vel', 'j5_vel', 'j6_vel',
                     'j1_eff', 'j2_eff', 'j3_eff', 'j4_eff', 'j5_eff', 'j6_eff', 'role'
@@ -254,6 +258,11 @@ class ExperimentLoggerNode(Node):
     def _on_filtered_hand(self, msg: PointStamped):
         self.last_filt = msg
 
+    def _on_target_base(self, msg: PointStamped):
+        """Lưu tọa độ target đã transform sang base_link (lệnh gửi robot)."""
+        self.last_target = (msg.point.x, msg.point.y, msg.point.z)
+
+
     def _on_prediction(self, msg: HandPrediction):
         new_model = msg.model_name
         
@@ -313,6 +322,13 @@ class ExperimentLoggerNode(Node):
                 mae_y = f'{abs(pred.y - meas.y):.6f}'
                 mae_z = f'{abs(pred.z - meas.z):.6f}'
 
+        # Target base pose (lệnh gửi robot đã chuyển sang base_link frame)
+        tx = ty = tz = ''
+        if self.last_target is not None:
+            tx = f'{self.last_target[0]:.6f}'
+            ty = f'{self.last_target[1]:.6f}'
+            tz = f'{self.last_target[2]:.6f}'
+
         # Robot EE pose
         rex = rey = rez = ''
         if self._last_robot_ee is not None:
@@ -343,6 +359,7 @@ class ExperimentLoggerNode(Node):
             mx, my, mz, fx, fy, fz, tracked,
             px, py, pz, mae_x, mae_y, mae_z,
             inf_ms, buf,
+            tx, ty, tz,
             rex, rey, rez,
             jv[0], jv[1], jv[2], jv[3], jv[4], jv[5],
             je[0], je[1], je[2], je[3], je[4], je[5], role

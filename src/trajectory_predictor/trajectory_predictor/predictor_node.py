@@ -155,9 +155,9 @@ class PredictorNode(Node):
         self._hold_stationary_count = 0          # đếm frame liên tiếp tĩnh
         self._hold_active = False                # đang khóa?
         self._hold_position = None               # vị trí khóa
-        self._HOLD_STD_THRESH = 0.006            # ngưỡng std (6mm)
+        self._HOLD_STD_THRESH = 0.015            # ngưỡng std (15mm) — tăng để tránh false-positive khi mang vật
         self._HOLD_ENTER_FRAMES = 5              # cần 5 frame tĩnh liên tiếp
-        self._HOLD_RELEASE_THRESH = 0.030        # tay rời > 30mm thì thả hold (chống nhiễu)
+        self._HOLD_RELEASE_THRESH = 0.050        # tay rời > 50mm thì thả hold — tăng để chắc chắn hơn
 
         # ── Publishers ───────────────────────────────────────────────────────
         self.pred_pub = self.create_publisher(
@@ -168,7 +168,7 @@ class PredictorNode(Node):
             String, '/predictor/hybrid_state', 5)
 
         # ── Subscribers ──────────────────────────────────────────────────────
-        # Lắng nghe dữ liệu thô (meas) từ /hand_position để phục vụ cơ chế Hold và tránh trễ (như bản gốc của GRU).
+        # Nhận dữ liệu thô (meas) từ /hand_position để giảm độ trễ
         self.create_subscription(HandState, '/hand_position', self._on_hand, 10)
         # Nếu bridge publish tọa độ thô (trước khi predict), cũng lắng nghe
         self.create_subscription(
@@ -376,6 +376,7 @@ class PredictorNode(Node):
         if mode == 'prediction':
             if not self._predicting:
                 self._predicting = True
+                self._buffer.clear() # XÓA BUFFER CŨ ĐỂ TRÁNH NHẢY ROBOT (JUMP) KHI BẤM START RUN
                 # Chờ frame data đầu tiên mới bắt đầu đếm T_SWITCH
                 self._hybrid_start_time = 0.0
                 self._hybrid_phase = 'FOLLOWER'
@@ -437,42 +438,11 @@ class PredictorNode(Node):
             self._buffer.append([x, y, z])
 
         # ── Prediction Hold: phát hiện tay đứng yên ──────────────────────
-        self._hold_recent.append([x, y, z])
-        if len(self._hold_recent) >= 5:
-            import numpy as _np
-            recent = _np.array(self._hold_recent)
-            max_std = float(_np.max(_np.std(recent, axis=0)))
-
-            if self._hold_active:
-                # Đang HOLD → kiểm tra xem tay đã bắt đầu di chuyển chưa
-                mean_pos = _np.mean(recent, axis=0)
-                dev = float(_np.linalg.norm(mean_pos - _np.array(self._hold_position)))
-                if dev > self._HOLD_RELEASE_THRESH:
-                    self._hold_active = False
-                    self._hold_stationary_count = 0
-                    self.get_logger().info(
-                        f'[Pred HOLD OFF] Tay di chuyển (dev={dev*1000:.1f}mm). Thả hold.')
-                else:
-                    # Vẫn HOLD → publish vị trí khóa, KHÔNG chạy GRU
-                    self._publish_prediction(list(self._hold_position), 0.0)
-                    return
-            else:
-                # Chưa HOLD → kiểm tra ổn định
-                if max_std < self._HOLD_STD_THRESH:
-                    self._hold_stationary_count += 1
-                else:
-                    self._hold_stationary_count = 0
-
-                if self._hold_stationary_count >= self._HOLD_ENTER_FRAMES:
-                    self._hold_active = True
-                    self._hold_position = list(_np.mean(recent, axis=0))
-                    self._last_filtered = list(self._hold_position)  # sync EMA state
-                    self.get_logger().info(
-                        f'[Pred HOLD ON] Tay đứng yên (std={max_std*1000:.1f}mm). '
-                        f'Khóa tại ({self._hold_position[0]:.4f}, '
-                        f'{self._hold_position[1]:.4f}, {self._hold_position[2]:.4f})')
-                    self._publish_prediction(list(self._hold_position), 0.0)
-                    return
+        # ── Prediction Hold: Disabled ──────────────────────────────────────
+        # Giữ nguyên như phiên bản 73a99e9e để robot chạy mượt mà.
+        # Không dùng Prediction Hold trong chế độ thực tế vì:
+        #   - Khi mang vật, rung tay tự nhiên > ngưỡng std → Hold kích hoạt sai lúc
+        #   - Robot có thể dừng đột ngột giữa chừng gây giật cục
 
         # ── Kiểm tra chuyển pha FOLLOWER → LEADER ──────────────────────────
         # Chỉ kiểm tra khi đang FOLLOWER — guard chống gọi lại nhiều lần
@@ -498,6 +468,7 @@ class PredictorNode(Node):
             padded = list(self._buffer)
         else:
             return
+
         self._send_to_worker({'cmd': 'predict', 'data': padded, 'epoch': self._predict_epoch})
 
     # ── Hybrid GRU+MJM methods ───────────────────────────────────────────────

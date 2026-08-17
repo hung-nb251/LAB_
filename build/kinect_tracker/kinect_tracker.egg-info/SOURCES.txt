@@ -10,8 +10,12 @@ setup.py
 ../../build/kinect_tracker/kinect_tracker.egg-info/zip-safe
 kinect_tracker/__init__.py
 kinect_tracker/kinect_node.py
+kinect_tracker.egg-info/PKG-INFO
+kinect_tracker.egg-info/SOURCES.txt
+kinect_tracker.egg-info/dependency_links.txt
+kinect_tracker.egg-info/entry_points.txt
+kinect_tracker.egg-info/requires.txt
+kinect_tracker.egg-info/top_level.txt
+kinect_tracker.egg-info/zip-safe
 models/pose_landmarker_full.task
 resource/kinect_tracker
-test/test_copyright.py
-test/test_flake8.py
-test/test_pep257.py

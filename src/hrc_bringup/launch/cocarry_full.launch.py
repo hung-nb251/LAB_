@@ -42,6 +42,7 @@ from launch.conditions import IfCondition, UnlessCondition
 from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
+from moveit_configs_utils import MoveItConfigsBuilder
 
 
 def generate_launch_description():
@@ -142,11 +143,14 @@ def generate_launch_description():
         parameters=[transform_params])
 
     # 4. Cartesian streamer (kết nối robot)
+    moveit_config = MoveItConfigsBuilder("hc10dtp", package_name="hc10dtp_moveit_config").to_dict()
+    
     streamer_node = Node(
         package='hc10dtp_bringup',
         executable='cartesian_streamer_hc10dtp.py',
         name='cartesian_streamer',
-        output='screen')
+        output='screen',
+        parameters=[moveit_config])
 
     # 5. Experiment logger
     logger_node = Node(

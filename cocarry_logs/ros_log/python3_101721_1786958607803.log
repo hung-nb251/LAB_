@@ -1,0 +1,32 @@
+[INFO] [1786958607.905215303] [predictor_ui]: [UI] Node started
+[INFO] [1786958611.989404279] [predictor_ui]: [UI] Trajectory mode set to: ground_truth
+[INFO] [1786958630.126908251] [predictor_ui]: [UI] Capture Init Pose thành công: Captured Init Pose! P_init=(-0.162, 0.309, 0.388), Cam_init=(0.097, -0.186, 0.012), Noise_Tol=60.0mm
+Orientation=(0.988, -0.153, -0.004, -0.029)
+[INFO] [1786958682.350722394] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786958698.681493994] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786958761.406474352] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786958770.255565180] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786958790.540792044] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786958816.369492882] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786958822.285042167] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786958885.585598746] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786958893.109258706] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786958908.162933800] [predictor_ui]: [UI] Trajectory mode set to: prediction
+[INFO] [1786958908.163359131] [predictor_ui]: [UI] Model cmd → svgp
+[INFO] [1786958908.163653274] [predictor_ui]: [UI] Hybrid cmd → hybrid_off
+[INFO] [1786958944.086165410] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786958964.639560425] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786959008.629071809] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786959021.743604935] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786959055.602779402] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786959083.032162737] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786959136.747446652] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786959141.962002258] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786959160.695001802] [predictor_ui]: [UI] Trajectory mode set to: ground_truth
+[INFO] [1786959222.371969346] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786959232.758992986] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1786959296.344153674] [predictor_ui]: [UI] Trajectory mode set to: prediction
+[INFO] [1786959296.344454941] [predictor_ui]: [UI] Model cmd → svgp
+[INFO] [1786959296.344697177] [predictor_ui]: [UI] Hybrid cmd → hybrid_off
+[INFO] [1786959378.502606738] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1786959390.758873802] [predictor_ui]: [UI] Using standalone go_home.py script for real robot

@@ -1,0 +1,58 @@
+[INFO] [1786961941.069631167] [trajectory_predictor]: [Predictor] Worker launched (pid=119277)
+[INFO] [1786961941.070159345] [trajectory_predictor]: [Predictor] Started | model=svgp | window=10 | auto_start=True
+  Output Filter: enabled=True, ema_alpha=0.3, max_dev=0.08, max_rate=0.02
+[WARN] [1786961942.217464796] [trajectory_predictor]: [Worker STDERR] /usr/lib/python3/dist-packages/scipy/__init__.py:146: UserWarning: A NumPy version >=1.17.3 and <1.25.0 is required for this version of SciPy (detected version 1.26.4
+[WARN] [1786961942.218564964] [trajectory_predictor]: [Worker STDERR] warnings.warn(f"A NumPy version >={np_minversion} and <{np_maxversion}"
+[INFO] [1786961943.104124435] [trajectory_predictor]: [Worker] TF 2.15.0 and sklearn loaded
+[INFO] [1786961944.127395777] [trajectory_predictor]: [Predictor] Worker READY | model=svgp
+[INFO] [1786961950.012125678] [trajectory_predictor]: [Filter] raw=(0.0677,0.3338,0.0488) → filt=(0.0677,-2.7340,-0.0368) Δ=(0.0000,3.0678,0.0855)
+[INFO] [1786961955.999136589] [trajectory_predictor]: [Hybrid] FOLLOWER -> LEADER | x_0=(0.0705,-2.6689,-0.0157) | GOAL=(-0.1528,0.5660,-0.0325) | t_f=6.54s | 197 steps @ 30Hz | GRU worker dừng gửi lệnh predict (tiết kiệm tài nguyên)
+[INFO] [1786961962.551900163] [trajectory_predictor]: ✅ [MJM] ĐÃ CHẠM ĐÍCH (GOAL REACHED)!
+[INFO] [1786961977.780486118] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786961980.618104924] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786961989.841940275] [trajectory_predictor]: [Predictor] Auto-enabled prediction mode via /trajectory_mode
+[INFO] [1786961989.842495413] [trajectory_predictor]: [Predictor] Switching model → svgp
+[INFO] [1786961989.842841958] [trajectory_predictor]: [Hybrid] Mode DISABLED (GRU only)
+[INFO] [1786961989.864873481] [trajectory_predictor]: [Predictor] Model switched to svgp
+[INFO] [1786961990.607629347] [trajectory_predictor]: [Filter] raw=(0.1737,-0.2653,0.0027) → filt=(0.1780,-0.2855,0.0012) Δ=(0.0042,0.0202,0.0015)
+[INFO] [1786961997.278106861] [trajectory_predictor]: [Filter] raw=(0.1730,-0.2592,0.0031) → filt=(0.1765,-0.2875,0.0018) Δ=(0.0035,0.0283,0.0013)
+[INFO] [1786962001.904370136] [trajectory_predictor]: [Predictor] Predicting STARTED
+[INFO] [1786962004.121081588] [trajectory_predictor]: [Filter] raw=(0.1831,-0.2664,0.0975) → filt=(0.1824,-0.2653,0.0956) Δ=(0.0007,0.0011,0.0019)
+[INFO] [1786962010.793655710] [trajectory_predictor]: [Filter] raw=(0.1435,0.4547,0.0863) → filt=(0.1422,0.4589,0.0915) Δ=(0.0013,0.0043,0.0052)
+[INFO] [1786962017.462754035] [trajectory_predictor]: [Filter] raw=(0.0961,0.4787,0.0081) → filt=(0.0972,0.4885,0.0106) Δ=(0.0012,0.0099,0.0024)
+[INFO] [1786962024.146361963] [trajectory_predictor]: [Filter] raw=(0.0018,0.6876,0.0507) → filt=(-0.0000,0.6903,0.0487) Δ=(0.0018,0.0027,0.0021)
+[INFO] [1786962030.802279081] [trajectory_predictor]: [Filter] raw=(0.1408,0.7724,0.0218) → filt=(0.1398,0.6183,0.0301) Δ=(0.0010,0.1541,0.0084)
+[INFO] [1786962038.051874278] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.2s)
+[INFO] [1786962070.051741859] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.3s)
+[INFO] [1786962098.452990540] [trajectory_predictor]: [Filter] raw=(0.1485,0.4264,0.0041) → filt=(0.1475,0.7493,0.0033) Δ=(0.0010,0.3230,0.0009)
+[INFO] [1786962102.051839606] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.8s)
+[INFO] [1786962115.052220660] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.4s)
+[INFO] [1786962121.052552441] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.3s)
+[INFO] [1786962126.051892468] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.2s)
+[INFO] [1786962133.084660572] [trajectory_predictor]: [Filter] raw=(0.0630,0.1387,-0.0495) → filt=(0.0206,0.5509,-0.0040) Δ=(0.0424,0.4122,0.0455)
+[INFO] [1786962139.051662261] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.2s)
+[INFO] [1786962141.753363093] [trajectory_predictor]: [Filter] raw=(0.3075,0.2914,0.1336) → filt=(0.3065,0.2880,0.1354) Δ=(0.0010,0.0034,0.0018)
+[INFO] [1786962145.748429131] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786962182.002179553] [trajectory_predictor]: [Predictor] Predicting STARTED
+[INFO] [1786962184.685037704] [trajectory_predictor]: [Filter] raw=(0.1241,0.2364,0.1087) → filt=(0.1278,0.1081,0.1130) Δ=(0.0037,0.1283,0.0043)
+[INFO] [1786962188.829131612] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786962189.619611370] [trajectory_predictor]: [Predictor] Predicting STARTED
+[INFO] [1786962190.148377947] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786962204.052205444] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.1s)
+[INFO] [1786962215.051922222] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.1s)
+[INFO] [1786962219.051766488] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.5s)
+[INFO] [1786962234.052528515] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.8s)
+[INFO] [1786962245.051516051] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.6s)
+[INFO] [1786962262.611979168] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786962272.430236953] [trajectory_predictor]: [Predictor] Predicting STARTED
+[INFO] [1786962274.426385357] [trajectory_predictor]: [Filter] raw=(0.1406,-0.0479,0.1550) → filt=(0.1460,-0.0727,0.1523) Δ=(0.0054,0.0247,0.0027)
+[INFO] [1786962279.002398783] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1786962296.052240077] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.6s)
+[INFO] [1786962313.052182026] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.1s)
+[INFO] [1786962315.051946101] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.5s)
+[INFO] [1786962324.051904090] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.9s)
+[INFO] [1786962332.052518200] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.4s)
+[INFO] [1786962338.052400149] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.2s)
+[INFO] [1786962353.052366176] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.2s)
+[INFO] [1786962371.052340519] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.1s)
+[INFO] [1786962399.437271957] [trajectory_predictor]: [Predictor] Predicting STOPPED

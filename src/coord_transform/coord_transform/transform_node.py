@@ -337,6 +337,14 @@ class CoordTransformNode(Node):
             10,
         )
 
+        # Publish: target đã transform sang base_link frame — cho UI vẽ đồ thị robot frame
+        # Đây là lệnh (target) được gửi xuống robot sau khi đã clamp + rate-limit
+        self._target_base_pub = self.create_publisher(
+            PointStamped,
+            '/coord_transform/target_base',
+            10,
+        )
+
         # Publish: trạng thái node (để UI theo dõi)
         self._status_pub = self.create_publisher(
             String,
@@ -510,7 +518,7 @@ class CoordTransformNode(Node):
         
         # Nếu đang ở ground_truth, dùng quỹ đạo này điều khiển robot
         if self._mode == 'ground_truth':
-            self._transform_and_publish_target(p_cam_filtered)
+            self._transform_and_publish_target(p_cam_filtered, is_mjm=False)
 
     def _on_prediction(self, msg: HandPrediction):
         """Xử lý HandPrediction khi mode = prediction"""
@@ -531,7 +539,7 @@ class CoordTransformNode(Node):
             # MJM đã được tính toán hoàn hảo (pure math) → bypass EMA filter
             # và Target Snap. Nhưng VẪN đi qua _transform_and_publish_target()
             # để áp dụng đúng: _obj_offset + axis_remap + R_cam_to_base + workspace clamp.
-            self._transform_and_publish_target(p_cam)
+            self._transform_and_publish_target(p_cam, is_mjm=True)
             return
 
         # ── Chặn SVGP message cũ khi MJM đã kích hoạt ───────────────────────
@@ -575,7 +583,7 @@ class CoordTransformNode(Node):
                 self._pred_snap_active = False
         # ─────────────────────────────────────────────────────────────────────
 
-        self._transform_and_publish_target(p_cam_filtered)
+        self._transform_and_publish_target(p_cam_filtered, is_mjm=False)
 
 
     def _apply_filter(self, p_cam: np.ndarray, state: CameraFilterState):
@@ -739,12 +747,21 @@ class CoordTransformNode(Node):
         self._target_pub.publish(target)
         self._debug_pub.publish(target)
 
+        # Publish target_base (PointStamped) cho UI vẽ đồ thị robot frame
+        tb = PointStamped()
+        tb.header.frame_id = 'base_link'
+        tb.header.stamp = target.header.stamp
+        tb.point.x = float(p_clamped[0])
+        tb.point.y = float(p_clamped[1])
+        tb.point.z = float(p_clamped[2])
+        self._target_base_pub.publish(tb)
+
         self.get_logger().info(
             f'[{self._mode.upper()}/EE] base{p_clamped.round(3)}',
             throttle_duration_sec=2.0,
         )
 
-    def _transform_and_publish_target(self, p_cam_to_use: np.ndarray):
+    def _transform_and_publish_target(self, p_cam_to_use: np.ndarray, is_mjm: bool = False):
         """Tính toán target pose từ p_cam đã lọc và gửi xuống robot"""
         if self._p_cam_init is None or not self._running:
             self.get_logger().debug(
@@ -781,7 +798,11 @@ class CoordTransformNode(Node):
         state = self._actual_filter if self._mode == 'ground_truth' else self._pred_filter
         snap_pos = self._check_target_zone_snap(p_clamped, state.is_holding_position)
         if snap_pos is not None:
-            p_clamped = snap_pos
+            if not is_mjm:
+                # Nếu là SVGP (hoặc ground truth), snap về target zone để dừng chuẩn.
+                # Nếu là MJM, KHÔNG ghi đè tọa độ (MJM đã đi rất mượt về đích),
+                # nhưng vẫn gọi _check_target_zone_snap để kích hoạt tín hiệu Auto Stop Run.
+                p_clamped = snap_pos
 
         # Bước 4.6: Rate-limiting — giới hạn bước nhảy tọa độ mỗi frame
         if self._last_p_base is not None:
@@ -805,6 +826,15 @@ class CoordTransformNode(Node):
 
         self._target_pub.publish(target)
         self._debug_pub.publish(target)
+
+        # Publish target_base (PointStamped) cho UI vẽ đồ thị robot frame
+        tb = PointStamped()
+        tb.header.frame_id = 'base_link'
+        tb.header.stamp = target.header.stamp
+        tb.point.x = float(p_clamped[0])
+        tb.point.y = float(p_clamped[1])
+        tb.point.z = float(p_clamped[2])
+        self._target_base_pub.publish(tb)
 
         self.get_logger().info(
             f'[{self._mode.upper()}] Transform: cam{p_cam_to_use.round(3)} → base{p_clamped.round(3)}',

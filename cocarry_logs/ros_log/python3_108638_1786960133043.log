@@ -1,0 +1,222 @@
+[INFO] [1786960133.141584416] [coord_transform]: CoordTransformNode khởi động.
+  Object offset (cam frame): [0.05 0.   0.1 ]
+  Translation cam→base:      [0.5 0.  1.2]
+  EE orientation (xyzw):     [0.0, 1.0, 0.0, 0.0]
+  Prediction step:           2
+  Axis remap:                [0, 1, 2]
+  Axis sign:                 [-1.0, 1.0, 1.0]
+  Workspace X: (-1.0, 1.0), Y: (-0.5, 1.3), Z: (0.05, 1.5)
+  Filter outlier_threshold:  0.15m
+  Filter median_size_y:      3
+  Filter deadband_tol:       15.0mm
+  Filter stationary_thresh:  3 frames
+  Filter max_rate:           5.0cm/frame
+  Filter EMA moving(x,y,z):  (1.0,0.8,1.0)
+  Filter EMA hold  (x,y,z):  (0.08,0.02,0.05)
+[WARN] [1786960154.265705255] [coord_transform]: Outlier rejected #1 (jumped 657.9mm). Ignoring.
+[WARN] [1786960154.301291656] [coord_transform]: Outlier rejected #2 (jumped 668.5mm). Ignoring.
+[WARN] [1786960154.334076552] [coord_transform]: Outlier rejected #3 (jumped 454.7mm). Ignoring.
+[WARN] [1786960154.365463896] [coord_transform]: Outlier rejected #4 (jumped 506.7mm). Ignoring.
+[INFO] [1786960154.400733861] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786960155.079537239] [coord_transform]: Outlier rejected #1 (jumped 749.4mm). Ignoring.
+[WARN] [1786960155.103238948] [coord_transform]: Outlier rejected #2 (jumped 802.1mm). Ignoring.
+[WARN] [1786960155.132443380] [coord_transform]: Outlier rejected #3 (jumped 806.3mm). Ignoring.
+[WARN] [1786960155.167468145] [coord_transform]: Outlier rejected #4 (jumped 792.9mm). Ignoring.
+[INFO] [1786960155.200072881] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786960156.934055273] [coord_transform]: Outlier rejected #1 (jumped 646.7mm). Ignoring.
+[WARN] [1786960156.965854642] [coord_transform]: Outlier rejected #2 (jumped 651.5mm). Ignoring.
+[WARN] [1786960157.001276794] [coord_transform]: Outlier rejected #3 (jumped 661.4mm). Ignoring.
+[WARN] [1786960157.034968688] [coord_transform]: Outlier rejected #4 (jumped 667.6mm). Ignoring.
+[INFO] [1786960157.066793726] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786960168.045370504] [coord_transform]: Outlier rejected #1 (jumped 1512.4mm). Ignoring.
+[WARN] [1786960168.077866846] [coord_transform]: Outlier rejected #2 (jumped 1509.6mm). Ignoring.
+[WARN] [1786960168.113227713] [coord_transform]: Outlier rejected #3 (jumped 1503.2mm). Ignoring.
+[WARN] [1786960168.144435679] [coord_transform]: Outlier rejected #4 (jumped 1497.2mm). Ignoring.
+[INFO] [1786960168.177947433] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786960172.847865075] [coord_transform]: Outlier rejected #1 (jumped 185.5mm). Ignoring.
+[WARN] [1786960172.913357330] [coord_transform]: Outlier rejected #2 (jumped 194.2mm). Ignoring.
+[WARN] [1786960173.093383031] [coord_transform]: Outlier rejected #3 (jumped 466.5mm). Ignoring.
+[WARN] [1786960173.321921518] [coord_transform]: Outlier rejected #4 (jumped 256.8mm). Ignoring.
+[INFO] [1786960173.350199786] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786960173.684005769] [coord_transform]: Outlier rejected #1 (jumped 881.9mm). Ignoring.
+[WARN] [1786960173.717007031] [coord_transform]: Outlier rejected #2 (jumped 1273.5mm). Ignoring.
+[WARN] [1786960173.746135571] [coord_transform]: Outlier rejected #3 (jumped 1499.6mm). Ignoring.
+[WARN] [1786960173.827717668] [coord_transform]: Outlier rejected #4 (jumped 1136.4mm). Ignoring.
+[INFO] [1786960173.853677820] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786960176.050926232] [coord_transform]: Outlier rejected #1 (jumped 223.2mm). Ignoring.
+[WARN] [1786960176.083419969] [coord_transform]: Outlier rejected #2 (jumped 210.5mm). Ignoring.
+[WARN] [1786960176.113808320] [coord_transform]: Outlier rejected #3 (jumped 172.9mm). Ignoring.
+[WARN] [1786960176.147705381] [coord_transform]: Outlier rejected #4 (jumped 164.1mm). Ignoring.
+[INFO] [1786960176.181694995] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786960176.214523001] [coord_transform]: Outlier rejected #1 (jumped 257.4mm). Ignoring.
+[WARN] [1786960176.284126068] [coord_transform]: Outlier rejected #2 (jumped 218.1mm). Ignoring.
+[WARN] [1786960176.317089930] [coord_transform]: Outlier rejected #3 (jumped 393.1mm). Ignoring.
+[WARN] [1786960176.349998338] [coord_transform]: Outlier rejected #4 (jumped 303.2mm). Ignoring.
+[INFO] [1786960176.381637395] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786960176.548515174] [coord_transform]: Outlier rejected #1 (jumped 196.2mm). Ignoring.
+[WARN] [1786960176.581279621] [coord_transform]: Outlier rejected #2 (jumped 238.4mm). Ignoring.
+[WARN] [1786960176.720340110] [coord_transform]: Outlier rejected #1 (jumped 261.4mm). Ignoring.
+[WARN] [1786960176.750870459] [coord_transform]: Outlier rejected #2 (jumped 215.6mm). Ignoring.
+[WARN] [1786960176.787327551] [coord_transform]: Outlier rejected #3 (jumped 172.6mm). Ignoring.
+[WARN] [1786960176.818969083] [coord_transform]: Outlier rejected #4 (jumped 345.5mm). Ignoring.
+[INFO] [1786960176.849226528] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786960183.722031142] [coord_transform]: Outlier rejected #1 (jumped 243.4mm). Ignoring.
+[WARN] [1786960183.757929601] [coord_transform]: Outlier rejected #2 (jumped 246.2mm). Ignoring.
+[WARN] [1786960183.788035240] [coord_transform]: Outlier rejected #3 (jumped 246.4mm). Ignoring.
+[WARN] [1786960183.822848596] [coord_transform]: Outlier rejected #4 (jumped 251.6mm). Ignoring.
+[INFO] [1786960183.855635364] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786960185.327157958] [coord_transform]: Outlier rejected #1 (jumped 231.8mm). Ignoring.
+[WARN] [1786960185.356079286] [coord_transform]: Outlier rejected #2 (jumped 256.7mm). Ignoring.
+[WARN] [1786960185.390583189] [coord_transform]: Outlier rejected #3 (jumped 245.0mm). Ignoring.
+[WARN] [1786960185.424836610] [coord_transform]: Outlier rejected #4 (jumped 230.7mm). Ignoring.
+[INFO] [1786960185.904279235] [coord_transform]: Trạng thái tracking: STOPPED
+[INFO] [1786960194.930186955] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786960195.206983868] [coord_transform]: Outlier rejected #1 (jumped 507.9mm). Ignoring.
+[WARN] [1786960205.807199133] [coord_transform]: Outlier rejected #2 (jumped 222.3mm). Ignoring.
+[WARN] [1786960206.239780298] [coord_transform]: Outlier rejected #1 (jumped 158.6mm). Ignoring.
+[WARN] [1786960206.344347284] [coord_transform]: Outlier rejected #1 (jumped 211.5mm). Ignoring.
+[WARN] [1786960206.372154664] [coord_transform]: Outlier rejected #2 (jumped 270.5mm). Ignoring.
+[WARN] [1786960206.858185964] [coord_transform]: Outlier rejected #3 (jumped 619.3mm). Ignoring.
+[WARN] [1786960206.890982311] [coord_transform]: Outlier rejected #4 (jumped 644.5mm). Ignoring.
+[INFO] [1786960206.974914143] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786960216.515045486] [coord_transform]: Outlier rejected #1 (jumped 300.6mm). Ignoring.
+[WARN] [1786960216.548925614] [coord_transform]: Outlier rejected #2 (jumped 322.3mm). Ignoring.
+[WARN] [1786960218.580942429] [coord_transform]: Outlier rejected #3 (jumped 385.6mm). Ignoring.
+[WARN] [1786960218.615756285] [coord_transform]: Outlier rejected #4 (jumped 427.2mm). Ignoring.
+[INFO] [1786960218.658055979] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786960244.833180192] [coord_transform]: Outlier rejected #1 (jumped 269.0mm). Ignoring.
+[WARN] [1786960244.874973923] [coord_transform]: Outlier rejected #2 (jumped 254.6mm). Ignoring.
+[WARN] [1786960244.912459090] [coord_transform]: Outlier rejected #3 (jumped 266.1mm). Ignoring.
+[WARN] [1786960244.948381724] [coord_transform]: Outlier rejected #4 (jumped 258.4mm). Ignoring.
+[INFO] [1786960244.975706475] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786960247.572228198] [coord_transform]: Outlier rejected #1 (jumped 317.3mm). Ignoring.
+[WARN] [1786960247.601043146] [coord_transform]: Outlier rejected #2 (jumped 196.8mm). Ignoring.
+[WARN] [1786960247.637612378] [coord_transform]: Outlier rejected #3 (jumped 187.3mm). Ignoring.
+[WARN] [1786960247.669602686] [coord_transform]: Outlier rejected #4 (jumped 201.0mm). Ignoring.
+[INFO] [1786960247.704022980] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786960267.147257172] [coord_transform]: Outlier rejected #1 (jumped 2396.6mm). Ignoring.
+[WARN] [1786960267.181892701] [coord_transform]: Outlier rejected #2 (jumped 2387.5mm). Ignoring.
+[WARN] [1786960267.216566413] [coord_transform]: Outlier rejected #3 (jumped 2405.7mm). Ignoring.
+[WARN] [1786960267.249158825] [coord_transform]: Outlier rejected #4 (jumped 2405.7mm). Ignoring.
+[INFO] [1786960267.280636036] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[INFO] [1786960276.614811814] [coord_transform]: Captured Init Pose! P_init=(-0.162, 0.309, 0.388), Cam_init=(0.097, -0.257, 0.022), Noise_Tol=60.0mm
+Orientation=(0.988, -0.154, -0.004, -0.029)
+[INFO] [1786960281.225413439] [coord_transform]: Trạng thái tracking: STOPPED
+[INFO] [1786960288.199761721] [coord_transform]: Deadband: RELEASE — motion detected
+[INFO] [1786960288.234880020] [coord_transform]: Deadband: HOLD at (0.097, -0.257, 0.022)
+[INFO] [1786960297.337851797] [coord_transform]: Re-sync camera init: [ 0.124 -0.22   0.023]
+[INFO] [1786960297.338224629] [coord_transform]: Trạng thái tracking: RUNNING
+[INFO] [1786960297.339642268] [coord_transform]: [GROUND_TRUTH] Transform: cam[ 0.124 -0.22   0.023] → base[-0.162  0.309  0.388]
+[INFO] [1786960298.537304297] [coord_transform]: Deadband: RELEASE — motion detected
+[INFO] [1786960298.574001068] [coord_transform]: Deadband: HOLD at (0.124, -0.220, 0.023)
+[WARN] [1786960298.839634789] [coord_transform]: Outlier rejected #1 (jumped 151.2mm). Ignoring.
+[INFO] [1786960299.372722869] [coord_transform]: [GROUND_TRUTH] Transform: cam[ 0.123 -0.318  0.094] → base[-0.16   0.211  0.459]
+[WARN] [1786960299.408611278] [coord_transform]: Outlier rejected #1 (jumped 163.3mm). Ignoring.
+[WARN] [1786960299.440959389] [coord_transform]: Outlier rejected #2 (jumped 185.3mm). Ignoring.
+[WARN] [1786960299.773786185] [coord_transform]: Outlier rejected #1 (jumped 335.6mm). Ignoring.
+[WARN] [1786960299.842515754] [coord_transform]: Outlier rejected #1 (jumped 187.3mm). Ignoring.
+[WARN] [1786960299.944504230] [coord_transform]: Outlier rejected #1 (jumped 224.4mm). Ignoring.
+[INFO] [1786960301.376052828] [coord_transform]: [GROUND_TRUTH] Transform: cam[0.101 0.162 0.197] → base[-0.138  0.691  0.562]
+[INFO] [1786960303.378807162] [coord_transform]: [GROUND_TRUTH] Transform: cam[0.108 0.415 0.205] → base[-0.145  0.944  0.57 ]
+[INFO] [1786960305.378900113] [coord_transform]: [GROUND_TRUTH] Transform: cam[0.08  0.565 0.06 ] → base[-0.118  1.094  0.425]
+[INFO] [1786960307.379650330] [coord_transform]: [GROUND_TRUTH] Transform: cam[0.11  0.528 0.034] → base[-0.148  1.057  0.399]
+[INFO] [1786960309.381035082] [coord_transform]: [GROUND_TRUTH] Transform: cam[0.116 0.545 0.435] → base[-0.154  1.073  0.801]
+[INFO] [1786960311.385365059] [coord_transform]: [GROUND_TRUTH] Transform: cam[0.119 0.427 0.581] → base[-0.156  0.956  0.946]
+[INFO] [1786960313.385927500] [coord_transform]: [GROUND_TRUTH] Transform: cam[0.154 0.465 0.195] → base[-0.192  0.994  0.561]
+[INFO] [1786960315.416563868] [coord_transform]: [GROUND_TRUTH] Transform: cam[ 0.152  0.457 -0.055] → base[-0.189  0.986  0.31 ]
+[INFO] [1786960317.420814813] [coord_transform]: [GROUND_TRUTH] Transform: cam[ 0.138  0.509 -0.009] → base[-0.176  1.037  0.357]
+[INFO] [1786960319.422233674] [coord_transform]: [GROUND_TRUTH] Transform: cam[0.297 0.493 0.112] → base[-0.335  1.022  0.477]
+[INFO] [1786960321.422623505] [coord_transform]: [GROUND_TRUTH] Transform: cam[0.209 0.467 0.153] → base[-0.246  0.996  0.518]
+[INFO] [1786960323.424889900] [coord_transform]: [GROUND_TRUTH] Transform: cam[0.132 0.505 0.174] → base[-0.169  1.034  0.54 ]
+[INFO] [1786960325.425335654] [coord_transform]: [GROUND_TRUTH] Transform: cam[0.006 0.534 0.189] → base[-0.044  1.063  0.554]
+[INFO] [1786960327.427028397] [coord_transform]: [GROUND_TRUTH] Transform: cam[-0.052  0.478  0.089] → base[0.015 1.007 0.455]
+[INFO] [1786960329.428777384] [coord_transform]: [GROUND_TRUTH] Transform: cam[ 0.089  0.471 -0.022] → base[-0.126  1.     0.343]
+[INFO] [1786960331.433711909] [coord_transform]: [GROUND_TRUTH] Transform: cam[0.228 0.6   0.15 ] → base[-0.266  1.129  0.515]
+[INFO] [1786960333.465237462] [coord_transform]: [GROUND_TRUTH] Transform: cam[0.185 0.432 0.128] → base[-0.223  0.961  0.494]
+[INFO] [1786960335.469997657] [coord_transform]: [GROUND_TRUTH] Transform: cam[0.107 0.459 0.189] → base[-0.145  0.988  0.554]
+[INFO] [1786960337.470559565] [coord_transform]: [GROUND_TRUTH] Transform: cam[-0.033  0.471  0.126] → base[-0.005  1.     0.491]
+[INFO] [1786960339.502089152] [coord_transform]: [GROUND_TRUTH] Transform: cam[-0.221  0.483  0.133] → base[0.184 1.012 0.499]
+[INFO] [1786960341.506671479] [coord_transform]: [GROUND_TRUTH] Transform: cam[-0.042  0.506  0.149] → base[0.005 1.035 0.514]
+[INFO] [1786960343.541035614] [coord_transform]: [GROUND_TRUTH] Transform: cam[0.213 0.543 0.157] → base[-0.251  1.072  0.522]
+[INFO] [1786960345.542246118] [coord_transform]: [GROUND_TRUTH] Transform: cam[0.271 0.402 0.08 ] → base[-0.309  0.931  0.445]
+[INFO] [1786960347.560569661] [coord_transform]: [GROUND_TRUTH] Transform: cam[ 0.103  0.375 -0.031] → base[-0.141  0.904  0.335]
+[INFO] [1786960349.576748233] [coord_transform]: [GROUND_TRUTH] Transform: cam[0.061 0.418 0.215] → base[-0.099  0.947  0.58 ]
+[INFO] [1786960351.582381334] [coord_transform]: [GROUND_TRUTH] Transform: cam[0.054 0.646 0.206] → base[-0.092  1.175  0.572]
+[INFO] [1786960353.617751839] [coord_transform]: [GROUND_TRUTH] Transform: cam[0.092 0.426 0.141] → base[-0.13   0.955  0.506]
+[INFO] [1786960355.618775967] [coord_transform]: [GROUND_TRUTH] Transform: cam[0.102 0.314 0.184] → base[-0.14   0.843  0.549]
+[WARN] [1786960356.950236480] [coord_transform]: Outlier rejected #1 (jumped 151.5mm). Ignoring.
+[WARN] [1786960357.646979983] [coord_transform]: Outlier rejected #1 (jumped 215.6mm). Ignoring.
+[INFO] [1786960357.720603989] [coord_transform]: [GROUND_TRUTH] Transform: cam[0.102 0.167 0.181] → base[-0.14   0.696  0.546]
+[INFO] [1786960359.752558838] [coord_transform]: [GROUND_TRUTH] Transform: cam[0.103 0.313 0.196] → base[-0.141  0.842  0.562]
+[INFO] [1786960360.830072552] [coord_transform]: Trạng thái tracking: STOPPED
+[WARN] [1786960368.584116226] [coord_transform]: Outlier rejected #1 (jumped 152.2mm). Ignoring.
+[WARN] [1786960368.615853657] [coord_transform]: Outlier rejected #2 (jumped 162.3mm). Ignoring.
+[WARN] [1786960370.823941821] [coord_transform]: Outlier rejected #1 (jumped 320.6mm). Ignoring.
+[WARN] [1786960370.863168606] [coord_transform]: Outlier rejected #2 (jumped 325.5mm). Ignoring.
+[WARN] [1786960370.894591244] [coord_transform]: Outlier rejected #3 (jumped 310.5mm). Ignoring.
+[WARN] [1786960370.927204685] [coord_transform]: Outlier rejected #4 (jumped 297.4mm). Ignoring.
+[INFO] [1786960370.963622380] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786960377.963785991] [coord_transform]: Outlier rejected #1 (jumped 163.7mm). Ignoring.
+[WARN] [1786960378.001516528] [coord_transform]: Outlier rejected #2 (jumped 194.0mm). Ignoring.
+[WARN] [1786960378.033383633] [coord_transform]: Outlier rejected #3 (jumped 199.4mm). Ignoring.
+[WARN] [1786960378.067012296] [coord_transform]: Outlier rejected #4 (jumped 203.0mm). Ignoring.
+[WARN] [1786960429.066661565] [coord_transform]: Outlier rejected #1 (jumped 212.7mm). Ignoring.
+[WARN] [1786960429.100639675] [coord_transform]: Outlier rejected #2 (jumped 245.8mm). Ignoring.
+[WARN] [1786960429.134544007] [coord_transform]: Outlier rejected #3 (jumped 263.7mm). Ignoring.
+[WARN] [1786960429.166361287] [coord_transform]: Outlier rejected #4 (jumped 350.2mm). Ignoring.
+[INFO] [1786960429.200225974] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786960432.771666939] [coord_transform]: Outlier rejected #1 (jumped 694.3mm). Ignoring.
+[WARN] [1786960436.068852373] [coord_transform]: Outlier rejected #2 (jumped 1168.5mm). Ignoring.
+[WARN] [1786960436.096883263] [coord_transform]: Outlier rejected #3 (jumped 1158.0mm). Ignoring.
+[WARN] [1786960437.014477598] [coord_transform]: Outlier rejected #4 (jumped 1055.9mm). Ignoring.
+[INFO] [1786960437.042106160] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786960441.842075478] [coord_transform]: Outlier rejected #1 (jumped 1252.0mm). Ignoring.
+[WARN] [1786960441.875654155] [coord_transform]: Outlier rejected #2 (jumped 1242.0mm). Ignoring.
+[WARN] [1786960441.913365226] [coord_transform]: Outlier rejected #3 (jumped 1179.1mm). Ignoring.
+[WARN] [1786960441.942243442] [coord_transform]: Outlier rejected #4 (jumped 1102.3mm). Ignoring.
+[INFO] [1786960441.976712226] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786960445.345815575] [coord_transform]: Outlier rejected #1 (jumped 2237.4mm). Ignoring.
+[WARN] [1786960445.414073904] [coord_transform]: Outlier rejected #1 (jumped 185.0mm). Ignoring.
+[WARN] [1786960445.445095146] [coord_transform]: Outlier rejected #2 (jumped 238.5mm). Ignoring.
+[WARN] [1786960445.511199268] [coord_transform]: Outlier rejected #3 (jumped 342.3mm). Ignoring.
+[WARN] [1786960445.588571992] [coord_transform]: Outlier rejected #4 (jumped 472.2mm). Ignoring.
+[INFO] [1786960445.644776901] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786960461.959037292] [coord_transform]: Outlier rejected #1 (jumped 555.4mm). Ignoring.
+[WARN] [1786960461.993284178] [coord_transform]: Outlier rejected #2 (jumped 559.9mm). Ignoring.
+[WARN] [1786960462.025072945] [coord_transform]: Outlier rejected #3 (jumped 569.2mm). Ignoring.
+[WARN] [1786960462.058790565] [coord_transform]: Outlier rejected #4 (jumped 575.3mm). Ignoring.
+[INFO] [1786960462.093512996] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786960462.737634502] [coord_transform]: Outlier rejected #1 (jumped 161.2mm). Ignoring.
+[WARN] [1786960462.760652932] [coord_transform]: Outlier rejected #2 (jumped 188.0mm). Ignoring.
+[WARN] [1786960462.792016148] [coord_transform]: Outlier rejected #3 (jumped 212.3mm). Ignoring.
+[WARN] [1786960462.823472178] [coord_transform]: Outlier rejected #4 (jumped 228.4mm). Ignoring.
+[INFO] [1786960462.857963545] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786960469.133364734] [coord_transform]: Outlier rejected #1 (jumped 1602.9mm). Ignoring.
+[WARN] [1786960469.161951080] [coord_transform]: Outlier rejected #2 (jumped 1611.0mm). Ignoring.
+[WARN] [1786960469.195474514] [coord_transform]: Outlier rejected #3 (jumped 1628.5mm). Ignoring.
+[WARN] [1786960469.230143986] [coord_transform]: Outlier rejected #4 (jumped 1642.1mm). Ignoring.
+[INFO] [1786960469.263796563] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786960469.297366624] [coord_transform]: Outlier rejected #1 (jumped 176.8mm). Ignoring.
+[WARN] [1786960469.365000898] [coord_transform]: Outlier rejected #2 (jumped 186.6mm). Ignoring.
+[WARN] [1786960469.397342225] [coord_transform]: Outlier rejected #3 (jumped 216.0mm). Ignoring.
+[WARN] [1786960469.432254635] [coord_transform]: Outlier rejected #4 (jumped 198.6mm). Ignoring.
+[INFO] [1786960469.470917187] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786960483.452814129] [coord_transform]: Outlier rejected #1 (jumped 686.4mm). Ignoring.
+[WARN] [1786960483.483722638] [coord_transform]: Outlier rejected #2 (jumped 714.7mm). Ignoring.
+[WARN] [1786960483.510664026] [coord_transform]: Outlier rejected #3 (jumped 726.5mm). Ignoring.
+[WARN] [1786960483.540873648] [coord_transform]: Outlier rejected #4 (jumped 742.3mm). Ignoring.
+[INFO] [1786960483.577192446] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786960488.076591386] [coord_transform]: Outlier rejected #1 (jumped 471.6mm). Ignoring.
+[WARN] [1786960488.110473736] [coord_transform]: Outlier rejected #2 (jumped 471.5mm). Ignoring.
+[WARN] [1786960488.148185497] [coord_transform]: Outlier rejected #3 (jumped 458.3mm). Ignoring.
+[WARN] [1786960488.180341035] [coord_transform]: Outlier rejected #4 (jumped 468.6mm). Ignoring.
+[INFO] [1786960488.213380908] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[WARN] [1786960488.674577714] [coord_transform]: Outlier rejected #1 (jumped 203.7mm). Ignoring.
+[WARN] [1786960488.713052683] [coord_transform]: Outlier rejected #2 (jumped 218.8mm). Ignoring.
+[WARN] [1786960488.843253956] [coord_transform]: Outlier rejected #1 (jumped 204.0mm). Ignoring.
+[WARN] [1786960488.877694307] [coord_transform]: Outlier rejected #2 (jumped 314.1mm). Ignoring.
+[WARN] [1786960488.914875168] [coord_transform]: Outlier rejected #3 (jumped 415.1mm). Ignoring.
+[WARN] [1786960488.947952852] [coord_transform]: Outlier rejected #4 (jumped 447.0mm). Ignoring.
+[INFO] [1786960488.981503928] [coord_transform]: Too many outliers (5). Resetting filter to new position.
+[INFO] [1786960489.376335441] [coord_transform]: Deadband: HOLD at (0.124, -0.220, 0.023)
+[INFO] [1786960489.912988602] [coord_transform]: Deadband: RELEASE — motion detected

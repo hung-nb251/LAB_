@@ -25,7 +25,7 @@ from trajectory_msgs.msg import JointTrajectoryPoint
 from builtin_interfaces.msg import Duration
 
 from human_hand_msgs.msg import HandState, HandPrediction
-from geometry_msgs.msg import Point, PointStamped
+from geometry_msgs.msg import Point, PointStamped, PoseStamped
 
 try:
     import pyqtgraph as pg
@@ -54,15 +54,20 @@ class PredictorUiNode(Node):
         self._meas = {'x': deque(maxlen=n_pts),     # Filtered (chính)
                       'y': deque(maxlen=n_pts),
                       'z': deque(maxlen=n_pts)}
-        # self._raw  = {'x': deque(maxlen=n_pts),     # Raw (tham khảo mờ)
-        #               'y': deque(maxlen=n_pts),
-        #               'z': deque(maxlen=n_pts)}
         self._pred = {'x': deque(maxlen=n_pts),
                       'y': deque(maxlen=n_pts),
                       'z': deque(maxlen=n_pts)}
+        # Robot frame: target_base (lệnh gửi robot) và robot_ee (vị trí thực)
+        self._target_base = {'x': deque(maxlen=n_pts),
+                             'y': deque(maxlen=n_pts),
+                             'z': deque(maxlen=n_pts)}
+        self._robot_ee = {'x': deque(maxlen=n_pts),
+                          'y': deque(maxlen=n_pts),
+                          'z': deque(maxlen=n_pts)}
         self._t_meas: deque = deque(maxlen=n_pts)
-        # self._t_raw:  deque = deque(maxlen=n_pts)
         self._t_pred: deque = deque(maxlen=n_pts)
+        self._t_target: deque = deque(maxlen=n_pts)
+        self._t_ee: deque = deque(maxlen=n_pts)
 
         # ── Stats display ────────────────────────────────────────────────────
         self._inf_ms = 0.0
@@ -92,6 +97,10 @@ class PredictorUiNode(Node):
             PointStamped, '/coord_transform/filtered_hand_position', self._cb_meas, 10)
         self.create_subscription(
             HandPrediction, '/ml/predicted_position', self._cb_pred, 10)
+        self.create_subscription(
+            PointStamped, '/coord_transform/target_base', self._cb_target_base, 10)
+        self.create_subscription(
+            PoseStamped, '/cartesian_streamer/current_pose', self._cb_robot_ee, 10)
         self.create_subscription(
             Bool, '/run_status', self._cb_run_status, 10)
         self.create_subscription(
@@ -176,6 +185,28 @@ class PredictorUiNode(Node):
             self._buf_size = msg.buffer_size
             self._fps_counter_p += 1
 
+    def _cb_target_base(self, msg: PointStamped):
+        """Nhận target đã transform sang base_link (lệnh gửi robot)."""
+        if not self._is_drawing_ui:
+            return
+        t = time.time()
+        with self._lock:
+            self._t_target.append(t)
+            self._target_base['x'].append(msg.point.x)
+            self._target_base['y'].append(msg.point.y)
+            self._target_base['z'].append(msg.point.z)
+
+    def _cb_robot_ee(self, msg: PoseStamped):
+        """Nhận vị trí thực tế của robot EE (base_link frame)."""
+        if not self._is_drawing_ui:
+            return
+        t = time.time()
+        with self._lock:
+            self._t_ee.append(t)
+            self._robot_ee['x'].append(msg.pose.position.x)
+            self._robot_ee['y'].append(msg.pose.position.y)
+            self._robot_ee['z'].append(msg.pose.position.z)
+
     def _update_fps(self):
         now = time.time()
         dt = now - self._fps_t
@@ -201,8 +232,10 @@ class PredictorUiNode(Node):
         with self._lock:
             return (
                 list(self._meas['x']), list(self._meas['y']), list(self._meas['z']),
-                # list(self._raw['x']),  list(self._raw['y']),  list(self._raw['z']),
                 list(self._pred['x']), list(self._pred['y']), list(self._pred['z']),
+                list(self._target_base['x']), list(self._target_base['y']), list(self._target_base['z']),
+                list(self._robot_ee['x']), list(self._robot_ee['y']), list(self._robot_ee['z']),
+                list(self._t_meas), list(self._t_pred), list(self._t_target), list(self._t_ee),
                 self._inf_ms, self._model_name, self._buf_size,
                 self._fps_meas, self._fps_pred, self._hybrid_state
             )
@@ -358,11 +391,13 @@ class PredictorUiNode(Node):
         with self._lock:
             for k in ['x', 'y', 'z']:
                 self._meas[k].clear()
-                # self._raw[k].clear()
                 self._pred[k].clear()
+                self._target_base[k].clear()
+                self._robot_ee[k].clear()
             self._t_meas.clear()
-            # self._t_raw.clear()
             self._t_pred.clear()
+            self._t_target.clear()
+            self._t_ee.clear()
 
 
 # ── PyQtGraph Window ─────────────────────────────────────────────────────────
@@ -383,7 +418,7 @@ class DashboardWindow:
 
         self.win = QtWidgets.QWidget()
         self.win.setWindowTitle('HRC Trajectory Dashboard — Ubuntu')
-        self.win.resize(1600, 900)
+        self.win.resize(1600, 1100)   # Mở rộng chiều cao để chứa 6 đồ thị
         self.win.setStyleSheet('background: #1a1a2e; color: #e0e0e0;')
 
         main_layout = QtWidgets.QVBoxLayout(self.win)
@@ -404,78 +439,110 @@ class DashboardWindow:
         top.addStretch()
         main_layout.addLayout(top)
 
-        # ── Plots ─────────────────────────────────────────────────────────
-        mid_layout = QtWidgets.QHBoxLayout()
+        # ── Plots (2 hàng) ────────────────────────────────────────
+        plots_area = QtWidgets.QVBoxLayout()
 
+        # ── Hàng 1: Camera Frame (Actual tay người vs Predicted AI) ──────
+        lbl_cam = QtWidgets.QLabel('■  Camera Frame — Ý định tay người')
+        lbl_cam.setStyleSheet('color: #64c8ff; font-size: 12px; font-weight: bold; padding: 2px 4px;')
+        plots_area.addWidget(lbl_cam)
+
+        mid_layout = QtWidgets.QHBoxLayout()
         self.gw = pg.GraphicsLayoutWidget()
-        self.gw.setFixedHeight(650)
-        plots_data = [('X axis (m)', 'meas_x', 'pred_x'),
-                      ('Y axis (m)', 'meas_y', 'pred_y'),
-                      ('Z axis (m)', 'meas_z', 'pred_z')]
+        # Removed setFixedHeight to allow auto-stretching
+        plots_data_cam = [
+            ('X (m) — Camera', -1.0,  1.0),
+            ('Y (m) — Camera', -0.1,  1.5),
+            ('Z (m) — Camera', -0.2,  0.8),
+        ]
 
         self.plots = {}
-        self.curves_m = {}   # Filtered (chính — xanh)
-        # self.curves_r = {}   # Raw (tham khảo mờ — xám)
+        self.curves_m = {}   # Filtered actual (xanh)
         self.curves_p = {}   # Predicted (cam)
 
-        for i, (title, mk, pk) in enumerate(plots_data):
+        for i, (title, y_lo, y_hi) in enumerate(plots_data_cam):
             p = self.gw.addPlot(row=0, col=i, title=title)
             p.setLabel('left', title)
-            p.setLabel('bottom', 'Frames')
+            p.setLabel('bottom', 'Time (s)')
             p.addLegend(offset=(5, 5))
             p.showGrid(x=True, y=True, alpha=0.3)
-
             p.getAxis('left').enableAutoSIPrefix(False)
             p.getAxis('bottom').enableAutoSIPrefix(False)
-
-            p.setXRange(0, 300, padding=0)
+            p.setXRange(-10, 0, padding=0)
             p.enableAutoRange(axis='y', enable=False)
-
-            if i == 0:
-                p.setYRange(-1.0, 1.0, padding=0)   # X axis
-            elif i == 1:
-                p.setYRange(-0.1, 1.5, padding=0)   # Y axis (depth)
-            elif i == 2:
-                p.setYRange(-0.2, 0.8, padding=0)   # Z axis
-
-            # # Raw: vẽ trước nhưng mờ (z=0 = phía sau)
-            # self.curves_r[i] = p.plot(pen=pg.mkPen((120, 120, 120, 80), width=1),
-            #                           name='Raw (camera)')
-            # Filtered: đường chính
-            self.curves_m[i] = p.plot(pen=pg.mkPen(self.COLOR_MEAS, width=2),
-                                      name='Actual')
-            self.curves_p[i] = p.plot(pen=pg.mkPen(self.COLOR_PRED, width=2),
-                                      name='Predicted')
+            p.setYRange(y_lo, y_hi, padding=0)
+            self.curves_m[i] = p.plot(pen=pg.mkPen(self.COLOR_MEAS, width=2), name='Actual')
+            self.curves_p[i] = p.plot(pen=pg.mkPen(self.COLOR_PRED, width=2), name='Predicted')
             self.plots[i] = p
+            self.gw.ci.layout.setColumnStretchFactor(i, 1)
 
         mid_layout.addWidget(self.gw, stretch=6)
 
         self.right_panel = QtWidgets.QVBoxLayout()
-        
         self.btn_set_goal = QtWidgets.QPushButton('Set Goal')
         self.btn_set_goal.setStyleSheet(self._btn_style('#b9770e', '#f39c12'))
         self.btn_set_goal.setToolTip('Lưu lại vị trí hiện tại làm Goal')
         self.btn_set_goal.clicked.connect(self._do_set_goal)
         self.right_panel.addWidget(self.btn_set_goal)
 
-        # Labels for Goal coordinates
         lbl_style = "color: #e0e0e0; font-size: 24px; font-weight: bold; margin-top: 15px; margin-left: 10px;"
         self.lbl_goal_x = QtWidgets.QLabel('X: -----')
         self.lbl_goal_x.setStyleSheet(lbl_style)
         self.right_panel.addWidget(self.lbl_goal_x)
-
         self.lbl_goal_y = QtWidgets.QLabel('Y: -----')
         self.lbl_goal_y.setStyleSheet(lbl_style)
         self.right_panel.addWidget(self.lbl_goal_y)
-
         self.lbl_goal_z = QtWidgets.QLabel('Z: -----')
         self.lbl_goal_z.setStyleSheet(lbl_style)
         self.right_panel.addWidget(self.lbl_goal_z)
-
         self.right_panel.addStretch()
-        
         mid_layout.addLayout(self.right_panel, stretch=1)
-        main_layout.addLayout(mid_layout)
+        plots_area.addLayout(mid_layout)
+
+        # ── Hàng 2: Robot Frame (target_base vs Robot EE) ─────────────────
+        lbl_robot = QtWidgets.QLabel('■  Robot Frame (base_link) — Lệnh target vs Vị trí thực robot')
+        lbl_robot.setStyleSheet('color: #90ee90; font-size: 12px; font-weight: bold; padding: 2px 4px;')
+        plots_area.addWidget(lbl_robot)
+
+        self.gw2 = pg.GraphicsLayoutWidget()
+        # Removed setFixedHeight to allow auto-stretching
+        plots_data_robot = [
+            ('X (m) — Robot', -0.8, 0.8),
+            ('Y (m) — Robot',  0.0, 1.5),
+            ('Z (m) — Robot',  0.0, 1.2),
+        ]
+
+        self.plots_r = {}
+        # Target: nét liền cam — lệnh gửi robot (đã transform sang base_link)
+        self.curves_tgt = {}
+        # Robot EE: nét đứt xanh lá — vị trí thực tế robot (bám sau target)
+        self.curves_ee = {}
+
+        COLOR_TARGET = (255, 165, 50)    # cam — target (lệnh)
+        COLOR_EE     = (100, 220, 120)   # xanh lá — robot EE
+
+        for i, (title, y_lo, y_hi) in enumerate(plots_data_robot):
+            p = self.gw2.addPlot(row=0, col=i, title=title)
+            p.setLabel('left', title)
+            p.setLabel('bottom', 'Time (s)')
+            p.addLegend(offset=(5, 5))
+            p.showGrid(x=True, y=True, alpha=0.3)
+            p.getAxis('left').enableAutoSIPrefix(False)
+            p.getAxis('bottom').enableAutoSIPrefix(False)
+            p.setXRange(-10, 0, padding=0)
+            p.enableAutoRange(axis='y', enable=False)
+            p.setYRange(y_lo, y_hi, padding=0)
+            self.curves_tgt[i] = p.plot(
+                pen=pg.mkPen(COLOR_TARGET, width=2),
+                name='Predicted')
+            self.curves_ee[i] = p.plot(
+                pen=pg.mkPen(COLOR_EE, width=2, style=QtCore.Qt.PenStyle.DashLine),
+                name='Actual')
+            self.plots_r[i] = p
+            self.gw2.ci.layout.setColumnStretchFactor(i, 1)
+
+        plots_area.addWidget(self.gw2)
+        main_layout.addLayout(plots_area)
 
         # ── Bottom bar: controls ──────────────────────────────────────────
         ctrl = QtWidgets.QVBoxLayout()
@@ -770,30 +837,36 @@ class DashboardWindow:
                 self._set_status('State: STOPPED | Auto-Snap → Robot disabled')
 
         (mx, my, mz,
-         # rx, ry, rz,
          px, py, pz,
+         tx, ty, tz,
+         rex, rey, rez,
+         t_meas, t_pred, t_target, t_ee,
          inf_ms, model, buf, fps_m, fps_p, hybrid_state) = self.node.get_buffers()
 
+        now = time.time()
+        tm = [t - now for t in t_meas]
+        tp = [t - now for t in t_pred]
+        tt = [t - now for t in t_target]
+        te = [t - now for t in t_ee]
+
         axes_m = [mx, my, mz]
-        # axes_r = [rx, ry, rz]
         axes_p = [px, py, pz]
+        axes_t = [tx, ty, tz]
+        axes_e = [rex, rey, rez]
 
         for i in range(3):
             ym = axes_m[i]
-            # yr = axes_r[i]
             yp = axes_p[i]
+            yt = axes_t[i]
+            ye = axes_e[i]
 
-            xm = list(range(len(ym)))
-            # xr = list(range(len(yr)))
+            self.curves_m[i].setData(tm, ym)   # Filtered (chính)
+            self.curves_p[i].setData(tp, yp)   # Predicted
+            
+            # Robot Frame
+            self.curves_tgt[i].setData(tt, yt)
+            self.curves_ee[i].setData(te, ye)
 
-            offset = len(ym) - len(yp)
-            if offset < 0:
-                offset = 0
-            xp = [x + offset for x in range(len(yp))]
-
-            # self.curves_r[i].setData(xr, yr)   # Raw (mờ)
-            self.curves_m[i].setData(xm, ym)   # Filtered (chính)
-            self.curves_p[i].setData(xp, yp)   # Predicted
 
         self._lbl_model.setText(f'Model: {model}')
         self._lbl_inf.setText(f'Inf: {inf_ms:.1f} ms')

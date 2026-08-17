@@ -1,0 +1,14 @@
+ros_timestamp_ns,wall_time,trajectory_mode,meas_x,meas_y,meas_z,filt_x,filt_y,filt_z,is_tracked,pred_x,pred_y,pred_z,mae_x,mae_y,mae_z,inference_ms,buffer_size,target_x,target_y,target_z,robot_ee_x,robot_ee_y,robot_ee_z,j1_vel,j2_vel,j3_vel,j4_vel,j5_vel,j6_vel,j1_eff,j2_eff,j3_eff,j4_eff,j5_eff,j6_eff,role
+1786954301029574542,2026-08-17T15:11:41.029614,ground_truth,-0.897369,-2.703000,-0.179166,,,,True,,,,,,,,,,,,-0.161981,0.308960,0.388241,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,FOLLOWER
+1786954302315007923,2026-08-17T15:11:42.315035,ground_truth,-1.008620,-2.922000,-0.203337,-0.897369,-2.703000,-0.179166,True,,,,,,,,,,,,-0.161981,0.308960,0.388241,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,FOLLOWER
+1786954308877702401,2026-08-17T15:11:48.877723,ground_truth,-1.506737,-2.935000,0.333978,-0.897369,-2.703000,-0.179166,True,,,,,,,,,,,,-0.161981,0.308960,0.388241,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,FOLLOWER
+
+
+============================================================
+EXPERIMENT METRICS
+  File: experiment_GROUND_TRUTH_20260817_151128.csv
+  Total samples: 3
+  Task completion time: 28.59 s
+  Mode: GROUND TRUTH (no prediction metrics)
+  Jerk: insufficient EE data for calculation
+============================================================
