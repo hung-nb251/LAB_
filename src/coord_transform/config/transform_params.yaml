@@ -14,7 +14,7 @@ coord_transform:
 
     cam_to_base_tx: 0.5
     cam_to_base_ty: 0.0
-    cam_to_base_tz: 1.2
+    cam_to_base_tz: 1.05
 
     ee_orient_x: 0.0
     ee_orient_y: 1.0

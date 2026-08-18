@@ -1,0 +1,38 @@
+[0.164s] Invoking command in '/home/hungnb/cocarry_ws/build/motoman_gp50_support': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/motoman_gp50_support -- -j16 -l16
+[0.219s] Invoked command in '/home/hungnb/cocarry_ws/build/motoman_gp50_support' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake --build /home/hungnb/cocarry_ws/build/motoman_gp50_support -- -j16 -l16
+[0.219s] Invoking command in '/home/hungnb/cocarry_ws/build/motoman_gp50_support': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/motoman_gp50_support
+[0.228s] -- Install configuration: ""
+[0.228s] -- Execute custom install script
+[0.228s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/ament_index/resource_index/package_run_dependencies/motoman_gp50_support
+[0.228s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/ament_index/resource_index/parent_prefix_path/motoman_gp50_support
+[0.228s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/environment/ament_prefix_path.sh
+[0.228s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/environment/ament_prefix_path.dsv
+[0.228s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/environment/path.sh
+[0.228s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/environment/path.dsv
+[0.228s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/local_setup.bash
+[0.228s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/local_setup.sh
+[0.228s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/local_setup.zsh
+[0.228s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/local_setup.dsv
+[0.228s] -- Symlinking: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/package.dsv
+[0.231s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/ament_index/resource_index/packages/motoman_gp50_support
+[0.231s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/cmake/motoman_gp50_supportConfig.cmake
+[0.231s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/cmake/motoman_gp50_supportConfig-version.cmake
+[0.231s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/package.xml
+[0.231s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/launch/view_gp50.launch.xml
+[0.232s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/meshes/gp50/collision/base_link.stl
+[0.232s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/meshes/gp50/collision/link_1.stl
+[0.232s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/meshes/gp50/collision/link_2.stl
+[0.232s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/meshes/gp50/collision/link_3.stl
+[0.233s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/meshes/gp50/collision/link_4.stl
+[0.233s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/meshes/gp50/collision/link_5.stl
+[0.233s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/meshes/gp50/collision/link_6.stl
+[0.233s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/meshes/gp50/visual/base_link.stl
+[0.233s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/meshes/gp50/visual/link_1.stl
+[0.233s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/meshes/gp50/visual/link_2.stl
+[0.233s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/meshes/gp50/visual/link_3.stl
+[0.233s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/meshes/gp50/visual/link_4.stl
+[0.234s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/meshes/gp50/visual/link_5.stl
+[0.234s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/meshes/gp50/visual/link_6.stl
+[0.234s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/urdf/gp50.xacro
+[0.234s] -- Up-to-date symlink: /home/hungnb/cocarry_ws/install/motoman_gp50_support/share/motoman_gp50_support/urdf/gp50_macro.xacro
+[0.313s] Invoked command in '/home/hungnb/cocarry_ws/build/motoman_gp50_support' returned '0': AMENT_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/hungnb/cocarry_ws/install/motoman_resources:/opt/ros/humble /usr/bin/cmake --install /home/hungnb/cocarry_ws/build/motoman_gp50_support

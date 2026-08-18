@@ -1,0 +1,79 @@
+[INFO] [1787024896.648700897] [predictor_ui]: [UI] Node started
+[INFO] [1787024948.670174379] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787024963.443524959] [predictor_ui]: [UI] Trajectory mode set to: prediction
+[INFO] [1787024963.443927903] [predictor_ui]: [UI] Model cmd → svgp
+[INFO] [1787024963.444291233] [predictor_ui]: [UI] Hybrid cmd → hybrid_off
+[INFO] [1787024980.900704253] [predictor_ui]: [UI] Capture Init Pose thành công: Captured Init Pose! P_init=(-0.162, 0.309, 0.388), Cam_init=(0.123, -0.165, -0.009), Noise_Tol=60.0mm
+Orientation=(0.988, -0.153, -0.004, -0.029)
+[INFO] [1787025003.854999517] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1787025007.502282141] [predictor_ui]: [UI] Set Goal → (0.0320, 0.5974, -0.0185)
+[INFO] [1787025022.306240603] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787025042.011472607] [predictor_ui]: [UI] Trajectory mode set to: prediction
+[INFO] [1787025042.011846446] [predictor_ui]: [UI] Model cmd → svgp
+[INFO] [1787025042.012130367] [predictor_ui]: [UI] Hybrid cmd → hybrid_on
+[INFO] [1787025069.812579469] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1787025084.920954038] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787025087.726195867] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787025142.963175436] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1787025159.448129577] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787025220.758840332] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1787025231.873492004] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787025250.769442395] [predictor_ui]: [UI] Trajectory mode set to: prediction
+[INFO] [1787025250.769783742] [predictor_ui]: [UI] Model cmd → svgp
+[INFO] [1787025250.770036293] [predictor_ui]: [UI] Hybrid cmd → hybrid_off
+[INFO] [1787025268.121464943] [predictor_ui]: [UI] Trajectory mode set to: prediction
+[INFO] [1787025268.121781263] [predictor_ui]: [UI] Model cmd → svgp
+[INFO] [1787025268.122101391] [predictor_ui]: [UI] Hybrid cmd → hybrid_off
+[INFO] [1787025292.616177263] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1787025364.346822609] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787025400.356703665] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1787025404.300740873] [predictor_ui]: [UI] Set Goal → (0.0461, 0.4180, -0.0735)
+[INFO] [1787025412.090046652] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787025497.060027110] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1787025536.594318857] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787025570.449763128] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1787025574.932205530] [predictor_ui]: [UI] Set Goal → (0.0736, 0.5610, -0.0551)
+[INFO] [1787025594.798423481] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1787025601.040788908] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787025657.218467692] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1787025679.288761312] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787025727.350341136] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1787025734.571019068] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787025756.309829487] [predictor_ui]: [UI] Trajectory mode set to: prediction
+[INFO] [1787025756.310135610] [predictor_ui]: [UI] Model cmd → svgp
+[INFO] [1787025756.310374103] [predictor_ui]: [UI] Hybrid cmd → hybrid_on
+[INFO] [1787025789.888346961] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1787025811.911571384] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787025866.542014477] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1787025883.190155008] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787025931.164895683] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1787025939.514455895] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787025978.752587300] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1787025989.246834630] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787026286.779217852] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1787026407.364644592] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787026446.614350997] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1787026507.040804280] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1787026529.629011707] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787026565.003749621] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1787026581.815878313] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787026642.498630333] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787026649.139473150] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787026692.971427059] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1787026710.341578352] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787026757.329615074] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1787026766.954277786] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787026806.326863482] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1787026822.061288746] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787026861.685666907] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1787026891.477238065] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787026935.357714523] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1787026951.097877085] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787027011.581579189] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1787027053.617472119] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787027088.972189068] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1787027103.647829609] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787027151.772479567] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1787027164.577687669] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
+[INFO] [1787027218.255423656] [predictor_ui]: [UI] Auto-disabled robot on Stop Run
+[INFO] [1787027600.224566341] [predictor_ui]: [UI] Using standalone go_home.py script for real robot

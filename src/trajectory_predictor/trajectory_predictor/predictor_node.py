@@ -154,9 +154,10 @@ class PredictorNode(Node):
         self._hold_recent = deque(maxlen=10)     # buffer vị trí gần nhất
         self._hold_stationary_count = 0          # đếm frame liên tiếp tĩnh
         self._hold_active = False                # đang khóa?
-        self._hold_position = None               # vị trí khóa
+        self._hold_target = None                 # vị trí robot sẽ được giữ
+        self._hold_reference = None              # vị trí tay người lúc bắt đầu giữ
         self._HOLD_STD_THRESH = 0.015            # ngưỡng std (15mm) — tăng để tránh false-positive khi mang vật
-        self._HOLD_ENTER_FRAMES = 5              # cần 5 frame tĩnh liên tiếp
+        self._HOLD_ENTER_FRAMES = 8              # cần 8 frame tĩnh liên tiếp (~266ms ở 30Hz)
         self._HOLD_RELEASE_THRESH = 0.050        # tay rời > 50mm thì thả hold — tăng để chắc chắn hơn
 
         # ── Publishers ───────────────────────────────────────────────────────
@@ -438,11 +439,45 @@ class PredictorNode(Node):
             self._buffer.append([x, y, z])
 
         # ── Prediction Hold: phát hiện tay đứng yên ──────────────────────
-        # ── Prediction Hold: Disabled ──────────────────────────────────────
-        # Giữ nguyên như phiên bản 73a99e9e để robot chạy mượt mà.
-        # Không dùng Prediction Hold trong chế độ thực tế vì:
-        #   - Khi mang vật, rung tay tự nhiên > ngưỡng std → Hold kích hoạt sai lúc
-        #   - Robot có thể dừng đột ngột giữa chừng gây giật cục
+        self._hold_recent.append([x, y, z])
+        if len(self._hold_recent) >= 5:
+            import numpy as _np
+            recent = _np.array(self._hold_recent)
+            max_std = float(_np.max(_np.std(recent, axis=0)))
+
+            if self._hold_active:
+                # Đang HOLD → kiểm tra xem tay đã bắt đầu di chuyển chưa
+                mean_pos = _np.mean(recent, axis=0)
+                dev = float(_np.linalg.norm(mean_pos - _np.array(self._hold_reference)))
+                if dev > self._HOLD_RELEASE_THRESH:
+                    self._hold_active = False
+                    self._hold_stationary_count = 0
+                    self._buffer.clear()
+                    self.get_logger().info(
+                        f'[Pred HOLD OFF] Tay di chuyển (dev={dev*1000:.1f}mm). Thả hold, reset buffer.')
+                else:
+                    self._last_filtered = list(self._hold_target)
+                    self._publish_prediction(list(self._hold_target), 0.0)
+                    return
+            else:
+                if max_std < self._HOLD_STD_THRESH:
+                    self._hold_stationary_count += 1
+                else:
+                    self._hold_stationary_count = 0
+
+                if self._hold_stationary_count >= self._HOLD_ENTER_FRAMES:
+                    self._hold_active = True
+                    self._hold_reference = list(_np.mean(recent, axis=0))
+                    if self._last_filtered is not None:
+                        self._hold_target = list(self._last_filtered)
+                    else:
+                        self._hold_target = list(self._hold_reference)
+                        
+                    self.get_logger().info(
+                        f'[Pred HOLD ON] Tay đứng yên (std={max_std*1000:.1f}mm). '
+                        f'Target robot Z: {self._hold_target[2]:.4f} | Tay thật Z: {self._hold_reference[2]:.4f}')
+                    self._publish_prediction(list(self._hold_target), 0.0)
+                    return
 
         # ── Kiểm tra chuyển pha FOLLOWER → LEADER ──────────────────────────
         # Chỉ kiểm tra khi đang FOLLOWER — guard chống gọi lại nhiều lần
@@ -503,7 +538,8 @@ class PredictorNode(Node):
         # Reset HOLD state để tránh chen vào MJM khi tay đang đứng yên tại điểm chuyển pha
         self._hold_active = False
         self._hold_stationary_count = 0
-        self._hold_position = None
+        self._hold_target = None
+        self._hold_reference = None
         self._hold_recent.clear()
 
         self.get_logger().info(

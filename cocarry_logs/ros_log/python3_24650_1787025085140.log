@@ -1,0 +1,37 @@
+[INFO] [1787025085.864514378] [go_home_node]: Đang chờ /joint_states...
+[INFO] [1787025085.865664137] [go_home_node]: Joints hiện tại: ['1.4828', '0.9332', '0.5253', '-0.0057', '-1.0555', '-1.7888']
+[INFO] [1787025085.865946404] [go_home_node]: Gọi stop_traj_mode...
+[INFO] [1787025086.901969765] [go_home_node]: Gọi reset_error...
+[INFO] [1787025087.429036783] [go_home_node]: Gọi start_point_queue_mode...
+[INFO] [1787025088.941765738] [go_home_node]: ✓ Point Queue Mode ACTIVE — Servo ON!
+[INFO] [1787025090.444046762] [go_home_node]: Gửi seed point...
+[INFO] [1787025090.846540182] [go_home_node]: ✓ Seed point accepted.
+[INFO] [1787025091.147623710] [go_home_node]: Di chuyển về Home trong 2.5s (50 points @ 20Hz)...
+[WARN] [1787025095.008360420] [go_home_node]: Point 27 rejected: code=2
+[WARN] [1787025095.187895582] [go_home_node]: Point 28 rejected: code=2
+[WARN] [1787025095.234077826] [go_home_node]: Point 29 rejected: code=2
+[WARN] [1787025095.406507000] [go_home_node]: Point 30 rejected: code=2
+[WARN] [1787025095.452116605] [go_home_node]: Point 31 rejected: code=2
+[WARN] [1787025095.501959980] [go_home_node]: Point 32 rejected: code=2
+[WARN] [1787025095.549227432] [go_home_node]: Point 33 rejected: code=2
+[WARN] [1787025095.598953818] [go_home_node]: Point 34 rejected: code=2
+[WARN] [1787025095.644822537] [go_home_node]: Point 35 rejected: code=2
+[WARN] [1787025095.694962256] [go_home_node]: Point 36 rejected: code=2
+[WARN] [1787025095.744336204] [go_home_node]: Point 37 rejected: code=2
+[WARN] [1787025095.794121120] [go_home_node]: Point 38 rejected: code=2
+[WARN] [1787025095.836867755] [go_home_node]: Point 39 rejected: code=2
+[WARN] [1787025095.889838984] [go_home_node]: Point 40 rejected: code=2
+[WARN] [1787025095.952145437] [go_home_node]: Point 41 rejected: code=2
+[WARN] [1787025095.995580699] [go_home_node]: Point 42 rejected: code=2
+[WARN] [1787025096.047159626] [go_home_node]: Point 43 rejected: code=2
+[WARN] [1787025096.099193383] [go_home_node]: Point 44 rejected: code=2
+[WARN] [1787025096.145004212] [go_home_node]: Point 45 rejected: code=2
+[WARN] [1787025096.189623846] [go_home_node]: Point 46 rejected: code=2
+[WARN] [1787025096.233922279] [go_home_node]: Point 47 rejected: code=2
+[WARN] [1787025096.274399092] [go_home_node]: Point 48 rejected: code=2
+[WARN] [1787025096.321629153] [go_home_node]: Point 49 rejected: code=2
+[WARN] [1787025096.364946904] [go_home_node]: Point 50 rejected: code=2
+[INFO] [1787025096.408810134] [go_home_node]: ✓ Đã gửi 17/50 points. Robot đang di chuyển về Home...
+[INFO] [1787025099.912309285] [go_home_node]: Thoát Point Queue Mode (stop_traj_mode)...
+[INFO] [1787025099.953657594] [go_home_node]: ✓ stop_traj_mode thành công. Tủ điện sạch sẽ.
+[INFO] [1787025099.954127341] [go_home_node]: ✓ Đã về Home an toàn! Controller đã thoát queue mode.

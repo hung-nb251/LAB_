@@ -1,0 +1,3 @@
+[INFO] [1787023651.316847519] [experiment_logger]: ✓ STARTED in-memory logging. Target file: /home/hungnb/cocarry_ws/cocarry_logs/experiment_GROUND_TRUTH_20260818_102731.csv
+[INFO] [1787023651.344792606] [experiment_logger]: Logger ready.
+[INFO] [1787023658.544383816] [experiment_logger]: Service called: /logger/toggle with data=False

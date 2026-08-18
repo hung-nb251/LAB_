@@ -1,0 +1,173 @@
+[INFO] [1787037017.303483750] [trajectory_predictor]: [Predictor] Worker launched (pid=59121)
+[INFO] [1787037017.303960181] [trajectory_predictor]: [Predictor] Started | model=svgp | window=10 | auto_start=True
+  Output Filter: enabled=True, ema_alpha=0.3, max_dev=0.08, max_rate=0.02
+[WARN] [1787037018.444163930] [trajectory_predictor]: [Worker STDERR] /usr/lib/python3/dist-packages/scipy/__init__.py:146: UserWarning: A NumPy version >=1.17.3 and <1.25.0 is required for this version of SciPy (detected version 1.26.4
+[WARN] [1787037018.444829031] [trajectory_predictor]: [Worker STDERR] warnings.warn(f"A NumPy version >={np_minversion} and <{np_maxversion}"
+[INFO] [1787037019.233667130] [trajectory_predictor]: [Worker] TF 2.15.0 and sklearn loaded
+[INFO] [1787037020.341387341] [trajectory_predictor]: [Predictor] Worker READY | model=svgp
+[INFO] [1787037021.301682974] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1787037050.849430608] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1787037051.791246005] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=11.7mm). Target robot Z: -0.0020 | Tay thật Z: -0.0020
+[INFO] [1787037051.791574953] [trajectory_predictor]: [Filter] raw=(0.0002,-0.0370,-0.0020) → filt=(0.0002,-0.0370,-0.0020) Δ=(0.0000,0.0000,0.0000)
+[INFO] [1787037056.232780002] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1787037056.690411703] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=62.4mm). Thả hold, reset buffer.
+[INFO] [1787037060.597914323] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=10.6mm). Target robot Z: -0.0020 | Tay thật Z: 0.3208
+[INFO] [1787037061.029327533] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=50.4mm). Thả hold, reset buffer.
+[INFO] [1787037061.295401511] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=5.6mm). Target robot Z: 0.0040 | Tay thật Z: 0.2507
+[INFO] [1787037062.295888162] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=55.2mm). Thả hold, reset buffer.
+[INFO] [1787037063.332732306] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=9.0mm). Target robot Z: 0.0100 | Tay thật Z: 0.3213
+[INFO] [1787037063.664314331] [trajectory_predictor]: [Filter] raw=(0.0002,-0.0310,0.0100) → filt=(0.0002,-0.0250,0.0160) Δ=(0.0000,0.0060,0.0060)
+[INFO] [1787037064.865980448] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=51.7mm). Thả hold, reset buffer.
+[INFO] [1787037065.167119341] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=5.4mm). Target robot Z: 0.0160 | Tay thật Z: 0.2366
+[INFO] [1787037068.698886047] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=55.3mm). Thả hold, reset buffer.
+[INFO] [1787037070.034502830] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=10.3mm). Target robot Z: 0.0220 | Tay thật Z: 0.2449
+[INFO] [1787037071.970803323] [trajectory_predictor]: [Filter] raw=(0.0002,-0.0190,0.0220) → filt=(0.0002,-0.0130,0.0280) Δ=(0.0000,0.0060,0.0060)
+[INFO] [1787037072.236760076] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=58.6mm). Thả hold, reset buffer.
+[INFO] [1787037073.739335425] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=11.4mm). Target robot Z: 0.0280 | Tay thật Z: 0.2343
+[INFO] [1787037073.970560476] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=52.5mm). Thả hold, reset buffer.
+[INFO] [1787037076.505972415] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=13.1mm). Target robot Z: 0.0340 | Tay thật Z: 0.0702
+[INFO] [1787037077.875492104] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=52.0mm). Thả hold, reset buffer.
+[INFO] [1787037079.909661360] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=9.8mm). Target robot Z: 0.0340 | Tay thật Z: 0.1883
+[INFO] [1787037080.441602389] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=51.6mm). Thả hold, reset buffer.
+[INFO] [1787037080.907186653] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=10.6mm). Target robot Z: 0.0400 | Tay thật Z: 0.1134
+[INFO] [1787037081.140886836] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=56.3mm). Thả hold, reset buffer.
+[INFO] [1787037082.041655243] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=10.1mm). Target robot Z: 0.0460 | Tay thật Z: 0.8072
+[INFO] [1787037082.544467657] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=50.1mm). Thả hold, reset buffer.
+[INFO] [1787037082.878554579] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=8.9mm). Target robot Z: 0.0520 | Tay thật Z: 0.7366
+[INFO] [1787037083.077856682] [trajectory_predictor]: [Filter] raw=(0.0062,0.0050,0.0520) → filt=(0.0062,0.0110,0.0580) Δ=(0.0000,0.0060,0.0060)
+[INFO] [1787037083.246113813] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=67.1mm). Thả hold, reset buffer.
+[INFO] [1787037084.478870507] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=6.5mm). Target robot Z: 0.0580 | Tay thật Z: 0.1631
+[INFO] [1787037087.183574271] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=51.6mm). Thả hold, reset buffer.
+[INFO] [1787037087.682766519] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=12.9mm). Target robot Z: 0.0580 | Tay thật Z: 0.1238
+[INFO] [1787037088.148688582] [trajectory_predictor]: [Filter] raw=(0.0062,0.0170,0.0580) → filt=(0.0062,0.0230,0.0580) Δ=(0.0000,0.0060,0.0000)
+[INFO] [1787037088.752564044] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=51.4mm). Thả hold, reset buffer.
+[INFO] [1787037093.752279306] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=11.3mm). Target robot Z: 0.0580 | Tay thật Z: 0.2180
+[INFO] [1787037096.487428125] [trajectory_predictor]: [Filter] raw=(0.0062,0.0230,0.0580) → filt=(0.0062,0.0290,0.0640) Δ=(0.0000,0.0060,0.0060)
+[INFO] [1787037102.356496780] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=50.3mm). Thả hold, reset buffer.
+[INFO] [1787037102.891568109] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=6.7mm). Target robot Z: 0.0640 | Tay thật Z: 0.2997
+[INFO] [1787037103.258064880] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=52.6mm). Thả hold, reset buffer.
+[INFO] [1787037103.728925740] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=5.3mm). Target robot Z: 0.0700 | Tay thật Z: 0.1789
+[INFO] [1787037104.158645937] [trajectory_predictor]: [Filter] raw=(0.0062,0.0350,0.0700) → filt=(0.0062,0.0410,0.0760) Δ=(0.0000,0.0060,0.0060)
+[INFO] [1787037104.392329457] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=59.7mm). Thả hold, reset buffer.
+[INFO] [1787037112.500505328] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=6.3mm). Target robot Z: 0.0760 | Tay thật Z: 0.3557
+[INFO] [1787037113.164774053] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=50.6mm). Thả hold, reset buffer.
+[INFO] [1787037113.668520954] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=10.4mm). Target robot Z: 0.0820 | Tay thật Z: 0.3148
+[INFO] [1787037113.905304577] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=61.2mm). Thả hold, reset buffer.
+[INFO] [1787037114.297408040] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=11.2mm). Target robot Z: 0.0880 | Tay thật Z: 0.2222
+[INFO] [1787037114.768634006] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=51.4mm). Thả hold, reset buffer.
+[INFO] [1787037115.336807949] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=10.6mm). Target robot Z: 0.0940 | Tay thật Z: 0.1831
+[INFO] [1787037116.036486777] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=51.5mm). Thả hold, reset buffer.
+[INFO] [1787037116.469374507] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=12.4mm). Target robot Z: 0.0940 | Tay thật Z: 0.1288
+[INFO] [1787037117.502573305] [trajectory_predictor]: [Filter] raw=(0.0062,0.0650,0.0940) → filt=(0.0062,0.0710,0.0940) Δ=(0.0000,0.0060,0.0000)
+[INFO] [1787037119.067906795] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=52.9mm). Thả hold, reset buffer.
+[INFO] [1787037121.699161249] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1787037134.666347041] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1787037137.946698403] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=9.1mm). Target robot Z: 0.5077 | Tay thật Z: 0.5077
+[INFO] [1787037138.382521837] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=51.4mm). Thả hold, reset buffer.
+[INFO] [1787037140.486722323] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=7.6mm). Target robot Z: 0.5077 | Tay thật Z: 0.2590
+[INFO] [1787037141.319363098] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=50.2mm). Thả hold, reset buffer.
+[INFO] [1787037141.589145478] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=5.2mm). Target robot Z: 0.5017 | Tay thật Z: 0.2022
+[INFO] [1787037142.088685696] [trajectory_predictor]: [Filter] raw=(0.0492,0.4740,0.5017) → filt=(0.0492,0.4800,0.4957) Δ=(0.0000,0.0060,0.0060)
+[INFO] [1787037142.885376253] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=51.8mm). Thả hold, reset buffer.
+[INFO] [1787037143.923359431] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=6.2mm). Target robot Z: 0.4957 | Tay thật Z: 0.2274
+[INFO] [1787037144.721211284] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=52.9mm). Thả hold, reset buffer.
+[INFO] [1787037144.990016653] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=13.2mm). Target robot Z: 0.4897 | Tay thật Z: 0.1732
+[INFO] [1787037145.455992151] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=50.2mm). Thả hold, reset buffer.
+[INFO] [1787037145.718235610] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=8.3mm). Target robot Z: 0.4837 | Tay thật Z: 0.1551
+[INFO] [1787037147.158026916] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=50.9mm). Thả hold, reset buffer.
+[INFO] [1787037148.595799541] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=8.1mm). Target robot Z: 0.4777 | Tay thật Z: 0.2020
+[INFO] [1787037148.954531131] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=50.2mm). Thả hold, reset buffer.
+[INFO] [1787037149.224642578] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=9.6mm). Target robot Z: 0.4717 | Tay thật Z: 0.1700
+[INFO] [1787037149.458606372] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=55.3mm). Thả hold, reset buffer.
+[INFO] [1787037152.960853602] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=13.1mm). Target robot Z: 0.4657 | Tay thật Z: -0.0181
+[INFO] [1787037155.529877496] [trajectory_predictor]: [Filter] raw=(0.0492,0.4770,0.4657) → filt=(0.0492,0.4710,0.4597) Δ=(0.0000,0.0060,0.0060)
+[INFO] [1787037155.696344304] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=54.0mm). Thả hold, reset buffer.
+[INFO] [1787037158.129657711] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=7.0mm). Target robot Z: 0.4597 | Tay thật Z: 0.0526
+[INFO] [1787037160.167725547] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=52.4mm). Thả hold, reset buffer.
+[INFO] [1787037165.399291729] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=10.4mm). Target robot Z: 0.4537 | Tay thật Z: 0.4360
+[INFO] [1787037165.875575234] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=51.5mm). Thả hold, reset buffer.
+[INFO] [1787037174.282750828] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.1s)
+[INFO] [1787037182.283245813] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.9s)
+[INFO] [1787037186.442649642] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1787037190.518201155] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=9.4mm). Target robot Z: -0.0046 | Tay thật Z: -0.0046
+[INFO] [1787037191.350763386] [trajectory_predictor]: [Filter] raw=(0.0009,-0.0113,-0.0046) → filt=(0.0009,-0.0113,-0.0046) Δ=(0.0000,0.0000,0.0000)
+[INFO] [1787037193.052810170] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=50.0mm). Thả hold, reset buffer.
+[INFO] [1787037194.955086415] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=13.8mm). Target robot Z: -0.0046 | Tay thật Z: -0.0092
+[INFO] [1787037196.592555687] [trajectory_predictor]: [Filter] raw=(0.0009,-0.0113,-0.0046) → filt=(0.0009,-0.0113,-0.0046) Δ=(0.0000,0.0000,0.0000)
+[INFO] [1787037203.059703479] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=62.9mm). Thả hold, reset buffer.
+[INFO] [1787037206.536592051] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1787037210.468345312] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=13.4mm). Target robot Z: 0.4725 | Tay thật Z: 0.4725
+[INFO] [1787037210.667122782] [trajectory_predictor]: [Filter] raw=(-0.0566,0.4784,0.4725) → filt=(-0.0566,0.4784,0.4725) Δ=(0.0000,0.0000,0.0000)
+[INFO] [1787037210.801881630] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=55.5mm). Thả hold, reset buffer.
+[INFO] [1787037211.501329253] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=9.7mm). Target robot Z: 0.4725 | Tay thật Z: 0.3321
+[INFO] [1787037211.897283201] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=51.8mm). Thả hold, reset buffer.
+[INFO] [1787037212.231390073] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=10.4mm). Target robot Z: 0.4665 | Tay thật Z: 0.2427
+[INFO] [1787037213.701321051] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=50.1mm). Thả hold, reset buffer.
+[INFO] [1787037213.970025923] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=5.9mm). Target robot Z: 0.4605 | Tay thật Z: 0.2813
+[INFO] [1787037214.468189416] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=52.3mm). Thả hold, reset buffer.
+[INFO] [1787037214.737933302] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=5.8mm). Target robot Z: 0.4545 | Tay thật Z: 0.2228
+[INFO] [1787037216.937380959] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=52.9mm). Thả hold, reset buffer.
+[INFO] [1787037217.203162988] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=9.7mm). Target robot Z: 0.4485 | Tay thật Z: 0.1953
+[INFO] [1787037218.905976389] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=52.7mm). Thả hold, reset buffer.
+[INFO] [1787037219.172955652] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=6.4mm). Target robot Z: 0.4425 | Tay thật Z: 0.1900
+[INFO] [1787037219.438776584] [trajectory_predictor]: [Filter] raw=(-0.0566,0.4936,0.4425) → filt=(-0.0566,0.4958,0.4365) Δ=(0.0000,0.0022,0.0060)
+[INFO] [1787037220.839786771] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=52.8mm). Thả hold, reset buffer.
+[INFO] [1787037221.107335288] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=10.3mm). Target robot Z: 0.4365 | Tay thật Z: 0.1922
+[INFO] [1787037224.340508951] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=56.2mm). Thả hold, reset buffer.
+[INFO] [1787037230.415387128] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1787037240.719591309] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=14.3mm). Target robot Z: -0.0217 | Tay thật Z: -0.0217
+[INFO] [1787037242.721613771] [trajectory_predictor]: [Filter] raw=(0.0062,-0.0940,-0.0217) → filt=(0.0062,-0.0940,-0.0217) Δ=(0.0000,0.0000,0.0000)
+[INFO] [1787037243.909891680] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1787037244.358713828] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=53.3mm). Thả hold, reset buffer.
+[INFO] [1787037247.158091186] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=12.7mm). Target robot Z: -0.0217 | Tay thật Z: 0.4188
+[INFO] [1787037247.558137826] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=57.6mm). Thả hold, reset buffer.
+[INFO] [1787037248.230416458] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=13.1mm). Target robot Z: -0.0157 | Tay thật Z: 0.3776
+[INFO] [1787037248.592117863] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=54.4mm). Thả hold, reset buffer.
+[INFO] [1787037248.857841879] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=12.3mm). Target robot Z: -0.0097 | Tay thật Z: 0.2991
+[INFO] [1787037249.226519118] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=50.9mm). Thả hold, reset buffer.
+[INFO] [1787037249.497072957] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=10.3mm). Target robot Z: -0.0037 | Tay thật Z: 0.2369
+[INFO] [1787037250.062772755] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=52.9mm). Thả hold, reset buffer.
+[INFO] [1787037250.328962884] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=9.7mm). Target robot Z: 0.0023 | Tay thật Z: 0.1930
+[INFO] [1787037250.329303062] [trajectory_predictor]: [Filter] raw=(0.0062,-0.0760,0.0023) → filt=(0.0062,-0.0700,0.0083) Δ=(0.0000,0.0060,0.0060)
+[INFO] [1787037251.663560416] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=51.3mm). Thả hold, reset buffer.
+[INFO] [1787037251.929471537] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=7.2mm). Target robot Z: 0.0083 | Tay thật Z: 0.2654
+[INFO] [1787037253.363421342] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=50.5mm). Thả hold, reset buffer.
+[INFO] [1787037253.630607379] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=10.0mm). Target robot Z: 0.0143 | Tay thật Z: 0.2069
+[INFO] [1787037255.332704390] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=51.5mm). Thả hold, reset buffer.
+[INFO] [1787037255.600956790] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=8.1mm). Target robot Z: 0.0203 | Tay thật Z: 0.1478
+[INFO] [1787037257.798242802] [trajectory_predictor]: [Filter] raw=(0.0062,-0.0580,0.0203) → filt=(0.0062,-0.0520,0.0203) Δ=(0.0000,0.0060,0.0000)
+[INFO] [1787037257.832859396] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=50.1mm). Thả hold, reset buffer.
+[INFO] [1787037258.365854196] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=7.0mm). Target robot Z: 0.0203 | Tay thật Z: 0.0417
+[INFO] [1787037259.265852357] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=56.5mm). Thả hold, reset buffer.
+[INFO] [1787037260.235648915] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=12.8mm). Target robot Z: 0.0203 | Tay thật Z: 0.0766
+[INFO] [1787037261.374651642] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=50.6mm). Thả hold, reset buffer.
+[INFO] [1787037263.775365784] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1787037265.136986781] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=12.6mm). Target robot Z: -0.0127 | Tay thật Z: -0.0127
+[INFO] [1787037266.404477086] [trajectory_predictor]: [Filter] raw=(0.0081,-0.0104,-0.0127) → filt=(0.0081,-0.0104,-0.0127) Δ=(0.0000,0.0000,0.0000)
+[INFO] [1787037273.078419063] [trajectory_predictor]: [Filter] raw=(0.0081,-0.0104,-0.0127) → filt=(0.0081,-0.0104,-0.0127) Δ=(0.0000,0.0000,0.0000)
+[INFO] [1787037278.590249337] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1787037279.180890516] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=53.8mm). Thả hold, reset buffer.
+[INFO] [1787037284.418278598] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=12.3mm). Target robot Z: -0.0127 | Tay thật Z: 0.2450
+[INFO] [1787037284.817174141] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=51.0mm). Thả hold, reset buffer.
+[INFO] [1787037285.085511783] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=6.0mm). Target robot Z: -0.0067 | Tay thật Z: 0.1866
+[INFO] [1787037285.250658153] [trajectory_predictor]: [Filter] raw=(0.0052,-0.0104,-0.0067) → filt=(0.0026,-0.0044,-0.0007) Δ=(0.0027,0.0060,0.0060)
+[INFO] [1787037285.984914466] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=50.8mm). Thả hold, reset buffer.
+[INFO] [1787037286.254262527] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=5.2mm). Target robot Z: -0.0007 | Tay thật Z: 0.1375
+[INFO] [1787037286.855170503] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=59.5mm). Thả hold, reset buffer.
+[INFO] [1787037288.021301720] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=14.2mm). Target robot Z: 0.0053 | Tay thật Z: 0.3323
+[INFO] [1787037288.284791803] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=53.8mm). Thả hold, reset buffer.
+[INFO] [1787037288.851865599] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=10.8mm). Target robot Z: 0.0113 | Tay thật Z: 0.2857
+[INFO] [1787037289.224863404] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=54.3mm). Thả hold, reset buffer.
+[INFO] [1787037289.491554672] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=10.7mm). Target robot Z: 0.0173 | Tay thật Z: 0.2240
+[INFO] [1787037289.889294160] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=51.2mm). Thả hold, reset buffer.
+[INFO] [1787037290.356573219] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=5.6mm). Target robot Z: 0.0233 | Tay thật Z: 0.1550
+[INFO] [1787037290.989043080] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=51.9mm). Thả hold, reset buffer.
+[INFO] [1787037291.458113239] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=6.3mm). Target robot Z: 0.0293 | Tay thật Z: 0.1210
+[INFO] [1787037291.756004856] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=53.7mm). Thả hold, reset buffer.
+[INFO] [1787037293.489219111] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=11.3mm). Target robot Z: 0.0353 | Tay thật Z: 0.2836
+[INFO] [1787037293.526711688] [trajectory_predictor]: [Filter] raw=(0.0223,0.0316,0.0353) → filt=(0.0163,0.0376,0.0413) Δ=(0.0060,0.0060,0.0060)
+[INFO] [1787037293.990819467] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=52.4mm). Thả hold, reset buffer.
+[INFO] [1787037295.794050010] [trajectory_predictor]: [Pred HOLD ON] Tay đứng yên (std=11.7mm). Target robot Z: 0.0413 | Tay thật Z: 0.1754
+[INFO] [1787037298.226858279] [trajectory_predictor]: [Pred HOLD OFF] Tay di chuyển (dev=61.6mm). Thả hold, reset buffer.
+[INFO] [1787037299.486015392] [trajectory_predictor]: [Predictor] Predicting STOPPED
+[INFO] [1787037310.282935416] [trajectory_predictor]: [Predictor] Buffer cleared (no data for 1.3s)

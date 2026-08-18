@@ -40,10 +40,10 @@ trajectory_predictor:
     window_size: 10
     mjm:
       enabled: true
-      t_switch: 6.0
+      t_switch: 5.0
       goal_x: -0.152821
       goal_y:  0.566000
       goal_z: -0.032538
-      fitts_a: 3.5971
-      fitts_b: 0.6635
+      fitts_a: 3.8697
+      fitts_b: 0.7492
       fitts_w: 0.3
