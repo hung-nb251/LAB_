@@ -1,4 +1,0 @@
-source;share/motoman_motopos_d500_support/local_setup.bash
-source;share/motoman_motopos_d500_support/local_setup.dsv
-source;share/motoman_motopos_d500_support/local_setup.sh
-source;share/motoman_motopos_d500_support/local_setup.zsh

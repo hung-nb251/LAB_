@@ -1,1 +1,0 @@
-/home/hungnb/cocarry_ws/build/kinect2_bridge/ament_cmake_environment_hooks/local_setup.zsh

@@ -1,1 +1,0 @@
-/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_typesupport_introspection_cpp/motoros2_interfaces/msg/detail/queue_result_enum__rosidl_typesupport_introspection_cpp.hpp

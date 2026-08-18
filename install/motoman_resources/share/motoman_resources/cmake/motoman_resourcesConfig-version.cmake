@@ -1,1 +1,0 @@
-/home/hungnb/cocarry_ws/build/motoman_resources/ament_cmake_core/motoman_resourcesConfig-version.cmake

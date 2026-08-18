@@ -1,4 +1,0 @@
-/home/hungnb/cocarry_ws/build/human_hand_msgs/rosidl_adapter/human_hand_msgs:msg/HandState.idl
-/home/hungnb/cocarry_ws/build/human_hand_msgs/rosidl_adapter/human_hand_msgs:msg/HandPrediction.idl
-/home/hungnb/cocarry_ws/build/human_hand_msgs/rosidl_adapter/human_hand_msgs:msg/SystemStatus.idl
-/home/hungnb/cocarry_ws/build/human_hand_msgs/rosidl_adapter/human_hand_msgs:srv/SelectModel.idl

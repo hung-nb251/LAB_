@@ -1,1 +1,0 @@
-/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_typesupport_fastrtps_cpp/motoros2_interfaces/srv/detail/queue_traj_point__rosidl_typesupport_fastrtps_cpp.hpp

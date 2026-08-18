@@ -1,1 +1,0 @@
-/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_cmake/srv/StartPointQueueMode_Request.msg

@@ -1,1 +1,0 @@
-/home/hungnb/cocarry_ws/build/kinect2_calibration/ament_cmake_core/kinect2_calibrationConfig.cmake

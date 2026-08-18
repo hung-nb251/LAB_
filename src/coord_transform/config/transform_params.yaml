@@ -14,7 +14,7 @@ coord_transform:
 
     cam_to_base_tx: 0.5
     cam_to_base_ty: 0.0
-    cam_to_base_tz: 1.05
+    cam_to_base_tz: 1.2
 
     ee_orient_x: 0.0
     ee_orient_y: 1.0
@@ -27,7 +27,6 @@ coord_transform:
     # Robot Z+ = lên trên, camera z_ws+ = lên trên → cùng chiều
     axis_remap: [0, 1, 2]
     axis_sign: [-1.0, 1.0, 1.0]
-    prediction_step: 2
 
     workspace_x_min: -1.0
     workspace_x_max:  1.0

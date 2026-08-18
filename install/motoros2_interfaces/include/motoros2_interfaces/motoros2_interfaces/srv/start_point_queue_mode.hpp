@@ -1,1 +1,0 @@
-/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_generator_cpp/motoros2_interfaces/srv/start_point_queue_mode.hpp

@@ -1,1 +1,0 @@
-/home/hungnb/cocarry_ws/build/motoman_ar2010_support/ament_cmake_environment_hooks/local_setup.sh

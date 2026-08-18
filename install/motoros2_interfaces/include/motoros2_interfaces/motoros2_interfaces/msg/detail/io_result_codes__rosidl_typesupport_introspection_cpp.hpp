@@ -1,1 +1,0 @@
-/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_typesupport_introspection_cpp/motoros2_interfaces/msg/detail/io_result_codes__rosidl_typesupport_introspection_cpp.hpp

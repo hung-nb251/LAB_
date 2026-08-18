@@ -1,1 +1,0 @@
-/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_generator_py/motoros2_interfaces/_motoros2_interfaces_s.ep.rosidl_typesupport_fastrtps_c.c

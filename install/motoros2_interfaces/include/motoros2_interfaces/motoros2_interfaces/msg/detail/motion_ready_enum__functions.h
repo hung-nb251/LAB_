@@ -1,1 +1,0 @@
-/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_generator_c/motoros2_interfaces/msg/detail/motion_ready_enum__functions.h

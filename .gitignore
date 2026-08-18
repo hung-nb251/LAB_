@@ -1,0 +1,9 @@
+build/
+install/
+log/
+cocarry_logs/
+pHRI_Models/
+*~
+*.swp
+*.pyc
+__pycache__/

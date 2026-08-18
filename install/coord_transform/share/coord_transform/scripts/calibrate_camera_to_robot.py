@@ -1,1 +1,0 @@
-/home/hungnb/cocarry_ws/build/coord_transform/scripts/calibrate_camera_to_robot.py

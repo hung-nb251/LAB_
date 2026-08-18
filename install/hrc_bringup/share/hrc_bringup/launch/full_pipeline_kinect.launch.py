@@ -1,1 +1,0 @@
-/home/hungnb/cocarry_ws/src/hrc_bringup/launch/full_pipeline_kinect.launch.py

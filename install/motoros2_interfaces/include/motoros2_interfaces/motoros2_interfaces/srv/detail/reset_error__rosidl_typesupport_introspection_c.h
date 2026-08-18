@@ -1,1 +1,0 @@
-/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_typesupport_introspection_c/motoros2_interfaces/srv/detail/reset_error__rosidl_typesupport_introspection_c.h

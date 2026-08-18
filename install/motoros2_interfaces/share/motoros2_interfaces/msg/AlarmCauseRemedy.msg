@@ -1,1 +1,0 @@
-/home/hungnb/cocarry_ws/src/motoros2_interfaces/msg/AlarmCauseRemedy.msg

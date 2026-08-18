@@ -1,3 +1,0 @@
-[console_scripts]
-kinect_node = kinect_tracker.kinect_node:main
-

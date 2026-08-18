@@ -1,4 +1,0 @@
-source;share/motoman/local_setup.bash
-source;share/motoman/local_setup.dsv
-source;share/motoman/local_setup.sh
-source;share/motoman/local_setup.zsh

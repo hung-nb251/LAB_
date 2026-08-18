@@ -1,1 +1,0 @@
-/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_typesupport_fastrtps_c/motoros2_interfaces/srv/detail/write_m_register__rosidl_typesupport_fastrtps_c.h

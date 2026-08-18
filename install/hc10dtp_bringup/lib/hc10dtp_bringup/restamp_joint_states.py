@@ -1,1 +1,0 @@
-/home/hungnb/cocarry_ws/src/hc10dtp_bringup/scripts/restamp_joint_states.py

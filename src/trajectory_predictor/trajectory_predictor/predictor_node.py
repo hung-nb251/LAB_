@@ -156,9 +156,9 @@ class PredictorNode(Node):
         self._hold_active = False                # đang khóa?
         self._hold_target = None                 # vị trí robot sẽ được giữ
         self._hold_reference = None              # vị trí tay người lúc bắt đầu giữ
-        self._HOLD_STD_THRESH = 0.015            # ngưỡng std (15mm) — tăng để tránh false-positive khi mang vật
-        self._HOLD_ENTER_FRAMES = 8              # cần 8 frame tĩnh liên tiếp (~266ms ở 30Hz)
-        self._HOLD_RELEASE_THRESH = 0.050        # tay rời > 50mm thì thả hold — tăng để chắc chắn hơn
+        self._HOLD_STD_THRESH = 0.006            # ngưỡng std (15mm) — tăng để tránh false-positive khi mang vật
+        self._HOLD_ENTER_FRAMES = 5             # cần 8 frame tĩnh liên tiếp (~266ms ở 30Hz)
+        self._HOLD_RELEASE_THRESH = 0.030        # tay rời > 50mm thì thả hold — tăng để chắc chắn hơn
 
         # ── Publishers ───────────────────────────────────────────────────────
         self.pred_pub = self.create_publisher(

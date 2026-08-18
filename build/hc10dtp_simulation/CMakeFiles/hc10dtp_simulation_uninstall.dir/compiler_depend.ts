@@ -1,2 +1,0 @@
-# CMAKE generated file: DO NOT EDIT!
-# Timestamp file for custom commands dependencies management for hc10dtp_simulation_uninstall.

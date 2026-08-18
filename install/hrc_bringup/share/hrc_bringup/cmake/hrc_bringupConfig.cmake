@@ -1,1 +1,0 @@
-/home/hungnb/cocarry_ws/build/hrc_bringup/ament_cmake_core/hrc_bringupConfig.cmake

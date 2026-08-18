@@ -1,1 +1,0 @@
-/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_generator_cpp/motoros2_interfaces/msg/alarm_cause_remedy.hpp

@@ -1,1 +1,0 @@
-/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_generator_c/motoros2_interfaces/srv/detail/write_m_register__functions.h

@@ -1,1 +1,0 @@
-/home/hungnb/cocarry_ws/build/motoros2_interfaces/rosidl_generator_py/motoros2_interfaces/srv/_select_motion_tool.py

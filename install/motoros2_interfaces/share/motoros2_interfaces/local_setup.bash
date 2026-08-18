@@ -1,1 +1,0 @@
-/home/hungnb/cocarry_ws/build/motoros2_interfaces/ament_cmake_environment_hooks/local_setup.bash
