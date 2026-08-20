@@ -21,7 +21,6 @@ coord_transform:
     ee_orient_z: 0.0
     ee_orient_w: 0.0
 
-    # Axis remap: camera workspace → robot base frame
     # Robot X+ = phải→trái (theo camera view) = ngược chiều camera → cần negate
     # Robot Y+ = về phía camera, camera y_ws+ = về phía camera → cùng chiều
     # Robot Z+ = lên trên, camera z_ws+ = lên trên → cùng chiều

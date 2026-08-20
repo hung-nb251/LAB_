@@ -23,6 +23,8 @@ setup(
     entry_points={
         'console_scripts': [
             'transform_node = coord_transform.transform_node:main',
+            'gravity_compensator = coord_transform.gravity_compensator:main',
+            'identify_payload = coord_transform.identify_payload:main',
         ],
     },
 )
