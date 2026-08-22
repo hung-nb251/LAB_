@@ -1,372 +1,449 @@
+#!/usr/bin/env python3
+"""
+axia_sensor_ui.py  (Phiên bản tách biệt — chạy bằng USER THƯỜNG)
+──────────────────────────────────────────────────────────────────
+Node giao diện + tính toán bù trọng lực. KHÔNG cần Sudo, KHÔNG cần
+quyền đặc biệt. Subscribe /axia/raw_wrench từ axia_sensor_driver
+(chạy ngầm bằng sudo) rồi tính toán gravity compensation dùng TF
+(hoạt động 100% vì cùng quyền user với hc10dtp_start).
+
+■ Subscribes:
+    /axia/raw_wrench      (geometry_msgs/WrenchStamped)  — từ driver
+
+■ Publishes:
+    /axia/human_force     (geometry_msgs/Vector3Stamped) — sau bù trọng lực
+
+■ Services:
+    /axia/set_bias        (std_srvs/Trigger)             — calib từ ngoài
+
+■ Cách chạy (KHÔNG CẦN SUDO):
+    python3 axia_sensor_ui.py
+    # (hoặc được nhúng trong cocarry_real_gui.launch.py)
+"""
+
 import sys
 import time
+import socket
 import struct
+import threading
 import numpy as np
 from collections import deque
+
 import pyqtgraph as pg
 from PyQt5 import QtWidgets, QtCore
-import pysoem
 
+# ── ROS 2 ───────────────────────────────────────────────────────────────────
 import rclpy
 from rclpy.node import Node
-from geometry_msgs.msg import WrenchStamped
-import threading
+from rclpy.duration import Duration
+from geometry_msgs.msg import Vector3Stamped
+from std_srvs.srv import Trigger
+import tf2_ros
+from scipy.spatial.transform import Rotation
+
+# ── Tham số vật lý ───────────────────────────────────────────────────────────
+PAYLOAD_MASS_KG = 0.33         # Khối lượng thanh sắt + gá (kg)
+GRAVITY         = 9.80665      # m/s²
+SENSOR_FRAME    = 'axia_sensor_link'
+BASE_FRAME      = 'base_link'
+BIAS_SAMPLES    = 100          # Số mẫu để tính bias
+DEADBAND_N      = 4.0          # Ngưỡng deadband (N) - Tăng lên 4.0 để khử độ căng cáp
+
+
+# ════════════════════════════════════════════════════════════════════════════
+#  Bộ lọc phần mềm (Median + EMA)
+# ════════════════════════════════════════════════════════════════════════════
 
 class ForceFilter:
     def __init__(self, median_size=5, ema_alpha=0.1):
-        self.median_buffer = deque(maxlen=median_size)
-        self.smoothed_val = None
-        self.ema_alpha = ema_alpha
+        self.buffer   = deque(maxlen=median_size)
+        self.smoothed = None
+        self.alpha    = ema_alpha
 
     def apply(self, val):
-        self.median_buffer.append(val)
-        if len(self.median_buffer) < 3:
-            med_val = val
+        self.buffer.append(val)
+        med = np.median(self.buffer, axis=0) if len(self.buffer) >= 3 else val
+        if self.smoothed is None:
+            self.smoothed = med.copy()
         else:
-            med_val = np.median(self.median_buffer, axis=0)
-
-        if self.smoothed_val is None:
-            self.smoothed_val = med_val.copy()
-        else:
-            self.smoothed_val = self.ema_alpha * med_val + (1.0 - self.ema_alpha) * self.smoothed_val
-        return self.smoothed_val
+            self.smoothed = self.alpha * med + (1.0 - self.alpha) * self.smoothed
+        return self.smoothed
 
     def reset(self):
-        self.median_buffer.clear()
-        self.smoothed_val = None
+        self.buffer.clear()
+        self.smoothed = None
 
-# Cấu hình hằng số cho Axia80-M20
-RAW_FMT = '<6iII'
-SDO_CALIB_INDEX = 0x2021
-SUBIDX_COUNTS_PER_FORCE = 0x37
-SUBIDX_COUNTS_PER_TORQUE = 0x38
-CONTROL_INDEX = 0x7010
-CONTROL_SUBIDX_1 = 0x01
 
-class ATISensorWorker(QtCore.QThread):
-    # Tín hiệu phát dữ liệu mới: (Fx, Fy, Fz, Tx, Ty, Tz)
-    data_ready = QtCore.pyqtSignal(float, float, float, float, float, float)
-    error_signal = QtCore.pyqtSignal(str)
-    
-    def __init__(self, iface):
-        super().__init__()
-        self.iface = iface
-        self.running = True
-        self.master = None
-        self.slave = None
-        
-        self._request_tare = False
-        self._is_calibrating = False
-        self._calibration_samples = []
-        self.bias = np.zeros(6)
-        
-        self.filter = ForceFilter(median_size=5, ema_alpha=0.1)
-        
-    def request_tare(self):
-        self._request_tare = True
-        
-    def set_filter(self, alpha):
-        self.filter.ema_alpha = alpha
-        
-    def run(self):
+# ════════════════════════════════════════════════════════════════════════════
+#  ROS 2 Node (Subscribe + TF2 + Publisher + Service)
+# ════════════════════════════════════════════════════════════════════════════
+
+class AxiaROS2Node(Node):
+    """
+    ROS 2 node tích hợp:
+      - Subscribe /axia/raw_wrench (từ driver chạy sudo)
+      - Publish /axia/human_force  (sau bù trọng lực)
+      - Service /axia/set_bias     (calib từ ngoài)
+      - TF2 listener để lấy orientation của cảm biến
+    """
+
+    def __init__(self, on_data_cb=None):
+        super().__init__('axia_sensor_ui_node')
+
+        # Callback để gửi data lên UI thread
+        self._on_data_cb = on_data_cb
+
+        self._pub_fh = self.create_publisher(Vector3Stamped, '/axia/human_force', 10)
+
+        self._tf_buffer   = tf2_ros.Buffer()
+        self._tf_listener = tf2_ros.TransformListener(self._tf_buffer, self)
+
+        self.create_service(Trigger, '/axia/set_bias', self._cb_set_bias)
+
+        self._bias_F        = np.zeros(3)
+        self._collecting    = False
+        self._calib_samples = []
+        self._on_calib_done = None
+
+        self._filter = ForceFilter(median_size=5, ema_alpha=0.1)
+
+        # Mở UDP socket nhận data từ axia_sensor_driver.py (sudo)
+        self._udp_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self._udp_sock.bind(('127.0.0.1', 50000))
+        self._udp_thread = threading.Thread(target=self._udp_listener_loop, daemon=True)
+        self._udp_thread.start()
+
+        self.get_logger().info(
+            f'[AxiaUI] Khởi động (user mode — UDP Listener).\n'
+            f'  payload.mass = {PAYLOAD_MASS_KG} kg | sensor = {SENSOR_FRAME}\n'
+            f'  Deadband = +/-{DEADBAND_N} N | Calib samples = {BIAS_SAMPLES}'
+        )
+
+    # ── UDP Listener (thay thế ROS 2 Subscriber) ────────────────────────────
+
+    def _udp_listener_loop(self):
+        self.get_logger().info("[AxiaUI] Bắt đầu lắng nghe UDP port 50000...")
+        while True:
+            try:
+                data, _ = self._udp_sock.recvfrom(1024)
+                if len(data) == 24:
+                    # Gói 24 bytes = 6 floats (Fx, Fy, Fz, Tx, Ty, Tz)
+                    fx, fy, fz, tx, ty, tz = struct.unpack('<6f', data)
+                    F3 = np.array([fx, fy, fz])
+                    self._process_raw_data(F3)
+            except Exception as e:
+                self.get_logger().error(f"[AxiaUI] Lỗi UDP: {e}")
+                time.sleep(1)
+
+    # ── Xử lý dữ liệu thô ───────────────────────────────────────────────────
+
+    def _process_raw_data(self, F3: np.ndarray):
+        F_filt = self._filter.apply(F3)
+
+        if self._collecting:
+            self._feed_calib_sample(F_filt)
+            return
+
+        F_human = self.compensate(F_filt)
+        self.publish_human_force(F_human)
+
+        if self._on_data_cb is not None:
+            self._on_data_cb(
+                float(F_filt[0]),  float(F_filt[1]),  float(F_filt[2]),
+                float(F_human[0]), float(F_human[1]), float(F_human[2]),
+            )
+
+    # ── TF ──────────────────────────────────────────────────────────────────
+
+    def get_rotation_world_to_sensor(self):
         try:
-            self.master = pysoem.Master()
-            self.master.open(self.iface)
+            tf = self._tf_buffer.lookup_transform(
+                SENSOR_FRAME, BASE_FRAME,
+                rclpy.time.Time(),
+                timeout=Duration(seconds=0)
+            )
+            q = tf.transform.rotation
+            return Rotation.from_quat([q.x, q.y, q.z, q.w]).as_matrix()
+        except Exception:
+            return None
+
+    def compute_gravity_force(self, R_ws):
+        g_sensor = R_ws @ np.array([0.0, 0.0, -GRAVITY])
+        return PAYLOAD_MASS_KG * g_sensor
+
+    # ── Calib ────────────────────────────────────────────────────────────────
+
+    def start_bias_collection(self, on_done=None):
+        # Kiểm tra an toàn: Bắt buộc phải có TF trước khi Calib
+        R_ws = self.get_rotation_world_to_sensor()
+        if R_ws is None:
+            self.get_logger().error(
+                '[AxiaUI] LỖI: Chưa nhận được TF (joint_states) từ Robot. Từ chối Calib!')
+            return False
+
+        self._calib_samples.clear()
+        self._on_calib_done = on_done
+        self._collecting    = True
+        self._filter.reset()
+        self.get_logger().info(f'[AxiaUI] Calib: thu {BIAS_SAMPLES} mau...')
+        return True
+
+    def _feed_calib_sample(self, F_raw_3):
+        R_ws = self.get_rotation_world_to_sensor()
+        if R_ws is not None:
+            self._calib_samples.append(F_raw_3 - self.compute_gravity_force(R_ws))
+        else:
+            self._calib_samples.append(F_raw_3.copy())
+            self.get_logger().warn(
+                'Calib: TF chua san sang, dung bias tinh.',
+                throttle_duration_sec=2.0)
+
+        if len(self._calib_samples) >= BIAS_SAMPLES:
+            self._bias_F     = np.mean(self._calib_samples, axis=0)
+            self._collecting = False
+            self.get_logger().info(
+                f'[AxiaUI] Calib xong! F_bias = {np.round(self._bias_F, 3)}')
+            if self._on_calib_done:
+                self._on_calib_done()
+
+    def compensate(self, F_raw_3):
+        F_comp = F_raw_3 - self._bias_F
+        R_ws = self.get_rotation_world_to_sensor()
+        if R_ws is not None:
+            F_comp = F_comp - self.compute_gravity_force(R_ws)
+        F_out = np.zeros(3)
+        for i in range(3):
+            if abs(F_comp[i]) >= DEADBAND_N:
+                F_out[i] = F_comp[i] - np.sign(F_comp[i]) * DEADBAND_N
+                
+        # Transform Human Force from SENSOR_FRAME back to WORLD_FRAME
+        if R_ws is not None:
+            # R_ws rotates World -> Sensor. Inverse is Transpose.
+            F_out = R_ws.T @ F_out
             
-            if self.master.config_init() <= 0:
-                raise RuntimeError("Không tìm thấy cảm biến. Vui lòng kiểm tra quyền sudo và cổng mạng.")
-            
-            self.slave = self.master.slaves[0]
-            self.master.config_map()
-            
-            # Sau config_map(), slave tự động vào SAFEOP — kiểm tra trực tiếp
-            self.master.state = pysoem.SAFEOP_STATE
-            self.master.write_state()
-            self.master.state_check(pysoem.SAFEOP_STATE, 2000000)  # 2s timeout
-            if self.master.state != pysoem.SAFEOP_STATE:
-                raise RuntimeError("Slave không vào được SAFEOP. Kiểm tra dây EtherCAT và nguồn cảm biến.")
+        return F_out
 
-            self.master.state = pysoem.OP_STATE
-            self.master.write_state()
+    # ── Publisher ────────────────────────────────────────────────────────────
 
-            reached_op = False
-            for _ in range(400):  # 400 × 50ms = 20 giây timeout
-                self.master.send_processdata()
-                self.master.receive_processdata(50000)
-                self.master.state_check(pysoem.OP_STATE, 50000)
-                if self.master.state == pysoem.OP_STATE:
-                    reached_op = True
-                    break
+    def publish_human_force(self, Fh):
+        msg = Vector3Stamped()
+        msg.header.stamp    = self.get_clock().now().to_msg()
+        msg.header.frame_id = BASE_FRAME
+        msg.vector.x = float(Fh[0])
+        msg.vector.y = float(Fh[1])
+        msg.vector.z = float(Fh[2])
+        self._pub_fh.publish(msg)
 
-            if not reached_op:
-                raise RuntimeError("Cảm biến không vào được trạng thái OP.")
-                
-            # Đọc Counts per Force / Torque
-            counts_per_force = int.from_bytes(
-                self.slave.sdo_read(SDO_CALIB_INDEX, SUBIDX_COUNTS_PER_FORCE), 'little')
-            counts_per_torque = int.from_bytes(
-                self.slave.sdo_read(SDO_CALIB_INDEX, SUBIDX_COUNTS_PER_TORQUE), 'little')
-                
-            # Khởi tạo hardware tare (1 lần duy nhất lúc khởi động)
-            self.slave.sdo_write(CONTROL_INDEX, CONTROL_SUBIDX_1, (1).to_bytes(4, 'little'))
-            for _ in range(5):
-                self.master.send_processdata()
-                self.master.receive_processdata(2000)
-                time.sleep(0.01)
-            self.slave.sdo_write(CONTROL_INDEX, CONTROL_SUBIDX_1, (0).to_bytes(4, 'little'))
-            
-            # Vòng lặp đọc dữ liệu liên tục 100Hz
-            while self.running:
-                if self._request_tare:
-                    self._is_calibrating = True
-                    self._calibration_samples = []
-                    self.filter.reset()
-                    self._request_tare = False
+    def set_filter_alpha(self, alpha):
+        self._filter.alpha = alpha
 
-                self.master.send_processdata()
-                wkc = self.master.receive_processdata(2000)
-                
-                if wkc >= self.master.expected_wkc:
-                    data = self.slave.input
-                    if len(data) == struct.calcsize(RAW_FMT):
-                        Fx, Fy, Fz, Tx, Ty, Tz, status, counter = struct.unpack(RAW_FMT, data)
-                        
-                        raw_val = np.array([
-                            Fx / counts_per_force, Fy / counts_per_force, Fz / counts_per_force,
-                            Tx / counts_per_torque, Ty / counts_per_torque, Tz / counts_per_torque
-                        ])
-                        
-                        if self._is_calibrating:
-                            self._calibration_samples.append(raw_val)
-                            # Thu thập mẫu trong 0.5s (50 mẫu ở 100Hz)
-                            if len(self._calibration_samples) >= 50:
-                                self.bias = np.mean(self._calibration_samples, axis=0)
-                                self._is_calibrating = False
-                            continue
-                            
-                        # Khử bias và lọc bằng phần mềm
-                        biased_val = raw_val - self.bias
-                        filtered_val = self.filter.apply(biased_val)
-                        
-                        self.data_ready.emit(
-                            filtered_val[0], filtered_val[1], filtered_val[2],
-                            filtered_val[3], filtered_val[4], filtered_val[5]
-                        )
-                
-                # Chờ một lát cho chu kỳ tiếp theo (10ms)
-                time.sleep(0.01)
-                
-        except Exception as e:
-            self.error_signal.emit(str(e))
-        finally:
-            if self.master:
-                self.master.state = pysoem.INIT_STATE
-                self.master.write_state()
-                self.master.close()
-                
-    def stop(self):
-        self.running = False
-        self.wait()
+    def _cb_set_bias(self, request, response):
+        success = self.start_bias_collection()
+        if not success:
+            response.success = False
+            response.message = 'Chưa nhận được TF/joint_states. Từ chối Calib!'
+            return response
+        response.success = True
+        response.message = f'Dang thu {BIAS_SAMPLES} mau de cap nhat bias...'
+        return response
 
 
-class ROS2PublisherNode(Node):
-    def __init__(self):
-        super().__init__('axia_sensor_publisher')
-        self.pub = self.create_publisher(WrenchStamped, '/axia/raw_wrench', 10)
+# ════════════════════════════════════════════════════════════════════════════
+#  Worker thread kích hoạt calib + emit signal lên UI
+# ════════════════════════════════════════════════════════════════════════════
 
-    def publish_wrench(self, fx, fy, fz, tx, ty, tz):
-        msg = WrenchStamped()
-        msg.header.stamp = self.get_clock().now().to_msg()
-        msg.header.frame_id = 'axia_sensor_link'
-        msg.wrench.force.x = float(fx)
-        msg.wrench.force.y = float(fy)
-        msg.wrench.force.z = float(fz)
-        msg.wrench.torque.x = float(tx)
-        msg.wrench.torque.y = float(ty)
-        msg.wrench.torque.z = float(tz)
-        self.pub.publish(msg)
+class AxiaUIWorker(QtCore.QObject):
+    """Cầu nối giữa ROS2 callbacks (background thread) và PyQt5 UI (main thread)."""
+    data_ready   = QtCore.pyqtSignal(float, float, float, float, float, float)
+    error_signal = QtCore.pyqtSignal(str)
+    calib_done   = QtCore.pyqtSignal()
 
-
-class AxiaSensorUI(QtWidgets.QMainWindow):
-    def __init__(self, iface, ros_node):
+    def __init__(self, ros_node: AxiaROS2Node):
         super().__init__()
         self.ros_node = ros_node
-        self.setWindowTitle(f"Force & Torque Dashboard (Axia80-M20) - Port: {iface}")
-        self.resize(1400, 850)
-        
-        # Cài đặt giao diện chính
-        self.central_widget = QtWidgets.QWidget()
-        self.setCentralWidget(self.central_widget)
-        self.layout = QtWidgets.QVBoxLayout(self.central_widget)
-        
-        # Control Panel (Top)
-        self.control_panel = QtWidgets.QHBoxLayout()
-        
-        self.btn_calibrate = QtWidgets.QPushButton("🎯 Calibrate F/T Sensor")
-        self.btn_calibrate.setMinimumHeight(40)
-        self.btn_calibrate.setStyleSheet("font-weight: bold; background-color: #2e8b57; color: white;")
-        self.btn_calibrate.clicked.connect(self.on_calibrate_clicked)
-        self.control_panel.addWidget(self.btn_calibrate)
-        
-        self.control_panel.addSpacing(15)
-        
-        self.btn_reset = QtWidgets.QPushButton("🔄 Reset Draw")
-        self.btn_reset.setMinimumHeight(40)
-        self.btn_reset.setStyleSheet("font-weight: bold; background-color: #d2691e; color: white;")
-        self.btn_reset.clicked.connect(self.on_reset_clicked)
-        self.control_panel.addWidget(self.btn_reset)
-        
-        self.control_panel.addSpacing(30)
-        
-        self.lbl_filter = QtWidgets.QLabel("Low-pass Filter Level:")
-        self.lbl_filter.setStyleSheet("font-weight: bold;")
-        self.control_panel.addWidget(self.lbl_filter)
-        
-        self.combo_filter = QtWidgets.QComboBox()
-        self.combo_filter.setMinimumHeight(40)
-        self.combo_filter.addItems([
-            "0: No filter (Raw)",
-            "1: Nhẹ (Alpha = 0.5)",
-            "2: Trung bình (Alpha = 0.2)",
-            "3: Mạnh (Alpha = 0.1) - Mặc định",
-            "4: Rất mạnh (Alpha = 0.05)",
-            "5: Siêu mượt (Alpha = 0.01)"
-        ])
-        self.combo_filter.setCurrentIndex(3) # Mặc định là 3 (Mạnh)
-        self.combo_filter.currentIndexChanged.connect(self.on_filter_changed)
-        self.control_panel.addWidget(self.combo_filter)
-        
-        self.control_panel.addStretch()
-        
-        self.layout.addLayout(self.control_panel)
-        
-        # Tạo Widget GraphicsLayout của PyQtGraph
-        pg.setConfigOptions(antialias=True)
-        pg.setConfigOption('background', 'k')
-        pg.setConfigOption('foreground', 'w')
-        
-        self.graph_layout = pg.GraphicsLayoutWidget()
-        self.layout.addWidget(self.graph_layout)
-        
-        # Khởi tạo kích thước dữ liệu lịch sử trên đồ thị (ví dụ 500 điểm)
-        self.history_size = 500
-        
-        self.fx_data = [0] * self.history_size
-        self.fy_data = [0] * self.history_size
-        self.fz_data = [0] * self.history_size
-        self.tx_data = [0] * self.history_size
-        self.ty_data = [0] * self.history_size
-        self.tz_data = [0] * self.history_size
-        
-        # --- HÀNG 1: FORCE (Fx, Fy, Fz) ---
-        self.p_fx = self.graph_layout.addPlot(title="Force X (N)")
-        self.p_fy = self.graph_layout.addPlot(title="Force Y (N)")
-        self.p_fz = self.graph_layout.addPlot(title="Force Z (N)")
-        
-        self.curve_fx = self.p_fx.plot(pen=pg.mkPen((255, 150, 50), width=2))
-        self.curve_fy = self.p_fy.plot(pen=pg.mkPen((255, 150, 50), width=2))
-        self.curve_fz = self.p_fz.plot(pen=pg.mkPen((255, 150, 50), width=2))
-        
-        self.graph_layout.nextRow()
-        
-        # --- HÀNG 2: TORQUE (Tx, Ty, Tz) ---
-        self.p_tx = self.graph_layout.addPlot(title="Torque X (Nm)")
-        self.p_ty = self.graph_layout.addPlot(title="Torque Y (Nm)")
-        self.p_tz = self.graph_layout.addPlot(title="Torque Z (Nm)")
-        
-        self.curve_tx = self.p_tx.plot(pen=pg.mkPen((100, 200, 255), width=2)) 
-        self.curve_ty = self.p_ty.plot(pen=pg.mkPen((100, 200, 255), width=2)) 
-        self.curve_tz = self.p_tz.plot(pen=pg.mkPen((100, 200, 255), width=2))
-        
-        # Bật lưới grid cho tất cả các đồ thị
-        for p in [self.p_fx, self.p_fy, self.p_fz, self.p_tx, self.p_ty, self.p_tz]:
-            p.showGrid(x=True, y=True)
-            p.setLabel('bottom', 'Time steps')
-        
-        # --- Khởi động luồng đọc dữ liệu ---
-        self.worker = ATISensorWorker(iface)
-        self.worker.data_ready.connect(self.update_data)
-        self.worker.error_signal.connect(self.show_error)
-        self.worker.start()
+        # Nối callback data từ ROS node sang Qt signal
+        ros_node._on_data_cb = self._on_ros_data
 
-    def on_calibrate_clicked(self):
-        print("Yêu cầu Calibrate (Tare)...")
+    def _on_ros_data(self, rx, ry, rz, hx, hy, hz):
+        self.data_ready.emit(rx, ry, rz, hx, hy, hz)
+
+    def request_tare(self):
+        def _on_done():
+            self.calib_done.emit()
+
+        success = self.ros_node.start_bias_collection(on_done=_on_done)
+        if not success:
+            self.error_signal.emit(
+                "Chưa nhận được TF/joint_states từ Robot.\n"
+                "Vui lòng kiểm tra kết nối (micro-ROS) hoặc Robot chưa bật!")
+
+    def set_filter(self, alpha):
+        self.ros_node.set_filter_alpha(alpha)
+
+
+# ════════════════════════════════════════════════════════════════════════════
+#  Giao diện chính (PyQt5)
+# ════════════════════════════════════════════════════════════════════════════
+
+class AxiaSensorUI(QtWidgets.QMainWindow):
+
+    def __init__(self, ros_node: AxiaROS2Node):
+        super().__init__()
+        self.ros_node = ros_node
+        self.setWindowTitle('Force Dashboard (Axia80-M20)')
+        self.resize(1400, 750)
+
+        central = QtWidgets.QWidget()
+        self.setCentralWidget(central)
+        vbox = QtWidgets.QVBoxLayout(central)
+
+        # ── Control panel ────────────────────────────────────────────────
+        ctrl = QtWidgets.QHBoxLayout()
+
+        self.btn_calib = QtWidgets.QPushButton('🎯 Calibrate F/T Sensor')
+        self.btn_calib.setMinimumHeight(45)
+        self.btn_calib.setStyleSheet(
+            'font-weight:bold;font-size:14px;'
+            'background-color:#2e8b57;color:white;border-radius:6px;')
+        self.btn_calib.clicked.connect(self._on_calib)
+        ctrl.addWidget(self.btn_calib)
+
+        ctrl.addSpacing(15)
+        btn_rst = QtWidgets.QPushButton('🔄 Reset Draw')
+        btn_rst.setMinimumHeight(45)
+        btn_rst.setStyleSheet(
+            'font-weight:bold;font-size:13px;'
+            'background-color:#d2691e;color:white;border-radius:6px;')
+        btn_rst.clicked.connect(self._on_reset)
+        ctrl.addWidget(btn_rst)
+
+        ctrl.addSpacing(30)
+        lbl = QtWidgets.QLabel('Low-pass Filter:')
+        lbl.setStyleSheet('font-weight:bold;')
+        ctrl.addWidget(lbl)
+
+        self.combo = QtWidgets.QComboBox()
+        self.combo.setMinimumHeight(40)
+        self.combo.addItems([
+            '0: Raw (Alpha=1.0)',
+            '1: Nhe (Alpha=0.5)',
+            '2: Trung binh (Alpha=0.2)',
+            '3: Manh (Alpha=0.1) — Mac dinh',
+            '4: Rat manh (Alpha=0.05)',
+            '5: Sieu muot (Alpha=0.01)',
+        ])
+        self.combo.setCurrentIndex(3)
+        self.combo.currentIndexChanged.connect(self._on_filter)
+        ctrl.addWidget(self.combo)
+
+        ctrl.addStretch()
+        self.lbl_status = QtWidgets.QLabel('⚪ Chua Calib')
+        self.lbl_status.setStyleSheet('font-size:13px;color:#aaaaaa;')
+        ctrl.addWidget(self.lbl_status)
+
+        vbox.addLayout(ctrl)
+
+        # ── Đồ thị 2 hàng × 3 cột ───────────────────────────────────────
+        pg.setConfigOptions(antialias=True)
+        pg.setConfigOption('background', '#0f0f23')
+        pg.setConfigOption('foreground', 'w')
+
+        self.graph = pg.GraphicsLayoutWidget()
+        vbox.addWidget(self.graph)
+
+        N = 500
+        self._N = N
+        self._raw  = {a: [0]*N for a in 'xyz'}
+        self._comp = {a: [0]*N for a in 'xyz'}
+
+        RAW_COLORS  = {'x': (255,120,50),  'y': (255,200,50),  'z': (50,200,255)}
+        COMP_COLORS = {'x': (100,255,100), 'y': (50,255,200),  'z': (200,100,255)}
+
+        self._cr = {}; self._cc = {}
+
+        for col, ax in enumerate('xyz'):
+            pr = self.graph.addPlot(row=0, col=col, title=f'Raw Force {ax.upper()} (N)')
+            pr.showGrid(x=True, y=True)
+            pr.setLabel('bottom', 'Time steps')
+            self._cr[ax] = pr.plot(pen=pg.mkPen(RAW_COLORS[ax], width=2))
+
+            pc = self.graph.addPlot(row=1, col=col, title=f'Human Force {ax.upper()} (N)')
+            pc.showGrid(x=True, y=True)
+            pc.setLabel('bottom', 'Time steps')
+            self._cc[ax] = pc.plot(pen=pg.mkPen(COMP_COLORS[ax], width=2))
+
+        # ── Worker (Qt signal bridge) ────────────────────────────────────
+        self.worker = AxiaUIWorker(ros_node)
+        self.worker.data_ready.connect(self._update)
+        self.worker.error_signal.connect(self._err)
+        self.worker.calib_done.connect(self._calib_done)
+
+    # ── Slots ────────────────────────────────────────────────────────────────
+
+    def _on_calib(self):
+        self.btn_calib.setEnabled(False)
+        self.btn_calib.setText('⏳ Dang Calib...')
+        self.lbl_status.setText('🟡 Dang thu mau...')
+        self.lbl_status.setStyleSheet('font-size:13px;color:#ffc107;')
         self.worker.request_tare()
 
-    def on_reset_clicked(self):
-        print("Reset Draw...")
-        self.fx_data = [0] * self.history_size
-        self.fy_data = [0] * self.history_size
-        self.fz_data = [0] * self.history_size
-        self.tx_data = [0] * self.history_size
-        self.ty_data = [0] * self.history_size
-        self.tz_data = [0] * self.history_size
-        
-        self.curve_fx.setData(self.fx_data)
-        self.curve_fy.setData(self.fy_data)
-        self.curve_fz.setData(self.fz_data)
-        self.curve_tx.setData(self.tx_data)
-        self.curve_ty.setData(self.ty_data)
-        self.curve_tz.setData(self.tz_data)
+    def _calib_done(self):
+        self.btn_calib.setEnabled(True)
+        self.btn_calib.setText('🎯 Calibrate F/T Sensor')
+        self.lbl_status.setText('🟢 Calib OK!')
+        self.lbl_status.setStyleSheet(
+            'font-size:13px;color:#4caf50;font-weight:bold;')
 
-    def on_filter_changed(self, index):
+    def _on_reset(self):
+        for a in 'xyz':
+            self._raw[a]  = [0]*self._N
+            self._comp[a] = [0]*self._N
+            self._cr[a].setData(self._raw[a])
+            self._cc[a].setData(self._comp[a])
+
+    def _on_filter(self, idx):
         alphas = [1.0, 0.5, 0.2, 0.1, 0.05, 0.01]
-        alpha = alphas[index] if index < len(alphas) else 0.1
-        print(f"Thay đổi Filter Software Alpha: {alpha}")
-        self.worker.set_filter(alpha)
+        self.worker.set_filter(alphas[idx] if idx < len(alphas) else 0.1)
 
-    def update_data(self, fx, fy, fz, tx, ty, tz):
-        # Cập nhật mảng lưu trữ theo cơ chế trượt (FIFO)
-        self.fx_data.pop(0); self.fx_data.append(fx)
-        self.fy_data.pop(0); self.fy_data.append(fy)
-        self.fz_data.pop(0); self.fz_data.append(fz)
-        
-        self.tx_data.pop(0); self.tx_data.append(tx)
-        self.ty_data.pop(0); self.ty_data.append(ty)
-        self.tz_data.pop(0); self.tz_data.append(tz)
-        
-        # Cập nhật đồ thị
-        self.curve_fx.setData(self.fx_data)
-        self.curve_fy.setData(self.fy_data)
-        self.curve_fz.setData(self.fz_data)
-        
-        self.curve_tx.setData(self.tx_data)
-        self.curve_ty.setData(self.ty_data)
-        self.curve_tz.setData(self.tz_data)
-        
-        # Publish ra mạng ROS2
-        if self.ros_node:
-            self.ros_node.publish_wrench(fx, fy, fz, tx, ty, tz)
-        
-    def show_error(self, err_msg):
-        QtWidgets.QMessageBox.critical(self, "Lỗi kết nối Cảm biến", err_msg)
-        
+    def _update(self, rx, ry, rz, hx, hy, hz):
+        for a, rv, hv in (('x',rx,hx), ('y',ry,hy), ('z',rz,hz)):
+            self._raw[a].pop(0);  self._raw[a].append(rv)
+            self._comp[a].pop(0); self._comp[a].append(hv)
+            self._cr[a].setData(self._raw[a])
+            self._cc[a].setData(self._comp[a])
+
+    def _err(self, msg):
+        # Nếu Calib thất bại (TF chưa sẵn sàng), reset lại nút
+        self.btn_calib.setEnabled(True)
+        self.btn_calib.setText('🎯 Calibrate F/T Sensor')
+        self.lbl_status.setText('⚪ Chua Calib')
+        self.lbl_status.setStyleSheet('font-size:13px;color:#aaaaaa;')
+        QtWidgets.QMessageBox.critical(self, 'Loi ket noi Cam bien', msg)
+
     def closeEvent(self, event):
-        print("Đang ngắt kết nối với cảm biến...")
-        self.worker.stop()
         event.accept()
 
+
+# ════════════════════════════════════════════════════════════════════════════
+#  Điểm vào
+# ════════════════════════════════════════════════════════════════════════════
+
 def main():
-    if len(sys.argv) < 2:
-        print("Vui lòng cung cấp giao diện mạng LAN!")
-        print("Ví dụ: sudo -E python3 axia_sensor_ui.py enxec9a0c1fc063")
-        sys.exit(1)
-        
     rclpy.init()
-    ros_node = ROS2PublisherNode()
-    
-    # Chạy ROS2 spin ở một thread riêng để không block UI
-    ros_thread = threading.Thread(target=rclpy.spin, args=(ros_node,), daemon=True)
+    ros_node = AxiaROS2Node()
+
+    ros_thread = threading.Thread(
+        target=rclpy.spin, args=(ros_node,), daemon=True)
     ros_thread.start()
-        
+
     app = QtWidgets.QApplication(sys.argv)
-    window = AxiaSensorUI(sys.argv[1], ros_node)
-    window.show()
-    
-    # Khi tắt cửa sổ
+    win = AxiaSensorUI(ros_node)
+    win.show()
+
     ret = app.exec_()
     rclpy.shutdown()
     sys.exit(ret)
 
-if __name__ == "__main__":
+
+if __name__ == '__main__':
     main()

@@ -71,6 +71,14 @@ def generate_launch_description():
         default_value='camera',
         description='Input source: "camera" (RealSense+MediaPipe) or "robot_ee" (FK from joint encoders)')
 
+    test_mode_arg = DeclareLaunchArgument(
+        'test_mode',
+        default_value='false',
+        description='true = tắt cartesian_streamer để dùng Teach Pendant an toàn')
+
+    not_test_mode = UnlessCondition(
+        PythonExpression(["'", LaunchConfiguration('test_mode'), "' == 'true'"]))
+
     # ── Conditions ────────────────────────────────────────────────────────
     use_camera = UnlessCondition(
         PythonExpression(["'", LaunchConfiguration('input_source'), "' == 'robot_ee'"]))
@@ -132,17 +140,16 @@ def generate_launch_description():
             },
         ])
 
-    # 3. Coordinate transform node (cầu nối giữa 2 repo)
-    #    Khi dùng robot_ee: tự động phát hiện source='robot_ee' trong HandState
-    #    và bypass camera→base transform
+    # 3. Coordinate transform node — TẮT khi test_mode=true (không cần nếu không có streamer)
     transform_node = Node(
         package='coord_transform',
         executable='transform_node',
         name='coord_transform',
         output='screen',
+        condition=not_test_mode,
         parameters=[transform_params])
 
-    # 4. Cartesian streamer (kết nối robot)
+    # 4. Cartesian streamer (kết nối robot) — TẮT khi test_mode=true
     moveit_config = MoveItConfigsBuilder("hc10dtp", package_name="hc10dtp_moveit_config").to_dict()
     
     streamer_node = Node(
@@ -150,6 +157,7 @@ def generate_launch_description():
         executable='cartesian_streamer_hc10dtp.py',
         name='cartesian_streamer',
         output='screen',
+        condition=not_test_mode,
         parameters=[moveit_config])
 
     # 5. Experiment logger
@@ -172,12 +180,17 @@ def generate_launch_description():
         name='predictor_ui',
         output='screen')
 
+    # 7. Gravity Compensator
+    # ĐÃ TÍCH HỢP VÀO axia_sensor_ui.py — KHÔNG chạy node riêng lẻ nữa!
+    # Nếu chạy lại node này sẽ bị xung đột service /axia/set_bias.
+
     return LaunchDescription([
         env_fix,
         ros_log_fix,
         model_dir_arg,
         log_dir_arg,
         input_source_arg,
+        test_mode_arg,
         realsense_node,
         ee_tracker_node,
         predictor_node,

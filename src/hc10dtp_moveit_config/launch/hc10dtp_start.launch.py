@@ -18,8 +18,8 @@ Cách dùng:
 import os
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
-from launch.substitutions import LaunchConfiguration
-from launch.conditions import IfCondition
+from launch.substitutions import LaunchConfiguration, PythonExpression
+from launch.conditions import IfCondition, UnlessCondition
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 from moveit_configs_utils import MoveItConfigsBuilder
@@ -33,6 +33,13 @@ def generate_launch_description():
     )
     use_rviz_arg = DeclareLaunchArgument(
         "use_rviz", default_value="False", description="Whether to start RViz"
+    )
+    test_mode_arg = DeclareLaunchArgument(
+        "test_mode", default_value="false", description="Tắt move_group để dùng Teach Pendant"
+    )
+    
+    not_test_mode = UnlessCondition(
+        PythonExpression(["'", LaunchConfiguration('test_mode'), "' == 'true'"])
     )
 
     # ── MoveIt config ────────────────────────────────────────────────────
@@ -66,6 +73,7 @@ def generate_launch_description():
         remappings=[
             ("/joint_states", "/joint_states_restamped"),
         ],
+        condition=not_test_mode,
     )
 
     # ── RViz ─────────────────────────────────────────────────────────────
@@ -125,6 +133,7 @@ def generate_launch_description():
         [
             db_arg,
             use_rviz_arg,
+            test_mode_arg,
             static_tf,
             robot_state_publisher,
             run_move_group_node,

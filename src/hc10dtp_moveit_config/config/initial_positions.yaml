@@ -1,9 +1,9 @@
 # Tự động tạo bởi capture_home.py
 
 initial_positions:
-  joint_1_s: 1.570761
-  joint_2_l: 0.124250
-  joint_3_u: -1.002796
-  joint_4_r: 0.000022
-  joint_5_b: -0.385652
-  joint_6_t: -1.879127
+  joint_1_s: 1.570742
+  joint_2_l: 0.027735
+  joint_3_u: -0.710960
+  joint_4_r: 0.000032
+  joint_5_b: -0.847848
+  joint_6_t: -0.000658

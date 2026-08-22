@@ -53,10 +53,10 @@ trajectory_predictor:
 gravity_compensator:
   ros__parameters:
     payload:
-      mass_kg: 1.0       # [CẦN CẬP NHẬT] Tổng khối lượng vật + bộ gá (kg)
-      com_x:   0.0       # [CẦN CẬP NHẬT] Độ lệch tâm theo X của cảm biến (m)
-      com_y:   0.0       # [CẦN CẬP NHẬT] Độ lệch tâm theo Y của cảm biến (m)
-      com_z:  -0.10      # [CẦN CẬP NHẬT] Khoảng cách trọng tâm xuống dưới (m)
+      mass_kg: 0.33       # Đã tính toán: 3.27 N / 9.81 = 0.333 kg
+      com_x:   0.0       #
+      com_y:   0.0       #
+      com_z:   0.045     # Đã tính toán từ Torque X/Y (4.5 cm)
     sensor_frame_id:  'axia_sensor_link'   # TF frame cảm biến (phải khớp URDF)
     base_frame_id:    'base_link'          # TF frame gốc world-fixed của robot
     bias_samples:     100                  # Số mẫu để tính bias (100Hz = 1 giây)

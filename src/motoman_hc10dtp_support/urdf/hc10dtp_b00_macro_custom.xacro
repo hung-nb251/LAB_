@@ -161,5 +161,13 @@
       <child link="${prefix}tool0"/>
     </joint>
 
+    <!-- Axia80 Force/Torque Sensor Frame -->
+    <link name="${prefix}axia_sensor_link"/>
+    <joint name="${prefix}tool0-axia_sensor" type="fixed">
+      <origin xyz="0 0 0" rpy="0 0 ${radians(-152.7)}"/>
+      <parent link="${prefix}tool0"/>
+      <child link="${prefix}axia_sensor_link"/>
+    </joint>
+
   </xacro:macro>
 </robot>
