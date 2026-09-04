@@ -44,7 +44,7 @@ from rclpy.callback_groups import ReentrantCallbackGroup
 from rclpy.executors import MultiThreadedExecutor
 
 from geometry_msgs.msg import PoseStamped, Pose, Point, Quaternion
-from std_msgs.msg import Float64MultiArray
+from std_msgs.msg import Bool, Float64MultiArray, String
 from sensor_msgs.msg import JointState
 from trajectory_msgs.msg import JointTrajectoryPoint
 from builtin_interfaces.msg import Duration
@@ -115,6 +115,9 @@ MAX_JOINT_VELOCITIES = [
     0.08,   # J6 (T) — wrist twist: RẤT CHẬM
 ]
 
+# Khoảng lùi so với soft limit. IK không được phép bám sát biên.
+JOINT_LIMIT_MARGIN_RAD = math.radians(3.0)
+
 # ── Soft Joint Limits cho co-carrying ────────────────────────────
 # HOME_JOINTS = [1.5705, 0.0748, -1.0491, -0.0304, -0.5231, -0.0017]
 # Tư thế: J1 quay ~90°, khuỷu tay hướng xuống, cổ tay gần neutral
@@ -126,6 +129,12 @@ SOFT_JOINT_LIMITS = [
     (-2.50,  2.50),    # J4 (R) — ±143° (đã mở rộng để cho phép xoay hướng xuống)
     (-2.09,  0.52),    # J5 (B) — -120°~30° quanh home (-0.52)
     (-2.50,  2.50),    # J6 (T) — ±143° (đã mở rộng để cho phép xoay hướng xuống)
+]
+
+# IK phải giữ khoảng cách tối thiểu với biên; không clamp nghiệm sau khi solve.
+SAFE_IK_JOINT_LIMITS = [
+    (lo + JOINT_LIMIT_MARGIN_RAD, hi - JOINT_LIMIT_MARGIN_RAD)
+    for lo, hi in SOFT_JOINT_LIMITS
 ]
 
 # Debug watchdog: nếu queue point được accept nhưng joint gần như đứng yên
@@ -142,8 +151,13 @@ JOINT_DEADBAND_RAD = 0.01
 # 0.01m = 1cm — dưới ngưỡng phân giải IK solver
 IK_CACHE_TOLERANCE_M = 0.01
 
-# Local IK: auto-fallback nếu fail liên tục
-LOCAL_IK_MAX_CONSECUTIVE_FAILS = 10
+# Fail-safe thresholds cho co-drawing/co-carrying thực tế.
+LOCAL_IK_MAX_CONSECUTIVE_FAILS = 3
+JOINT_STATE_TIMEOUT_SEC = 0.25
+TARGET_Z_TOLERANCE_M = 0.005
+ACTUAL_Z_TOLERANCE_M = 0.010
+MAX_TRACKING_ERROR_M = 0.050
+TRACKING_ERROR_GRACE_SEC = 1.0
 STREAM_STATE_IDLE = 'idle'
 STREAM_STATE_SEEDING = 'seeding'
 STREAM_STATE_PREBUFFERING = 'prebuffering'
@@ -160,11 +174,17 @@ class CartesianStreamer(Node):
         retry_backoff_sec: float = QUEUE_RETRY_BACKOFF_SEC,
         auto_enable: bool = False,
         use_moveit_ik: bool = False,
+        lock_z: bool = False,
+        fail_closed: bool = False,
     ):
         super().__init__('cartesian_streamer')
         self._stream_hz = stream_hz
         self._stream_period_sec = 1.0 / stream_hz
         self._auto_enable = auto_enable
+        self._lock_z_enabled = lock_z
+        # Hồ sơ an toàn cho co-carrying 3D. Tách khỏi --lock-z để có thể
+        # giám sát feedback/workspace đầy đủ mà vẫn cho phép Z chuyển động.
+        self._fail_closed = fail_closed
 
         self._cb = ReentrantCallbackGroup()
 
@@ -205,6 +225,7 @@ class CartesianStreamer(Node):
         self._window_busy_count = 0
         self._window_retry_count = 0
         self._window_reject_count = 0
+        self._consecutive_queue_rejects = 0
         self._window_max_joint_delta = 0.0
         self._last_ack_time = None
         self._window_ack_interval_sum = 0.0
@@ -219,12 +240,29 @@ class CartesianStreamer(Node):
         self._last_target_update_ns = 0
         # Pose đang thực sự gửi (smooth intermediate)
         self._current_ee_pose: Pose | None = None
+        # FK của joint point gần nhất đã được MotoROS2 queue chấp nhận.
+        # Đây mới là pose lệnh phù hợp để so với feedback thật; pose smooth
+        # có thể chạy trước do giới hạn vận tốc joint trong _send_joint_point.
+        self._queued_ee_pose: Pose | None = None
+        # Feedback thật từ joint_states, tách biệt với pose lệnh đang smooth.
+        self._actual_ee_pose: Pose | None = None
+        self._last_joint_state_monotonic = 0.0
+        self._locked_z: float | None = None
+        self._safety_fault = ''
+        self._motion_started_monotonic = 0.0
+        self._tracking_error_count = 0
         
         self._last_smooth_time_ns = self.get_clock().now().nanoseconds
         self._prev_ee_velocity = [0.0, 0.0, 0.0]
         self._prev_ee_acceleration = [0.0, 0.0, 0.0]  # Cho Jerk Limiter
         self._latest_ik_solution: list[float] | None = None
+        # Nghiệm IK cuối đã vượt qua toàn bộ kiểm tra an toàn. Dùng nghiệm
+        # này để phát hiện nhảy nhánh; không so nghiệm IK với joint command
+        # đang bị rate-limit vì khoảng cách đó có thể tích lũy bình thường.
+        self._last_validated_ik_solution: list[float] | None = None
         self._ik_request_pending = False
+        self._moveit_solution_ready = False
+        self._moveit_ik_consecutive_fails = 0
         
         # IK cache: lưu lại target pose và kết quả IK tương ứng
         self._cached_ik_target_xyz: list[float] | None = None
@@ -258,6 +296,10 @@ class CartesianStreamer(Node):
         # Publisher: vị trí EE hiện tại (để AI biết feedback)
         self._ee_pub = self.create_publisher(
             PoseStamped, '/cartesian_streamer/current_pose', 10)
+        self._ready_pub = self.create_publisher(
+            Bool, '/cartesian_streamer/ready', 5)
+        self._status_pub = self.create_publisher(
+            String, '/cartesian_streamer/status', 5)
 
         # ── Service clients ──────────────────────────────────────
         self._ik_cli = self.create_client(
@@ -299,6 +341,8 @@ class CartesianStreamer(Node):
         # Timer để publish current_pose khi chưa enable (giúp transform_node lấy được mốc calibrate)
         self._idle_pose_timer = self.create_timer(
             0.5, self._publish_idle_pose, callback_group=self._cb)
+        self._status_timer = self.create_timer(
+            0.2, self._publish_safety_status, callback_group=self._cb)
 
         self.get_logger().info(
             'CartesianStreamer khởi động (chờ Enable Robot từ UI).\n'
@@ -306,6 +350,8 @@ class CartesianStreamer(Node):
             f'  Queue dt:          {self._queue_dt_sec:.3f} s\n'
             f'  Prebuffer points:  {self._prebuffer_target}\n'
             f'  Retry backoff:     {self._retry_backoff_sec*1000:.1f} ms\n'
+            f'  Lock Z:            {self._lock_z_enabled}\n'
+            f'  Fail closed:       {self._fail_closed}\n'
             '  Gửi PoseStamped lên: /cartesian_streamer/target_pose\n'
             '  Gửi XYZ lên:        /cartesian_streamer/target_xyz\n'
             '  Nhận EE pose tại:   /cartesian_streamer/current_pose'
@@ -316,9 +362,55 @@ class CartesianStreamer(Node):
     # ═══════════════════════════════════════════════════════════════
 
     def _on_joint_state(self, msg: JointState):
+        if any(name not in msg.name for name in JOINT_NAMES):
+            self.get_logger().warn(
+                'joint_states thiếu một hoặc nhiều khớp HC10DTP; bỏ qua frame.',
+                throttle_duration_sec=1.0)
+            return
         for i, name in enumerate(JOINT_NAMES):
-            if name in msg.name:
-                self._current_joints[i] = msg.position[msg.name.index(name)]
+            index = msg.name.index(name)
+            if index >= len(msg.position):
+                return
+            self._current_joints[i] = msg.position[index]
+        self._last_joint_state_monotonic = _time.monotonic()
+
+        actual_pose = self._solve_fk_local_as_pose(list(self._current_joints))
+        if actual_pose is not None:
+            self._actual_ee_pose = actual_pose
+            if self._current_ee_pose is None:
+                self._current_ee_pose = actual_pose
+            if self._queued_ee_pose is None:
+                self._queued_ee_pose = actual_pose
+            self._publish_actual_pose(actual_pose)
+
+            if (self._lock_z_enabled and self._locked_z is not None
+                    and self._queue_mode_active
+                    and abs(actual_pose.position.z - self._locked_z) > ACTUAL_Z_TOLERANCE_M):
+                self._trigger_safety_stop(
+                    f'Actual EE Z deviated {actual_pose.position.z - self._locked_z:+.4f} m '
+                    f'(limit +/-{ACTUAL_Z_TOLERANCE_M:.3f} m)')
+
+            if ((self._lock_z_enabled or self._fail_closed)
+                    and self._queue_mode_active
+                    and self._stream_state == STREAM_STATE_STREAMING
+                    and self._target_pose is not None
+                    and self._queued_ee_pose is not None
+                    and _time.monotonic() - self._motion_started_monotonic
+                    > TRACKING_ERROR_GRACE_SEC):
+                dx = actual_pose.position.x - self._queued_ee_pose.position.x
+                dy = actual_pose.position.y - self._queued_ee_pose.position.y
+                dz = actual_pose.position.z - self._queued_ee_pose.position.z
+                tracking_error = math.sqrt(dx*dx + dy*dy + dz*dz)
+                if tracking_error > MAX_TRACKING_ERROR_M:
+                    self._tracking_error_count += 1
+                    if self._tracking_error_count >= 5:
+                        self._trigger_safety_stop(
+                            f'Actual EE vs accepted queue tracking error '
+                            f'{tracking_error:.3f} m '
+                            f'> {MAX_TRACKING_ERROR_M:.3f} m')
+                else:
+                    self._tracking_error_count = 0
+
         if not self._got_joints:
             self._got_joints = True
             self._last_ok_joints = list(self._current_joints)
@@ -337,6 +429,14 @@ class CartesianStreamer(Node):
             self._last_motion_time = self.get_clock().now()
         self._prev_joint_snapshot = list(self._current_joints)
 
+    def _publish_actual_pose(self, pose: Pose):
+        """Publish FK từ joint feedback; không publish pose lệnh giả làm feedback."""
+        fb = PoseStamped()
+        fb.header.frame_id = BASE_FRAME
+        fb.header.stamp = self.get_clock().now().to_msg()
+        fb.pose = pose
+        self._ee_pub.publish(fb)
+
     # ═══════════════════════════════════════════════════════════════
     # TARGET CALLBACKS
     # ═══════════════════════════════════════════════════════════════
@@ -346,6 +446,8 @@ class CartesianStreamer(Node):
         if not self._queue_mode_active:
             return
         if not self._check_workspace(msg.pose.position):
+            return
+        if not self._accept_target_z(msg.pose.position.z):
             return
         self._target_pose = msg.pose
         self._last_target_update_ns = self.get_clock().now().nanoseconds
@@ -362,6 +464,8 @@ class CartesianStreamer(Node):
         pos = Point(x=msg.data[0], y=msg.data[1], z=msg.data[2])
         if not self._check_workspace(pos):
             return
+        if not self._accept_target_z(pos.z):
+            return
 
         pose = Pose()
         pose.position = pos
@@ -372,6 +476,30 @@ class CartesianStreamer(Node):
             pose.orientation = Quaternion(x=0.0, y=1.0, z=0.0, w=0.0)
         self._target_pose = pose
         self._last_target_update_ns = self.get_clock().now().nanoseconds
+
+    def _accept_target_z(self, target_z: float) -> bool:
+        """Khóa Z theo target đầu tiên, chỉ khi --lock-z được bật."""
+        if not self._lock_z_enabled:
+            return True
+        if self._actual_ee_pose is None:
+            self._trigger_safety_stop('Cannot lock Z without actual EE feedback')
+            return False
+        if self._locked_z is None:
+            actual_z = self._actual_ee_pose.position.z
+            if abs(target_z - actual_z) > ACTUAL_Z_TOLERANCE_M:
+                self._trigger_safety_stop(
+                    f'First target Z={target_z:.4f} differs from actual Z={actual_z:.4f} '
+                    f'by more than {ACTUAL_Z_TOLERANCE_M:.3f} m')
+                return False
+            self._locked_z = float(target_z)
+            self._motion_started_monotonic = _time.monotonic()
+            self.get_logger().info(f'Co-drawing Z locked at {self._locked_z:.4f} m')
+            return True
+        if abs(target_z - self._locked_z) > TARGET_Z_TOLERANCE_M:
+            self._trigger_safety_stop(
+                f'Target Z changed from locked value by {target_z - self._locked_z:+.4f} m')
+            return False
+        return True
 
     def _check_workspace(self, pos: Point) -> bool:
         """Kiểm tra điểm nằm trong workspace an toàn."""
@@ -384,6 +512,11 @@ class CartesianStreamer(Node):
                 f'  X: {WS_X}, Y: {WS_Y}, Z: {WS_Z}',
                 throttle_duration_sec=1.0
             )
+            if ((self._lock_z_enabled or self._fail_closed)
+                    and self._queue_mode_active):
+                self._trigger_safety_stop(
+                    f'Cartesian target outside workspace: '
+                    f'({pos.x:.3f}, {pos.y:.3f}, {pos.z:.3f})')
         return ok
 
     # ═══════════════════════════════════════════════════════════════
@@ -407,23 +540,24 @@ class CartesianStreamer(Node):
             initial_pose = self._solve_fk_sync(list(self._current_joints))
         if initial_pose:
             self._current_ee_pose = initial_pose
-            fb = PoseStamped()
-            fb.header.frame_id = BASE_FRAME
-            fb.header.stamp = self.get_clock().now().to_msg()
-            fb.pose = initial_pose
-            self._ee_pub.publish(fb)
+            self._queued_ee_pose = initial_pose
+            self._actual_ee_pose = initial_pose
+            self._publish_actual_pose(initial_pose)
             ik_mode = 'MoveIt! TRAC-IK' if self._use_moveit_ik else 'Local DLS'
             if self._auto_enable:
-                self.get_logger().info(
-                    f'Đã nhận joint_states. EE hiện tại: '
-                    f'({initial_pose.position.x:.4f}, '
-                    f'{initial_pose.position.y:.4f}, '
-                    f'{initial_pose.position.z:.4f}). '
-                    f'IK mode: {ik_mode}. '
-                    f'Auto-enable is ON. Tự động bật robot sau 1s...'
-                )
-                import threading
-                threading.Timer(1.0, self._enable_step_1_reset_error).start()
+                if self._local_ik_validated:
+                    self.get_logger().info(
+                        f'Đã nhận joint_states. EE hiện tại: '
+                        f'({initial_pose.position.x:.4f}, '
+                        f'{initial_pose.position.y:.4f}, '
+                        f'{initial_pose.position.z:.4f}). '
+                        f'IK mode: {ik_mode}. '
+                        f'Auto-enable is ON. Tự động bật robot sau 1s...'
+                    )
+                    threading.Timer(1.0, self._enable_step_1_reset_error).start()
+                else:
+                    self._trigger_safety_stop(
+                        'Auto-enable blocked because local FK was not validated')
             else:
                 self.get_logger().info(
                     f'Đã nhận joint_states. EE hiện tại: '
@@ -451,11 +585,56 @@ class CartesianStreamer(Node):
             pose = self._solve_fk_sync(list(self._current_joints))
         if pose:
             self._current_ee_pose = pose
-            fb = PoseStamped()
-            fb.header.frame_id = BASE_FRAME
-            fb.header.stamp = self.get_clock().now().to_msg()
-            fb.pose = pose
-            self._ee_pub.publish(fb)
+            self._queued_ee_pose = pose
+            self._actual_ee_pose = pose
+            self._publish_actual_pose(pose)
+
+    def _joint_feedback_is_fresh(self) -> bool:
+        return (self._last_joint_state_monotonic > 0.0
+                and _time.monotonic() - self._last_joint_state_monotonic
+                <= JOINT_STATE_TIMEOUT_SEC)
+
+    def _publish_safety_status(self):
+        if self._queue_mode_active and not self._joint_feedback_is_fresh():
+            self._trigger_safety_stop(
+                f'joint_states timeout > {JOINT_STATE_TIMEOUT_SEC:.2f} s')
+
+        ready = bool(
+            self._queue_mode_active
+            and self._stream_state == STREAM_STATE_STREAMING
+            and self._joint_feedback_is_fresh()
+            and self._local_ik_validated
+            and not self._safety_fault)
+        if self._safety_fault:
+            status = f'FAULT: {self._safety_fault}'
+        elif not self._got_joints:
+            status = 'WAIT_JOINT_STATES'
+        elif not self._local_ik_validated:
+            status = 'IK_MODEL_NOT_VALIDATED'
+        elif not self._queue_mode_active:
+            status = 'DISABLED'
+        elif self._stream_state != STREAM_STATE_STREAMING:
+            status = self._stream_state.upper()
+        else:
+            status = 'READY'
+        self._ready_pub.publish(Bool(data=ready))
+        self._status_pub.publish(String(data=status))
+
+    def _trigger_safety_stop(self, reason: str):
+        """Fail closed: xóa lệnh và thoát queue mode ngay khi vi phạm."""
+        if self._safety_fault:
+            return
+        self._safety_fault = reason
+        self._queue_mode_active = False
+        self._stream_state = STREAM_STATE_IDLE
+        self._target_pose = None
+        self._pending_point_to_resend = None
+        self._seed_request_sent = False
+        self.get_logger().error(f'SAFETY STOP: {reason}')
+        self._ready_pub.publish(Bool(data=False))
+        self._status_pub.publish(String(data=f'FAULT: {reason}'))
+        if self._stop_traj_cli.service_is_ready():
+            self._stop_traj_cli.call_async(Trigger.Request())
 
     # ── Enable / Disable services (gọi từ UI) ────────────────────
 
@@ -470,6 +649,26 @@ class CartesianStreamer(Node):
                 response.success = False
                 response.message = 'Chưa nhận được joint_states'
                 return response
+            if not self._joint_feedback_is_fresh():
+                response.success = False
+                response.message = 'joint_states stale; không cho phép enable'
+                return response
+            if not self._local_ik_validated:
+                self._validate_local_fk(list(self._current_joints))
+            if not self._local_ik_validated:
+                response.success = False
+                response.message = 'Local IK/FK chưa khớp với MoveIt; không cho phép enable'
+                return response
+            self._safety_fault = ''
+            self._locked_z = None
+            self._local_ik_consecutive_fails = 0
+            self._latest_ik_solution = None
+            self._last_validated_ik_solution = None
+            self._moveit_solution_ready = False
+            self._moveit_ik_consecutive_fails = 0
+            self._tracking_error_count = 0
+            self._current_ee_pose = self._actual_ee_pose
+            self._queued_ee_pose = self._actual_ee_pose
             # Bắt đầu chuỗi enable: reset_error → stop_traj → start_queue (servo tự động bật theo MotoROS2)
             self.get_logger().info('Enable Robot: bắt đầu chuỗi khởi động...')
             self._enable_step_1_reset_error()
@@ -499,10 +698,18 @@ class CartesianStreamer(Node):
 
     def _enable_step_4_start_queue(self):
         self.get_logger().info('Enable: StartPointQueueMode...')
+        if not self._start_queue_cli.service_is_ready():
+            self._trigger_safety_stop('StartPointQueueMode service is not ready')
+            return
         fut = self._start_queue_cli.call_async(StartPointQueueMode.Request())
 
         def _done(f):
-            res = f.result()
+            try:
+                res = f.result()
+            except Exception as exc:
+                self._trigger_safety_stop(
+                    f'StartPointQueueMode service exception: {exc}')
+                return
             self.get_logger().info(
                 f'StartPointQueueMode response: code={res.result_code.value}, msg="{res.message}"'
             )
@@ -516,9 +723,12 @@ class CartesianStreamer(Node):
                 self._cumulative_time_ns = 0
                 self._hold_point_count = 0
                 self._next_send_not_before_ns = self.get_clock().now().nanoseconds
+                self._motion_started_monotonic = _time.monotonic()
                 self.get_logger().info('✓ Robot ENABLED — Point Queue Mode active. Servo ON!')
             else:
-                self.get_logger().error(f'StartPointQueueMode FAILED: {res.message}')
+                self._trigger_safety_stop(
+                    f'StartPointQueueMode failed: code={res.result_code.value}, '
+                    f'msg={res.message}')
         fut.add_done_callback(_done)
 
     def _disable_robot(self):
@@ -527,6 +737,8 @@ class CartesianStreamer(Node):
         self._queue_mode_active = False
         self._stream_state = STREAM_STATE_IDLE
         self._target_pose = None
+        self._locked_z = None
+        self._tracking_error_count = 0
         self._seed_request_sent = False
         self._pending_point_to_resend = None
         # Gọi stop_traj_mode
@@ -536,16 +748,25 @@ class CartesianStreamer(Node):
 
     def _auto_re_enable(self):
         """Tự động re-enable queue mode sau khi bị drop (one-shot timer)."""
+        if self._safety_fault:
+            self.get_logger().error('Không auto-recovery khi đang có safety fault.')
+            return
         self.get_logger().info('Auto-recovery: bắt đầu re-enable queue mode...')
         self._recovery_in_progress = False
         # Reset state để enable lại
         self._queue_call_inflight = False
         self._pending_point_to_resend = None
         self._seed_request_sent = False
+        self._latest_ik_solution = None
+        self._last_validated_ik_solution = None
+        self._moveit_solution_ready = False
         # Cập nhật lại _last_queued_joints từ current_joints
         # (vì robot đã dừng ở vị trí hiện tại)
         if self._got_joints:
             self._last_queued_joints = list(self._current_joints)
+            self._queued_ee_pose = self._solve_fk_local_as_pose(
+                list(self._current_joints))
+            self._current_ee_pose = self._queued_ee_pose
         # Reset smooth state để tránh nhảy cóc khi re-enable
         if self._current_ee_pose is not None:
             self._target_pose = None
@@ -555,6 +776,9 @@ class CartesianStreamer(Node):
 
     def _call_trigger_chained(self, client, name, next_step_cb):
         """Helper để gọi service bất kỳ và chuyển sang bước tiếp theo."""
+        if not client.service_is_ready():
+            self._trigger_safety_stop(f'{name} service is not ready')
+            return
         req = client.srv_type.Request()
         fut = client.call_async(req)
         def _done(f):
@@ -569,8 +793,18 @@ class CartesianStreamer(Node):
                     self.get_logger().info(
                         f'{name}: success={success}, code={code}, msg="{msg}"'
                     )
+                # stop_traj_mode được gọi idempotent trước khi start queue;
+                # một số firmware trả success=False nếu mode đã dừng.
+                ok = (name == 'stop_traj_mode' or
+                      (bool(success) if success is not None else code in (0, 1)))
+                if not ok:
+                    self._trigger_safety_stop(
+                        f'{name} failed: code={code}, success={success}, msg={msg}')
+                    return
             except Exception as e:
                 self.get_logger().error(f'Error calling {name}: {e}')
+                self._trigger_safety_stop(f'{name} service exception: {e}')
+                return
             next_step_cb()
         fut.add_done_callback(_done)
 
@@ -598,6 +832,7 @@ class CartesianStreamer(Node):
                     initial_pose = self._solve_fk_sync(list(self._current_joints))
                 if initial_pose:
                     self._current_ee_pose = initial_pose
+                    self._queued_ee_pose = initial_pose
                     fb = PoseStamped()
                     fb.header.frame_id = BASE_FRAME
                     fb.header.stamp = self.get_clock().now().to_msg()
@@ -631,76 +866,102 @@ class CartesianStreamer(Node):
 
             # ── Bước 1: Smooth pose (interpolate về target) ──────────
             smoothed = self._smooth_pose(self._target_pose)
-            self._current_ee_pose = smoothed  # cập nhật EE pose ngay lập tức để tick sau dùng
             
             # ── Bước 2: Publish feedback EE pose ─────────────────────
-            fb = PoseStamped()
-            fb.header.frame_id = BASE_FRAME
-            fb.header.stamp = self.get_clock().now().to_msg()
-            fb.pose = smoothed
-            self._ee_pub.publish(fb)
+            # /current_pose chỉ publish FK từ joint_states; không dùng pose
+            # lệnh đang smooth làm feedback thật của robot.
 
             # ── Bước 3: Giải IK ─────────────────────────────────────
             if self._use_moveit_ik:
-                # MoveIt! mode (async, trễ 1 tick)
+                # Mỗi nghiệm async chỉ được consume một lần. Nếu request
+                # mới fail thì không dùng lại nghiệm cũ.
+                joint_solution = (
+                    list(self._latest_ik_solution)
+                    if self._moveit_solution_ready
+                    and self._latest_ik_solution is not None else None)
+                self._moveit_solution_ready = False
                 if not self._ik_request_pending:
                     self._request_ik_async(smoothed)
-                joint_solution = self._latest_ik_solution
             else:
                 # Local IK mode (sync, trong cùng tick — KHÔNG trễ)
                 joint_solution = self._solve_ik_local(smoothed)
 
             if joint_solution is None:
                 # IK thất bại → giữ vị trí cũ (hold-point)
+                # Không cập nhật _current_ee_pose sang pose chưa giải được IK.
+                # Nếu cập nhật, tick kế tiếp sẽ nội suy từ một trạng thái ảo
+                # xa hơn trạng thái hợp lệ và tự tạo chuỗi 3 lần IK fail.
                 self._send_joint_point(list(self._last_queued_joints), is_hold=True)
                 return
 
             # ── An toàn: kiểm tra soft joint limits ────────────────────
-            joint_solution_list = list(joint_solution)
-            was_limit_clamped = False
-            for i, (jval, (lo, hi)) in enumerate(zip(joint_solution_list, SOFT_JOINT_LIMITS)):
-                if jval < lo:
-                    joint_solution_list[i] = lo
-                    was_limit_clamped = True
-                elif jval > hi:
-                    joint_solution_list[i] = hi
-                    was_limit_clamped = True
+            joint_solution = list(joint_solution)
+            limit_violations = [
+                i for i, (jval, (lo, hi)) in enumerate(
+                    zip(joint_solution, SAFE_IK_JOINT_LIMITS))
+                if not lo <= jval <= hi
+            ]
             
-            if was_limit_clamped:
-                self.get_logger().warn(
-                    f'IK solution ngoài soft limit. Đã clamp vào biên để bảo vệ robot.',
-                    throttle_duration_sec=1.0)
-            
-            joint_solution = tuple(joint_solution_list)
+            if limit_violations:
+                joints = ', J'.join(str(i + 1) for i in limit_violations)
+                self._trigger_safety_stop(
+                    f'IK solution violates safe joint limit(s): J{joints}')
+                return
 
-            # ── An toàn: CLAMP bước nhảy joint PER-AXIS ────────────
-            was_clamped = False
-            clamped_joints = list(joint_solution)
-            for i in range(len(clamped_joints)):
-                delta = clamped_joints[i] - self._last_queued_joints[i]
-                limit = MAX_JOINT_DELTA_PER_AXIS[i]
-                if abs(delta) > limit:
-                    clamped_joints[i] = self._last_queued_joints[i] + limit * (1.0 if delta > 0 else -1.0)
-                    was_clamped = True
-
-            if was_clamped:
-                self.get_logger().info(
-                    f'IK delta clamped → joints: [{", ".join(f"{j:.3f}" for j in clamped_joints)}]',
-                    throttle_duration_sec=2.0)
-
-            joint_solution = clamped_joints
+            # ── An toàn: phát hiện IK thực sự nhảy nhánh ────────────
+            # So với nghiệm IK hợp lệ liền trước. _last_queued_joints có thể
+            # bám chậm hơn vì _send_joint_point còn giới hạn vận tốc từng
+            # khớp; dùng nó ở đây sẽ tạo safety stop giả khi lag tích lũy.
+            continuity_reference = (
+                self._last_validated_ik_solution
+                if self._last_validated_ik_solution is not None
+                else self._last_queued_joints
+            )
+            excessive_delta = [
+                i for i, (target, previous, limit) in enumerate(zip(
+                    joint_solution, continuity_reference,
+                    MAX_JOINT_DELTA_PER_AXIS))
+                if abs(target - previous) > limit
+            ]
+            if excessive_delta:
+                joints = ', J'.join(str(i + 1) for i in excessive_delta)
+                details = ', '.join(
+                    f'J{i + 1}: prev={continuity_reference[i]:.4f}, '
+                    f'new={joint_solution[i]:.4f}, '
+                    f'delta={joint_solution[i] - continuity_reference[i]:+.4f}, '
+                    f'limit={MAX_JOINT_DELTA_PER_AXIS[i]:.4f}'
+                    for i in excessive_delta
+                )
+                self._trigger_safety_stop(
+                    f'IK branch jump / excessive IK step at J{joints} ({details})')
+                return
+            self._last_validated_ik_solution = list(joint_solution)
             self._last_ok_joints = joint_solution
+            # Chỉ tiến trạng thái Cartesian nội bộ sau khi nghiệm IK đã vượt
+            # qua joint limits và kiểm tra liên tục nhánh.
+            self._current_ee_pose = smoothed
 
-            max_delta = max(abs(j - c) for j, c in
-                            zip(joint_solution, self._last_queued_joints))
+            max_ik_step = max(abs(j - c) for j, c in
+                              zip(joint_solution, continuity_reference))
+            max_queue_gap = max(abs(j - c) for j, c in
+                                zip(joint_solution, self._last_queued_joints))
+            target_backlog = 0.0
+            if self._queued_ee_pose is not None:
+                dx = self._target_pose.position.x - self._queued_ee_pose.position.x
+                dy = self._target_pose.position.y - self._queued_ee_pose.position.y
+                dz = self._target_pose.position.z - self._queued_ee_pose.position.z
+                target_backlog = math.sqrt(dx*dx + dy*dy + dz*dz)
 
             self.get_logger().info(
-                f'IK OK → Δmax={max_delta:.4f} rad, '
+                f'IK OK → IK_step={max_ik_step:.4f} rad, '
+                f'queue_gap={max_queue_gap:.4f} rad, '
+                f'target_backlog={target_backlog:.4f} m, '
                 f'joints: [{", ".join(f"{j:.3f}" for j in joint_solution)}]',
                 throttle_duration_sec=2.0)
 
             # ── Bước 5: Gửi xuống robot (motion point) ────────────────
-            self._window_max_joint_delta = max(self._window_max_joint_delta, max_delta)
+            self._window_max_joint_delta = max(
+                self._window_max_joint_delta, max_ik_step)
             self._send_joint_point(joint_solution, is_hold=False)
         except Exception as e:
             self.get_logger().error(f'_stream_tick exception: {e}')
@@ -714,8 +975,7 @@ class CartesianStreamer(Node):
         Giải IK đồng bộ bằng LocalIKSolver (DLS Jacobian).
         Nhanh hơn MoveIt! ~20-80x, chạy trong cùng tick.
 
-        Auto-fallback: nếu fail liên tục > LOCAL_IK_MAX_CONSECUTIVE_FAILS,
-        tự động gọi MoveIt! IK cho tick đó.
+        Fail closed sau nhiều lần không hội tụ; không dùng lại nghiệm cũ.
         """
         # Target position + quaternion
         target_pos = [
@@ -730,9 +990,10 @@ class CartesianStreamer(Node):
             target_pose.orientation.w,
         ]
 
-        # Seed: dùng nghiệm IK trước đó nếu có, ngược lại dùng last_queued_joints
-        if self._latest_ik_solution is not None:
-            seed = list(self._latest_ik_solution)
+        # Seed bằng nghiệm đã qua kiểm tra an toàn gần nhất để giữ liên tục
+        # nhánh IK. Nếu chưa có nghiệm hợp lệ thì dùng joint command hiện tại.
+        if self._last_validated_ik_solution is not None:
+            seed = list(self._last_validated_ik_solution)
         else:
             seed = list(self._last_queued_joints)
 
@@ -740,7 +1001,7 @@ class CartesianStreamer(Node):
             target_position=target_pos,
             target_quaternion=target_quat,
             seed_joints=seed,
-            joint_limits=SOFT_JOINT_LIMITS,
+            joint_limits=SAFE_IK_JOINT_LIMITS,
         )
 
         if solution is not None:
@@ -754,14 +1015,9 @@ class CartesianStreamer(Node):
         self._ik_fail_count += 1
 
         if self._local_ik_consecutive_fails >= LOCAL_IK_MAX_CONSECUTIVE_FAILS:
-            # Auto-fallback: thử MoveIt! IK cho tick này
-            self.get_logger().warn(
-                f'Local IK failed {self._local_ik_consecutive_fails}x liên tiếp! '
-                f'Fallback sang MoveIt! IK...',
-                throttle_duration_sec=2.0)
-            if not self._ik_request_pending:
-                self._request_ik_async(target_pose)
-            return self._latest_ik_solution
+            self._trigger_safety_stop(
+                f'Local IK failed {self._local_ik_consecutive_fails} consecutive times')
+            return None
 
         self.get_logger().info(
             f'Local IK không hội tụ (fail #{self._local_ik_consecutive_fails})',
@@ -788,46 +1044,41 @@ class CartesianStreamer(Node):
 
     def _validate_local_fk(self, joints: list[float]):
         """
-        Cross-validate local FK với MoveIt! FK.
-        Gọi 1 lần khi khởi động. Nếu sai lệch > 1mm → disable local IK.
+        Cross-validate local FK với MoveIt! FK trước khi cho phép enable.
         """
-        # SIMULATION MODE: Bỏ qua cross-validation vì MoveIt không load được
-        # planning library (NO PLANNING LIBRARY LOADED). Local IK đã được
-        # xác minh đúng toán học qua test_joint_motion.py.
-        self.get_logger().info(
-            '⚡ Simulation mode: Bỏ qua FK cross-validation, ÉP DÙNG Local IK.\n'
-            '   (MoveIt không có planning library trong môi trường giả lập)')
-        self._local_ik_validated = True
-        return
-
-        # --- Code gốc bên dưới (disabled trong sim mode) ---
+        self._local_ik_validated = False
         local_pose = self._solve_fk_local_as_pose(joints)
         moveit_pose = self._solve_fk_sync(joints)
 
         if local_pose is None or moveit_pose is None:
             self.get_logger().warn(
                 '⚠ Không thể cross-validate FK (local hoặc MoveIt! FK thất bại). '
-                'Bỏ qua bước kiểm tra và ÉP DÙNG Local IK.')
-            self._local_ik_validated = True  # Ép dùng Local IK kể cả khi MoveIt chết
+                'Streamer sẽ không cho phép enable.')
             return
 
         dx = local_pose.position.x - moveit_pose.position.x
         dy = local_pose.position.y - moveit_pose.position.y
         dz = local_pose.position.z - moveit_pose.position.z
-        import math
         error_mm = math.sqrt(dx*dx + dy*dy + dz*dz) * 1000
 
-        if error_mm > 1.0:
+        ql = local_pose.orientation
+        qm = moveit_pose.orientation
+        dot = abs(ql.x*qm.x + ql.y*qm.y + ql.z*qm.z + ql.w*qm.w)
+        dot = max(-1.0, min(1.0, dot))
+        orientation_error_deg = math.degrees(2.0 * math.acos(dot))
+
+        if error_mm > 2.0 or orientation_error_deg > 1.0:
             self.get_logger().error(
-                f'⚠ FK CROSS-VALIDATION FAILED! Error = {error_mm:.2f}mm > 1mm!\n'
+                f'⚠ FK CROSS-VALIDATION FAILED! position={error_mm:.2f}mm, '
+                f'orientation={orientation_error_deg:.2f}deg\n'
                 f'  Local FK:  ({local_pose.position.x:.5f}, {local_pose.position.y:.5f}, {local_pose.position.z:.5f})\n'
                 f'  MoveIt FK: ({moveit_pose.position.x:.5f}, {moveit_pose.position.y:.5f}, {moveit_pose.position.z:.5f})\n'
-                f'  → DISABLING local IK, fallback to MoveIt!')
-            self._use_moveit_ik = True
+                f'  → BLOCKING robot enable')
         else:
             self._local_ik_validated = True
             self.get_logger().info(
-                f'✓ FK cross-validation PASSED. Error = {error_mm:.4f}mm\n'
+                f'✓ FK cross-validation PASSED. position={error_mm:.4f}mm, '
+                f'orientation={orientation_error_deg:.4f}deg\n'
                 f'  Local FK:  ({local_pose.position.x:.5f}, {local_pose.position.y:.5f}, {local_pose.position.z:.5f})\n'
                 f'  MoveIt FK: ({moveit_pose.position.x:.5f}, {moveit_pose.position.y:.5f}, {moveit_pose.position.z:.5f})')
 
@@ -857,12 +1108,11 @@ class CartesianStreamer(Node):
         ps.pose            = target_pose
         req.ik_request.pose_stamped = ps
 
-        # Dùng nghiệm IK gần nhất làm seed (nếu có) để ép solver không nhảy nhánh (Branch Jumping).
-        # Nếu chưa có, dùng vị trí hiện tại _last_queued_joints
+        # Chỉ seed bằng nghiệm IK đã được caller kiểm tra an toàn.
         seed = RobotState()
         seed.joint_state.name     = JOINT_NAMES
-        if self._latest_ik_solution is not None:
-            seed.joint_state.position = list(self._latest_ik_solution)
+        if self._last_validated_ik_solution is not None:
+            seed.joint_state.position = list(self._last_validated_ik_solution)
         else:
             seed.joint_state.position = list(self._last_queued_joints)
         req.ik_request.robot_state = seed
@@ -873,6 +1123,17 @@ class CartesianStreamer(Node):
         except Exception as e:
             self._ik_request_pending = False
             self.get_logger().error(f'IK async request exception: {e}')
+            self._record_moveit_ik_failure('async request exception')
+
+    def _record_moveit_ik_failure(self, detail: str):
+        self._moveit_solution_ready = False
+        self._moveit_ik_consecutive_fails += 1
+        self.get_logger().warn(
+            f'MoveIt IK failed #{self._moveit_ik_consecutive_fails}: {detail}',
+            throttle_duration_sec=1.0)
+        if self._moveit_ik_consecutive_fails >= LOCAL_IK_MAX_CONSECUTIVE_FAILS:
+            self._trigger_safety_stop(
+                f'MoveIt IK failed {self._moveit_ik_consecutive_fails} consecutive times')
 
     def _on_ik_result(self, future):
         """Callback khi nhận được kết quả IK."""
@@ -882,14 +1143,23 @@ class CartesianStreamer(Node):
             # error_code: 1 = SUCCESS
             if result.error_code.val == 1:
                 js = result.solution.joint_state
+                if any(name not in js.name for name in JOINT_NAMES):
+                    self._record_moveit_ik_failure('solution misses required joints')
+                    return
                 positions = [0.0] * 6
                 for i, name in enumerate(JOINT_NAMES):
                     if name in js.name:
                         idx = list(js.name).index(name)
                         positions[i] = js.position[idx]
                 self._latest_ik_solution = positions
+                self._moveit_solution_ready = True
+                self._moveit_ik_consecutive_fails = 0
+            else:
+                self._record_moveit_ik_failure(
+                    f'error_code={result.error_code.val}')
         except Exception as e:
             self.get_logger().error(f'IK result exception: {e}', throttle_duration_sec=2.0)
+            self._record_moveit_ik_failure('result exception')
 
     def _solve_fk_sync(self, joints: list[float]) -> Pose | None:
         """Giải FK đồng bộ cho list joints."""
@@ -1240,6 +1510,10 @@ class CartesianStreamer(Node):
             if code == 2:  # "Must call start_point_queue_mode service"
                 self._pending_point_to_resend = None
                 self._window_reject_count += 1
+                if self._lock_z_enabled or self._fail_closed:
+                    self._trigger_safety_stop(
+                        'MotoROS2 point queue mode dropped during force-guided motion')
+                    return
                 if not self._recovery_in_progress:
                     self._queue_mode_active = False
                     self._stream_state = STREAM_STATE_IDLE
@@ -1265,9 +1539,22 @@ class CartesianStreamer(Node):
                 )
                 self._pending_point_to_resend = None
                 self._window_reject_count += 1
+                self._consecutive_queue_rejects += 1
+                if self._consecutive_queue_rejects >= 3:
+                    self._trigger_safety_stop(
+                        f'MotoROS2 rejected {self._consecutive_queue_rejects} '
+                        f'consecutive points (last code={code})')
                 return
             self._pending_point_to_resend = None
+            self._consecutive_queue_rejects = 0
             self._last_queued_joints = list(sent_point.positions)
+            queued_pose = self._solve_fk_local_as_pose(
+                list(sent_point.positions))
+            if queued_pose is not None:
+                self._queued_ee_pose = queued_pose
+                # Backpressure Cartesian: tick kế tiếp đi tiếp từ pose joint
+                # thực sự đã được chấp nhận, không từ target smooth chạy trước.
+                self._current_ee_pose = queued_pose
             self._accepted_points += 1
             self._auto_recovery_count = 0  # Reset recovery counter khi thành công
             self._window_ack_count += 1
@@ -1581,7 +1868,13 @@ Ví dụ:
         help=f'Giới hạn jerk Cartesian (m/s³) [default: {MAX_CARTESIAN_JERK}]')
     parser.add_argument(
         '--use-moveit-ik', action='store_true', default=False,
-        help='Sử dụng MoveIt! TRAC-IK thay vì Local IK solver (chậm hơn nhưng fallback an toàn)')
+        help='Sử dụng MoveIt! TRAC-IK thay vì Local IK solver (async, fail-closed)')
+    parser.add_argument(
+        '--lock-z', action='store_true', default=False,
+        help='Khóa Z theo target đầu và giám sát Z thật (dùng cho co-drawing)')
+    parser.add_argument(
+        '--fail-closed', action='store_true', default=False,
+        help='Dừng ngay khi target ngoài workspace, queue bị drop hoặc feedback lệch; không khóa Z')
     args, ros_args = parser.parse_known_args()
 
     # Áp dụng CLI overrides lên các hằng số an toàn
@@ -1609,6 +1902,8 @@ Ví dụ:
         retry_backoff_sec=max(args.retry_backoff_ms, 0.0) / 1000.0,
         auto_enable=bool(args.demo),
         use_moveit_ik=args.use_moveit_ik,
+        lock_z=args.lock_z,
+        fail_closed=args.fail_closed,
     )
     executor.add_node(streamer)
 

@@ -30,6 +30,7 @@ LƯU Ý: File này KHÔNG thay đổi bất kỳ file nào trong hc10dtp_moveit_
 import os
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, TimerAction
+from launch.conditions import IfCondition
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
@@ -37,6 +38,12 @@ from moveit_configs_utils import MoveItConfigsBuilder
 
 
 def generate_launch_description():
+
+    use_rviz_arg = DeclareLaunchArgument(
+        "use_rviz",
+        default_value="true",
+        description="Start RViz for the fake-hardware robot",
+    )
 
     # ── MoveIt config (dùng fake hardware) ───────────────────────────
     moveit_config = (
@@ -149,6 +156,7 @@ def generate_launch_description():
             moveit_config.planning_pipelines,
             moveit_config.robot_description_kinematics,
         ],
+        condition=IfCondition(LaunchConfiguration("use_rviz")),
     )
 
     # ── MotoROS2 Mock Node ───────────────────────────────────────────
@@ -167,6 +175,7 @@ def generate_launch_description():
 
     return LaunchDescription(
         [
+            use_rviz_arg,
             static_tf,
             robot_state_publisher,
             ros2_control_node,

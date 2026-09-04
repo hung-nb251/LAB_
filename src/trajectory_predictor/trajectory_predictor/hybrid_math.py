@@ -9,6 +9,22 @@ Không phụ thuộc ROS — có thể import và unit test độc lập.
 import numpy as np
 
 
+def leader_start_position(limited_reference_relative: np.ndarray) -> np.ndarray:
+    """Return the last limited command reference used for ``x_MJM(0)``.
+
+    Starting from the command that was actually sent during FOLLOWER keeps the
+    position reference continuous at the phase boundary.  This deliberately
+    does not substitute measured EE position or non-zero velocity/acceleration
+    boundary conditions into the standard minimum-jerk polynomial.
+    """
+    position = np.asarray(limited_reference_relative, dtype=np.float64)
+    if position.shape != (3,):
+        raise ValueError('Limited reference must contain XYZ values')
+    if not np.all(np.isfinite(position)):
+        raise ValueError('Limited reference must contain finite XYZ values')
+    return position.copy()
+
+
 def fitts_law_duration(
     x_current: np.ndarray,
     x_goal: np.ndarray,
@@ -66,7 +82,7 @@ def minimum_jerk_positions(
         x_0:     vị trí bắt đầu (điểm chuyển pha FOLLOWER->LEADER), ndarray (3,)
         x_f:     vị trí đích / GOAL, ndarray (3,)
         t_total: thời gian tổng (giây) — kết quả từ fitts_law_duration()
-        dt:      bước thời gian (giây) = 1/30 ~ 0.0333s (nhất quán với Kinect ~30Hz)
+        dt:      bước thời gian phát điểm quỹ đạo (giây)
 
     Returns:
         positions: ndarray (N, 3) — N = int(t_total/dt) + 1

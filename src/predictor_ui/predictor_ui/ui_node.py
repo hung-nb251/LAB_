@@ -13,12 +13,17 @@ UI Node — PyQtGraph live dashboard so sánh tọa độ thực tế vs dự đ
 import sys
 import time
 import threading
+import math
 from collections import deque
+from pathlib import Path
 
 import rclpy
+import yaml
+from ament_index_python.packages import get_package_share_directory
+from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 from rclpy.action import ActionClient
-from std_msgs.msg import String, Bool
+from std_msgs.msg import String, Bool, Float32
 from std_srvs.srv import SetBool, Trigger
 from control_msgs.action import FollowJointTrajectory
 from trajectory_msgs.msg import JointTrajectoryPoint
@@ -26,6 +31,9 @@ from builtin_interfaces.msg import Duration
 
 from human_hand_msgs.msg import HandState, HandPrediction
 from geometry_msgs.msg import Point, PointStamped, PoseStamped
+
+from .plot_history import append_time_window_xyz
+from .target_math import relative_goal, requires_robot_ee_target
 
 try:
     import pyqtgraph as pg
@@ -37,6 +45,16 @@ except ImportError:
 
 MAX_POINTS = 300   # Số điểm hiển thị trên mỗi trục
 UPDATE_HZ = 20     # FPS cập nhật plot
+JOINT_NAMES = [
+    'joint_1_s', 'joint_2_l', 'joint_3_u',
+    'joint_4_r', 'joint_5_b', 'joint_6_t',
+]
+# Chỉ dùng khi package cấu hình chưa được cài. Giá trị này phải khớp với
+# hc10dtp_moveit_config/config/initial_positions.yaml tại thời điểm phát hành.
+FALLBACK_HOME_JOINTS = [
+    1.570742, 0.027735, -0.710960,
+    0.000032, -0.847848, -0.000658,
+]
 
 
 class PredictorUiNode(Node):
@@ -47,8 +65,21 @@ class PredictorUiNode(Node):
 
         self.declare_parameter('max_points', MAX_POINTS)
         self.declare_parameter('update_hz', float(UPDATE_HZ))
+        self.declare_parameter('require_alignment_steps', True)
+        self.declare_parameter('show_camera_plots', True)
+        self.declare_parameter('prediction_model', 'svgp')
         n_pts = self.get_parameter('max_points').value
         upd_hz = self.get_parameter('update_hz').value
+        self._update_hz = max(1.0, float(upd_hz))
+        self._require_alignment_steps = bool(
+            self.get_parameter('require_alignment_steps').value)
+        self._show_camera_plots = bool(
+            self.get_parameter('show_camera_plots').value)
+        self._prediction_model = str(
+            self.get_parameter('prediction_model').value).strip().lower()
+        if self._prediction_model not in ('svgp', 'gru'):
+            raise ValueError('prediction_model must be svgp or gru')
+        self._home_joint_positions = self._load_home_joint_positions()
 
         # ── Data buffers ────────────────────────────────────────────────────
         self._meas = {'x': deque(maxlen=n_pts),     # Filtered (chính)
@@ -61,18 +92,30 @@ class PredictorUiNode(Node):
         self._target_base = {'x': deque(maxlen=n_pts),
                              'y': deque(maxlen=n_pts),
                              'z': deque(maxlen=n_pts)}
-        self._robot_ee = {'x': deque(maxlen=n_pts),
-                          'y': deque(maxlen=n_pts),
-                          'z': deque(maxlen=n_pts)}
+        # Actual EE arrives at 50--100 Hz while Limited x_d is 15 Hz. A shared
+        # sample-count limit kept only 3--6 seconds of Actual EE. Keep this
+        # trace by elapsed time instead so both curves cover the same window.
+        self._robot_ee = {'x': deque(), 'y': deque(), 'z': deque()}
+        self._nominal = {'x': deque(maxlen=n_pts),
+                         'y': deque(maxlen=n_pts),
+                         'z': deque(maxlen=n_pts)}
         self._t_meas: deque = deque(maxlen=n_pts)
         self._t_pred: deque = deque(maxlen=n_pts)
         self._t_target: deque = deque(maxlen=n_pts)
-        self._t_ee: deque = deque(maxlen=n_pts)
+        self._t_ee: deque = deque()
+        self._t_nominal: deque = deque(maxlen=n_pts)
+        # Co-carry plots use elapsed time from the beginning of each trial.
+        # monotonic() avoids wall-clock jumps and keeps the x-axis non-negative.
+        self._robot_plot_epoch = time.monotonic()
+        self._robot_plot_window_sec = max(1.0, n_pts / self._update_hz)
 
         # ── Stats display ────────────────────────────────────────────────────
         self._inf_ms = 0.0
         self._model_name = 'N/A'
         self._buf_size = 0
+        self._force_age_ms = float('nan')
+        self._prediction_age_ms = float('nan')
+        self._controller_status = 'UNKNOWN'
         self._fps_meas = 0.0
         self._fps_pred = 0.0
         self._fps_counter_m = 0
@@ -87,8 +130,13 @@ class PredictorUiNode(Node):
         self._backend_mode = 'UNKNOWN'
         self._hybrid_state = 'OFF'
         self._trajectory_mode = 'ground_truth'  # 'ground_truth' or 'prediction'
+        self._trajectory_profile = 'ground_truth'
         self._is_running = False
         self._external_stop_requested = False
+        self._enable_response = None
+        self._latest_robot_ee = None
+        self._latest_robot_ee_time = 0.0
+        self._captured_target_ee = None
         self._lock = threading.Lock()
 
         # ── Subscribers ──────────────────────────────────────────────────────
@@ -101,6 +149,14 @@ class PredictorUiNode(Node):
             PointStamped, '/coord_transform/target_base', self._cb_target_base, 10)
         self.create_subscription(
             PoseStamped, '/cartesian_streamer/current_pose', self._cb_robot_ee, 10)
+        self.create_subscription(
+            PointStamped, '/cocarry/nominal_position', self._cb_nominal, 10)
+        self.create_subscription(
+            Float32, '/cocarry/force_age_ms', self._cb_force_age, 10)
+        self.create_subscription(
+            Float32, '/cocarry/prediction_age_ms', self._cb_prediction_age, 10)
+        self.create_subscription(
+            String, '/cocarry/status', self._cb_controller_status, 10)
         self.create_subscription(
             Bool, '/run_status', self._cb_run_status, 10)
         self.create_subscription(
@@ -141,10 +197,37 @@ class PredictorUiNode(Node):
 
         # ── Spin in background thread ────────────────────────────────────────
         self._spin_thread = threading.Thread(
-            target=rclpy.spin, args=(self,), daemon=True)
+            target=self._spin_ros, daemon=True)
         self._spin_thread.start()
 
         self.get_logger().info('[UI] Node started')
+
+    def _spin_ros(self):
+        """Exit quietly when launch shuts the shared ROS context down."""
+        try:
+            rclpy.spin(self)
+        except (ExternalShutdownException, KeyboardInterrupt):
+            pass
+
+    def _load_home_joint_positions(self):
+        """Đọc một nguồn home pose chung với MoveIt và robot mô phỏng."""
+        try:
+            config_path = (
+                Path(get_package_share_directory('hc10dtp_moveit_config'))
+                / 'config' / 'initial_positions.yaml'
+            )
+            config = yaml.safe_load(config_path.read_text(encoding='utf-8'))
+            initial_positions = config['initial_positions']
+            positions = [float(initial_positions[name]) for name in JOINT_NAMES]
+            self.get_logger().info(
+                f'[UI] Loaded Go Home pose from {config_path}: '
+                f'{[round(value, 6) for value in positions]}')
+            return positions
+        except Exception as exc:
+            self.get_logger().warn(
+                '[UI] Could not load initial_positions.yaml; using the '
+                f'packaged fallback home pose: {exc}')
+            return list(FALLBACK_HOME_JOINTS)
 
     # ── ROS Callbacks ────────────────────────────────────────────────────────
 
@@ -165,10 +248,11 @@ class PredictorUiNode(Node):
             return
         t = time.time()
         with self._lock:
-            self._t_meas.append(t)
-            self._meas['x'].append(msg.point.x)
-            self._meas['y'].append(msg.point.y)
-            self._meas['z'].append(msg.point.z)
+            if self._show_camera_plots:
+                self._t_meas.append(t)
+                self._meas['x'].append(-msg.point.x)  # Đảo dấu X để thuận mắt trên UI
+                self._meas['y'].append(msg.point.y)
+                self._meas['z'].append(msg.point.z)
             self._fps_counter_m += 1
 
     def _cb_pred(self, msg: HandPrediction):
@@ -176,10 +260,11 @@ class PredictorUiNode(Node):
             return
         t = time.time()
         with self._lock:
-            self._t_pred.append(t)
-            self._pred['x'].append(msg.x)
-            self._pred['y'].append(msg.y)
-            self._pred['z'].append(msg.z)
+            if self._show_camera_plots:
+                self._t_pred.append(t)
+                self._pred['x'].append(-msg.x)  # Đảo dấu X để đồng bộ với Actual
+                self._pred['y'].append(msg.y)
+                self._pred['z'].append(msg.z)
             self._inf_ms = msg.inference_time_ms
             self._model_name = msg.model_name or 'N/A'
             self._buf_size = msg.buffer_size
@@ -198,14 +283,53 @@ class PredictorUiNode(Node):
 
     def _cb_robot_ee(self, msg: PoseStamped):
         """Nhận vị trí thực tế của robot EE (base_link frame)."""
+        wall_time = time.time()
+        plot_time = time.monotonic()
+        with self._lock:
+            point = (
+                float(msg.pose.position.x),
+                float(msg.pose.position.y),
+                float(msg.pose.position.z),
+            )
+            self._latest_robot_ee = point
+            self._latest_robot_ee_time = wall_time
+            # In co-carry mode the nominal trace stops with the trial. Freeze
+            # Actual EE at the same point instead of allowing idle feedback to
+            # overwrite the completed trajectory after Stop Run.
+            record_history = self._is_drawing_ui and (
+                self._show_camera_plots or self._is_running)
+            if record_history:
+                append_time_window_xyz(
+                    self._robot_ee,
+                    self._t_ee,
+                    plot_time,
+                    point,
+                    self._robot_plot_window_sec,
+                )
+
+    def _append_point(self, buffers, timestamps, msg):
         if not self._is_drawing_ui:
             return
-        t = time.time()
         with self._lock:
-            self._t_ee.append(t)
-            self._robot_ee['x'].append(msg.pose.position.x)
-            self._robot_ee['y'].append(msg.pose.position.y)
-            self._robot_ee['z'].append(msg.pose.position.z)
+            timestamps.append(time.monotonic())
+            buffers['x'].append(msg.point.x)
+            buffers['y'].append(msg.point.y)
+            buffers['z'].append(msg.point.z)
+
+    def _cb_nominal(self, msg: PointStamped):
+        self._append_point(self._nominal, self._t_nominal, msg)
+
+    def _cb_force_age(self, msg: Float32):
+        with self._lock:
+            self._force_age_ms = float(msg.data)
+
+    def _cb_prediction_age(self, msg: Float32):
+        with self._lock:
+            self._prediction_age_ms = float(msg.data)
+
+    def _cb_controller_status(self, msg: String):
+        with self._lock:
+            self._controller_status = msg.data
 
     def _update_fps(self):
         now = time.time()
@@ -228,6 +352,32 @@ class PredictorUiNode(Node):
         with self._lock:
             self._hybrid_state = msg.data
 
+    def capture_target_from_robot_ee(self):
+        """Store an absolute base_link EE target while the robot is stopped."""
+        with self._lock:
+            if (self._latest_robot_ee is None or
+                    time.time() - self._latest_robot_ee_time > 0.5):
+                return None
+            self._captured_target_ee = tuple(self._latest_robot_ee)
+            return self._captured_target_ee
+
+    def publish_captured_goal_relative(self):
+        """Publish goal displacement relative to the EE pose at Start Run."""
+        with self._lock:
+            if (self._captured_target_ee is None or
+                    self._latest_robot_ee is None or
+                    time.time() - self._latest_robot_ee_time > 0.5):
+                return None
+            relative = relative_goal(
+                self._captured_target_ee, self._latest_robot_ee)
+        msg = Point()
+        msg.x, msg.y, msg.z = relative
+        self._goal_pub.publish(msg)
+        self.get_logger().info(
+            '[UI] MJM goal relative to Start EE → '
+            f'({relative[0]:.4f}, {relative[1]:.4f}, {relative[2]:.4f})')
+        return relative
+
     def get_buffers(self):
         with self._lock:
             return (
@@ -235,9 +385,13 @@ class PredictorUiNode(Node):
                 list(self._pred['x']), list(self._pred['y']), list(self._pred['z']),
                 list(self._target_base['x']), list(self._target_base['y']), list(self._target_base['z']),
                 list(self._robot_ee['x']), list(self._robot_ee['y']), list(self._robot_ee['z']),
+                list(self._nominal['x']), list(self._nominal['y']), list(self._nominal['z']),
                 list(self._t_meas), list(self._t_pred), list(self._t_target), list(self._t_ee),
+                list(self._t_nominal), self._robot_plot_epoch,
                 self._inf_ms, self._model_name, self._buf_size,
-                self._fps_meas, self._fps_pred, self._hybrid_state
+                self._fps_meas, self._fps_pred, self._hybrid_state,
+                self._force_age_ms, self._prediction_age_ms,
+                self._controller_status,
             )
 
     # ── Service calls ────────────────────────────────────────────────────────
@@ -291,7 +445,7 @@ class PredictorUiNode(Node):
         self.get_logger().info(f'[UI] Model cmd → {model_name}')
 
     def send_hybrid_cmd(self, cmd: str):
-        """Publish lệnh bật/tắt Hybrid GRU+MJM mode."""
+        """Publish lệnh bật/tắt Prediction+MJM mode."""
         msg = String()
         msg.data = cmd
         self._hybrid_cmd_pub.publish(msg)
@@ -376,12 +530,9 @@ class PredictorUiNode(Node):
             action_client = self._go_home_sim_action
 
         goal_msg = FollowJointTrajectory.Goal()
-        goal_msg.trajectory.joint_names = [
-            'joint_1_s', 'joint_2_l', 'joint_3_u',
-            'joint_4_r', 'joint_5_b', 'joint_6_t'
-        ]
+        goal_msg.trajectory.joint_names = list(JOINT_NAMES)
         point = JointTrajectoryPoint()
-        point.positions = [1.570774, 0.124230, -1.049406, 0.000000, -0.397843, -1.443567]
+        point.positions = list(self._home_joint_positions)
         point.time_from_start = Duration(sec=3, nanosec=0)
         goal_msg.trajectory.points = [point]
         action_client.send_goal_async(goal_msg)
@@ -394,10 +545,25 @@ class PredictorUiNode(Node):
                 self._pred[k].clear()
                 self._target_base[k].clear()
                 self._robot_ee[k].clear()
+                self._nominal[k].clear()
             self._t_meas.clear()
             self._t_pred.clear()
             self._t_target.clear()
             self._t_ee.clear()
+            self._t_nominal.clear()
+            self._robot_plot_epoch = time.monotonic()
+
+    def reset_robot_plot_for_trial(self):
+        """Start a clean, positive elapsed-time axis for one co-carry trial."""
+        with self._lock:
+            for k in ['x', 'y', 'z']:
+                self._target_base[k].clear()
+                self._robot_ee[k].clear()
+                self._nominal[k].clear()
+            self._t_target.clear()
+            self._t_ee.clear()
+            self._t_nominal.clear()
+            self._robot_plot_epoch = time.monotonic()
 
 
 # ── PyQtGraph Window ─────────────────────────────────────────────────────────
@@ -417,8 +583,11 @@ class DashboardWindow:
         self.app = QtWidgets.QApplication.instance() or QtWidgets.QApplication(sys.argv)
 
         self.win = QtWidgets.QWidget()
-        self.win.setWindowTitle('HRC Trajectory Dashboard — Ubuntu')
-        self.win.resize(1600, 1100)   # Mở rộng chiều cao để chứa 6 đồ thị
+        title = ('HRC Trajectory Dashboard — Ubuntu'
+                 if node._show_camera_plots
+                 else 'Co-carry Admittance Dashboard — Robot Frame')
+        self.win.setWindowTitle(title)
+        self.win.resize(1600, 1100 if node._show_camera_plots else 700)
         self.win.setStyleSheet('background: #1a1a2e; color: #e0e0e0;')
 
         main_layout = QtWidgets.QVBoxLayout(self.win)
@@ -431,76 +600,87 @@ class DashboardWindow:
         self._lbl_buf = QtWidgets.QLabel('Buf: 0')
         self._lbl_backend = QtWidgets.QLabel('Backend: UNKNOWN')
         self._lbl_hybrid = QtWidgets.QLabel('Mode: OFF')
+        self._lbl_force_age = QtWidgets.QLabel('Force age: N/A')
+        self._lbl_prediction_age = QtWidgets.QLabel('Pred age: N/A')
+        self._lbl_controller = QtWidgets.QLabel('Controller: UNKNOWN')
         for lbl in [self._lbl_model, self._lbl_inf, self._lbl_fps, self._lbl_buf, self._lbl_backend]:
             lbl.setStyleSheet('color: #a0f0a0; font-size: 13px; font-weight: bold;')
             top.addWidget(lbl)
         self._lbl_hybrid.setStyleSheet('color: #a0f0a0; font-size: 13px; font-weight: bold; background: transparent; padding: 2px;')
         top.addWidget(self._lbl_hybrid)
+        if not node._show_camera_plots:
+            for lbl in [self._lbl_force_age, self._lbl_prediction_age,
+                        self._lbl_controller]:
+                lbl.setStyleSheet(
+                    'color: #a0f0a0; font-size: 13px; font-weight: bold;')
+                top.addWidget(lbl)
         top.addStretch()
         main_layout.addLayout(top)
 
         # ── Plots (2 hàng) ────────────────────────────────────────
         plots_area = QtWidgets.QVBoxLayout()
 
-        # ── Hàng 1: Camera Frame (Actual tay người vs Predicted AI) ──────
-        lbl_cam = QtWidgets.QLabel('■  Camera Frame — Ý định tay người')
-        lbl_cam.setStyleSheet('color: #64c8ff; font-size: 12px; font-weight: bold; padding: 2px 4px;')
-        plots_area.addWidget(lbl_cam)
-
-        mid_layout = QtWidgets.QHBoxLayout()
-        self.gw = pg.GraphicsLayoutWidget()
-        # Removed setFixedHeight to allow auto-stretching
-        plots_data_cam = [
-            ('X (m) — Camera', -1.0,  1.0),
-            ('Y (m) — Camera', -0.1,  1.5),
-            ('Z (m) — Camera', -0.2,  0.8),
-        ]
-
         self.plots = {}
         self.curves_m = {}   # Filtered actual (xanh)
         self.curves_p = {}   # Predicted (cam)
 
-        for i, (title, y_lo, y_hi) in enumerate(plots_data_cam):
-            p = self.gw.addPlot(row=0, col=i, title=title)
-            p.setLabel('left', title)
-            p.setLabel('bottom', 'Time (s)')
-            p.addLegend(offset=(5, 5))
-            p.showGrid(x=True, y=True, alpha=0.3)
-            p.getAxis('left').enableAutoSIPrefix(False)
-            p.getAxis('bottom').enableAutoSIPrefix(False)
-            p.setXRange(-10, 0, padding=0)
-            p.enableAutoRange(axis='y', enable=False)
-            p.setYRange(y_lo, y_hi, padding=0)
-            self.curves_m[i] = p.plot(pen=pg.mkPen(self.COLOR_MEAS, width=2), name='Actual')
-            self.curves_p[i] = p.plot(pen=pg.mkPen(self.COLOR_PRED, width=2), name='Predicted')
-            self.plots[i] = p
-            self.gw.ci.layout.setColumnStretchFactor(i, 1)
+        if node._show_camera_plots:
+            # Camera pipeline cũ giữ nguyên hàng Actual/Predicted và Set Goal.
+            lbl_cam = QtWidgets.QLabel('■  Camera Frame — Ý định tay người')
+            lbl_cam.setStyleSheet('color: #64c8ff; font-size: 12px; font-weight: bold; padding: 2px 4px;')
+            plots_area.addWidget(lbl_cam)
 
-        mid_layout.addWidget(self.gw, stretch=6)
+            mid_layout = QtWidgets.QHBoxLayout()
+            self.gw = pg.GraphicsLayoutWidget()
+            plots_data_cam = [
+                ('X (m) — Camera', -1.0,  1.0),
+                ('Y (m) — Camera', -0.1,  1.5),
+                ('Z (m) — Camera', -0.2,  0.8),
+            ]
 
-        self.right_panel = QtWidgets.QVBoxLayout()
-        self.btn_set_goal = QtWidgets.QPushButton('Set Goal')
-        self.btn_set_goal.setStyleSheet(self._btn_style('#b9770e', '#f39c12'))
-        self.btn_set_goal.setToolTip('Lưu lại vị trí hiện tại làm Goal')
-        self.btn_set_goal.clicked.connect(self._do_set_goal)
-        self.right_panel.addWidget(self.btn_set_goal)
+            for i, (title, y_lo, y_hi) in enumerate(plots_data_cam):
+                p = self.gw.addPlot(row=0, col=i, title=title)
+                p.setLabel('left', title)
+                p.setLabel('bottom', 'Time (s)')
+                p.addLegend(offset=(5, 5))
+                p.showGrid(x=True, y=True, alpha=0.3)
+                p.getAxis('left').enableAutoSIPrefix(False)
+                p.getAxis('bottom').enableAutoSIPrefix(False)
+                p.setXRange(-10, 0, padding=0)
+                p.enableAutoRange(axis='y', enable=False)
+                p.setYRange(y_lo, y_hi, padding=0)
+                self.curves_m[i] = p.plot(
+                    pen=pg.mkPen(self.COLOR_MEAS, width=2), name='Actual')
+                self.curves_p[i] = p.plot(
+                    pen=pg.mkPen(self.COLOR_PRED, width=2), name='Predicted')
+                self.plots[i] = p
+                self.gw.ci.layout.setColumnStretchFactor(i, 1)
 
-        lbl_style = "color: #e0e0e0; font-size: 24px; font-weight: bold; margin-top: 15px; margin-left: 10px;"
-        self.lbl_goal_x = QtWidgets.QLabel('X: -----')
-        self.lbl_goal_x.setStyleSheet(lbl_style)
-        self.right_panel.addWidget(self.lbl_goal_x)
-        self.lbl_goal_y = QtWidgets.QLabel('Y: -----')
-        self.lbl_goal_y.setStyleSheet(lbl_style)
-        self.right_panel.addWidget(self.lbl_goal_y)
-        self.lbl_goal_z = QtWidgets.QLabel('Z: -----')
-        self.lbl_goal_z.setStyleSheet(lbl_style)
-        self.right_panel.addWidget(self.lbl_goal_z)
-        self.right_panel.addStretch()
-        mid_layout.addLayout(self.right_panel, stretch=1)
-        plots_area.addLayout(mid_layout)
+            mid_layout.addWidget(self.gw, stretch=6)
+            self.right_panel = QtWidgets.QVBoxLayout()
+            self.btn_set_goal = QtWidgets.QPushButton('Set Goal')
+            self.btn_set_goal.setStyleSheet(self._btn_style('#b9770e', '#f39c12'))
+            self.btn_set_goal.setToolTip('Lưu lại vị trí hiện tại làm Goal')
+            self.btn_set_goal.clicked.connect(self._do_set_goal)
+            self.right_panel.addWidget(self.btn_set_goal)
+
+            lbl_style = "color: #e0e0e0; font-size: 24px; font-weight: bold; margin-top: 15px; margin-left: 10px;"
+            self.lbl_goal_x = QtWidgets.QLabel('X: -----')
+            self.lbl_goal_x.setStyleSheet(lbl_style)
+            self.right_panel.addWidget(self.lbl_goal_x)
+            self.lbl_goal_y = QtWidgets.QLabel('Y: -----')
+            self.lbl_goal_y.setStyleSheet(lbl_style)
+            self.right_panel.addWidget(self.lbl_goal_y)
+            self.lbl_goal_z = QtWidgets.QLabel('Z: -----')
+            self.lbl_goal_z.setStyleSheet(lbl_style)
+            self.right_panel.addWidget(self.lbl_goal_z)
+            self.right_panel.addStretch()
+            mid_layout.addLayout(self.right_panel, stretch=1)
+            plots_area.addLayout(mid_layout)
 
         # ── Hàng 2: Robot Frame (target_base vs Robot EE) ─────────────────
-        lbl_robot = QtWidgets.QLabel('■  Robot Frame (base_link) — Lệnh target vs Vị trí thực robot')
+        lbl_robot = QtWidgets.QLabel(
+            '■  Robot Frame (base_link) — Reference vs vị trí thực robot EE')
         lbl_robot.setStyleSheet('color: #90ee90; font-size: 12px; font-weight: bold; padding: 2px 4px;')
         plots_area.addWidget(lbl_robot)
 
@@ -513,31 +693,33 @@ class DashboardWindow:
         ]
 
         self.plots_r = {}
-        # Target: nét liền cam — lệnh gửi robot (đã transform sang base_link)
-        self.curves_tgt = {}
-        # Robot EE: nét đứt xanh lá — vị trí thực tế robot (bám sau target)
+        # Nominal x_d sau safety limit: nét liền xanh dương.
+        self.curves_nominal = {}
+        # Actual EE: nét đứt xanh lá — vị trí thực tế robot EE (feedback)
         self.curves_ee = {}
 
-        COLOR_TARGET = (255, 165, 50)    # cam — target (lệnh)
-        COLOR_EE     = (100, 220, 120)   # xanh lá — robot EE
+        COLOR_NOMINAL = (90, 210, 255)   # xanh dương — nominal x_d (x̂)
+        COLOR_EE      = (100, 220, 120)  # xanh lá — actual EE (x)
 
         for i, (title, y_lo, y_hi) in enumerate(plots_data_robot):
             p = self.gw2.addPlot(row=0, col=i, title=title)
             p.setLabel('left', title)
-            p.setLabel('bottom', 'Time (s)')
+            p.setLabel('bottom', 'Elapsed time', units='s')
             p.addLegend(offset=(5, 5))
             p.showGrid(x=True, y=True, alpha=0.3)
             p.getAxis('left').enableAutoSIPrefix(False)
             p.getAxis('bottom').enableAutoSIPrefix(False)
-            p.setXRange(-10, 0, padding=0)
+            p.setXRange(0, node._robot_plot_window_sec, padding=0)
             p.enableAutoRange(axis='y', enable=False)
             p.setYRange(y_lo, y_hi, padding=0)
-            self.curves_tgt[i] = p.plot(
-                pen=pg.mkPen(COLOR_TARGET, width=2),
-                name='Predicted')
+            # Nominal x_d vẽ trước để nằm dưới Actual EE
+            if not node._show_camera_plots:
+                self.curves_nominal[i] = p.plot(
+                    pen=pg.mkPen(COLOR_NOMINAL, width=2),
+                    name='Limited x_d')
             self.curves_ee[i] = p.plot(
                 pen=pg.mkPen(COLOR_EE, width=2, style=QtCore.Qt.PenStyle.DashLine),
-                name='Actual')
+                name='Actual EE (x)')
             self.plots_r[i] = p
             self.gw2.ci.layout.setColumnStretchFactor(i, 1)
 
@@ -563,19 +745,50 @@ class DashboardWindow:
         self.btn_traj_gt.clicked.connect(lambda: self._set_trajectory_mode('ground_truth'))
         traj_l.addWidget(self.btn_traj_gt)
         
-        self.btn_traj_svgp = QtWidgets.QPushButton('SVGP')
+        model_label = node._prediction_model.upper()
+        self.btn_traj_svgp = QtWidgets.QPushButton(model_label)
         self.btn_traj_svgp.setCheckable(True)
         self.btn_traj_svgp.setStyleSheet(self._btn_style('#16213e', '#0f3460'))
         self.btn_traj_svgp.clicked.connect(lambda: self._set_trajectory_mode('svgp'))
         traj_l.addWidget(self.btn_traj_svgp)
 
-        self.btn_traj_svgpmjm = QtWidgets.QPushButton('SVGP+MJM')
+        self.btn_traj_svgpmjm = QtWidgets.QPushButton(f'{model_label}+MJM')
         self.btn_traj_svgpmjm.setCheckable(True)
         self.btn_traj_svgpmjm.setStyleSheet(self._btn_style('#7d4e00', '#ffaa00'))
         self.btn_traj_svgpmjm.clicked.connect(lambda: self._set_trajectory_mode('svgp_mjm'))
         traj_l.addWidget(self.btn_traj_svgpmjm)
 
+        self.btn_traj_gt.setToolTip(
+            'Giữ x_d tại pose Start Run; admittance tạo x_r từ lực người')
+        self.btn_traj_svgp.setToolTip(
+            f'Dùng dự đoán {model_label} từ chuỗi robot EE làm x_d')
+        self.btn_traj_svgpmjm.setToolTip(
+            f'FOLLOWER: {model_label} + Admittance; '
+            'LEADER: MJM gửi điểm trực tiếp')
+
         row_1.addWidget(traj_grp)
+
+        if not node._show_camera_plots:
+            target_grp = QtWidgets.QGroupBox('MJM Target — robot EE')
+            target_grp.setStyleSheet(
+                'QGroupBox { color: #e0e0e0; border: 1px solid #555; '
+                'border-radius: 4px; margin-top: 15px; padding-top: 4px; }'
+                'QGroupBox::title { subcontrol-origin: margin; left: 8px; top: 0px; }')
+            target_layout = QtWidgets.QHBoxLayout(target_grp)
+            self.btn_capture_target = QtWidgets.QPushButton(
+                'Set Goal / Capture Target')
+            self.btn_capture_target.setStyleSheet(
+                self._btn_style('#704214', '#a86820'))
+            self.btn_capture_target.setToolTip(
+                'Lưu vị trí robot EE hiện tại trong base_link làm đích MJM')
+            self.btn_capture_target.clicked.connect(self._do_capture_target)
+            target_layout.addWidget(self.btn_capture_target)
+            self.lbl_captured_target = QtWidgets.QLabel('Target: chưa capture')
+            self.lbl_captured_target.setStyleSheet(
+                'color: #ffd479; font-size: 12px; font-weight: bold;')
+            target_layout.addWidget(self.lbl_captured_target)
+            row_1.addWidget(target_grp)
+
         row_1.addStretch()
 
         # Run toggle
@@ -589,11 +802,13 @@ class DashboardWindow:
         self.btn_calib = QtWidgets.QPushButton('Calibrate Camera')
         self.btn_calib.setStyleSheet(self._btn_style('#2980b9', '#3498db'))
         self.btn_calib.clicked.connect(self._do_calibrate)
+        self.btn_calib.setVisible(node._show_camera_plots)
         row_1.addWidget(self.btn_calib)
 
         self.btn_capture = QtWidgets.QPushButton('Capture Init Pose')
         self.btn_capture.setStyleSheet(self._btn_style('#145a86', '#1f78b4'))
         self.btn_capture.clicked.connect(self._do_capture_init_pose)
+        self.btn_capture.setVisible(node._show_camera_plots)
         row_1.addWidget(self.btn_capture)
 
         ctrl.addLayout(row_1)
@@ -646,7 +861,7 @@ class DashboardWindow:
         # ── Timer ─────────────────────────────────────────────────────────
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self._refresh)
-        self.timer.start(int(1000 / UPDATE_HZ))
+        self.timer.start(int(1000 / node._update_hz))
 
         self.win.show()
 
@@ -660,7 +875,9 @@ class DashboardWindow:
         )
 
     def _toggle_run(self, checked):
-        if checked:
+        # Pipeline camera cũ vẫn yêu cầu hai bước alignment (mặc định True).
+        # Pipeline robot_ee đặt False vì controller tự capture/calibrate tại Start.
+        if checked and self.node._require_alignment_steps:
             if not self.node._is_calibrated:
                 self._set_status('State: ALIGN | Calibrate camera first')
                 self.node.get_logger().warn('[UI] Cannot start: Calibrate camera first!')
@@ -673,20 +890,47 @@ class DashboardWindow:
                 QtWidgets.QMessageBox.warning(self.win, "Action Required", "Please click 'Capture Init Pose' before starting the run.")
                 self.btn_pred.setChecked(False)
                 return
+
+        if checked and requires_robot_ee_target(
+                self.node._show_camera_plots,
+                self.node._trajectory_profile):
+            relative_goal = self.node.publish_captured_goal_relative()
+            if relative_goal is None:
+                self._set_status(
+                    'State: PREPARE | Capture a fresh robot-EE target first')
+                self.node.get_logger().warn(
+                    '[UI] Cannot start Prediction+MJM without a captured '
+                    'target and fresh EE pose')
+                QtWidgets.QMessageBox.warning(
+                    self.win, 'Action Required',
+                    'Move the robot to the desired goal and click '
+                    'Set Goal / Capture Target before Start Run.')
+                self.btn_pred.setChecked(False)
+                return
+
+        if checked and not self.node._show_camera_plots:
+            # Each co-carry trial gets one shared positive time origin. This
+            # also prevents samples from a previous trial appearing together
+            # with the new Actual EE trace.
+            self.node.reset_robot_plot_for_trial()
         
-        # Only enable prediction if in prediction mode
-        if checked:
-            if self.node._trajectory_mode == 'prediction':
+        # Camera mode keeps the historical direct predictor control.  In the
+        # robot-EE co-carry profile the admittance controller owns the ordered
+        # Stop -> calibrate -> Start sequence; issuing another UI request here
+        # caused the observed STARTED/STOPPED/STARTED race.
+        if self.node._show_camera_plots:
+            if checked and self.node._trajectory_mode == 'prediction':
                 self.node.call_predictor_toggle(True)
             else:
                 self.node.call_predictor_toggle(False)
-                # Ensure the UI knows prediction is off
-                self.node._is_predicting = False
         else:
-            self.node.call_predictor_toggle(False)
+            self.node._is_predicting = bool(
+                checked and self.node._trajectory_mode == 'prediction')
         
         self.node.call_logger_toggle(checked)
         self.node._is_running = checked
+        if hasattr(self, 'btn_capture_target'):
+            self.btn_capture_target.setEnabled(not checked)
         self.btn_pred.setText('Stop Run' if checked else 'Start Run')
         
         # Notify transform_node whether we are running
@@ -702,7 +946,8 @@ class DashboardWindow:
                 self.node._streamer_enable_cli.call_async(req)
                 self.node.get_logger().info('[UI] Auto-disabled robot on Stop Run')
         
-        mode_str = f'({self.node._trajectory_mode.replace("_", " ").upper()})'
+        mode_name = self.node._trajectory_profile.replace('_', ' ').upper()
+        mode_str = f'({mode_name})'
         self._set_status('State: RUN | Streaming enabled ' + mode_str if checked else 'State: STOPPED | Robot disabled')
 
     def _do_calibrate(self):
@@ -720,10 +965,10 @@ class DashboardWindow:
 
     def _enable_robot(self):
         # Guard: phải calibrate và capture init pose trước
-        if not self.node._is_calibrated:
+        if self.node._require_alignment_steps and not self.node._is_calibrated:
             self._set_status('State: ALIGN | Calibrate camera first!')
             return
-        if not self.node._is_init_pose_captured:
+        if self.node._require_alignment_steps and not self.node._is_init_pose_captured:
             self._set_status('State: ALIGN | Capture init pose first!')
             return
         if not self.node._streamer_enable_cli.service_is_ready():
@@ -731,7 +976,18 @@ class DashboardWindow:
             return
         req = SetBool.Request()
         req.data = True
-        self.node._streamer_enable_cli.call_async(req)
+        future = self.node._streamer_enable_cli.call_async(req)
+
+        def _enable_done(done_future):
+            try:
+                result = done_future.result()
+                response = (bool(result.success), result.message)
+            except Exception as exc:
+                response = (False, f'Enable service exception: {exc}')
+            with self.node._lock:
+                self.node._enable_response = response
+
+        future.add_done_callback(_enable_done)
         # Không publish run_status ở đây — chỉ bật Point Queue Mode.
         # Robot sẽ gửi hold-points và chờ người dùng bấm Start Run.
         self._set_status('State: ENABLED | Robot enabled — press ▶ Start Run to begin')
@@ -747,6 +1003,8 @@ class DashboardWindow:
         run_msg.data = False
         self.node._run_status_pub.publish(run_msg)
         self.node._is_running = False
+        if hasattr(self, 'btn_capture_target'):
+            self.btn_capture_target.setEnabled(True)
         # Tắt predictor + logger
         self.node.call_predictor_toggle(False)
         self.node.call_logger_toggle(False)
@@ -771,27 +1029,63 @@ class DashboardWindow:
     def _set_trajectory_mode(self, mode: str):
         # Update button states
         if mode == 'ground_truth':
+            self.node._trajectory_profile = 'ground_truth'
             self.node.set_trajectory_mode('ground_truth')
             self.btn_traj_gt.setChecked(True)
             self.btn_traj_svgp.setChecked(False)
             self.btn_traj_svgpmjm.setChecked(False)
             self._set_status('State: PREPARE | Mode: GROUND TRUTH')
         elif mode == 'svgp':
+            self.node._trajectory_profile = 'svgp'
             self.node.set_trajectory_mode('prediction')
-            self.node.send_model_cmd('svgp')
+            self.node.send_model_cmd(self.node._prediction_model)
             self.node.send_hybrid_cmd('hybrid_off')
             self.btn_traj_gt.setChecked(False)
             self.btn_traj_svgp.setChecked(True)
             self.btn_traj_svgpmjm.setChecked(False)
-            self._set_status('State: PREPARE | Mode: SVGP')
+            model_label = self.node._prediction_model.upper()
+            self._set_status(f'State: PREPARE | Mode: {model_label}')
         elif mode == 'svgp_mjm':
+            self.node._trajectory_profile = 'svgp_mjm'
             self.node.set_trajectory_mode('prediction')
-            self.node.send_model_cmd('svgp')
+            self.node.send_model_cmd(self.node._prediction_model)
             self.node.send_hybrid_cmd('hybrid_on')
             self.btn_traj_gt.setChecked(False)
             self.btn_traj_svgp.setChecked(False)
             self.btn_traj_svgpmjm.setChecked(True)
-            self._set_status('State: PREPARE | Mode: SVGP+MJM')
+            model_label = self.node._prediction_model.upper()
+            self._set_status(f'State: PREPARE | Mode: {model_label}+MJM')
+        # Cập nhật visibility nominal curve ngay khi đổi mode
+        if not self.node._show_camera_plots:
+            self._update_nominal_visibility()
+
+    def _update_nominal_visibility(self):
+        """Ẩn/hiện nominal x_d (x̂) tuỳ trajectory mode.
+
+        Ground Truth: chỉ hiện Actual EE — không có x̂ nào để so sánh.
+        Prediction / Prediction+MJM: hiện cả hai để so sánh x̂ vs x.
+        """
+        show = self.node._trajectory_profile in ('svgp', 'svgp_mjm')
+        for curve in self.curves_nominal.values():
+            curve.setVisible(show)
+
+    def _do_capture_target(self):
+        if self.node._is_running:
+            self._set_status('State: RUN | Stop Run before capturing a target')
+            return
+        target = self.node.capture_target_from_robot_ee()
+        if target is None:
+            self._set_status('State: PREPARE | No fresh robot EE pose')
+            QtWidgets.QMessageBox.warning(
+                self.win, 'No robot pose',
+                'No fresh /cartesian_streamer/current_pose was received.')
+            return
+        self.lbl_captured_target.setText(
+            f'Target abs: X={target[0]:.4f}, Y={target[1]:.4f}, Z={target[2]:.4f} m')
+        self._set_status('State: PREPARE | MJM target captured from robot EE')
+        self.node.get_logger().info(
+            '[UI] Captured absolute robot-EE target → '
+            f'({target[0]:.4f}, {target[1]:.4f}, {target[2]:.4f})')
 
     def _do_set_goal(self):
         with self.node._lock:
@@ -827,6 +1121,21 @@ class DashboardWindow:
         self._lbl_status.setText(text)
 
     def _refresh(self):
+        # rclpy's SIGINT handler can invalidate the ROS context before the Qt
+        # event loop exits. Stop this timer immediately so shutdown cannot
+        # keep calling ROS action/service clients with an invalid context.
+        if not rclpy.ok():
+            self._stop_for_ros_shutdown()
+            return
+
+        with self.node._lock:
+            enable_response = self.node._enable_response
+            self.node._enable_response = None
+        if enable_response is not None:
+            success, message = enable_response
+            prefix = 'State: ENABLED' if success else 'State: ENABLE REJECTED'
+            self._set_status(f'{prefix} | {message}')
+
         if getattr(self.node, '_external_stop_requested', False):
             self.node._external_stop_requested = False
             self.node.get_logger().info(
@@ -840,39 +1149,70 @@ class DashboardWindow:
          px, py, pz,
          tx, ty, tz,
          rex, rey, rez,
-         t_meas, t_pred, t_target, t_ee,
-         inf_ms, model, buf, fps_m, fps_p, hybrid_state) = self.node.get_buffers()
+         nx, ny, nz,
+         t_meas, t_pred, t_target, t_ee, t_nominal, robot_plot_epoch,
+         inf_ms, model, buf, fps_m, fps_p, hybrid_state,
+         force_age_ms, prediction_age_ms,
+         controller_status) = self.node.get_buffers()
 
         now = time.time()
         tm = [t - now for t in t_meas]
         tp = [t - now for t in t_pred]
         tt = [t - now for t in t_target]
-        te = [t - now for t in t_ee]
+        # Robot curves share a trial-relative, non-negative time axis. Unlike
+        # sample indices, this keeps 100 Hz Actual EE aligned with 15 Hz x_d.
+        te = [max(0.0, t - robot_plot_epoch) for t in t_ee]
+        tn = [max(0.0, t - robot_plot_epoch) for t in t_nominal]
 
         axes_m = [mx, my, mz]
         axes_p = [px, py, pz]
         axes_t = [tx, ty, tz]
         axes_e = [rex, rey, rez]
+        axes_n = [nx, ny, nz]
 
+        if self.node._show_camera_plots:
+            for i in range(3):
+                self.curves_m[i].setData(tm, axes_m[i])
+                self.curves_p[i].setData(tp, axes_p[i])
+
+        show_nominal = self.node._trajectory_profile in ('svgp', 'svgp_mjm')
+        elapsed = max(te[-1] if te else 0.0, tn[-1] if tn else 0.0)
+        window = self.node._robot_plot_window_sec
+        x_right = max(window, elapsed)
+        x_left = max(0.0, x_right - window)
         for i in range(3):
-            ym = axes_m[i]
-            yp = axes_p[i]
-            yt = axes_t[i]
-            ye = axes_e[i]
-
-            self.curves_m[i].setData(tm, ym)   # Filtered (chính)
-            self.curves_p[i].setData(tp, yp)   # Predicted
-            
-            # Robot Frame
-            self.curves_tgt[i].setData(tt, yt)
-            self.curves_ee[i].setData(te, ye)
+            if not self.node._show_camera_plots:
+                self.curves_nominal[i].setData(tn, axes_n[i])
+                self.curves_nominal[i].setVisible(show_nominal)
+            self.curves_ee[i].setData(te, axes_e[i])
+            self.plots_r[i].setXRange(x_left, x_right, padding=0)
 
 
         self._lbl_model.setText(f'Model: {model}')
         self._lbl_inf.setText(f'Inf: {inf_ms:.1f} ms')
         self._lbl_fps.setText(f'Actual: {fps_m:.1f} Hz | Predicted: {fps_p:.1f} Hz')
         self._lbl_buf.setText(f'Buf: {buf}')
-        mode = self.node.detect_backend_mode()      
+        if not self.node._show_camera_plots:
+            force_age = (
+                f'{force_age_ms:.0f} ms' if math.isfinite(force_age_ms)
+                else 'N/A')
+            prediction_age = (
+                f'{prediction_age_ms:.0f} ms'
+                if math.isfinite(prediction_age_ms) else 'N/A')
+            self._lbl_force_age.setText(f'Force age: {force_age}')
+            self._lbl_prediction_age.setText(f'Pred age: {prediction_age}')
+            self._lbl_controller.setText(f'Controller: {controller_status}')
+            stale_or_fault = (
+                'STALE' in controller_status or 'FAULT' in controller_status)
+            self._lbl_force_age.setStyleSheet(
+                'color: #ff7070; font-size: 13px; font-weight: bold;'
+                if stale_or_fault else
+                'color: #a0f0a0; font-size: 13px; font-weight: bold;')
+        try:
+            mode = self.node.detect_backend_mode()
+        except (KeyboardInterrupt, RuntimeError):
+            self._stop_for_ros_shutdown()
+            return
         self._lbl_backend.setText(f'Backend: {mode}')
 
         # Update hybrid state label
@@ -887,6 +1227,11 @@ class DashboardWindow:
     def exec(self):
         return self.app.exec()
 
+    def _stop_for_ros_shutdown(self):
+        self.timer.stop()
+        self.win.close()
+        self.app.quit()
+
 
 # ── main ─────────────────────────────────────────────────────────────────────
 
@@ -898,14 +1243,17 @@ def main(args=None):
     rclpy.init(args=args)
     node = PredictorUiNode()
 
+    exit_code = 0
     try:
         dashboard = DashboardWindow(node)
-        sys.exit(dashboard.exec())
+        exit_code = dashboard.exec()
     except KeyboardInterrupt:
         pass
     finally:
-        node.destroy_node()
-        rclpy.shutdown()
+        if rclpy.ok():
+            node.destroy_node()
+            rclpy.shutdown()
+    return exit_code
 
 
 if __name__ == '__main__':

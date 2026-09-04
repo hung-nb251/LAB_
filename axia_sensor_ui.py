@@ -37,6 +37,7 @@ import rclpy
 from rclpy.node import Node
 from rclpy.duration import Duration
 from geometry_msgs.msg import Vector3Stamped
+from std_msgs.msg import Bool, Float32
 from std_srvs.srv import Trigger
 import tf2_ros
 from scipy.spatial.transform import Rotation
@@ -47,7 +48,11 @@ GRAVITY         = 9.80665      # m/s²
 SENSOR_FRAME    = 'axia_sensor_link'
 BASE_FRAME      = 'base_link'
 BIAS_SAMPLES    = 100          # Số mẫu để tính bias
-DEADBAND_N      = 4.0          # Ngưỡng deadband (N) - Tăng lên 4.0 để khử độ căng cáp
+DEADBAND_N      = 4.0          # Ngưỡng deadband lực (N)
+UI_UPDATE_HZ    = 20.0         # Chỉ giới hạn redraw; ROS force vẫn publish theo UDP
+ROLL_OFFSET_DEG = 0.0          # Bù sai lệch lắp đặt quanh trục X (độ)
+PITCH_OFFSET_DEG = 0.0         # Bù sai lệch lắp đặt quanh trục Y (độ)
+YAW_OFFSET_DEG  = -90.0        # Bù sai lệch lắp đặt quanh trục Z (độ)
 
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -94,6 +99,9 @@ class AxiaROS2Node(Node):
         self._on_data_cb = on_data_cb
 
         self._pub_fh = self.create_publisher(Vector3Stamped, '/axia/human_force', 10)
+        self._pub_calibrated = self.create_publisher(Bool, '/axia/calibrated', 5)
+        self._pub_connected = self.create_publisher(Bool, '/axia/connected', 5)
+        self._pub_udp_gap = self.create_publisher(Float32, '/axia/udp_gap_ms', 10)
 
         self._tf_buffer   = tf2_ros.Buffer()
         self._tf_listener = tf2_ros.TransformListener(self._tf_buffer, self)
@@ -102,16 +110,28 @@ class AxiaROS2Node(Node):
 
         self._bias_F        = np.zeros(3)
         self._collecting    = False
+        self._is_calibrated = False
         self._calib_samples = []
         self._on_calib_done = None
 
         self._filter = ForceFilter(median_size=5, ema_alpha=0.1)
+        self._last_ui_update = 0.0
+        self._deadband = DEADBAND_N
+        self._mount_correction = Rotation.from_euler(
+            'xyz',
+            np.radians([ROLL_OFFSET_DEG, PITCH_OFFSET_DEG, YAW_OFFSET_DEG]),
+        ).as_matrix()
 
-        # Mở UDP socket nhận data từ axia_sensor_driver.py (sudo)
+        # Mở UDP socket nhận data từ axia_sensor_driver.py (chạy trên PC 2)
+        # Bind 0.0.0.0 để lắng nghe từ bất kỳ card mạng nào (localhost hoặc Wifi từ PC 2)
         self._udp_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self._udp_sock.bind(('127.0.0.1', 50000))
+        self._udp_sock.bind(('0.0.0.0', 50000))
+        self._udp_sock.settimeout(3.0)  # Timeout 3s để phát hiện driver ngắt kết nối
+        self._driver_connected = False  # Chỉ true sau khi nhận được gói UDP hợp lệ
+        self._last_udp_arrival = 0.0
         self._udp_thread = threading.Thread(target=self._udp_listener_loop, daemon=True)
         self._udp_thread.start()
+        self.create_timer(0.5, self._publish_health)
 
         self.get_logger().info(
             f'[AxiaUI] Khởi động (user mode — UDP Listener).\n'
@@ -127,10 +147,34 @@ class AxiaROS2Node(Node):
             try:
                 data, _ = self._udp_sock.recvfrom(1024)
                 if len(data) == 24:
+                    arrival = time.monotonic()
+                    if self._last_udp_arrival > 0.0:
+                        gap_ms = (arrival - self._last_udp_arrival) * 1000.0
+                        self._pub_udp_gap.publish(Float32(data=float(gap_ms)))
+                        if gap_ms >= 150.0:
+                            self.get_logger().warn(
+                                f'[AxiaUI] UDP packet gap {gap_ms:.1f} ms',
+                                throttle_duration_sec=1.0)
+                    self._last_udp_arrival = arrival
                     # Gói 24 bytes = 6 floats (Fx, Fy, Fz, Tx, Ty, Tz)
                     fx, fy, fz, tx, ty, tz = struct.unpack('<6f', data)
                     F3 = np.array([fx, fy, fz])
+                    # Nếu trước đó đang mất kết nối, báo đã khôi phục
+                    if not self._driver_connected:
+                        self._driver_connected = True
+                        self.get_logger().info(
+                            '[AxiaUI] ✓ Driver đã reconnect — dữ liệu cảm biến đã khôi phục!')
                     self._process_raw_data(F3)
+            except socket.timeout:
+                # Driver đang reconnect (EMI từ Servo ON gây ngắt EtherCAT)
+                if self._driver_connected:
+                    self._driver_connected = False
+                    # Driver sẽ hardware-tare lại sau reconnect, do đó software
+                    # bias cũ không còn hợp lệ cho điều khiển bằng lực.
+                    self._is_calibrated = False
+                    self.get_logger().warn(
+                        '[AxiaUI] ⚠ Mất dữ liệu UDP từ driver — '
+                        'driver đang tự động reconnect EtherCAT...')
             except Exception as e:
                 self.get_logger().error(f"[AxiaUI] Lỗi UDP: {e}")
                 time.sleep(1)
@@ -138,6 +182,8 @@ class AxiaROS2Node(Node):
     # ── Xử lý dữ liệu thô ───────────────────────────────────────────────────
 
     def _process_raw_data(self, F3: np.ndarray):
+        # F3 luôn được giữ nguyên trong hệ trục vật lý của sensor. Không xoay
+        # riêng lực thô vì như vậy gravity compensation và TF sẽ mất nhất quán.
         F_filt = self._filter.apply(F3)
 
         if self._collecting:
@@ -147,15 +193,24 @@ class AxiaROS2Node(Node):
         F_human = self.compensate(F_filt)
         self.publish_human_force(F_human)
 
-        if self._on_data_cb is not None:
+        # Không đẩy 100 callback/s vào Qt. Controller vẫn nhận
+        # /axia/human_force theo đúng tốc độ UDP; chỉ đồ thị bị throttle.
+        now = time.monotonic()
+        if (self._on_data_cb is not None
+                and now - self._last_ui_update >= 1.0 / UI_UPDATE_HZ):
+            self._last_ui_update = now
             self._on_data_cb(
-                float(F_filt[0]),  float(F_filt[1]),  float(F_filt[2]),
-                float(F_human[0]), float(F_human[1]), float(F_human[2]),
-            )
+                float(F_human[0]), float(F_human[1]), float(F_human[2]))
 
     # ── TF ──────────────────────────────────────────────────────────────────
 
     def get_rotation_world_to_sensor(self):
+        """Ma trận base_link -> sensor, gồm TF nominal và bù gá Tool.
+
+        mount_correction ánh xạ vector trong sensor nominal sang hệ trục sensor
+        thực tế. Cùng một R_ws hiệu dụng được dùng cho cả gravity compensation
+        và phép đổi lực về base_link.
+        """
         try:
             tf = self._tf_buffer.lookup_transform(
                 SENSOR_FRAME, BASE_FRAME,
@@ -163,7 +218,9 @@ class AxiaROS2Node(Node):
                 timeout=Duration(seconds=0)
             )
             q = tf.transform.rotation
-            return Rotation.from_quat([q.x, q.y, q.z, q.w]).as_matrix()
+            R_ws_nominal = Rotation.from_quat(
+                [q.x, q.y, q.z, q.w]).as_matrix()
+            return self._mount_correction @ R_ws_nominal
         except Exception:
             return None
 
@@ -182,6 +239,7 @@ class AxiaROS2Node(Node):
             return False
 
         self._calib_samples.clear()
+        self._is_calibrated = False
         self._on_calib_done = on_done
         self._collecting    = True
         self._filter.reset()
@@ -201,26 +259,30 @@ class AxiaROS2Node(Node):
         if len(self._calib_samples) >= BIAS_SAMPLES:
             self._bias_F     = np.mean(self._calib_samples, axis=0)
             self._collecting = False
+            self._is_calibrated = True
             self.get_logger().info(
                 f'[AxiaUI] Calib xong! F_bias = {np.round(self._bias_F, 3)}')
             if self._on_calib_done:
                 self._on_calib_done()
 
     def compensate(self, F_raw_3):
-        F_comp = F_raw_3 - self._bias_F
+        F_sensor = F_raw_3 - self._bias_F
         R_ws = self.get_rotation_world_to_sensor()
         if R_ws is not None:
-            F_comp = F_comp - self.compute_gravity_force(R_ws)
-        F_out = np.zeros(3)
-        for i in range(3):
-            if abs(F_comp[i]) >= DEADBAND_N:
-                F_out[i] = F_comp[i] - np.sign(F_comp[i]) * DEADBAND_N
-                
-        # Transform Human Force from SENSOR_FRAME back to WORLD_FRAME
-        if R_ws is not None:
-            # R_ws rotates World -> Sensor. Inverse is Transpose.
-            F_out = R_ws.T @ F_out
-            
+            F_sensor = F_sensor - self.compute_gravity_force(R_ws)
+            # R_ws đổi base -> sensor; nghịch đảo đổi sensor -> base.
+            F_base = R_ws.T @ F_sensor
+        else:
+            F_base = F_sensor
+
+        # Radial deadband trong base_link: giữ nguyên hướng vector và không tạo
+        # "vùng mù" khi lực nằm chéo giữa hai trục (ví dụ Fx=Fy=3.5 N).
+        magnitude = float(np.linalg.norm(F_base))
+        if magnitude > self._deadband and magnitude > 0.0:
+            F_out = F_base * ((magnitude - self._deadband) / magnitude)
+        else:
+            F_out = np.zeros(3)
+
         return F_out
 
     # ── Publisher ────────────────────────────────────────────────────────────
@@ -236,6 +298,19 @@ class AxiaROS2Node(Node):
 
     def set_filter_alpha(self, alpha):
         self._filter.alpha = alpha
+
+    def set_mount_offsets(self, roll_deg, pitch_deg, yaw_deg):
+        self._mount_correction = Rotation.from_euler(
+            'xyz', np.radians([roll_deg, pitch_deg, yaw_deg])
+        ).as_matrix()
+        self._is_calibrated = False
+
+    def set_deadband(self, deadband_n):
+        self._deadband = float(deadband_n)
+
+    def _publish_health(self):
+        self._pub_connected.publish(Bool(data=self._driver_connected))
+        self._pub_calibrated.publish(Bool(data=self._is_calibrated))
 
     def _cb_set_bias(self, request, response):
         success = self.start_bias_collection()
@@ -254,7 +329,7 @@ class AxiaROS2Node(Node):
 
 class AxiaUIWorker(QtCore.QObject):
     """Cầu nối giữa ROS2 callbacks (background thread) và PyQt5 UI (main thread)."""
-    data_ready   = QtCore.pyqtSignal(float, float, float, float, float, float)
+    data_ready   = QtCore.pyqtSignal(float, float, float)
     error_signal = QtCore.pyqtSignal(str)
     calib_done   = QtCore.pyqtSignal()
 
@@ -264,8 +339,8 @@ class AxiaUIWorker(QtCore.QObject):
         # Nối callback data từ ROS node sang Qt signal
         ros_node._on_data_cb = self._on_ros_data
 
-    def _on_ros_data(self, rx, ry, rz, hx, hy, hz):
-        self.data_ready.emit(rx, ry, rz, hx, hy, hz)
+    def _on_ros_data(self, hx, hy, hz):
+        self.data_ready.emit(hx, hy, hz)
 
     def request_tare(self):
         def _on_done():
@@ -280,6 +355,12 @@ class AxiaUIWorker(QtCore.QObject):
     def set_filter(self, alpha):
         self.ros_node.set_filter_alpha(alpha)
 
+    def set_mount_offsets(self, roll_deg, pitch_deg, yaw_deg):
+        self.ros_node.set_mount_offsets(roll_deg, pitch_deg, yaw_deg)
+
+    def set_calib_mode(self, enabled):
+        self.ros_node.set_deadband(0.0 if enabled else DEADBAND_N)
+
 
 # ════════════════════════════════════════════════════════════════════════════
 #  Giao diện chính (PyQt5)
@@ -291,7 +372,7 @@ class AxiaSensorUI(QtWidgets.QMainWindow):
         super().__init__()
         self.ros_node = ros_node
         self.setWindowTitle('Force Dashboard (Axia80-M20)')
-        self.resize(1400, 750)
+        self.resize(1200, 520)
 
         central = QtWidgets.QWidget()
         self.setCentralWidget(central)
@@ -325,7 +406,7 @@ class AxiaSensorUI(QtWidgets.QMainWindow):
         self.combo = QtWidgets.QComboBox()
         self.combo.setMinimumHeight(40)
         self.combo.addItems([
-            '0: Raw (Alpha=1.0)',
+            '0: Khong loc (Alpha=1.0)',
             '1: Nhe (Alpha=0.5)',
             '2: Trung binh (Alpha=0.2)',
             '3: Manh (Alpha=0.1) — Mac dinh',
@@ -336,6 +417,38 @@ class AxiaSensorUI(QtWidgets.QMainWindow):
         self.combo.currentIndexChanged.connect(self._on_filter)
         ctrl.addWidget(self.combo)
 
+        ctrl.addSpacing(20)
+        self._angle_spins = []
+        angle_specs = (
+            ('Roll X', ROLL_OFFSET_DEG, '#ff8c00'),
+            ('Pitch Y', PITCH_OFFSET_DEG, '#32cd32'),
+            ('Yaw Z', YAW_OFFSET_DEG, '#1e90ff'),
+        )
+        for label, initial, color in angle_specs:
+            lbl_rot = QtWidgets.QLabel(f'{label} (°):')
+            lbl_rot.setStyleSheet(f'font-weight:bold;color:{color};')
+            ctrl.addWidget(lbl_rot)
+
+            spin = QtWidgets.QDoubleSpinBox()
+            spin.setRange(-180.0, 180.0)
+            spin.setSingleStep(0.5)
+            spin.setDecimals(1)
+            spin.setValue(initial)
+            spin.setMinimumHeight(40)
+            spin.setMaximumWidth(85)
+            spin.setStyleSheet('font-size:13px; font-weight:bold;')
+            spin.valueChanged.connect(self._on_orientation_change)
+            ctrl.addWidget(spin)
+            self._angle_spins.append(spin)
+
+        ctrl.addSpacing(15)
+        self.chk_calib_mode = QtWidgets.QCheckBox('Calib Mode\n(Deadband=0)')
+        self.chk_calib_mode.setStyleSheet(
+            'font-weight:bold; color:#ff6600; font-size:11px;')
+        self.chk_calib_mode.setChecked(False)
+        self.chk_calib_mode.toggled.connect(self._on_calib_mode)
+        ctrl.addWidget(self.chk_calib_mode)
+
         ctrl.addStretch()
         self.lbl_status = QtWidgets.QLabel('⚪ Chua Calib')
         self.lbl_status.setStyleSheet('font-size:13px;color:#aaaaaa;')
@@ -343,7 +456,7 @@ class AxiaSensorUI(QtWidgets.QMainWindow):
 
         vbox.addLayout(ctrl)
 
-        # ── Đồ thị 2 hàng × 3 cột ───────────────────────────────────────
+        # ── Chỉ vẽ Human Force trong base_link ────────────────────────────
         pg.setConfigOptions(antialias=True)
         pg.setConfigOption('background', '#0f0f23')
         pg.setConfigOption('foreground', 'w')
@@ -351,26 +464,21 @@ class AxiaSensorUI(QtWidgets.QMainWindow):
         self.graph = pg.GraphicsLayoutWidget()
         vbox.addWidget(self.graph)
 
-        N = 500
+        N = 300
         self._N = N
-        self._raw  = {a: [0]*N for a in 'xyz'}
-        self._comp = {a: [0]*N for a in 'xyz'}
+        self._human = {a: [0]*N for a in 'xyz'}
 
-        RAW_COLORS  = {'x': (255,120,50),  'y': (255,200,50),  'z': (50,200,255)}
-        COMP_COLORS = {'x': (100,255,100), 'y': (50,255,200),  'z': (200,100,255)}
+        HUMAN_COLORS = {'x': (100,255,100), 'y': (50,255,200), 'z': (200,100,255)}
 
-        self._cr = {}; self._cc = {}
+        self._human_curves = {}
 
         for col, ax in enumerate('xyz'):
-            pr = self.graph.addPlot(row=0, col=col, title=f'Raw Force {ax.upper()} (N)')
-            pr.showGrid(x=True, y=True)
-            pr.setLabel('bottom', 'Time steps')
-            self._cr[ax] = pr.plot(pen=pg.mkPen(RAW_COLORS[ax], width=2))
-
-            pc = self.graph.addPlot(row=1, col=col, title=f'Human Force {ax.upper()} (N)')
+            pc = self.graph.addPlot(
+                row=0, col=col, title=f'F_human {ax.upper()} — base_link (N)')
             pc.showGrid(x=True, y=True)
             pc.setLabel('bottom', 'Time steps')
-            self._cc[ax] = pc.plot(pen=pg.mkPen(COMP_COLORS[ax], width=2))
+            self._human_curves[ax] = pc.plot(
+                pen=pg.mkPen(HUMAN_COLORS[ax], width=2))
 
         # ── Worker (Qt signal bridge) ────────────────────────────────────
         self.worker = AxiaUIWorker(ros_node)
@@ -396,21 +504,30 @@ class AxiaSensorUI(QtWidgets.QMainWindow):
 
     def _on_reset(self):
         for a in 'xyz':
-            self._raw[a]  = [0]*self._N
-            self._comp[a] = [0]*self._N
-            self._cr[a].setData(self._raw[a])
-            self._cc[a].setData(self._comp[a])
+            self._human[a] = [0]*self._N
+            self._human_curves[a].setData(self._human[a])
 
     def _on_filter(self, idx):
         alphas = [1.0, 0.5, 0.2, 0.1, 0.05, 0.01]
         self.worker.set_filter(alphas[idx] if idx < len(alphas) else 0.1)
 
-    def _update(self, rx, ry, rz, hx, hy, hz):
-        for a, rv, hv in (('x',rx,hx), ('y',ry,hy), ('z',rz,hz)):
-            self._raw[a].pop(0);  self._raw[a].append(rv)
-            self._comp[a].pop(0); self._comp[a].append(hv)
-            self._cr[a].setData(self._raw[a])
-            self._cc[a].setData(self._comp[a])
+    def _on_orientation_change(self, _value):
+        roll, pitch, yaw = (spin.value() for spin in self._angle_spins)
+        self.worker.set_mount_offsets(roll, pitch, yaw)
+        # Bắt buộc Calib lại vì gravity vector thay đổi theo orientation mới.
+        self.lbl_status.setText('⚠️ Cần Calib lại!')
+        self.lbl_status.setStyleSheet('font-size:13px;color:#ff3333;font-weight:bold;')
+
+    def _on_calib_mode(self, checked):
+        self.worker.set_calib_mode(checked)
+        suffix = ' — CALIB MODE (Deadband=0)' if checked else ''
+        self.setWindowTitle(f'Force Dashboard (Axia80-M20){suffix}')
+
+    def _update(self, hx, hy, hz):
+        for axis, value in (('x', hx), ('y', hy), ('z', hz)):
+            self._human[axis].pop(0)
+            self._human[axis].append(value)
+            self._human_curves[axis].setData(self._human[axis])
 
     def _err(self, msg):
         # Nếu Calib thất bại (TF chưa sẵn sàng), reset lại nút

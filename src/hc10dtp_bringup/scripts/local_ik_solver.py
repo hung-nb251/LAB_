@@ -161,20 +161,34 @@ class LocalIKSolver:
     # IK tuning
     IK_POSITION_TOLERANCE = 0.0005  # 0.5mm
     IK_MAX_ITERATIONS = 50
-    IK_DAMPING = 0.01               # Damping factor (λ) cho DLS
+    # Weighted DLS: position giữ trọng số 1.0, orientation 0.5. Cùng ma
+    # trận trọng số phải áp dụng lên error và Jacobian.
+    IK_ORIENTATION_WEIGHT = 0.5
+
+    # Adaptive damping theo singular value nhỏ nhất của weighted Jacobian.
+    # Các pose vận hành bình thường có sigma_min > 0.1; chỉ tăng damping
+    # khi tiến gần singularity. Giữ 0.01 là damping sàn lịch sử.
+    IK_DAMPING_MIN = 0.01
+    IK_DAMPING_MAX = 0.10
+    IK_SINGULAR_VALUE_THRESHOLD = 0.05
     IK_STEP_SIZE = 1.0               # Step size (α) — 1.0 = full Newton step
     IK_JACOBIAN_EPS = 1e-7           # Finite-difference step cho numerical Jacobian
 
     def __init__(self):
         # Pre-compute constant transforms
         self._T_J3_RPY = _rot_y(-math.pi / 2)
-        self._T_TOOL0 = _trans(0, 0, -0.130) @ _rot_x(math.pi)
+        # Keep this transform identical to the URDF chain
+        # link_6_t -> flange (0.170 m) -> tool0.  In the local convention it
+        # becomes a -Z translation followed by Rx(pi).
+        self._T_TOOL0 = _trans(0, 0, -0.170) @ _rot_x(math.pi)
 
         # Timing stats
         self._fk_call_count = 0
         self._ik_call_count = 0
         self._ik_fail_count = 0
         self._ik_total_time_us = 0.0
+        self._ik_min_singular_value = math.inf
+        self._ik_max_damping = self.IK_DAMPING_MIN
 
     # ═══════════════════════════════════════════════════════════════
     # FORWARD KINEMATICS
@@ -210,7 +224,7 @@ class LocalIKSolver:
         # J6: link_5_b → link_6_t — origin(0,0,0), axis Z
         T = T @ _rot_z(q[5])
 
-        # tool0 (fixed) — origin(0,0,-0.130), rpy(π,0,0)
+        # tool0 (fixed) — origin(0,0,-0.170), rpy(π,0,0)
         T = T @ self._T_TOOL0
 
         return T
@@ -267,6 +281,41 @@ class LocalIKSolver:
     # INVERSE KINEMATICS — Damped Least Squares (DLS)
     # ═══════════════════════════════════════════════════════════════
 
+    @classmethod
+    def _weighted_dls_system(
+        cls,
+        error: np.ndarray,
+        jacobian: np.ndarray,
+    ) -> tuple[np.ndarray, np.ndarray]:
+        """Apply the same task-space weights to error and Jacobian."""
+        weights = np.ones(6, dtype=np.float64)
+        weights[3:] = cls.IK_ORIENTATION_WEIGHT
+        return weights * error, weights[:, np.newaxis] * jacobian
+
+    @classmethod
+    def _adaptive_damping(cls, weighted_jacobian: np.ndarray) -> tuple[float, float]:
+        """Return (lambda, sigma_min), increasing lambda near singularity."""
+        try:
+            singular_values = np.linalg.svd(
+                weighted_jacobian, compute_uv=False)
+            sigma_min = float(singular_values[-1])
+        except np.linalg.LinAlgError:
+            return cls.IK_DAMPING_MAX, 0.0
+
+        threshold = cls.IK_SINGULAR_VALUE_THRESHOLD
+        if sigma_min >= threshold:
+            return cls.IK_DAMPING_MIN, sigma_min
+
+        # Smooth cosine transition: lambda=max at sigma=0, min at threshold;
+        # the slope is zero at both endpoints, avoiding damping jumps.
+        ratio = max(0.0, sigma_min) / threshold
+        blend = 0.5 * (1.0 + math.cos(math.pi * ratio))
+        damping = (
+            cls.IK_DAMPING_MIN
+            + (cls.IK_DAMPING_MAX - cls.IK_DAMPING_MIN) * blend
+        )
+        return damping, sigma_min
+
     def solve_ik(
         self,
         target_position,
@@ -306,7 +355,6 @@ class LocalIKSolver:
         # Clamp seed vào bounds
         q = np.clip(q, bounds[:, 0], bounds[:, 1])
 
-        lam = self.IK_DAMPING
         alpha = self.IK_STEP_SIZE
         tol = self.IK_POSITION_TOLERANCE
 
@@ -319,8 +367,7 @@ class LocalIKSolver:
             pos_err = target_pos - current_pos
             ori_err = _so3_log(target_rot @ current_rot.T)
 
-            # Weighted error: position quan trọng hơn orientation
-            error = np.concatenate([pos_err, ori_err * 0.5])
+            error = np.concatenate([pos_err, ori_err])
 
             pos_err_norm = np.linalg.norm(pos_err)
             if pos_err_norm < tol and np.linalg.norm(ori_err) < 0.01:
@@ -332,10 +379,21 @@ class LocalIKSolver:
             # Jacobian
             J = self._compute_jacobian(q)
 
-            # DLS: dq = J^T (J J^T + λ²I)^{-1} error
-            JJT = J @ J.T
+            # Weighted least squares requires W on both sides: minimize
+            # ||W (J dq - error)||. Applying W only to error changes the task
+            # instead of consistently weighting its residual.
+            weighted_error, weighted_jacobian = self._weighted_dls_system(
+                error, J)
+            lam, sigma_min = self._adaptive_damping(weighted_jacobian)
+            self._ik_min_singular_value = min(
+                self._ik_min_singular_value, sigma_min)
+            self._ik_max_damping = max(self._ik_max_damping, lam)
+
+            # DLS: dq = Jw^T (Jw Jw^T + λ²I)^-1 ew
+            JJT = weighted_jacobian @ weighted_jacobian.T
             JJT_damped = JJT + (lam ** 2) * np.eye(6)
-            dq = J.T @ np.linalg.solve(JJT_damped, error)
+            dq = weighted_jacobian.T @ np.linalg.solve(
+                JJT_damped, weighted_error)
 
             # Step
             q = q + alpha * dq
@@ -392,6 +450,10 @@ class LocalIKSolver:
             'ik_calls': self._ik_call_count,
             'ik_fails': self._ik_fail_count,
             'ik_avg_us': avg_ik_us,
+            'ik_min_singular_value': (
+                self._ik_min_singular_value
+                if math.isfinite(self._ik_min_singular_value) else None),
+            'ik_max_damping': self._ik_max_damping,
         }
 
 

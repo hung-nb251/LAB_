@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>codrawing_control</name>
+  <version>0.1.0</version>
+  <description>Independent 2D force-guided co-drawing pipeline for HC10DTP.</description>
+  <maintainer email="hungnb@example.com">hungnb</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <depend>rclpy</depend>
+  <depend>geometry_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>std_srvs</depend>
+  <depend>human_hand_msgs</depend>
+  <exec_depend>python3-numpy</exec_depend>
+  <exec_depend>trajectory_predictor</exec_depend>
+  <exec_depend>hc10dtp_bringup</exec_depend>
+  <exec_depend>hc10dtp_moveit_config</exec_depend>
+  <exec_depend>predictor_ui</exec_depend>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>moveit_configs_utils</exec_depend>
+
+  <test_depend>ament_pytest</test_depend>
+  <test_depend>python3-pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

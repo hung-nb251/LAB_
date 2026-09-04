@@ -1,0 +1,58 @@
+1788543981.0818176 [INFO] [launch]: All log files can be found below /home/hungnb/cocarry_ws/.ros_log/2026-09-05-00-46-21-081052-hungnb-XiaoXinPro-14c-AHP10R-37566
+1788543981.0819271 [INFO] [launch]: Default logging verbosity is set to INFO
+1788543981.2155263 [INFO] [launch.user]: [SIMULATION ONLY] ROS_DOMAIN_ID=42 | fake HC10DTP + real Axia UDP; no physical robot connection
+1788543981.3411381 [INFO] [launch.user]: [CoCarry SIM] predictor=gru | model_dir=/home/hungnb/cocarry_ws/pHRI_Models/gru_robot_ee_h5_relative_v1 | window=20 | features=6
+1788543981.3771718 [INFO] [static_transform_publisher-1]: process started with pid [37567]
+1788543981.3774455 [INFO] [robot_state_publisher-2]: process started with pid [37569]
+1788543981.3775377 [INFO] [ros2_control_node-3]: process started with pid [37571]
+1788543981.3776042 [INFO] [spawner-4]: process started with pid [37573]
+1788543981.3776727 [INFO] [spawner-5]: process started with pid [37575]
+1788543981.3777335 [INFO] [move_group-6]: process started with pid [37577]
+1788543981.3777862 [INFO] [ee_tracker_node.py-7]: process started with pid [37579]
+1788543981.3778422 [INFO] [predictor_node-8]: process started with pid [37581]
+1788543981.3779113 [INFO] [cartesian_streamer_hc10dtp.py-9]: process started with pid [37583]
+1788543981.3779671 [INFO] [admittance_controller_3d-10]: process started with pid [37585]
+1788543981.3780258 [INFO] [cocarry_logger-11]: process started with pid [37587]
+1788543981.3796606 [static_transform_publisher-1] [WARN] [1788543981.379407961] []: Old-style arguments are deprecated; see --help for new-style arguments
+1788543981.4539857 [robot_state_publisher-2] [INFO] [1788543981.451723451] [robot_state_publisher]: got segment axia_sensor_link
+1788543981.4544353 [robot_state_publisher-2] [INFO] [1788543981.451995278] [robot_state_publisher]: got segment base
+1788543981.4549432 [robot_state_publisher-2] [INFO] [1788543981.452010065] [robot_state_publisher]: got segment base_link
+1788543981.4550557 [robot_state_publisher-2] [INFO] [1788543981.452016096] [robot_state_publisher]: got segment environment_objects
+1788543981.4551406 [robot_state_publisher-2] [INFO] [1788543981.452021737] [robot_state_publisher]: got segment flange
+1788543981.4551826 [robot_state_publisher-2] [INFO] [1788543981.452026956] [robot_state_publisher]: got segment link_1_s
+1788543981.4552155 [robot_state_publisher-2] [INFO] [1788543981.452032396] [robot_state_publisher]: got segment link_2_l
+1788543981.4552479 [robot_state_publisher-2] [INFO] [1788543981.452037766] [robot_state_publisher]: got segment link_3_u
+1788543981.4552801 [robot_state_publisher-2] [INFO] [1788543981.452042435] [robot_state_publisher]: got segment link_4_r
+1788543981.4553158 [robot_state_publisher-2] [INFO] [1788543981.452047794] [robot_state_publisher]: got segment link_5_b
+1788543981.4553459 [robot_state_publisher-2] [INFO] [1788543981.452052924] [robot_state_publisher]: got segment link_6_t
+1788543981.4553771 [robot_state_publisher-2] [INFO] [1788543981.452057312] [robot_state_publisher]: got segment tool0
+1788543981.4562747 [static_transform_publisher-1] [INFO] [1788543981.455990513] [static_transform_publisher]: Spinning until stopped - publishing transform
+1788543981.4563837 [static_transform_publisher-1] translation: ('0.000000', '0.000000', '0.000000')
+1788543981.4564381 [static_transform_publisher-1] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+1788543981.4564781 [static_transform_publisher-1] from 'world' to 'base_link'
+1788543981.9837821 [INFO] [spawner-4]: process has finished cleanly [pid 37573]
+1788543982.0281744 [INFO] [spawner-5]: process has finished cleanly [pid 37575]
+1788543984.3758559 [INFO] [motoros2_mock_node.py-12]: process started with pid [37876]
+1788543992.8869278 [WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+1788543992.8927431 [INFO] [motoros2_mock_node.py-12]: sending signal 'SIGINT' to process[motoros2_mock_node.py-12]
+1788543992.8949821 [INFO] [cocarry_logger-11]: sending signal 'SIGINT' to process[cocarry_logger-11]
+1788543992.8965468 [INFO] [admittance_controller_3d-10]: sending signal 'SIGINT' to process[admittance_controller_3d-10]
+1788543992.8981748 [INFO] [cartesian_streamer_hc10dtp.py-9]: sending signal 'SIGINT' to process[cartesian_streamer_hc10dtp.py-9]
+1788543992.8994348 [INFO] [predictor_node-8]: sending signal 'SIGINT' to process[predictor_node-8]
+1788543992.9005353 [INFO] [ee_tracker_node.py-7]: sending signal 'SIGINT' to process[ee_tracker_node.py-7]
+1788543992.9014907 [INFO] [move_group-6]: sending signal 'SIGINT' to process[move_group-6]
+1788543992.9023788 [INFO] [ros2_control_node-3]: sending signal 'SIGINT' to process[ros2_control_node-3]
+1788543992.9030647 [INFO] [robot_state_publisher-2]: sending signal 'SIGINT' to process[robot_state_publisher-2]
+1788543992.9036806 [INFO] [static_transform_publisher-1]: sending signal 'SIGINT' to process[static_transform_publisher-1]
+1788543992.9040916 [robot_state_publisher-2] [INFO] [1788543992.886736330] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+1788543992.9044106 [static_transform_publisher-1] [INFO] [1788543992.886759312] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+1788543992.9063194 [ERROR] [robot_state_publisher-2]: process has died [pid 37569, exit code -2, cmd '/opt/ros/humble/lib/robot_state_publisher/robot_state_publisher --ros-args -r __node:=robot_state_publisher --params-file /tmp/launch_params_tfp117uu'].
+1788543992.9073291 [ERROR] [static_transform_publisher-1]: process has died [pid 37567, exit code -2, cmd '/opt/ros/humble/lib/tf2_ros/static_transform_publisher 0.0 0.0 0.0 0.0 0.0 0.0 world base_link --ros-args -r __node:=static_transform_publisher'].
+1788543992.9079914 [ERROR] [ros2_control_node-3]: process has died [pid 37571, exit code -2, cmd '/opt/ros/humble/lib/controller_manager/ros2_control_node --ros-args --params-file /tmp/launch_params_o_y4ntu0 --params-file /home/hungnb/cocarry_ws/install/hc10dtp_moveit_config/share/hc10dtp_moveit_config/config/ros2_controllers.yaml'].
+1788543992.9084384 [ERROR] [move_group-6]: process has died [pid 37577, exit code -2, cmd '/opt/ros/humble/lib/moveit_ros_move_group/move_group --ros-args --params-file /tmp/launch_params_q3dur2my --params-file /tmp/launch_params_em068gj_'].
+1788543993.0157654 [ERROR] [motoros2_mock_node.py-12]: process has died [pid 37876, exit code -2, cmd '/home/hungnb/cocarry_ws/install/hc10dtp_simulation/lib/hc10dtp_simulation/motoros2_mock_node.py --ros-args -r __node:=motoros2_mock'].
+1788543993.0174341 [ERROR] [cocarry_logger-11]: process has died [pid 37587, exit code -2, cmd '/home/hungnb/cocarry_ws/install/cocarry_admittance_control/lib/cocarry_admittance_control/cocarry_logger --ros-args -r __node:=cocarry_admittance_logger --params-file /home/hungnb/cocarry_ws/install/cocarry_admittance_control/share/cocarry_admittance_control/config/cocarry_admittance_params.yaml --params-file /tmp/launch_params_gebsabmj'].
+1788543993.0247281 [ERROR] [admittance_controller_3d-10]: process has died [pid 37585, exit code -2, cmd '/home/hungnb/cocarry_ws/install/cocarry_admittance_control/lib/cocarry_admittance_control/admittance_controller_3d --ros-args -r __node:=cocarry_admittance_controller --params-file /home/hungnb/cocarry_ws/install/cocarry_admittance_control/share/cocarry_admittance_control/config/cocarry_admittance_params.yaml'].
+1788543993.1162825 [ERROR] [ee_tracker_node.py-7]: process has died [pid 37579, exit code 1, cmd '/home/hungnb/cocarry_ws/install/hc10dtp_bringup/lib/hc10dtp_bringup/ee_tracker_node.py --ros-args -r __node:=ee_position_tracker --params-file /home/hungnb/cocarry_ws/install/cocarry_admittance_control/share/cocarry_admittance_control/config/cocarry_admittance_params.yaml'].
+1788543993.1643121 [ERROR] [cartesian_streamer_hc10dtp.py-9]: process has died [pid 37583, exit code 1, cmd '/home/hungnb/cocarry_ws/install/hc10dtp_bringup/lib/hc10dtp_bringup/cartesian_streamer_hc10dtp.py --stream-hz 15 --max-vel 0.15 --max-accel 0.50 --fail-closed --ros-args -r __node:=cartesian_streamer --params-file /tmp/launch_params_ozr64fwx'].
+1788543993.2054031 [ERROR] [predictor_node-8]: process has died [pid 37581, exit code -2, cmd '/home/hungnb/cocarry_ws/install/trajectory_predictor/lib/trajectory_predictor/predictor_node --ros-args -r __node:=trajectory_predictor --params-file /home/hungnb/cocarry_ws/install/cocarry_admittance_control/share/cocarry_admittance_control/config/cocarry_admittance_params.yaml --params-file /tmp/launch_params_ife12w56'].

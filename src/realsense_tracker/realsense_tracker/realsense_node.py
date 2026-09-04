@@ -92,7 +92,8 @@ class RealSenseTrackerNode(Node):
 
         try:
             import yaml
-            yaml_path = '/home/duy/Experiment/hrc_ws/src/hrc_bringup/config/all_params.yaml'
+            yaml_path = os.path.expanduser(
+                '~/cocarry_ws/src/hrc_bringup/config/all_params.yaml')
             if os.path.exists(yaml_path):
                 with open(yaml_path, 'r') as f:
                     data = yaml.safe_load(f)

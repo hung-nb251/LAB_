@@ -6,7 +6,11 @@
   <maintainer email="duy@experiment.local">Duy</maintainer>
   <license>MIT</license>
   <depend>rclpy</depend>
+  <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>python3-yaml</exec_depend>
+  <exec_depend>hc10dtp_moveit_config</exec_depend>
   <depend>human_hand_msgs</depend>
+  <depend>geometry_msgs</depend>
   <depend>std_srvs</depend>
   <depend>std_msgs</depend>
   <depend>control_msgs</depend>

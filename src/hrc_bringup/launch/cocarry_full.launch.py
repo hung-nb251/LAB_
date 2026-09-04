@@ -150,7 +150,8 @@ def generate_launch_description():
         parameters=[transform_params])
 
     # 4. Cartesian streamer (kết nối robot) — TẮT khi test_mode=true
-    moveit_config = MoveItConfigsBuilder("hc10dtp", package_name="hc10dtp_moveit_config").to_dict()
+    moveit_config = MoveItConfigsBuilder(
+        "motoman_hc10dtp", package_name="hc10dtp_moveit_config").to_dict()
     
     streamer_node = Node(
         package='hc10dtp_bringup',

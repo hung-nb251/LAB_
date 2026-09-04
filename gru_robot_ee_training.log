@@ -1,0 +1,21 @@
+/usr/lib/python3/dist-packages/scipy/__init__.py:146: UserWarning: A NumPy version >=1.17.3 and <1.25.0 is required for this version of SciPy (detected version 1.26.4
+  warnings.warn(f"A NumPy version >={np_minversion} and <{np_maxversion}"
+2026-09-04 23:51:59.230797: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2026-09-04 23:51:59.230836: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2026-09-04 23:51:59.231906: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+Preparing robot_ee GROUND_TRUTH trajectories...
+train: 80 files | 13417 points | 13017 windows | 890.4s
+val  : 12 files | 2050 points | 1990 windows | 136.1s
+test : 7 files | 1150 points | 1115 windows | 76.3s
+GRU 1L/32U seed=42: RMSE XYZ=[3.43, 9.73, 5.99] mm | mean3D=10.09 mm | p95=22.39 mm
+GRU 1L/32U seed=43: RMSE XYZ=[3.48, 11.09, 6.04] mm | mean3D=11.35 mm | p95=23.98 mm
+GRU 1L/32U seed=44: RMSE XYZ=[3.26, 10.16, 5.83] mm | mean3D=10.22 mm | p95=22.91 mm
+GRU 1L/64U seed=42: RMSE XYZ=[3.01, 9.57, 5.38] mm | mean3D=9.40 mm | p95=22.63 mm
+GRU 1L/64U seed=43: RMSE XYZ=[2.95, 9.32, 5.31] mm | mean3D=9.02 mm | p95=22.79 mm
+GRU 1L/64U seed=44: RMSE XYZ=[3.01, 9.61, 5.35] mm | mean3D=9.46 mm | p95=22.42 mm
+GRU 2L/32U seed=42: RMSE XYZ=[3.55, 10.63, 6.17] mm | mean3D=10.66 mm | p95=24.62 mm
+GRU 2L/32U seed=43: RMSE XYZ=[3.82, 10.88, 6.51] mm | mean3D=11.05 mm | p95=26.13 mm
+GRU 2L/32U seed=44: RMSE XYZ=[3.70, 10.92, 6.78] mm | mean3D=11.03 mm | p95=26.81 mm
+GRU 2L/64U seed=42: RMSE XYZ=[3.20, 9.49, 5.54] mm | mean3D=9.17 mm | p95=24.11 mm
+GRU 2L/64U seed=43: RMSE XYZ=[3.33, 9.90, 5.68] mm | mean3D=9.91 mm | p95=23.21 mm
+GRU 2L/64U seed=44: RMSE XYZ=[3.09, 9.55, 5.47] mm | mean3D=9.38 mm | p95=22.84 mm

@@ -17,7 +17,6 @@ Cách chạy:
 
 import os
 import sys
-import time
 
 import numpy as np
 
@@ -65,12 +64,13 @@ class EEPositionTracker(Node):
         # Vị trí EE gốc (khi bấm Calibrate) — dùng làm mốc cho GRU
         self._ee_origin = None
 
-        # ── Rate limiting (nếu cần giảm tần số xuống dưới 50Hz) ────
-        self._last_publish_time = 0.0
+        # A configured rate is a periodic sampler, not callback-count
+        # throttling. This gives the predictor the same uniform 15 Hz spacing
+        # used to build its training windows, regardless of joint-state rate.
+        self._publish_timer = None
         if self._publish_rate > 0:
-            self._min_period = 1.0 / self._publish_rate
-        else:
-            self._min_period = 0.0  # Không giới hạn
+            self._publish_timer = self.create_timer(
+                1.0 / self._publish_rate, self._publish_current_position)
 
         # ── Publisher ───────────────────────────────────────────────
         # Cùng topic và message type với realsense_tracker
@@ -151,12 +151,15 @@ class EEPositionTracker(Node):
                 f'  Joints: {[f"{v:.3f}" for v in self._joints]}'
             )
 
-        # Rate limiting (nếu cấu hình)
-        now = time.time()
-        if self._min_period > 0:
-            if (now - self._last_publish_time) < self._min_period:
-                return
-        self._last_publish_time = now
+        # Historical/default mode publishes every joint-state callback. A
+        # configured co-carry rate is handled by the uniform timer above.
+        if self._publish_timer is None:
+            self._publish_current_position()
+
+    def _publish_current_position(self):
+        """Sample the latest joint state and publish robot-EE displacement."""
+        if not self._got_joints:
+            return
 
         # ── Giải FK → EE position (base_link frame) ─────────────────
         ee_pos = self._fk.fk_position(np.array(self._joints))

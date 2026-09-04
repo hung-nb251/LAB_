@@ -32,7 +32,7 @@ while true; do
     # Thêm flag --sig-proxy=false để docker không chiếm mất tín hiệu Ctrl+C, giúp trap của bash hoạt động hoàn hảo
     docker run -it --sig-proxy=false --name $CONTAINER_NAME --net=host \
         -e ROS_DOMAIN_ID=10 \
-        microros/micro-ros-agent:humble udp4 --port 8888
+        microros/micro-ros-agent:humble udp4 --port 8888 -d 500
         
     echo "[$(date)] Agent exited. Tự động khởi động lại sau 1s..."
     sleep 1

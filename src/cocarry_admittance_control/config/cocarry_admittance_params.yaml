@@ -1,0 +1,110 @@
+cocarry_admittance_controller:
+  ros__parameters:
+    # Dong bo voi streamer lich su cua HC10DTP: 15 Hz.
+    control_rate_hz: 15.0
+
+    # M*e_ddot + D*e_dot + K*e = F_h, e = x_r - x_d.
+    # Dung chung cho Ground Truth va Prediction; chi nguon x_d thay doi theo mode.
+    virtual_mass_x: 1.0
+    virtual_mass_y: 1.0
+    virtual_mass_z: 1.0
+    stiffness_x: 10.0
+    stiffness_y: 10.0
+    stiffness_z: 10.0
+    # Khi true, D duoc tinh tu dong: D_i = 2*sqrt(M_i*K_i).
+    # Voi M=1, K=10: D=6.32455532 tren ca ba truc.
+    critical_damping: true
+    damping_x: 6.32455532
+    damping_y: 6.32455532
+    damping_z: 6.32455532
+
+    # Axia UI da ap radial deadband 4 N, khong deadzone lan hai.
+    intent_threshold_n: 0.0
+    force_sign_x: 1.0
+    force_sign_y: 1.0
+    force_sign_z: 1.0
+
+    # Gia tri lich su cua Cartesian Streamer (commit dau tien den hien tai).
+    max_virtual_velocity_mps: 0.15
+    max_virtual_acceleration_mps2: 0.50
+    # Reference chi duoc di truoc feedback EE that toi da 30 mm.
+    max_command_lead_m: 0.03
+
+    # Controller va UI dung toa do robot EE. Rieng bien Z duoi duoc suy ra
+    # tu khoang ho san cua dau thanh: EE_z >= 0.05 + 0.1814 = 0.2314 m.
+    safe_workspace_x_min_m: -1.4
+    safe_workspace_x_max_m: 1.4
+    safe_workspace_y_min_m: -0.5
+    safe_workspace_y_max_m: 1.3
+    safe_tool_tip_z_min_m: 0.05
+    downward_tool_length_m: 0.1814
+    safe_workspace_z_max_m: 1.5
+
+    max_force_per_axis_n: 15.0
+    max_force_norm_n: 20.0
+    # Gap ngan chi dong bang reference; chi hard-fault neu mat luc 0.50 s.
+    # Log 2026-09-03 da co jitter 0.190--0.246 s nen 0.20 s hard timeout
+    # tao stop gia trong khi Axia van ket noi.
+    force_stale_hold_sec: 0.20
+    force_timeout_sec: 0.50
+    current_pose_timeout_sec: 0.25
+    prediction_timeout_sec: 0.50
+    # SVGP la nominal x_d ngay ca khi luc nguoi nho/bang 0. Gioi han nay chi
+    # chong AI nominal chay qua xa EE, khong phai gate dua tren luc.
+    prediction_max_nominal_lead_m: 0.05
+    prepare_timeout_sec: 8.0
+    min_prediction_buffer_size: 10
+    require_axia_calibrated: true
+cocarry_admittance_logger:
+  ros__parameters:
+    log_dir: /home/hungnb/cocarry_ws/cocarry_logs
+    file_prefix: cocarry_admittance_3d
+
+ee_position_tracker:
+  ros__parameters:
+    # SVGP duoc train tu robot EE resample deu tai 15 Hz. Timer cua tracker
+    # lay mau latest joint state dung tan so nay, doc lap voi /joint_states.
+    publish_rate_hz: 15.0
+
+trajectory_predictor:
+  ros__parameters:
+    auto_start: false
+    # Co-carry controller owns predictor Start/Stop sequencing.  Selecting a
+    # UI mode alone must not start inference or retain a stale HOLD target.
+    trajectory_mode_auto_toggle: false
+    inference_rate_hz: 15.0
+    clear_on_tracking_lost: 1.0
+    default_model: svgp
+    filter:
+      ema_alpha: 0.5
+      enabled: true
+      max_deviation: 0.08
+      max_rate: 0.05
+    model_dir: /home/hungnb/cocarry_ws/pHRI_Models/svgp_robot_ee_h5_m50_relative
+    model_files:
+      svgp: svgp_model.pkl
+    num_features: 3
+    # Launch profile GRU override thanh delta_position. Gia tri nay khong duoc
+    # dung boi SVGP 3-feature va giu nguyen hanh vi GRU camera cu.
+    velocity_feature_mode: legacy_16hz_ema
+    scaler_x_file: scaler_x.pkl
+    scaler_y_file: scaler_y.pkl
+    window_size: 10
+    hold:
+      time_based: true
+      window_sec: 0.40
+      max_motion_m: 0.003
+      release_distance_m: 0.010
+      publish_rate_hz: 15.0
+    mjm:
+      enabled: true
+      publish_rate_hz: 15.0
+      reference_timeout_sec: 0.25
+      require_goal_cmd: true
+      t_switch: 5.0
+      goal_x: -0.152821
+      goal_y: 0.566000
+      goal_z: -0.032538
+      fitts_a: 3.8697
+      fitts_b: 0.7492
+      fitts_w: 0.3

@@ -58,6 +58,52 @@ Logging: experiment_logger → cocarry_logs/experiment_*.csv
 UI:      predictor_ui → giao diện điều khiển (PyQt5)
 ```
 
+### 1.2.1 Pipeline Co-Drawing độc lập
+
+Co-drawing không chạy camera tracker hoặc `coord_transform` của co-carrying.
+Nó dùng launch, config, controller và logger riêng trong package
+`codrawing_control`:
+
+```text
+/joint_states → ee_tracker_node → /hand_position (robot_ee)
+                              → trajectory_predictor → x_d
+/axia/human_force → planar admittance → x_r
+x_r → /cartesian_streamer/target_pose → IK → HC10DTP
+/sensorless_force → codrawing_logger (logging only)
+```
+
+Luật điều khiển trên mặt phẳng XY:
+
+```text
+M*e_ddot + D*e_dot + K*e = F_h,  e = x_r - x_d
+```
+
+Z và orientation được khóa tại `Start Run`. Đầu thanh vẽ có offset cấu hình
+18 cm so với `tool0`. Dữ liệu được lưu riêng trong `codrawing_logs/`.
+
+Hai launch co-carry và co-drawing không được chạy đồng thời vì cùng điều khiển
+robot vật lý và cùng sử dụng `/cartesian_streamer/target_pose`.
+
+### 1.2.2 Pipeline Co-Carrying 3D bằng lực (không camera)
+
+Package `cocarry_admittance_control` là một pipeline độc lập khác:
+
+```text
+/joint_states -> ee_tracker_node -> /hand_position (robot_ee XYZ)
+                                -> trajectory_predictor -> x_d XYZ
+/axia/human_force -> 3D admittance -> x_r XYZ
+x_r -> /cartesian_streamer/target_pose -> IK -> HC10DTP
+```
+
+Controller dùng `M=[1,1,1]`, `K=[20,20,20]` và critical damping
+`D_i=2*sqrt(M_i*K_i)=[8.9443,8.9443,8.9443]` cho cả hai trajectory mode.
+Ground Truth giữ `x_d` tại pose capture; Prediction dùng output SVGP từ chuỗi
+robot EE tương đối làm `x_d`. Orientation được capture tại Start, nhưng cả X/Y/Z
+đều được phép chuyển động. Z không bị lock quanh pose đầu; nó dùng workspace
+lịch sử `0.05 <= z <= 1.50 m`, sau đó tiếp tục qua kiểm tra IK và joint limits.
+Launch camera cũ, co-drawing và co-carrying 3D không được chạy đồng thời vì đều
+publish `/cartesian_streamer/target_pose`.
+
 ---
 
 ### 1.3 Giao thức Giao tiếp Giữa Các Node (Interface Contract)
@@ -71,6 +117,10 @@ UI:      predictor_ui → giao diện điều khiển (PyQt5)
 | `/cartesian_streamer/target_pose` | `PoseStamped` | `coord_transform` | `cartesian_streamer_hc10dtp` | `pose.position` (base_link frame) |
 | `/predictor/hybrid_state` | `String` | `trajectory_predictor` | `experiment_logger` | `"FOLLOWER"` / `"LEADER"` |
 | `/predictor/hybrid_cmd` | `String` | `predictor_ui` | `trajectory_predictor` | `"hybrid_on"` / `"hybrid_off"` |
+| `/axia/human_force` | `Vector3Stamped` | `axia_sensor_ui` | `admittance_controller` | Lực người đã bù trong `base_link` |
+| `/codrawing/nominal_position` | `PointStamped` | `admittance_controller` | `codrawing_logger` | Quỹ đạo danh định `x_d` |
+| `/codrawing/reference_position` | `PointStamped` | `admittance_controller` | `codrawing_logger` | Tham chiếu cuối `x_r` |
+| `/sensorless_force` | `WrenchStamped` | `sensorless_force_node` | `codrawing_logger` | `f_robot`, chỉ dùng logging |
 
 ---
 

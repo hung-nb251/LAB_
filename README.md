@@ -3,6 +3,15 @@
 ## Tổng quan (Overview)
 Dự án này là một hệ thống **Human-Robot Collaborative (HRC) Co-Carrying** sử dụng cánh tay robot cộng tác Yaskawa HC10DTP. Hệ thống cho phép người và robot cùng khiêng một vật thể. Dựa vào dữ liệu hình ảnh 3D từ camera chiều sâu, hệ thống theo dõi chuyển động tay của người, đưa qua mạng nơ-ron hồi quy (GRU/LSTM) để dự đoán quỹ đạo (trajectory prediction) trong tương lai gần (multi-step prediction `Ts=3`), tự động bù trễ hệ thống, và liên tục nội suy tọa độ để điều khiển robot bám sát quỹ đạo phối hợp mượt mà ở tần số cao.
 
+Pipeline co-drawing 2D dùng ATI Axia và robot EE được tách độc lập khỏi
+co-carrying dùng camera. Xem [hướng dẫn co-drawing](docs/codrawing_guide.md).
+
+Pipeline co-carrying 3D mới dùng Admittance Control, Axia và chuỗi robot EE
+cũng nằm trong launch riêng, không chạy camera. Xem
+[hướng dẫn co-carrying 3D](docs/cocarry_admittance_3d_guide.md).
+Pipeline này có launch mô phỏng riêng dùng Force Sensor thật với HC10DTP fake
+hardware trong RViz; không kết nối robot vật lý và mặc định dùng ROS domain 42.
+
 ## Yêu cầu Hệ thống (System Requirements)
 ### Phần cứng (Hardware)
 1. **Robot:** Yaskawa HC10DTP Collaborative Robot.
@@ -31,7 +40,7 @@ fadfadfaf
 | `realsense_tracker` | Đọc dữ liệu từ Camera, sử dụng MediaPipe trích xuất tọa độ 3D của cổ tay người (Wrist Landmark) ở tần số 16Hz-30Hz. |
 | `trajectory_predictor` | Node AI chứa logic dự đoán và tải mô hình Machine Learning (`gru_model_Ts3.h5`). Lấy chuỗi lịch sử XYZ và vận tốc để suy luận (Inference) ra vị trí tay N bước trong tương lai theo thời gian thực. |
 | `coord_transform` | Chuyển đổi tọa độ không gian: Mapping từ hệ trục Camera (Camera Frame) sang hệ trục gốc của Robot (Base Link Frame) bao gồm lật trục tọa độ theo hướng người đứng. |
-| `hc10dtp_bringup` | Chứa script điều khiển trung tâm `cartesian_streamer_hc10dtp.py`. Nhận tọa độ Cartesian, liên tục giải Inverse Kinematics (IK) **sử dụng nghiệm khớp trước đó (Previous Joint Seed) để chống lật khớp**, và stream Joint Angles xuống bộ điều khiển MotoROS2 (qua `QueueTrajPoint`) với tần số **25Hz**. |
+| `hc10dtp_bringup` | Chứa script điều khiển trung tâm `cartesian_streamer_hc10dtp.py`. Nhận tọa độ Cartesian, liên tục giải Inverse Kinematics (IK) **sử dụng nghiệm khớp trước đó (Previous Joint Seed) để chống lật khớp**, và stream Joint Angles xuống bộ điều khiển MotoROS2 (qua `QueueTrajPoint`) với tần số **15Hz**. |
 | `hc10dtp_moveit_config` | Cấu hình MoveIt 2 (SRDF, URDF, TRAC-IK) dùng cho giả lập, collision checking và giải động học nghịch |
 | `hc10dtp_simulation` | Môi trường giả lập tích hợp Gazebo/ROS Control. Bao gồm script `motoros2_mock_node.py` để giả lập các tín hiệu Service của MotoROS2 driver cho phép code streamer chạy mô phỏng 100% y như robot thật. |
 | `experiment_logger` | Lưu tọa độ thực tế của người, tọa độ dự đoán của AI, và dữ liệu khớp robot ra file `.csv`. Cung cấp báo cáo phân tích độ chính xác (MAE, MSE), tính toán thời gian phản hồi và độ giật (Jerk) sau mỗi lần thử. |
@@ -201,7 +210,7 @@ Hệ thống được thiết kế để bù đắp các độ trễ từ Mạng
 4. Node `coord_transform` nhận dự đoán, chuyển đổi tọa độ và áp dụng thêm bộ lọc tín hiệu (EMA, Rate Limit) để nội suy vị trí bù trừ End-Effector mượt mà.
 5. Output được phát sóng lên `/cartesian_streamer/target_pose` tới script `cartesian_streamer_hc10dtp.py`.
 6. Streamer kích hoạt MoveIt giải ngược Inverse Kinematics (IK) liên tục. **Đặc biệt, IK Solver luôn sử dụng trạng thái khớp liền trước (Previous Valid Joint State) làm điểm Seed ban đầu (Seed State), giúp bộ giải hội tụ nhanh và loại bỏ hoàn toàn hiện tượng nhảy nhánh động học (Branch-jumping / Joint Flipping)**, đồng thời gài các bộ Constraint để đảm bảo Safety ISO Limits.
-7. Gửi danh sách góc khớp thành công dưới dạng `QueueTrajPoint` xuống bộ điều khiển Yaskawa với khoảng ngắt thời gian là `0.04s` (**Tần số 25Hz**) để làm mượt hoàn toàn các bước giật của chuyển động khung hình chuẩn.
+7. Gửi danh sách góc khớp thành công dưới dạng `QueueTrajPoint` xuống bộ điều khiển Yaskawa với khoảng ngắt thời gian xấp xỉ `0.066s` (**Tần số 15Hz**).
 
 ---
 
@@ -234,7 +243,7 @@ Chạy công cụ phân tích tương quan chéo trên file log vừa tạo đ�
 ros2 run experiment_logger analyze_latency
 
 # Hoặc chỉ định chính xác file log cần phân tích
-ros2 run experiment_logger analyze_latency --csv /home/duy/cocarry_ws/cocarry_logs/experiment_GROUND_TRUTH_20260525_121439.csv
+ros2 run experiment_logger analyze_latency --csv /home/hungnb/cocarry_ws/cocarry_logs/experiment_GROUND_TRUTH_20260525_121439.csv
 ```
 
 #### Kết quả phân tích (Ví dụ):
@@ -283,7 +292,7 @@ Thay vì sử dụng phương pháp tương quan chéo (Cross-Correlation) vốn
 Khi thực nghiệm trong môi trường mới, nếu robot phản hồi quá chậm hoặc hơi giật, hãy tinh chỉnh các chỉ số sau trong source code:
 
 * **Trong `hc10dtp_bringup/scripts/cartesian_streamer_hc10dtp.py`:**
-  * `DEFAULT_STREAM_HZ = 25` và `QUEUE_DT_SEC = 0.04`: Đây là tần suất giao tiếp 25Hz, phù hợp với giới hạn băng thông dịch vụ (Service Call) thực tế của robot.
+  * `DEFAULT_STREAM_HZ = 15` và `QUEUE_DT_SEC = 0.066`: Đây là tần suất lịch sử đã được dùng với Point Queue Mode trên robot.
   * `SMOOTH_ALPHA = 0.5`: Hệ số làm mượt (Lọc hàm mũ). Điều chỉnh từ `0.1` (rất êm nhưng bám chậm) đến `1.0` (bám gắt nhưng dễ giật cục).
   * `MAX_JOINT_DELTA_PER_AXIS`: Góc quay tối đa cho phép mỗi chu kì (Chống lật khớp khuỷu/cổ tay).
 * **Trong `hrc_bringup/config/transform_params.yaml`:**
@@ -303,8 +312,8 @@ Khi thực nghiệm trong môi trường mới, nếu robot phản hồi quá ch
 Trong quá trình robot chạy (Streaming), script `cartesian_streamer_hc10dtp.py` sẽ in log định kỳ mỗi 5 giây về tình trạng thực tế của luồng dữ liệu. Người vận hành cần chú ý các thông số sau để đảm bảo an toàn:
 
 ### Ý nghĩa các thông số log:
-*   **`tick_hz` (~50Hz):** Tần suất vòng lặp điều khiển. Nếu < 45Hz, cần kiểm tra tải CPU.
-*   **`queue_send_hz` & `ack_hz`:** Tốc độ gửi và nhận phản hồi từ robot. Lý tưởng nhất là 48-50Hz.
+*   **`tick_hz` (~15Hz):** Tần suất vòng lặp điều khiển hiện tại.
+*   **`queue_send_hz` & `ack_hz`:** Tốc độ gửi và nhận phản hồi từ robot, mục tiêu xấp xỉ 15Hz khi controller không trả BUSY.
 *   **`inter_ack_ms` (~20ms):** Độ trễ phản hồi. Nếu > 50ms, kết nối mạng LAN có vấn đề hoặc bị nhiễu.
 *   **`busy_hz` (Nên là 0):** Nếu > 0, robot đang bị "nghẽn" hàng đợi (Queue Full). Hệ thống sẽ tự động retry nhưng chuyển động có thể bị khựng.
 *   **`retry_count` / `reject_count`:** Số lần gửi lại hoặc số điểm bị từ chối do lỗi IK/Giới hạn an toàn. Nếu các số này tăng nhanh, cần kiểm tra lại vùng làm việc (Workspace) hoặc vật cản.

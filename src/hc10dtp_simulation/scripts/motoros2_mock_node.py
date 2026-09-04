@@ -46,7 +46,13 @@ JOINT_NAMES = [
     'joint_4_r', 'joint_5_b', 'joint_6_t',
 ]
 
-HOME_POSITIONS = [1.5708, 0.1242, -1.0494, 0.0, -0.3978, -1.4436]
+# Keep the mock startup target synchronized with
+# hc10dtp_moveit_config/config/initial_positions.yaml.  A stale target here
+# makes the fake robot move by itself while the force sensor is calibrated.
+HOME_POSITIONS = [
+    1.570742, 0.027735, -0.710960,
+    0.000032, -0.847848, -0.000658,
+]
 
 
 class MotoROS2MockNode(Node):

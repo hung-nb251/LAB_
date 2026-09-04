@@ -22,7 +22,7 @@ from datetime import datetime
 
 import rclpy
 from rclpy.node import Node
-from geometry_msgs.msg import PoseStamped, PointStamped
+from geometry_msgs.msg import PoseStamped, PointStamped, WrenchStamped
 from sensor_msgs.msg import JointState
 from std_msgs.msg import String
 from std_srvs.srv import SetBool
@@ -67,11 +67,16 @@ class ExperimentLoggerNode(Node):
         if self.is_logging:
             self._start_logging()
 
-        # Latest data (quick-and-dirty sync: log on each prediction)
+        # Latest data
         self.last_meas = None
         self.last_filt = None
         self.last_target = None   # target_base: lệnh gửi robot (base_link frame)
+        self.last_human_wrench = None
+        self.last_robot_wrench = None
 
+        # Force log buffer riêng — chỉ ghi khi F_robot mới đến (tần số F_robot)
+        self._force_log_buffer : list = []
+        self._force_row_count  : int  = 0
         # Subscribers
         self.create_subscription(HandState, '/hand_position', self._on_hand, 10)
         self.create_subscription(PointStamped, '/coord_transform/filtered_hand_position', self._on_filtered_hand, 10)
@@ -92,6 +97,9 @@ class ExperimentLoggerNode(Node):
         self.create_subscription(String, '/predictor/hybrid_state', self._on_hybrid_state, 10)
         self._hybrid_state = 'OFF'
 
+        # Force subscribers
+        self.create_subscription(WrenchStamped, '/axia/compensated_wrench', self._on_human_wrench, 10)
+        self.create_subscription(WrenchStamped, '/sensorless_force', self._on_robot_wrench, 10)
         # Service to toggle recording
         self.toggle_srv = self.create_service(SetBool, '/logger/toggle', self._srv_toggle)
 
@@ -100,7 +108,45 @@ class ExperimentLoggerNode(Node):
     def _on_hybrid_state(self, msg: String):
         self._hybrid_state = msg.data.upper()
 
+    def _on_human_wrench(self, msg: WrenchStamped):
+        self.last_human_wrench = msg
+
+    def _on_robot_wrench(self, msg: WrenchStamped):
+        """Triggered at F_robot rate (~30Hz sau tối ưu).
+        Ghi ngay 1 dòng vào force buffer với F_h gần nhất hiện có.
+        """
+        self.last_robot_wrench = msg
+        if self.is_logging:
+            self._write_force_row(msg)
+
+    def _write_force_row(self, fr_msg: WrenchStamped):
+        """Ghi 1 dòng vào force buffer, triggered bởi F_robot mới.
+        F_human được lấy giá trị gần nhất đang có (100Hz nên luôn tươi < 10ms).
+        """
+        now_ns = self.get_clock().now().nanoseconds
+        fr_ts  = fr_msg.header.stamp.sec * 1_000_000_000 + fr_msg.header.stamp.nanosec
+
+        frx = f'{fr_msg.wrench.force.x:.6f}'
+        fry = f'{fr_msg.wrench.force.y:.6f}'
+        frz = f'{fr_msg.wrench.force.z:.6f}'
+
+        fhx = fhy = fhz = fh_ts = ''
+        if self.last_human_wrench:
+            fh_ts = (self.last_human_wrench.header.stamp.sec * 1_000_000_000
+                     + self.last_human_wrench.header.stamp.nanosec)
+            fhx = f'{self.last_human_wrench.wrench.force.x:.6f}'
+            fhy = f'{self.last_human_wrench.wrench.force.y:.6f}'
+            fhz = f'{self.last_human_wrench.wrench.force.z:.6f}'
+
+        self._force_log_buffer.append([
+            now_ns, fr_ts, fh_ts,
+            fhx, fhy, fhz,
+            frx, fry, frz,
+        ])
+        self._force_row_count += 1
+
     def _start_logging(self):
+
         try:
             ts = datetime.now().strftime('%Y%m%d_%H%M%S')
             # Dùng model name hoặc GROUND_TRUTH tùy mode
@@ -111,14 +157,16 @@ class ExperimentLoggerNode(Node):
                 if self._hybrid_state != 'OFF':
                     model_tag += "+MJM"
             self.csv_path = os.path.join(self.log_dir, f'experiment_{model_tag}_{ts}.csv')
-            
+
             # Ensure directory exists once more
             os.makedirs(self.log_dir, exist_ok=True)
-            
-            self._log_buffer = []
-            self.row_count = 0
-            self._start_wall_time = time.time()
-            self.is_logging = True
+
+            self._log_buffer       = []
+            self._force_log_buffer = []   # Reset force buffer
+            self._force_row_count  = 0
+            self.row_count         = 0
+            self._start_wall_time  = time.time()
+            self.is_logging        = True
             self.get_logger().info(f'✓ STARTED in-memory logging. Target file: {self.csv_path}')
         except Exception as e:
             self.get_logger().error(f'✗ FAILED to start logging: {e}')
@@ -129,7 +177,7 @@ class ExperimentLoggerNode(Node):
         if not self._log_buffer:
             self.get_logger().warn('Log buffer is empty, nothing to write to disk.')
             return False
-        
+
         try:
             self.get_logger().info(f'Writing {len(self._log_buffer)} rows from memory to {self.csv_path}...')
             with open(self.csv_path, 'w', newline='') as f:
@@ -143,10 +191,28 @@ class ExperimentLoggerNode(Node):
                     'target_x', 'target_y', 'target_z',
                     'robot_ee_x', 'robot_ee_y', 'robot_ee_z',
                     'j1_vel', 'j2_vel', 'j3_vel', 'j4_vel', 'j5_vel', 'j6_vel',
-                    'j1_eff', 'j2_eff', 'j3_eff', 'j4_eff', 'j5_eff', 'j6_eff', 'role'
+                    'j1_eff', 'j2_eff', 'j3_eff', 'j4_eff', 'j5_eff', 'j6_eff', 'role',
+                    'f_human_x', 'f_human_y', 'f_human_z', 'f_robot_x', 'f_robot_y', 'f_robot_z',
+                    'fh_ts_ns', 'fr_ts_ns'
                 ])
                 writer.writerows(self._log_buffer)
-            self.get_logger().info(f'✓ Successfully wrote logs to disk.')
+            self.get_logger().info(f'✓ Successfully wrote motion logs to disk.')
+
+            # ── Ghi force CSV riêng biệt (đồng bộ tại tần số F_robot) ──
+            if self._force_log_buffer:
+                force_path = self.csv_path.replace('.csv', '_force.csv')
+                with open(force_path, 'w', newline='') as ff:
+                    fw = csv.writer(ff)
+                    fw.writerow([
+                        'log_ts_ns',    # timestamp ROS lúc ghi
+                        'fr_ts_ns',     # timestamp gốc của gói F_robot
+                        'fh_ts_ns',     # timestamp gốc của gói F_human gần nhất
+                        'f_human_x', 'f_human_y', 'f_human_z',
+                        'f_robot_x', 'f_robot_y', 'f_robot_z',
+                    ])
+                    fw.writerows(self._force_log_buffer)
+                self.get_logger().info(
+                    f'✓ Wrote {self._force_row_count} force rows → {os.path.basename(force_path)}')
             return True
         except Exception as e:
             self.get_logger().error(f'✗ Failed to write log buffer to disk: {e}')
@@ -354,6 +420,19 @@ class ExperimentLoggerNode(Node):
             else:
                 role = 'FOLLOWER'
 
+        fhx = fhy = fhz = frx = fry = frz = ''
+        fh_ts = fr_ts = ''
+        if self.last_human_wrench:
+            fh_ts = str(self.last_human_wrench.header.stamp.sec * 1000000000 + self.last_human_wrench.header.stamp.nanosec)
+            fhx = f'{self.last_human_wrench.wrench.force.x:.6f}'
+            fhy = f'{self.last_human_wrench.wrench.force.y:.6f}'
+            fhz = f'{self.last_human_wrench.wrench.force.z:.6f}'
+        if self.last_robot_wrench:
+            fr_ts = str(self.last_robot_wrench.header.stamp.sec * 1000000000 + self.last_robot_wrench.header.stamp.nanosec)
+            frx = f'{self.last_robot_wrench.wrench.force.x:.6f}'
+            fry = f'{self.last_robot_wrench.wrench.force.y:.6f}'
+            frz = f'{self.last_robot_wrench.wrench.force.z:.6f}'
+
         self._log_buffer.append([
             now_ns, wall, self._trajectory_mode,
             mx, my, mz, fx, fy, fz, tracked,
@@ -362,7 +441,9 @@ class ExperimentLoggerNode(Node):
             tx, ty, tz,
             rex, rey, rez,
             jv[0], jv[1], jv[2], jv[3], jv[4], jv[5],
-            je[0], je[1], je[2], je[3], je[4], je[5], role
+            je[0], je[1], je[2], je[3], je[4], je[5], role,
+            fhx, fhy, fhz, frx, fry, frz,
+            fh_ts, fr_ts
         ])
         self.row_count += 1
 
