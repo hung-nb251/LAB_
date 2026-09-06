@@ -1,196 +1,228 @@
 #!/usr/bin/env python3
-"""
-SensorlessForceNode — Ước tính lực tương tác tại EE từ dữ liệu dòng điện khớp.
+"""Estimate the robot actuator-equivalent Cartesian force from joint effort.
 
-Công thức:  F_ext = (J^T)^{-1} * tau_ext
-            với tau_ext = msg.effort (YRC1000 đã bù trọng lực + ma sát nội)
-
-Tối ưu hóa (v2):
-  - Pre-allocate mảng NumPy (q, tau, J) để tránh GC mỗi callback
-  - Cache index map tên khớp → index trong joint_states (O(1) thay vì O(n))
-  - Thay np.linalg.pinv bằng np.linalg.solve (nhanh ~5x với ma trận vuông 6x6)
-  - Dùng copy trực tiếp từ PyKDL vào mảng đã pre-allocate
+This node is diagnostic only. It does not send any command to the robot and
+its output is not connected to the admittance controller. The convention is
+``tau_robot ~= J.T @ W_robot``; no implicit sign reversal is applied.
 """
 
-import sys
+import math
+
 import numpy as np
 import rclpy
-from rclpy.node import Node
-from rclpy.qos import QoSProfile, DurabilityPolicy
-from sensor_msgs.msg import JointState
 from geometry_msgs.msg import WrenchStamped
-from std_msgs.msg import String
+from rclpy.node import Node
+from sensor_msgs.msg import JointState
+from std_msgs.msg import Bool, Float64MultiArray, String
 
-try:
-    import PyKDL
-    from kdl_parser_py.urdf import treeFromString
-except ImportError:
-    print("LỖI: Không tìm thấy thư viện PyKDL hoặc kdl_parser_py.")
-    print("Vui lòng chạy lệnh: sudo apt install ros-humble-kdl-parser-python python3-pykdl")
-    sys.exit(1)
+from local_ik_solver import LocalIKSolver
+from sensorless_force_math import (
+    EFFORT_MODES,
+    HC10DTP_RATED_TORQUE_NM,
+    effort_to_joint_torque,
+    estimate_robot_wrench,
+)
+
+
+JOINT_NAMES = (
+    'joint_1_s', 'joint_2_l', 'joint_3_u',
+    'joint_4_r', 'joint_5_b', 'joint_6_t',
+)
 
 
 class SensorlessForceNode(Node):
     def __init__(self):
         super().__init__('sensorless_force_node')
-
-        # Tham số
         self.declare_parameter('base_link', 'base_link')
         self.declare_parameter('tip_link', 'tool0')
-        self.declare_parameter('gravity_z', -9.81)
         self.declare_parameter('deadband_n', 1.0)
+        self.declare_parameter('max_force_norm_n', 500.0)
+        self.declare_parameter('effort_unit_mode', 'raw_only')
+        self.declare_parameter('calibration_confirmed', False)
+        self.declare_parameter(
+            'rated_joint_torques_nm', HC10DTP_RATED_TORQUE_NM.tolist())
+        self.declare_parameter('custom_effort_scale_nm', [1.0] * 6)
+        self.declare_parameter('joint_torque_bias_nm', [0.0] * 6)
+        self.declare_parameter('damping_min', 0.002)
+        self.declare_parameter('damping_max', 0.08)
+        self.declare_parameter('singularity_threshold', 0.05)
+        self.declare_parameter('publish_rate_hz', 15.0)
 
-        self.base_link  = self.get_parameter('base_link').value
-        self.tip_link   = self.get_parameter('tip_link').value
-        gravity_z       = self.get_parameter('gravity_z').value
-        self._deadband  = self.get_parameter('deadband_n').value
+        self._base_link = str(self.get_parameter('base_link').value)
+        tip_link = str(self.get_parameter('tip_link').value)
+        if self._base_link != 'base_link' or tip_link != 'tool0':
+            raise ValueError(
+                'The shared LocalIKSolver Jacobian is verified only for '
+                'base_link -> tool0')
+        self._deadband = float(self.get_parameter('deadband_n').value)
+        self._max_force_norm = float(self.get_parameter('max_force_norm_n').value)
+        self._mode = str(self.get_parameter('effort_unit_mode').value)
+        self._calibration_confirmed = bool(
+            self.get_parameter('calibration_confirmed').value)
+        if self._mode not in EFFORT_MODES:
+            raise ValueError(
+                f'effort_unit_mode must be one of {EFFORT_MODES}, got {self._mode!r}')
+        self._rated_torque = self._six_vector('rated_joint_torques_nm')
+        self._custom_scale = self._six_vector('custom_effort_scale_nm')
+        self._torque_bias = self._six_vector('joint_torque_bias_nm')
+        self._damping_min = float(self.get_parameter('damping_min').value)
+        self._damping_max = float(self.get_parameter('damping_max').value)
+        self._singularity_threshold = float(
+            self.get_parameter('singularity_threshold').value)
+        publish_rate_hz = float(self.get_parameter('publish_rate_hz').value)
+        if publish_rate_hz <= 0.0:
+            raise ValueError('publish_rate_hz must be positive')
+        self._minimum_period_ns = int(1e9 / publish_rate_hz)
+        self._last_process_ns = 0
 
-        # KDL objects (khởi tạo sau khi nhận URDF)
-        self.kdl_tree   = None
-        self.kdl_chain  = None
-        self.jac_solver = None
-        self.num_joints = 0
+        self._ik = LocalIKSolver()
+        self._joint_indices = None
+        self._last_names = None
+        self._last_status = ''
 
-        self.gravity = PyKDL.Vector(0, 0, gravity_z)
+        self._wrench_pub = self.create_publisher(
+            WrenchStamped, '/sensorless_force', 10)
+        self._torque_pub = self.create_publisher(
+            JointState, '/sensorless_force/joint_torque', 10)
+        self._valid_pub = self.create_publisher(
+            Bool, '/sensorless_force/valid', 10)
+        self._status_pub = self.create_publisher(
+            String, '/sensorless_force/status', 10)
+        self._diagnostics_pub = self.create_publisher(
+            Float64MultiArray, '/sensorless_force/diagnostics', 10)
+        self.create_subscription(JointState, '/joint_states', self._joint_state, 20)
 
-        # Mảng pre-allocated (khởi tạo sau khi biết num_joints)
-        self._q_kdl   : PyKDL.JntArray | None = None   # góc khớp
-        self._jac_kdl : PyKDL.Jacobian  | None = None   # Jacobian KDL
-        self._J       : np.ndarray | None = None         # Jacobian NumPy (6 x N)
-        self._tau     : np.ndarray | None = None         # Torque vector (N,)
-
-        # Cache: tên khớp → index trong joint_states (tránh msg.name.index mỗi callback)
-        self._joint_idx_map: dict[str, int] = {}
-
-        # Tên khớp theo thứ tự KDL
-        self._kdl_joint_names: list[str] = []
-
-        # Subscribe URDF với QoS TRANSIENT_LOCAL
-        qos = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL)
-        self.sub_urdf = self.create_subscription(
-            String, '/robot_description', self._cb_urdf, qos)
-
-        # Publisher
-        self.pub_wrench = self.create_publisher(WrenchStamped, '/sensorless_force', 10)
-
-        # Joint states (đăng ký sau khi có URDF)
-        self._sub_js = None
-
-        self.get_logger().info("SensorlessForceNode v2 — Đang chờ /robot_description...")
-
-    # ── URDF callback ──────────────────────────────────────────────────────────
-
-    def _cb_urdf(self, msg: String):
-        if self.kdl_tree is not None:
-            return  # Đã init rồi
-
-        success, self.kdl_tree = treeFromString(msg.data)
-        if not success:
-            self.get_logger().error("Không thể parse URDF bằng KDL!")
-            return
-
-        self.kdl_chain  = self.kdl_tree.getChain(self.base_link, self.tip_link)
-        self.num_joints = self.kdl_chain.getNrOfJoints()
-
-        # Thu thập tên các khớp chủ động
-        for i in range(self.kdl_chain.getNrOfSegments()):
-            seg   = self.kdl_chain.getSegment(i)
-            joint = seg.getJoint()
-            if joint.getType() != PyKDL.Joint.Fixed:
-                self._kdl_joint_names.append(joint.getName())
-
-        self.get_logger().info(
-            f"KDL chain: {self.base_link} → {self.tip_link} | "
-            f"{self.num_joints} khớp: {self._kdl_joint_names}")
-
-        # Tạo KDL solver
-        self.jac_solver = PyKDL.ChainJntToJacSolver(self.kdl_chain)
-
-        # ── Pre-allocate tất cả mảng một lần duy nhất ──
-        self._q_kdl   = PyKDL.JntArray(self.num_joints)
-        self._jac_kdl = PyKDL.Jacobian(self.num_joints)
-        self._J       = np.zeros((6, self.num_joints), dtype=np.float64)
-        self._tau     = np.zeros(self.num_joints, dtype=np.float64)
-
-        # Đăng ký joint_states SAU khi đã sẵn sàng
-        self._sub_js = self.create_subscription(
-            JointState, '/joint_states', self._cb_joint_states, 10)
-
-        self.get_logger().info("SensorlessForceNode v2 sẵn sàng!")
-
-    # ── Joint states callback (hot path — tối ưu tối đa) ──────────────────────
-
-    def _cb_joint_states(self, msg: JointState):
-        if self.jac_solver is None:
-            return
-
-        # Đảm bảo có dữ liệu effort
-        if not msg.effort or len(msg.effort) < self.num_joints:
+        if self._mode == 'raw_only':
             self.get_logger().warning(
-                "Không đủ dữ liệu effort trong /joint_states!",
-                throttle_duration_sec=2.0)
-            return
-
-        # ── Build index cache lần đầu tiên (hoặc khi tên khớp thay đổi) ──
-        if not self._joint_idx_map:
-            for name in self._kdl_joint_names:
-                try:
-                    self._joint_idx_map[name] = list(msg.name).index(name)
-                except ValueError:
-                    self.get_logger().warning(
-                        f"Không tìm thấy khớp {name} trong joint_states!",
-                        throttle_duration_sec=1.0)
-                    return
-
-        # ── Đọc q và tau vào mảng pre-allocated (O(n) đơn giản, không cấp phát) ──
-        try:
-            for i, name in enumerate(self._kdl_joint_names):
-                idx = self._joint_idx_map[name]
-                self._q_kdl[i]  = msg.position[idx]
-                self._tau[i]    = msg.effort[idx]
-        except (IndexError, KeyError):
+                'Sensorless force is in raw_only mode: raw joint efforts can be '
+                'logged, but no Cartesian force is published until the effort '
+                'unit/conversion is explicitly selected.')
+        elif self._mode == 'normalized_rated_torque':
             self.get_logger().warning(
-                "Lỗi đọc joint_states — index cache có thể lỗi thời.",
-                throttle_duration_sec=1.0)
-            self._joint_idx_map.clear()  # Reset cache để build lại lần sau
+                'Using provisional URDF rated-torque scaling. This output is '
+                'UNCALIBRATED and must not drive LEADER/FOLLOWER selection yet.')
+        else:
+            self.get_logger().info(
+                f'Sensorless force estimator ready in {self._mode} mode')
+
+    def _six_vector(self, name):
+        values = np.asarray(self.get_parameter(name).value, dtype=np.float64)
+        if values.shape != (6,) or not np.all(np.isfinite(values)):
+            raise ValueError(f'{name} must contain six finite values')
+        return values
+
+    def _publish_health(self, valid, status):
+        valid_msg = Bool()
+        valid_msg.data = bool(valid)
+        self._valid_pub.publish(valid_msg)
+        # Repeat status so a late-starting logger still receives it.
+        status_msg = String()
+        status_msg.data = status
+        self._status_pub.publish(status_msg)
+        if status != self._last_status:
+            if valid:
+                self.get_logger().info(status)
+            else:
+                self.get_logger().warning(status)
+            self._last_status = status
+
+    def _indices_for(self, msg):
+        names = tuple(msg.name)
+        if names == self._last_names and self._joint_indices is not None:
+            return self._joint_indices
+        lookup = {name: index for index, name in enumerate(names)}
+        if any(name not in lookup for name in JOINT_NAMES):
+            missing = [name for name in JOINT_NAMES if name not in lookup]
+            raise ValueError(f'missing joints in /joint_states: {missing}')
+        self._last_names = names
+        self._joint_indices = tuple(lookup[name] for name in JOINT_NAMES)
+        return self._joint_indices
+
+    def _joint_state(self, msg):
+        now_ns = self.get_clock().now().nanoseconds
+        if now_ns - self._last_process_ns < self._minimum_period_ns:
+            return
+        self._last_process_ns = now_ns
+        try:
+            indices = self._indices_for(msg)
+            if not msg.effort or max(indices) >= len(msg.effort):
+                self._publish_health(False, 'INVALID:no_joint_effort')
+                return
+            if max(indices) >= len(msg.position):
+                self._publish_health(False, 'INVALID:no_joint_position')
+                return
+            q = np.asarray([msg.position[i] for i in indices], dtype=np.float64)
+            raw_effort = np.asarray([msg.effort[i] for i in indices], dtype=np.float64)
+            if not np.all(np.isfinite(q)) or not np.all(np.isfinite(raw_effort)):
+                self._publish_health(False, 'INVALID:non_finite_joint_state')
+                return
+        except (IndexError, ValueError) as exc:
+            self._publish_health(False, f'INVALID:{exc}')
             return
 
-        # ── Tính Jacobian vào đối tượng KDL đã pre-allocate ──
-        self.jac_solver.JntToJac(self._q_kdl, self._jac_kdl)
+        if self._mode == 'raw_only':
+            self._publish_health(False, 'RAW_ONLY:conversion_not_confirmed')
+            return
 
-        # ── Copy Jacobian KDL → NumPy (in-place, không cấp phát bộ nhớ mới) ──
-        for i in range(6):
-            for j in range(self.num_joints):
-                self._J[i, j] = self._jac_kdl[i, j]
-
-        # ── Giải hệ phương trình J^T * F_ext = tau_ext ──
-        # Với robot 6 bậc tự do: J^T là ma trận vuông 6x6 → dùng solve thay vì pinv
-        J_T = self._J.T  # (6 x 6) — view, không copy
         try:
-            f_ext = np.linalg.solve(J_T, self._tau)   # ~5x nhanh hơn pinv
-        except np.linalg.LinAlgError:
-            # Gần điểm kỳ dị: fall back về lstsq (an toàn hơn)
-            f_ext, _, _, _ = np.linalg.lstsq(J_T, self._tau, rcond=None)
+            torque_nm = effort_to_joint_torque(
+                raw_effort,
+                self._mode,
+                rated_torque_nm=self._rated_torque,
+                custom_scale_nm=self._custom_scale,
+                bias_nm=self._torque_bias,
+            )
+            jacobian = self._ik.compute_jacobian(q)
+            estimate = estimate_robot_wrench(
+                jacobian,
+                torque_nm,
+                damping_min=self._damping_min,
+                damping_max=self._damping_max,
+                singularity_threshold=self._singularity_threshold,
+            )
+        except (ValueError, np.linalg.LinAlgError) as exc:
+            self._publish_health(False, f'INVALID:estimation_failed:{exc}')
+            return
 
-        # ── Deadband ──
-        mask  = np.abs(f_ext) >= self._deadband
-        f_out = np.where(mask, f_ext, 0.0)
+        force = estimate.wrench[:3].copy()
+        force[np.abs(force) < self._deadband] = 0.0
+        force_norm = float(np.linalg.norm(force))
+        if not np.all(np.isfinite(force)) or force_norm > self._max_force_norm:
+            self._publish_health(
+                False, f'INVALID:force_norm={force_norm:.3f}_N')
+            return
 
-        # ── Publish ──
-        w = WrenchStamped()
-        w.header.stamp    = msg.header.stamp  # Dùng timestamp từ joint_states (chuẩn xác hơn)
-        w.header.frame_id = self.base_link
-        w.wrench.force.x  = float(f_out[0])
-        w.wrench.force.y  = float(f_out[1])
-        w.wrench.force.z  = float(f_out[2])
-        w.wrench.torque.x = float(f_out[3])
-        w.wrench.torque.y = float(f_out[4])
-        w.wrench.torque.z = float(f_out[5])
-        self.pub_wrench.publish(w)
+        wrench_msg = WrenchStamped()
+        wrench_msg.header.stamp = msg.header.stamp
+        wrench_msg.header.frame_id = self._base_link
+        wrench_msg.wrench.force.x = float(force[0])
+        wrench_msg.wrench.force.y = float(force[1])
+        wrench_msg.wrench.force.z = float(force[2])
+        # Moments are solved internally, but intentionally not exposed/used.
+        wrench_msg.wrench.torque.x = 0.0
+        wrench_msg.wrench.torque.y = 0.0
+        wrench_msg.wrench.torque.z = 0.0
+        self._wrench_pub.publish(wrench_msg)
 
-        self.get_logger().info(
-            f"F_ext: Fx={f_out[0]:5.1f}  Fy={f_out[1]:5.1f}  Fz={f_out[2]:5.1f} N",
-            throttle_duration_sec=0.5)
+        torque_msg = JointState()
+        torque_msg.header = msg.header
+        torque_msg.name = list(JOINT_NAMES)
+        torque_msg.position = q.tolist()
+        torque_msg.effort = torque_nm.tolist()
+        self._torque_pub.publish(torque_msg)
+
+        diagnostics = Float64MultiArray()
+        diagnostics.data = [
+            estimate.sigma_min,
+            estimate.condition_number if math.isfinite(estimate.condition_number) else -1.0,
+            estimate.damping,
+            estimate.relative_residual,
+        ]
+        self._diagnostics_pub.publish(diagnostics)
+
+        quality = 'VALID' if self._calibration_confirmed else 'UNCALIBRATED'
+        self._publish_health(
+            self._calibration_confirmed, f'{quality}:{self._mode}')
 
 
 def main(args=None):
@@ -202,7 +234,8 @@ def main(args=None):
         pass
     finally:
         node.destroy_node()
-        rclpy.shutdown()
+        if rclpy.ok():
+            rclpy.shutdown()
 
 
 if __name__ == '__main__':

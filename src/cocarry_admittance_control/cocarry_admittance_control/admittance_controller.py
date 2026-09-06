@@ -12,6 +12,7 @@ from human_hand_msgs.msg import HandPrediction, HandState
 from rclpy.node import Node
 from std_msgs.msg import Bool, Float32, String
 from std_srvs.srv import SetBool, Trigger
+from .prediction_reference import PredictionReference
 
 from .admittance import (
     CartesianAdmittance,
@@ -33,9 +34,10 @@ class AdmittanceController3D(Node):
         defaults = {
             'control_rate_hz': 15.0,
             'virtual_mass_x': 1.0, 'virtual_mass_y': 1.0, 'virtual_mass_z': 1.0,
-            'stiffness_x': 10.0, 'stiffness_y': 10.0, 'stiffness_z': 10.0,
+            'stiffness_x': 5.0, 'stiffness_y': 5.0, 'stiffness_z': 5.0,
             'critical_damping': True,
-            'damping_x': 6.32455532, 'damping_y': 6.32455532, 'damping_z': 6.32455532,
+            'damping_x': 4.47213595, 'damping_y': 4.47213595,
+            'damping_z': 4.47213595,
             # Axia UI already applies the 4 N radial deadband.
             'intent_threshold_n': 0.0,
             'force_sign_x': 1.0, 'force_sign_y': 1.0, 'force_sign_z': 1.0,
@@ -53,8 +55,8 @@ class AdmittanceController3D(Node):
             'safe_tool_tip_z_min_m': 0.05,
             'downward_tool_length_m': 0.1814,
             'safe_workspace_z_max_m': 1.5,
-            'max_force_per_axis_n': 15.0,
-            'max_force_norm_n': 20.0,
+            'max_force_per_axis_n': 20.0,
+            'max_force_norm_n': 30.0,
             'force_stale_hold_sec': 0.20,
             'force_timeout_sec': 0.50,
             'current_pose_timeout_sec': 0.25,
@@ -62,6 +64,8 @@ class AdmittanceController3D(Node):
             # Keep the AI nominal close enough to measured EE for IK/tracking
             # safety.  This is a geometric bound, not a force/intention gate.
             'prediction_max_nominal_lead_m': 0.05,
+            # Co-carry launch/YAML opts in; standalone default is passthrough.
+            'prediction_reference_tau_sec': 0.0,
             'prepare_timeout_sec': 8.0,
             'min_prediction_buffer_size': 10,
             'require_axia_calibrated': True,
@@ -113,6 +117,8 @@ class AdmittanceController3D(Node):
                 'force_stale_hold_sec must be positive and less than force_timeout_sec')
         self._pose_timeout = float(gp('current_pose_timeout_sec'))
         self._prediction_timeout = float(gp('prediction_timeout_sec'))
+        self._prediction_reference = PredictionReference(
+            gp('prediction_reference_tau_sec'))
         self._prediction_max_nominal_lead = float(
             gp('prediction_max_nominal_lead_m'))
         if self._prediction_max_nominal_lead <= 0.0:
@@ -206,7 +212,8 @@ class AdmittanceController3D(Node):
             f'(tip floor={self._safe_tip_z_min:.2f} m, rod={self._downward_tool_length:.4f} m), '
             f'force stale/hard={self._force_stale_hold:.2f}/{self._force_timeout:.2f} s, '
             f'Predictor nominal lead={self._prediction_max_nominal_lead:.3f} m '
-            '(no force gate)')
+            '(no force gate), '
+            f'nominal reference tau={self._prediction_reference.time_constant:.3f} s')
 
     def _on_current_pose(self, msg):
         self._current_pose = msg.pose
@@ -390,6 +397,7 @@ class AdmittanceController3D(Node):
             self._reject_start(f'Current EE pose {capture_ee.round(4).tolist()} is outside safe workspace')
             return
         self._capture_ee = capture_ee
+        self._prediction_reference.reset(capture_ee, now)
         self._admittance.reset()
         self._prediction = None
         self._prediction_time = 0.0
@@ -499,6 +507,8 @@ class AdmittanceController3D(Node):
         if self._mode != 'prediction' or not apply_prediction_limit:
             return desired
 
+        desired = self._prediction_reference.step(desired, now)
+
         actual = np.array([
             self._current_pose.position.x,
             self._current_pose.position.y,
@@ -506,6 +516,9 @@ class AdmittanceController3D(Node):
         desired, limited, distance = limit_position_lead(
             desired, actual, self._prediction_max_nominal_lead)
         if limited:
+            # Keep the conditioner at the accepted nominal too. An extreme
+            # prediction must not leave a hidden, far-away filter state.
+            self._prediction_reference.reset(desired, now)
             self.get_logger().warn(
                 'Predictor nominal limited to '
                 f'{self._prediction_max_nominal_lead:.3f} m from actual EE '
@@ -610,6 +623,8 @@ class AdmittanceController3D(Node):
                 if self._force_stale_nominal is not None
                 else actual_ee.copy())
             error = actual_ee - nominal
+            # Freeze nominal state/time too: no hidden advance during HOLD.
+            self._prediction_reference.reset(nominal, now)
             self._admittance.reset(error)
             self._last_tick = now
             self._publish_reference(nominal, error, actual_ee)
@@ -625,6 +640,8 @@ class AdmittanceController3D(Node):
                 expected = 'MJM' if leader else 'predictor'
                 self._set_fault(f'Timed out waiting for a fresh {expected} position')
                 return
+        if self._follower_realign and not leader:
+            self._prediction_reference.reset(actual_ee, now)
         nominal = self._nominal_position(now, apply_prediction_limit=not leader)
         if nominal is None:
             self._set_fault(f'{self._mode} position timeout')

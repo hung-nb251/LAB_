@@ -277,6 +277,18 @@ class LocalIKSolver:
 
         return J
 
+    def compute_jacobian(self, q: np.ndarray) -> np.ndarray:
+        """Return the verified base_link -> tool0 geometric Jacobian.
+
+        This public wrapper lets read-only diagnostics (for example the
+        sensorless force estimator) reuse exactly the same kinematic model as
+        the Cartesian IK path instead of maintaining a second URDF parser.
+        """
+        q = np.asarray(q, dtype=np.float64)
+        if q.shape != (6,) or not np.all(np.isfinite(q)):
+            raise ValueError('q must contain six finite joint positions')
+        return self._compute_jacobian(q)
+
     # ═══════════════════════════════════════════════════════════════
     # INVERSE KINEMATICS — Damped Least Squares (DLS)
     # ═══════════════════════════════════════════════════════════════

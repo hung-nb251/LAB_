@@ -65,12 +65,15 @@ def generate_launch_description():
     os.makedirs(sim_log_default, exist_ok=True)
 
     prediction_model_arg = DeclareLaunchArgument(
-        'prediction_model', default_value='svgp', choices=['svgp', 'gru'],
+        'prediction_model', default_value='gru', choices=['svgp', 'gru'],
         description='Robot-EE prediction backend selected before launch')
+    prediction_reference_tau_arg = DeclareLaunchArgument(
+        'prediction_reference_tau_sec', default_value='0.4',
+        description='Simulation nominal smoothing in seconds; 0 restores raw handoff')
     svgp_model_dir_arg = DeclareLaunchArgument(
         'svgp_model_dir',
         default_value=os.path.expanduser(
-            '~/cocarry_ws/pHRI_Models/svgp_robot_ee_h5_m50_relative'),
+            '~/cocarry_ws/pHRI_Models/svgp_robot_ee_h5_m100_relative'),
         description='SVGP robot-EE artifact directory')
     gru_model_dir_arg = DeclareLaunchArgument(
         'gru_model_dir',
@@ -99,6 +102,11 @@ def generate_launch_description():
     mjm_publish_rate_arg = DeclareLaunchArgument(
         'mjm_publish_rate_hz', default_value='30.0',
         description='Simulation-only MJM replay rate; real co-carry remains 15 Hz')
+    wrist_joint_velocity_limit_arg = DeclareLaunchArgument(
+        'wrist_joint_velocity_limit', default_value='0.08',
+        description=(
+            'Simulation-only R/B/T velocity limit in rad/s; J1/J2/J3 remain '
+            'at the streamer defaults'))
     simulation = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(
             get_package_share_directory('hc10dtp_simulation'),
@@ -128,12 +136,18 @@ def generate_launch_description():
         name='cartesian_streamer', output='screen',
         parameters=[fake_moveit_config],
         arguments=['--stream-hz', '15', '--max-vel', '0.15',
-                   '--max-accel', '0.50', '--fail-closed'])
+                   '--max-accel', '0.50', '--max-wrist-joint-vel',
+                   LaunchConfiguration('wrist_joint_velocity_limit'),
+                   '--continuous-cartesian-smoothing',
+                   '--fail-closed'])
     admittance = Node(
         package='cocarry_admittance_control',
         executable='admittance_controller_3d',
         name='cocarry_admittance_controller', output='screen',
-        parameters=[params])
+        parameters=[params, {
+            'prediction_reference_tau_sec': ParameterValue(
+                LaunchConfiguration('prediction_reference_tau_sec'), value_type=float),
+        }])
     logger = Node(
         package='cocarry_admittance_control', executable='cocarry_logger',
         name='cocarry_admittance_logger', output='screen',
@@ -172,6 +186,7 @@ def generate_launch_description():
             ' | fake HC10DTP + real Axia UDP; no physical robot connection',
         ]),
         prediction_model_arg,
+        prediction_reference_tau_arg,
         svgp_model_dir_arg,
         gru_model_dir_arg,
         model_dir_arg,
@@ -180,6 +195,7 @@ def generate_launch_description():
         launch_sensor_ui_arg,
         launch_dashboard_arg,
         mjm_publish_rate_arg,
+        wrist_joint_velocity_limit_arg,
         simulation,
         ee_tracker,
         predictor,

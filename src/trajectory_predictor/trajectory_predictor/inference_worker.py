@@ -17,16 +17,29 @@ os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
 os.environ["PYTHONHASHSEED"] = "0"
 
 import numpy as np
-# Set thread count to 1 for small models to avoid context switching overhead
-import tensorflow as tf
-tf.config.threading.set_intra_op_parallelism_threads(1)
-tf.config.threading.set_inter_op_parallelism_threads(1)
 
-# Pre-import scipy filter once at startup (not per-prediction)
 try:
-    from scipy.signal import savgol_filter as _savgol_filter
+    from .svgp_numpy import SVGPNumpyRunner
 except ImportError:
-    _savgol_filter = None
+    # inference_worker.py is also launched directly as a script by the ROS node.
+    from svgp_numpy import SVGPNumpyRunner
+
+_TF = None
+
+
+def _load_tensorflow():
+    """Load TensorFlow only for Keras/TFLite/GPflow-compatible backends."""
+    global _TF
+    if _TF is None:
+        import tensorflow as tf
+        try:
+            tf.config.threading.set_intra_op_parallelism_threads(1)
+            tf.config.threading.set_inter_op_parallelism_threads(1)
+        except RuntimeError:
+            # GPflow may already have initialized TensorFlow in a prior model.
+            pass
+        _TF = tf
+    return _TF
 
 def _load_pickle(path):
     if not os.path.exists(path):
@@ -40,6 +53,35 @@ def send_response(data):
     line = json.dumps(data)
     sys.stdout.write(line + "\n")
     sys.stdout.flush()
+
+
+class TFLiteRunner:
+    """Small predict_on_batch adapter shared with the Keras inference path."""
+
+    def __init__(self, model_path, window_size, num_features):
+        tf = _load_tensorflow()
+        self._interpreter = tf.lite.Interpreter(
+            model_path=model_path,
+            num_threads=1,
+        )
+        self._interpreter.allocate_tensors()
+        inputs = self._interpreter.get_input_details()
+        outputs = self._interpreter.get_output_details()
+        if len(inputs) != 1 or len(outputs) != 1:
+            raise ValueError('TFLite predictor must have one input and one output')
+        self._input_index = inputs[0]['index']
+        self._output_index = outputs[0]['index']
+        expected = (1, int(window_size), int(num_features))
+        actual = tuple(int(value) for value in inputs[0]['shape'])
+        if actual != expected:
+            raise ValueError(
+                f'TFLite input shape {actual} does not match runtime {expected}')
+
+    def predict_on_batch(self, input_batch):
+        values = np.asarray(input_batch, dtype=np.float32)
+        self._interpreter.set_tensor(self._input_index, values)
+        self._interpreter.invoke()
+        return self._interpreter.get_tensor(self._output_index)
 
 
 def main():
@@ -64,12 +106,14 @@ def main():
                         "message": f"Scalers not found in {model_dir}"})
         return
 
-    # Import TensorFlow (safe — this is the venv Python)
+    # Scaler pickle compatibility is required by every backend. Heavy model
+    # frameworks are imported later only when the selected artifact needs them.
     try:
-        import tensorflow as tf
-        from tensorflow.keras.models import load_model as keras_load
-        import sklearn # Check if sklearn is found
-        send_response({"type": "info", "message": f"TF {tf.__version__} and sklearn loaded"})
+        import sklearn
+        send_response({
+            "type": "info",
+            "message": f"sklearn {sklearn.__version__} loaded; backend dependencies are lazy",
+        })
     except ImportError as ie:
         send_response({"type": "ready", "success": False,
                         "message": f"Dependency missing: {ie}"})
@@ -88,10 +132,27 @@ def main():
         if name not in model_files:
             return False, f"Unknown model '{name}'. Available: {list(model_files.keys())}"
         path = os.path.join(model_dir, model_files[name])
+        fallback_message = ''
+        if not os.path.exists(path) and path.endswith('.npz'):
+            pickle_fallback = os.path.splitext(path)[0] + '.pkl'
+            if os.path.exists(pickle_fallback):
+                path = pickle_fallback
+                fallback_message = ' (NPZ missing; using PKL fallback)'
         if not os.path.exists(path):
             return False, f"File not found: {path}"
         try:
-            if path.endswith('.pkl'):
+            if path.endswith('.npz'):
+                current_model = SVGPNumpyRunner(
+                    path,
+                    input_dim=window_size * num_features,
+                    output_dim=3,
+                )
+                current_model_name = name
+                dummy = np.zeros(
+                    (1, window_size * num_features), dtype=np.float64)
+                current_model.predict_f(dummy)
+                return True, f"NumPy SVGP model '{name}' loaded OK"
+            elif path.endswith('.pkl'):
                 import gpflow
                 with open(path, 'rb') as f:
                     current_model = pickle.load(f)
@@ -99,9 +160,16 @@ def main():
                 # Warm-up inference để xác nhận model OK
                 dummy = np.zeros((1, window_size * num_features), dtype=np.float64)
                 current_model.predict_f(dummy)
-                return True, f"GPflow model '{name}' loaded OK"
+                return True, f"GPflow model '{name}' loaded OK{fallback_message}"
+            elif path.endswith('.tflite'):
+                current_model = TFLiteRunner(path, window_size, num_features)
+                current_model_name = name
+                dummy = np.zeros(
+                    (1, window_size, num_features), dtype=np.float32)
+                current_model.predict_on_batch(dummy)
+                return True, f"TFLite model '{name}' loaded OK"
             else:
-                import tensorflow as tf
+                tf = _load_tensorflow()
 
                 # Create a compatibility wrapper for Dense that strips new kwargs
                 # (e.g. quantization_config) not recognized by older model configs
@@ -139,7 +207,8 @@ def main():
                     'InputLayer': CompatInputLayer,
                 }
 
-                current_model = keras_load(path, compile=False, custom_objects=custom_objects)
+                current_model = tf.keras.models.load_model(
+                    path, compile=False, custom_objects=custom_objects)
                 current_model_name = name
                 dummy = np.zeros((1, window_size, num_features), dtype=np.float32)
                 current_model.predict_on_batch(dummy)
@@ -254,7 +323,10 @@ def main():
                     # SVGP: flatten window to (1, window_size * num_features)
                     input_flat = input_scaled.flatten().reshape(1, -1).astype(np.float64)
                     mean_tensor, _ = current_model.predict_f(input_flat)
-                    pred_scaled = mean_tensor.numpy()
+                    pred_scaled = (
+                        mean_tensor.numpy()
+                        if hasattr(mean_tensor, 'numpy') else np.asarray(mean_tensor)
+                    )
                 else:
                     # Keras models (GRU/LSTM/RNN): predict_on_batch
                     pred_tensor = current_model.predict_on_batch(input_scaled)

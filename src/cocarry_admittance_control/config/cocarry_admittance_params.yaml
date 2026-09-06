@@ -8,15 +8,15 @@ cocarry_admittance_controller:
     virtual_mass_x: 1.0
     virtual_mass_y: 1.0
     virtual_mass_z: 1.0
-    stiffness_x: 10.0
-    stiffness_y: 10.0
-    stiffness_z: 10.0
+    stiffness_x: 5.0
+    stiffness_y: 5.0
+    stiffness_z: 5.0
     # Khi true, D duoc tinh tu dong: D_i = 2*sqrt(M_i*K_i).
-    # Voi M=1, K=10: D=6.32455532 tren ca ba truc.
+    # Voi M=1, K=5: D=4.47213595 tren ca ba truc.
     critical_damping: true
-    damping_x: 6.32455532
-    damping_y: 6.32455532
-    damping_z: 6.32455532
+    damping_x: 4.47213595
+    damping_y: 4.47213595
+    damping_z: 4.47213595
 
     # Axia UI da ap radial deadband 4 N, khong deadzone lan hai.
     intent_threshold_n: 0.0
@@ -40,8 +40,8 @@ cocarry_admittance_controller:
     downward_tool_length_m: 0.1814
     safe_workspace_z_max_m: 1.5
 
-    max_force_per_axis_n: 15.0
-    max_force_norm_n: 20.0
+    max_force_per_axis_n: 20.0
+    max_force_norm_n: 30.0
     # Gap ngan chi dong bang reference; chi hard-fault neu mat luc 0.50 s.
     # Log 2026-09-03 da co jitter 0.190--0.246 s nen 0.20 s hard timeout
     # tao stop gia trong khi Axia van ket noi.
@@ -52,6 +52,9 @@ cocarry_admittance_controller:
     # SVGP la nominal x_d ngay ca khi luc nguoi nho/bang 0. Gioi han nay chi
     # chong AI nominal chay qua xa EE, khong phai gate dua tren luc.
     prediction_max_nominal_lead_m: 0.05
+    # User-approved real/simulation nominal conditioning (2026-09-06).
+    # GRU raw output remains unchanged; this conditions controller nominal only.
+    prediction_reference_tau_sec: 0.4
     prepare_timeout_sec: 8.0
     min_prediction_buffer_size: 10
     require_axia_calibrated: true
@@ -59,6 +62,26 @@ cocarry_admittance_logger:
   ros__parameters:
     log_dir: /home/hungnb/cocarry_ws/cocarry_logs
     file_prefix: cocarry_admittance_3d
+
+sensorless_force_node:
+  ros__parameters:
+    # The YRC1000 effort unit has not been verified yet. raw_only records all
+    # six channels without publishing a misleading Cartesian force.
+    effort_unit_mode: raw_only
+    calibration_confirmed: false
+    deadband_n: 1.0
+    max_force_norm_n: 500.0
+    # HC10DTP URDF limits: available only for the explicitly selected
+    # normalized_rated_torque diagnostic mode, not claimed as calibration.
+    rated_joint_torques_nm: [368.48, 414.54, 158.76, 41.16, 33.32, 31.36]
+    custom_effort_scale_nm: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+    # A future calibrated/modelled gravity, friction and payload contribution
+    # can be subtracted here. Zero currently means no such compensation.
+    joint_torque_bias_nm: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    damping_min: 0.002
+    damping_max: 0.08
+    singularity_threshold: 0.05
+    publish_rate_hz: 15.0
 
 ee_position_tracker:
   ros__parameters:
@@ -74,23 +97,29 @@ trajectory_predictor:
     trajectory_mode_auto_toggle: false
     inference_rate_hz: 15.0
     clear_on_tracking_lost: 1.0
-    default_model: svgp
+    default_model: gru
+    # GRU la backend mac dinh va publish raw output. Profile SVGP bat lai
+    # filter nay khi duoc chon bang prediction_model:=svgp.
     filter:
       ema_alpha: 0.5
-      enabled: true
+      enabled: false
       max_deviation: 0.08
       max_rate: 0.05
-    model_dir: /home/hungnb/cocarry_ws/pHRI_Models/svgp_robot_ee_h5_m50_relative
+    model_dir: /home/hungnb/cocarry_ws/pHRI_Models/gru_robot_ee_h5_relative_v1
     model_files:
-      svgp: svgp_model.pkl
-    num_features: 3
-    # Launch profile GRU override thanh delta_position. Gia tri nay khong duoc
-    # dung boi SVGP 3-feature va giu nguyen hanh vi GRU camera cu.
-    velocity_feature_mode: legacy_16hz_ema
+      gru: gru_joint_Ts5_float16.tflite
+      svgp: svgp_model.npz
+    num_features: 6
+    # Robot-EE GRU duoc train voi delta_p[k] = p[k] - p[k-1] tai 15 Hz.
+    # Profile SVGP override thanh legacy_16hz_ema (khong dung voi 3 features).
+    velocity_feature_mode: delta_position
     scaler_x_file: scaler_x.pkl
     scaler_y_file: scaler_y.pkl
-    window_size: 10
+    window_size: 20
     hold:
+      # Force-guided co-carry: keep predicting when the EE is stationary.
+      # Force-stale HOLD belongs to the controller and remains enabled.
+      enabled: false
       time_based: true
       window_sec: 0.40
       max_motion_m: 0.003

@@ -13,13 +13,13 @@ Chạy trên PC 2 (máy đo cảm biến), bắn dữ liệu qua UDP sang PC 1 (
 
 ■ Cách chạy (qua run_sensor_driver.sh):
     # Chạy nội bộ cùng 1 máy (mặc định):
-    sudo python3 axia_sensor_driver.py enxec9a0c1fc063
+    sudo python3 axia_sensor_driver.py enxf8e43b7aeaf2
 
     # Chạy trên PC 2, bắn dữ liệu sang PC 1 qua Wifi:
-    sudo python3 axia_sensor_driver.py enxec9a0c1fc063 --ip 192.168.1.15
+    sudo python3 axia_sensor_driver.py enxf8e43b7aeaf2 --ip 10.136.12.182
 
     # Tuỳ chỉnh cổng và tần số:
-    sudo python3 axia_sensor_driver.py enxec9a0c1fc063 --ip 192.168.1.15 --port 50000 --hz 100
+    sudo python3 axia_sensor_driver.py enxf8e43b7aeaf2 --ip 10.136.12.182 --port 50000 --hz 100
 """
 
 import sys
@@ -285,13 +285,13 @@ def main():
         print('Cách dùng: sudo python3 axia_sensor_driver.py <interface> [--ip <addr>] [--port <port>] [--hz <rate>]')
         print('')
         print('  Ví dụ 1 — chạy nội bộ (1 máy):')
-        print('    sudo python3 axia_sensor_driver.py enxec9a0c1fc063')
+        print('    sudo python3 axia_sensor_driver.py enxf8e43b7aeaf2')
         print('')
         print('  Ví dụ 2 — chạy trên PC2, bắn dữ liệu sang PC1 qua Wifi:')
-        print('    sudo python3 axia_sensor_driver.py enxec9a0c1fc063 --ip 192.168.1.15')
+        print('    sudo python3 axia_sensor_driver.py enxf8e43b7aeaf2 --ip 10.136.12.182')
         print('')
         print('  Ví dụ 3 — tuỳ chỉnh đầy đủ:')
-        print('    sudo python3 axia_sensor_driver.py enxec9a0c1fc063 --ip 192.168.1.15 --port 50000 --hz 100')
+        print('    sudo python3 axia_sensor_driver.py enxf8e43b7aeaf2 --ip 10.136.12.182 --port 50000 --hz 100')
         sys.exit(1)
 
     iface = sys.argv[1]

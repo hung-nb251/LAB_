@@ -176,6 +176,7 @@ class CartesianStreamer(Node):
         use_moveit_ik: bool = False,
         lock_z: bool = False,
         fail_closed: bool = False,
+        continuous_cartesian_smoothing: bool = False,
     ):
         super().__init__('cartesian_streamer')
         self._stream_hz = stream_hz
@@ -185,6 +186,9 @@ class CartesianStreamer(Node):
         # Hồ sơ an toàn cho co-carrying 3D. Tách khỏi --lock-z để có thể
         # giám sát feedback/workspace đầy đủ mà vẫn cho phép Z chuyển động.
         self._fail_closed = fail_closed
+        # Co-carry opts in; historical camera/co-drawing launches keep their
+        # existing near-target behaviour until separately evaluated.
+        self._continuous_cartesian_smoothing = continuous_cartesian_smoothing
 
         self._cb = ReentrantCallbackGroup()
 
@@ -350,6 +354,7 @@ class CartesianStreamer(Node):
             f'  Queue dt:          {self._queue_dt_sec:.3f} s\n'
             f'  Prebuffer points:  {self._prebuffer_target}\n'
             f'  Retry backoff:     {self._retry_backoff_sec*1000:.1f} ms\n'
+            f'  Joint vel limits:  {MAX_JOINT_VELOCITIES} rad/s (S/L/U/R/B/T)\n'
             f'  Lock Z:            {self._lock_z_enabled}\n'
             f'  Fail closed:       {self._fail_closed}\n'
             '  Gửi PoseStamped lên: /cartesian_streamer/target_pose\n'
@@ -1249,6 +1254,11 @@ class CartesianStreamer(Node):
                 desired_speed = MAX_CARTESIAN_VELOCITY
         
         desired_speed = min(desired_speed, MAX_CARTESIAN_VELOCITY)
+        if self._continuous_cartesian_smoothing:
+            # At low speed, arrive through the integrator instead of snapping.
+            # Acceleration limiting below still permits finite braking travel
+            # when a new target appears behind an already-moving reference.
+            desired_speed = min(desired_speed, dist / dt)
         
         if dist > 1e-5:
             direction = [e / dist for e in error]
@@ -1308,7 +1318,8 @@ class CartesianStreamer(Node):
         is_overshoot = (dist < 0.020) and (dot_product < 0)
         
         # Chống dao động nhỏ (micro-oscillation) do hệ thống giới hạn jerk
-        if is_overshoot or (dist < 0.002 and speed < 0.010):
+        if (not self._continuous_cartesian_smoothing
+                and (is_overshoot or (dist < 0.002 and speed < 0.010))):
             result.position.x = target.position.x
             result.position.y = target.position.y
             result.position.z = target.position.z
@@ -1861,6 +1872,11 @@ Ví dụ:
         '--max-joint-vel', type=float, default=None,
         help='Scale tốc độ góc tối đa mỗi khớp (rad/s). Ghi đè đồng đều.')
     parser.add_argument(
+        '--max-wrist-joint-vel', type=float, default=None,
+        help=(
+            'Giới hạn tốc độ riêng cho R/B/T (rad/s); giữ nguyên giới hạn '
+            'J1/J2/J3. Dùng để đánh giá profile mô phỏng trước robot thật.'))
+    parser.add_argument(
         '--smooth-alpha', type=float, default=SMOOTH_ALPHA,
         help=f'Hệ số smooth (0.0-1.0, thấp=mượt) [default: {SMOOTH_ALPHA}]')
     parser.add_argument(
@@ -1873,6 +1889,9 @@ Ví dụ:
         '--lock-z', action='store_true', default=False,
         help='Khóa Z theo target đầu và giám sát Z thật (dùng cho co-drawing)')
     parser.add_argument(
+        '--continuous-cartesian-smoothing', action='store_true', default=False,
+        help='Co-carry: integrate bounded velocity through reversals without snapping to target')
+    parser.add_argument(
         '--fail-closed', action='store_true', default=False,
         help='Dừng ngay khi target ngoài workspace, queue bị drop hoặc feedback lệch; không khóa Z')
     args, ros_args = parser.parse_known_args()
@@ -1883,6 +1902,9 @@ Ví dụ:
     if args.max_joint_vel is not None:
         v = max(args.max_joint_vel, 0.01)
         MAX_JOINT_VELOCITIES = [v] * len(JOINT_NAMES)
+    if args.max_wrist_joint_vel is not None:
+        wrist_v = max(args.max_wrist_joint_vel, 0.01)
+        MAX_JOINT_VELOCITIES[3:] = [wrist_v] * 3
     SMOOTH_ALPHA = max(0.01, min(1.0, args.smooth_alpha))
     MAX_CARTESIAN_JERK = max(args.max_jerk, 0.1)
 
@@ -1904,6 +1926,7 @@ Ví dụ:
         use_moveit_ik=args.use_moveit_ik,
         lock_z=args.lock_z,
         fail_closed=args.fail_closed,
+        continuous_cartesian_smoothing=args.continuous_cartesian_smoothing,
     )
     executor.add_node(streamer)
 

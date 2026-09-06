@@ -9,8 +9,9 @@ Luật điều khiển:
 
 `M(xr_ddot-xd_ddot) + D(xr_dot-xd_dot) + K(xr-xd) = Fh`
 
-Với cấu hình hiện tại: `M=[1,1,1]`, `K=[10,10,10]` và D được tính tự động theo
-`D_i=2*sqrt(M_i*K_i)=[6.3246,6.3246,6.3246]`. Tần số là 15 Hz, giới hạn vận tốc
+Với cấu hình hiện tại: `M=[1,1,1]`, `K=[5,5,5]` và D được tính tự động theo
+`D_i=2*sqrt(M_i*K_i)=[4.4721,4.4721,4.4721]`. Giới hạn an toàn lực là 20 N
+trên mỗi trục và 30 N cho chuẩn lực tổng. Tần số là 15 Hz, giới hạn vận tốc
 Cartesian 0.15 m/s và gia tốc 0.50 m/s² theo lịch sử Git của streamer.
 
 Ground Truth và FOLLOWER dùng bộ gain trên. `Ground Truth` giữ `x_d` cố định
@@ -40,7 +41,7 @@ của máy `hungnb`:
 ```bash
 sudo /home/binhdangnguyen/axia_driver/.venv/bin/python \
   /home/binhdangnguyen/axia_driver/axia_sensor_driver.py \
-  enxec9a0c1fc063 --ip <IP_WIFI_HUNGNB> --port 50000 --hz 100
+  enxf8e43b7aeaf2 --ip <IP_WIFI_HUNGNB> --port 50000 --hz 100
 ```
 
 Terminal 2 trên máy `hungnb`:
@@ -51,14 +52,53 @@ source install/setup.bash
 ros2 launch cocarry_admittance_control cocarry_admittance_real_gui.launch.py
 ```
 
-Launch mặc định dùng SVGP. Để dùng GRU robot-EE đã train, thêm
-`prediction_model:=gru`; tên hai nút prediction trên UI sẽ đổi thành `GRU` và
-`GRU+MJM`:
+Launch mặc định dùng GRU robot-EE và UI hiển thị `GRU`/`GRU+MJM`. Để dùng
+SVGP M100 với NumPy `.npz`, thêm `prediction_model:=svgp`:
 
 ```bash
 ros2 launch cocarry_admittance_control \
-  cocarry_admittance_real_gui.launch.py prediction_model:=gru
+  cocarry_admittance_real_gui.launch.py prediction_model:=svgp
 ```
+
+Profile GRU dùng raw model output, không áp dụng proximity clamp, rate limiter
+hoặc EMA của predictor. Các giới hạn safety ở controller/streamer vẫn hoạt
+động. Runtime GRU dùng model TFLite float16; HDF5 chỉ được giữ để đối chiếu.
+
+Từ 2026-09-06, cả hai launch co-carry tắt stationary HOLD của predictor
+(`hold.enabled=false`) cho GRU và SVGP. EE đứng yên không còn reset lịch sử hay
+thay prediction bằng vị trí hiện tại. Khi người nhả lực, robot vẫn có thể đi
+theo reference dự đoán; **lực bằng 0 không phải lệnh dừng**. Dùng Stop Run khi
+muốn dừng. HOLD an toàn do force stale, force limit và các kiểm tra readiness
+ở controller không bị tắt. Profile camera cũ không thay đổi.
+
+Predictor đã sửa rate gate để duy trì nhịp 15 Hz khi input 15 Hz có jitter nhỏ.
+Streamer co-carry bật `--continuous-cartesian-smoothing`, bỏ nhánh snap tới
+target gần khi đang đảo chiều; vị trí tiếp tục được tích phân từ vận tốc có
+giới hạn. Không tăng giới hạn Cartesian/joint, không đổi K và không sửa model.
+Các thay đổi này xử lý lỗi nhịp/smoother đã tái hiện, chưa bảo đảm hết giật trên
+robot thật; joint clipping độc lập và chất lượng mạng force vẫn cần đánh giá.
+
+Sau trial mô phỏng GRU `20260906_105435`, launch simulation bật thêm
+`prediction_reference_tau_sec=0.4` để giảm ripple của vòng phản hồi EE/model.
+Đây là lọc bậc một của nominal **tại controller, trước khi cộng admittance
+error**, không sửa/che raw output GRU trong predictor và CSV. Đường
+`Limited x_d` hiển thị nominal đã qua khâu này rồi qua giới hạn khoảng cách.
+Khâu này có đánh đổi độ trễ; 0.4 s là tham số thử nghiệm, không phải bảo đảm
+ổn định cho mọi model/quỹ đạo. Ground Truth và MJM LEADER không bị lọc.
+K, giới hạn tốc độ, force watchdog giữ nguyên. Sau khi người dùng xác nhận
+trial `20260906_111811`, **cả real và simulation mặc định 0.4 s**. Launch real
+hỗ trợ cùng arg `prediction_reference_tau_sec`; không cần truyền arg để bật.
+Độ mượt phần cứng thật vẫn cần xác nhận trực tiếp, không suy ra từ mock.
+
+Chạy mô phỏng với bản giảm ripple (mặc định GRU):
+
+```bash
+ros2 launch cocarry_admittance_control cocarry_admittance_sim_gui.launch.py \
+  prediction_reference_tau_sec:=0.4
+```
+
+Đối chứng hành vi trước sửa: dừng launch rồi chạy lại với
+`prediction_reference_tau_sec:=0.0`. Không chạy hai launch cùng domain.
 
 Trong lần thử đầu, giảm speed override trên pendant, kiểm tra riêng từng hướng
 X+/X-/Y+/Y-/Z+/Z-, và luôn sẵn sàng nhấn E-stop. Calibrate Axia khi không chạm
@@ -66,7 +106,29 @@ vào thanh sắt. Controller sẽ tự capture pose/orientation, calibrate lại
 `robot_ee`, xóa buffer predictor rồi mới chuyển từ PREPARING sang RUNNING.
 
 CSV mới được ghi trong `~/cocarry_ws/cocarry_logs` với prefix
-`cocarry_admittance_3d_`; không ghi joint position, velocity hoặc effort.
+`cocarry_admittance_3d_`. Ngoài các tín hiệu co-carry, logger lưu position,
+velocity và effort thô của sáu khớp; khi phép đổi đơn vị được bật, logger còn
+lưu joint torque ước lượng, `f_robot_x/y/z`, trạng thái hiệu chuẩn và các chỉ
+số DLS/singularity.
+
+Sensorless force dùng quy ước `tau_robot = J^T W_robot`, không tự đổi dấu lực.
+Moment được giải nội bộ để không làm sai nghiệm lực nhưng không được publish và
+không đi vào controller. Mặc định `robot_effort_unit_mode:=raw_only`, vì đơn vị
+effort của YRC1000 chưa được xác nhận; khi đó sáu effort vẫn được log còn ba cột
+`f_robot` để trống. Có thể thu dữ liệu chẩn đoán không phát lệnh robot bằng:
+
+```bash
+ros2 launch cocarry_admittance_control cocarry_admittance_real_gui.launch.py \
+  test_mode:=true robot_effort_unit_mode:=normalized_rated_torque \
+  robot_force_calibrated:=false
+```
+
+`normalized_rated_torque` chỉ nhân effort với các giới hạn torque trong URDF,
+do đó là giả thiết sơ bộ để đối chiếu Axia, chưa phải hiệu chuẩn. Chỉ đặt
+`robot_force_calibrated:=true` sau khi hệ số, bias/gravity/payload và dấu trên
+cả X+/X-/Y+/Y-/Z+/Z- đã được xác minh. Cột
+`f_robot_ready_for_role_selection` phải là `true` trước khi lực này được phép
+tham gia chọn FOLLOWER/LEADER.
 
 ## Mô phỏng Force Sensor thật với robot ảo trong RViz
 
@@ -90,12 +152,13 @@ ros2 launch cocarry_admittance_control \
 ```
 
 `Ground Truth` là mode mặc định và giữ `x_d` ở pose lúc bấm Start Run. Backend
-mặc định là SVGP; muốn thử GRU, thêm `prediction_model:=gru` vào lệnh launch.
+mặc định là GRU; muốn thử SVGP M100 `.npz`, thêm `prediction_model:=svgp` vào
+lệnh launch.
 Sau đó chọn nút mang tên backend (`SVGP`/`GRU`) trước khi bấm Start Run. Muốn
 thử hybrid, di chuyển robot tới đích, bấm `Set Goal / Capture Target`, đưa robot
 về pose bắt đầu, chọn `<backend>+MJM`, rồi mới `Start Run`. UI đổi target EE tuyệt đối
-thành displacement tương đối tại Start Run. FOLLOWER dùng `M=1`, `K=10`, critical
-`D=6.3246`; LEADER bỏ qua Admittance. Không còn launch argument `force_only` và
+thành displacement tương đối tại Start Run. FOLLOWER dùng `M=1`, `K=5`, critical
+`D=4.4721`; LEADER bỏ qua Admittance. Không còn launch argument `force_only` và
 `fixed_nominal`.
 
 Trình tự trên hai cửa sổ UI:

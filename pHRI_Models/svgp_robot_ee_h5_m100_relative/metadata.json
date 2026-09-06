@@ -1,0 +1,96 @@
+{
+  "model": "GPflow SVGP Matern52 + NPZ fast-inference",
+  "source_columns": [
+    "robot_ee_x",
+    "robot_ee_y",
+    "robot_ee_z"
+  ],
+  "coordinate_system": "base_link displacement relative to first EE pose",
+  "ground_truth_only": true,
+  "sample_rate_hz": 15.0,
+  "window_size": 10,
+  "horizon_steps": 5,
+  "prediction_horizon_s": 0.3333333333333333,
+  "inducing_points": 100,
+  "npz_file": "svgp_model.npz",
+  "npz_precomputed_alpha": true,
+  "batch_size": 256,
+  "max_epochs": 1000,
+  "best_epoch": 128,
+  "seed": 42,
+  "split_stats": {
+    "train": {
+      "files": 80,
+      "resampled_points": 13417,
+      "windows": 13017,
+      "duration_s": 889.1333333333332
+    },
+    "val": {
+      "files": 13,
+      "resampled_points": 2138,
+      "windows": 2073,
+      "duration_s": 141.66666666666666
+    },
+    "test": {
+      "files": 7,
+      "resampled_points": 1150,
+      "windows": 1115,
+      "duration_s": 76.2
+    }
+  },
+  "validation_metrics": {
+    "rmse_m": [
+      0.0035449950327141704,
+      0.010612887814114475,
+      0.005224244002890995
+    ],
+    "mae_m": [
+      0.0023600168314716406,
+      0.007243717412363101,
+      0.00342034334581248
+    ],
+    "mean_euclidean_error_m": 0.009160275054061537
+  },
+  "test_metrics": {
+    "rmse_m": [
+      0.00316322802971499,
+      0.008423437711615763,
+      0.004906960070452672
+    ],
+    "mae_m": [
+      0.0022785485251336874,
+      0.006384870402395113,
+      0.0033081943389486838
+    ],
+    "mean_euclidean_error_m": 0.008499525132403107
+  },
+  "validation_constant_position_baseline": {
+    "rmse_m": [
+      0.008206160230201244,
+      0.030803086120029834,
+      0.012809351313072153
+    ],
+    "mae_m": [
+      0.0059347511390597995,
+      0.023749237620199624,
+      0.008054042702471575
+    ],
+    "mean_euclidean_error_m": 0.027796133304746944
+  },
+  "test_constant_position_baseline": {
+    "rmse_m": [
+      0.008294272015704388,
+      0.03114516932697456,
+      0.01283241765606843
+    ],
+    "mae_m": [
+      0.005932395368464263,
+      0.025199224992793482,
+      0.008943704447477845
+    ],
+    "mean_euclidean_error_m": 0.029121530261823625
+  },
+  "training_time_s": 49.497565507888794,
+  "tensorflow_version": "2.15.0",
+  "gpflow_version": "2.9.0"
+}

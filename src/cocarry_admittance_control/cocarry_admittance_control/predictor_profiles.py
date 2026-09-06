@@ -4,18 +4,24 @@
 PREDICTOR_PROFILES = {
     'svgp': {
         'default_model': 'svgp',
-        'model_files.svgp': 'svgp_model.pkl',
+        'model_files.svgp': 'svgp_model.npz',
         'window_size': 10,
         'num_features': 3,
+        # The co-carry base configuration defaults to raw GRU output.  Restore
+        # the validated SVGP smoothing contract whenever SVGP is selected.
+        'filter.enabled': True,
         # Unused by a three-feature model.  Keep the historical default
         # explicit so switching profiles cannot affect the camera pipeline.
         'velocity_feature_mode': 'legacy_16hz_ema',
     },
     'gru': {
         'default_model': 'gru',
-        'model_files.gru': 'gru_joint_Ts5.h5',
+        'model_files.gru': 'gru_joint_Ts5_float16.tflite',
         'window_size': 20,
         'num_features': 6,
+        # The robot-EE GRU was trained against raw targets.  Its output is
+        # already smooth enough and EMA adds measurable prediction lag.
+        'filter.enabled': False,
         # Training uses delta_p[k] = p[k] - p[k-1] after 15 Hz resampling.
         'velocity_feature_mode': 'delta_position',
     },

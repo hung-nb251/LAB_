@@ -9,8 +9,15 @@ import rclpy
 from geometry_msgs.msg import PointStamped, PoseStamped, Vector3Stamped, WrenchStamped
 from human_hand_msgs.msg import HandPrediction
 from rclpy.node import Node
-from std_msgs.msg import Float32, String
+from sensor_msgs.msg import JointState
+from std_msgs.msg import Bool, Float32, Float64MultiArray, String
 from std_srvs.srv import SetBool
+
+
+ROBOT_JOINT_NAMES = (
+    'joint_1_s', 'joint_2_l', 'joint_3_u',
+    'joint_4_r', 'joint_5_b', 'joint_6_t',
+)
 
 
 class CocarryAdmittanceLogger(Node):
@@ -34,6 +41,16 @@ class CocarryAdmittanceLogger(Node):
         self.create_subscription(Vector3Stamped, '/cocarry/admittance_error', self._error, 10)
         self.create_subscription(Vector3Stamped, '/axia/human_force', self._human_force, 20)
         self.create_subscription(WrenchStamped, '/sensorless_force', self._robot_force, 10)
+        self.create_subscription(JointState, '/joint_states', self._joint_state, 20)
+        self.create_subscription(
+            JointState, '/sensorless_force/joint_torque', self._joint_torque, 10)
+        self.create_subscription(
+            Bool, '/sensorless_force/valid', self._robot_force_valid, 10)
+        self.create_subscription(
+            String, '/sensorless_force/status', self._robot_force_status, 10)
+        self.create_subscription(
+            Float64MultiArray, '/sensorless_force/diagnostics',
+            self._robot_force_diagnostics, 10)
         self.create_subscription(HandPrediction, '/ml/predicted_position', self._prediction, 10)
         self.create_subscription(
             HandPrediction, '/ml/raw_predicted_position', self._raw_prediction, 10)
@@ -61,6 +78,42 @@ class CocarryAdmittanceLogger(Node):
     def _robot_force(self, msg):
         self._latest['fr'] = (msg.wrench.force.x, msg.wrench.force.y, msg.wrench.force.z)
         self._latest['fr_ts'] = msg.header.stamp.sec * 1_000_000_000 + msg.header.stamp.nanosec
+
+    @staticmethod
+    def _ordered_joint_field(msg, field):
+        values = getattr(msg, field)
+        if not values:
+            return None
+        lookup = {name: index for index, name in enumerate(msg.name)}
+        try:
+            indices = [lookup[name] for name in ROBOT_JOINT_NAMES]
+            if max(indices) >= len(values):
+                return None
+            return tuple(values[index] for index in indices)
+        except (KeyError, IndexError):
+            return None
+
+    def _joint_state(self, msg):
+        self._latest['joint_position'] = self._ordered_joint_field(msg, 'position')
+        self._latest['joint_velocity'] = self._ordered_joint_field(msg, 'velocity')
+        self._latest['joint_effort_raw'] = self._ordered_joint_field(msg, 'effort')
+        self._latest['joint_ts'] = (
+            msg.header.stamp.sec * 1_000_000_000 + msg.header.stamp.nanosec)
+
+    def _joint_torque(self, msg):
+        self._latest['joint_torque_nm'] = self._ordered_joint_field(msg, 'effort')
+
+    def _robot_force_valid(self, msg):
+        # False means the estimate must not select LEADER/FOLLOWER. Keep the
+        # diagnostic values in the CSV so they can still be calibrated offline.
+        self._latest['fr_valid'] = bool(msg.data)
+
+    def _robot_force_status(self, msg):
+        self._latest['fr_status'] = msg.data
+
+    def _robot_force_diagnostics(self, msg):
+        if len(msg.data) >= 4:
+            self._latest['fr_diagnostics'] = tuple(msg.data[:4])
 
     def _prediction(self, msg):
         self._latest['pred'] = (msg.x, msg.y, msg.z)
@@ -107,6 +160,14 @@ class CocarryAdmittanceLogger(Node):
             self._latest.get('force_age_ms', ''),
             self._latest.get('prediction_age_ms', ''),
             self._latest.get('udp_gap_ms', ''),
+            *self._values(self._latest.get('joint_position'), 6),
+            *self._values(self._latest.get('joint_velocity'), 6),
+            *self._values(self._latest.get('joint_effort_raw'), 6),
+            *self._values(self._latest.get('joint_torque_nm'), 6),
+            self._latest.get('joint_ts', ''),
+            self._latest.get('fr_valid', False),
+            self._latest.get('fr_status', ''),
+            *self._values(self._latest.get('fr_diagnostics'), 4),
         ])
 
     def _toggle(self, request, response):
@@ -145,6 +206,18 @@ class CocarryAdmittanceLogger(Node):
             'raw_predicted_xd_relative', 'raw_predicted_yd_relative',
             'raw_predicted_zd_relative', 'force_age_ms',
             'prediction_age_ms', 'udp_gap_ms',
+            'joint_position_j1', 'joint_position_j2', 'joint_position_j3',
+            'joint_position_j4', 'joint_position_j5', 'joint_position_j6',
+            'joint_velocity_j1', 'joint_velocity_j2', 'joint_velocity_j3',
+            'joint_velocity_j4', 'joint_velocity_j5', 'joint_velocity_j6',
+            'joint_effort_raw_j1', 'joint_effort_raw_j2', 'joint_effort_raw_j3',
+            'joint_effort_raw_j4', 'joint_effort_raw_j5', 'joint_effort_raw_j6',
+            'joint_torque_est_nm_j1', 'joint_torque_est_nm_j2',
+            'joint_torque_est_nm_j3', 'joint_torque_est_nm_j4',
+            'joint_torque_est_nm_j5', 'joint_torque_est_nm_j6',
+            'joint_timestamp_ns', 'f_robot_ready_for_role_selection',
+            'f_robot_status', 'f_robot_sigma_min', 'f_robot_condition_number',
+            'f_robot_damping', 'f_robot_relative_residual',
         ]
         with open(self._path, 'w', newline='') as stream:
             writer = csv.writer(stream)

@@ -1,0 +1,850 @@
+{
+  "model": "Keras joint XYZ GRU",
+  "model_file": "gru_joint_Ts5.keras",
+  "source_columns": [
+    "robot_ee_x",
+    "robot_ee_y",
+    "robot_ee_z"
+  ],
+  "feature_names": [
+    "x",
+    "y",
+    "z",
+    "vx",
+    "vy",
+    "vz"
+  ],
+  "output_names": [
+    "x",
+    "y",
+    "z"
+  ],
+  "coordinate_system": "base_link displacement relative to first EE pose",
+  "velocity_definition": "per-sample displacement delta_p[k] = p[k] - p[k-1]",
+  "ground_truth_only": true,
+  "excluded_files": [
+    "Long/experiment_GROUND_TRUTH_20260616_160434.csv"
+  ],
+  "sample_rate_hz": 15.0,
+  "window_size": 20,
+  "horizon_steps": 5,
+  "prediction_horizon_s": 0.3333333333333333,
+  "split_strategy": "existing file-level manifests; not subject-held-out",
+  "split_stats": {
+    "train": {
+      "files": 80,
+      "windows": 13017,
+      "resampled_points": 13417,
+      "duration_s": 890.358689,
+      "trials": {
+        "Phát/experiment_GROUND_TRUTH_20260616_180135.csv": {
+          "raw_rows": 291,
+          "valid_rows": 277,
+          "duration_s": 9.27076,
+          "resampled_points": 140,
+          "path_length_m": 0.9057850031844077
+        },
+        "Long/experiment_GROUND_TRUTH_20260616_160305.csv": {
+          "raw_rows": 308,
+          "valid_rows": 294,
+          "duration_s": 9.940665,
+          "resampled_points": 150,
+          "path_length_m": 0.9437343217893246
+        },
+        "Long/experiment_GROUND_TRUTH_20260616_160544.csv": {
+          "raw_rows": 293,
+          "valid_rows": 279,
+          "duration_s": 9.395543,
+          "resampled_points": 142,
+          "path_length_m": 0.8647991717595263
+        },
+        "Nam/experiment_GROUND_TRUTH_20260616_185042.csv": {
+          "raw_rows": 313,
+          "valid_rows": 299,
+          "duration_s": 10.243453,
+          "resampled_points": 154,
+          "path_length_m": 0.9701709977703747
+        },
+        "Lộc/experiment_GROUND_TRUTH_20260616_171136.csv": {
+          "raw_rows": 403,
+          "valid_rows": 389,
+          "duration_s": 13.235561,
+          "resampled_points": 199,
+          "path_length_m": 0.9808542071909317
+        },
+        "Phát/experiment_GROUND_TRUTH_20260616_180019.csv": {
+          "raw_rows": 296,
+          "valid_rows": 282,
+          "duration_s": 9.442732,
+          "resampled_points": 142,
+          "path_length_m": 0.8755500083231196
+        },
+        "Bách/experiment_GROUND_TRUTH_20260616_181614.csv": {
+          "raw_rows": 260,
+          "valid_rows": 246,
+          "duration_s": 8.367984,
+          "resampled_points": 126,
+          "path_length_m": 0.7800684464298834
+        },
+        "Phong/experiment_GROUND_TRUTH_20260616_191304.csv": {
+          "raw_rows": 379,
+          "valid_rows": 365,
+          "duration_s": 12.342778,
+          "resampled_points": 186,
+          "path_length_m": 0.8999470031488145
+        },
+        "Minh/experiment_GROUND_TRUTH_20260616_193405.csv": {
+          "raw_rows": 326,
+          "valid_rows": 312,
+          "duration_s": 10.407734,
+          "resampled_points": 157,
+          "path_length_m": 0.9266894912298004
+        },
+        "Lộc/experiment_GROUND_TRUTH_20260616_170753.csv": {
+          "raw_rows": 363,
+          "valid_rows": 349,
+          "duration_s": 11.921785,
+          "resampled_points": 180,
+          "path_length_m": 0.9169076541465314
+        },
+        "Phong/experiment_GROUND_TRUTH_20260616_191751.csv": {
+          "raw_rows": 350,
+          "valid_rows": 336,
+          "duration_s": 12.234636,
+          "resampled_points": 184,
+          "path_length_m": 0.9366413675856398
+        },
+        "Long/experiment_GROUND_TRUTH_20260616_160455.csv": {
+          "raw_rows": 407,
+          "valid_rows": 393,
+          "duration_s": 13.268974,
+          "resampled_points": 200,
+          "path_length_m": 0.9266937405364387
+        },
+        "Bách/experiment_GROUND_TRUTH_20260616_181438.csv": {
+          "raw_rows": 319,
+          "valid_rows": 305,
+          "duration_s": 10.208417,
+          "resampled_points": 154,
+          "path_length_m": 0.8912987604300991
+        },
+        "Nam/experiment_GROUND_TRUTH_20260616_185002.csv": {
+          "raw_rows": 239,
+          "valid_rows": 225,
+          "duration_s": 7.706487,
+          "resampled_points": 116,
+          "path_length_m": 0.9060265236482441
+        },
+        "Lộc/experiment_GROUND_TRUTH_20260616_171232.csv": {
+          "raw_rows": 335,
+          "valid_rows": 321,
+          "duration_s": 10.984276,
+          "resampled_points": 166,
+          "path_length_m": 1.0754426664783128
+        },
+        "Long/experiment_GROUND_TRUTH_20260616_161728.csv": {
+          "raw_rows": 326,
+          "valid_rows": 312,
+          "duration_s": 10.450595,
+          "resampled_points": 158,
+          "path_length_m": 0.9279992974882101
+        },
+        "Tuấn/experiment_GROUND_TRUTH_20260616_165500.csv": {
+          "raw_rows": 343,
+          "valid_rows": 329,
+          "duration_s": 11.015731,
+          "resampled_points": 166,
+          "path_length_m": 1.1899140005788427
+        },
+        "Phát/experiment_GROUND_TRUTH_20260616_175629.csv": {
+          "raw_rows": 313,
+          "valid_rows": 299,
+          "duration_s": 10.281636,
+          "resampled_points": 155,
+          "path_length_m": 0.9299403974211968
+        },
+        "Long/experiment_GROUND_TRUTH_20260616_160208.csv": {
+          "raw_rows": 310,
+          "valid_rows": 296,
+          "duration_s": 9.964911,
+          "resampled_points": 150,
+          "path_length_m": 0.9954147755585739
+        },
+        "Minh/experiment_GROUND_TRUTH_20260616_193314.csv": {
+          "raw_rows": 309,
+          "valid_rows": 295,
+          "duration_s": 9.900513,
+          "resampled_points": 149,
+          "path_length_m": 0.9166666311571403
+        },
+        "Duy/experiment_GROUND_TRUTH_20260616_154446.csv": {
+          "raw_rows": 351,
+          "valid_rows": 337,
+          "duration_s": 11.285191,
+          "resampled_points": 170,
+          "path_length_m": 1.0142784584041216
+        },
+        "Minh/experiment_GROUND_TRUTH_20260616_192949.csv": {
+          "raw_rows": 327,
+          "valid_rows": 313,
+          "duration_s": 10.883461,
+          "resampled_points": 164,
+          "path_length_m": 0.8400469879928961
+        },
+        "Bách/experiment_GROUND_TRUTH_20260616_182429.csv": {
+          "raw_rows": 356,
+          "valid_rows": 342,
+          "duration_s": 11.593771,
+          "resampled_points": 175,
+          "path_length_m": 1.294176444113959
+        },
+        "Nam/experiment_GROUND_TRUTH_20260616_184916.csv": {
+          "raw_rows": 375,
+          "valid_rows": 361,
+          "duration_s": 12.305909,
+          "resampled_points": 185,
+          "path_length_m": 0.905568753501382
+        },
+        "Nam/experiment_GROUND_TRUTH_20260616_184435.csv": {
+          "raw_rows": 385,
+          "valid_rows": 371,
+          "duration_s": 12.735149,
+          "resampled_points": 192,
+          "path_length_m": 0.8250853632367345
+        },
+        "Duy/experiment_GROUND_TRUTH_20260616_154249.csv": {
+          "raw_rows": 368,
+          "valid_rows": 354,
+          "duration_s": 12.020002,
+          "resampled_points": 181,
+          "path_length_m": 1.0349767633815516
+        },
+        "Bách/experiment_GROUND_TRUTH_20260616_181532.csv": {
+          "raw_rows": 349,
+          "valid_rows": 335,
+          "duration_s": 11.204127,
+          "resampled_points": 169,
+          "path_length_m": 0.8545640256095794
+        },
+        "Lộc/experiment_GROUND_TRUTH_20260616_170903.csv": {
+          "raw_rows": 265,
+          "valid_rows": 251,
+          "duration_s": 8.670671,
+          "resampled_points": 131,
+          "path_length_m": 0.9764324822767296
+        },
+        "Long/experiment_GROUND_TRUTH_20260616_161813.csv": {
+          "raw_rows": 434,
+          "valid_rows": 420,
+          "duration_s": 13.974982,
+          "resampled_points": 210,
+          "path_length_m": 1.1693314475651548
+        },
+        "Lộc/experiment_GROUND_TRUTH_20260616_171555.csv": {
+          "raw_rows": 322,
+          "valid_rows": 308,
+          "duration_s": 10.516178,
+          "resampled_points": 158,
+          "path_length_m": 0.9385818238758858
+        },
+        "Nam/experiment_GROUND_TRUTH_20260616_184527.csv": {
+          "raw_rows": 372,
+          "valid_rows": 358,
+          "duration_s": 12.281753,
+          "resampled_points": 185,
+          "path_length_m": 0.8340284082526144
+        },
+        "Tuấn/experiment_GROUND_TRUTH_20260616_164741.csv": {
+          "raw_rows": 321,
+          "valid_rows": 307,
+          "duration_s": 10.214061,
+          "resampled_points": 154,
+          "path_length_m": 1.061080399371514
+        },
+        "Duy/experiment_GROUND_TRUTH_20260616_153817.csv": {
+          "raw_rows": 408,
+          "valid_rows": 394,
+          "duration_s": 13.317857,
+          "resampled_points": 201,
+          "path_length_m": 1.0843468629073665
+        },
+        "Phong/experiment_GROUND_TRUTH_20260616_191350.csv": {
+          "raw_rows": 384,
+          "valid_rows": 370,
+          "duration_s": 12.80332,
+          "resampled_points": 193,
+          "path_length_m": 0.9167060915545279
+        },
+        "Phát/experiment_GROUND_TRUTH_20260616_180059.csv": {
+          "raw_rows": 317,
+          "valid_rows": 303,
+          "duration_s": 10.137642,
+          "resampled_points": 153,
+          "path_length_m": 0.8978623195146348
+        },
+        "Phát/experiment_GROUND_TRUTH_20260616_175908.csv": {
+          "raw_rows": 282,
+          "valid_rows": 268,
+          "duration_s": 8.928325,
+          "resampled_points": 135,
+          "path_length_m": 0.8079940612970637
+        },
+        "Bách/experiment_GROUND_TRUTH_20260616_182223.csv": {
+          "raw_rows": 273,
+          "valid_rows": 259,
+          "duration_s": 8.937438,
+          "resampled_points": 135,
+          "path_length_m": 0.846746913835579
+        },
+        "Phát/experiment_GROUND_TRUTH_20260616_175543.csv": {
+          "raw_rows": 324,
+          "valid_rows": 310,
+          "duration_s": 10.4221,
+          "resampled_points": 157,
+          "path_length_m": 0.870152111367972
+        },
+        "Bách/experiment_GROUND_TRUTH_20260616_182510.csv": {
+          "raw_rows": 358,
+          "valid_rows": 344,
+          "duration_s": 11.760472,
+          "resampled_points": 177,
+          "path_length_m": 1.1712140875158856
+        },
+        "Nam/experiment_GROUND_TRUTH_20260616_184647.csv": {
+          "raw_rows": 425,
+          "valid_rows": 411,
+          "duration_s": 14.07775,
+          "resampled_points": 212,
+          "path_length_m": 0.9167006206767192
+        },
+        "Duy/experiment_GROUND_TRUTH_20260616_153708.csv": {
+          "raw_rows": 332,
+          "valid_rows": 318,
+          "duration_s": 10.706424,
+          "resampled_points": 161,
+          "path_length_m": 1.0345300141750418
+        },
+        "Phong/experiment_GROUND_TRUTH_20260616_191828.csv": {
+          "raw_rows": 312,
+          "valid_rows": 298,
+          "duration_s": 10.536229,
+          "resampled_points": 159,
+          "path_length_m": 0.9854557255989319
+        },
+        "Minh/experiment_GROUND_TRUTH_20260616_193229.csv": {
+          "raw_rows": 318,
+          "valid_rows": 304,
+          "duration_s": 10.443746,
+          "resampled_points": 157,
+          "path_length_m": 0.8912757697547739
+        },
+        "Đức/experiment_GROUND_TRUTH_20260616_174050.csv": {
+          "raw_rows": 406,
+          "valid_rows": 392,
+          "duration_s": 13.623572,
+          "resampled_points": 205,
+          "path_length_m": 1.2214829176068682
+        },
+        "Duy/experiment_GROUND_TRUTH_20260616_154149.csv": {
+          "raw_rows": 389,
+          "valid_rows": 375,
+          "duration_s": 12.772866,
+          "resampled_points": 192,
+          "path_length_m": 1.1027067882004067
+        },
+        "Duy/experiment_GROUND_TRUTH_20260616_153917.csv": {
+          "raw_rows": 366,
+          "valid_rows": 352,
+          "duration_s": 12.025618,
+          "resampled_points": 181,
+          "path_length_m": 1.061286157433711
+        },
+        "Phát/experiment_GROUND_TRUTH_20260616_175712.csv": {
+          "raw_rows": 263,
+          "valid_rows": 249,
+          "duration_s": 8.376149,
+          "resampled_points": 126,
+          "path_length_m": 0.896739141077078
+        },
+        "Tuấn/experiment_GROUND_TRUTH_20260616_164329.csv": {
+          "raw_rows": 319,
+          "valid_rows": 305,
+          "duration_s": 10.142713,
+          "resampled_points": 153,
+          "path_length_m": 1.0233919387474528
+        },
+        "Đức/experiment_GROUND_TRUTH_20260616_173246.csv": {
+          "raw_rows": 349,
+          "valid_rows": 335,
+          "duration_s": 11.741082,
+          "resampled_points": 177,
+          "path_length_m": 1.060966508119385
+        },
+        "Phong/experiment_GROUND_TRUTH_20260616_191517.csv": {
+          "raw_rows": 368,
+          "valid_rows": 354,
+          "duration_s": 12.264638,
+          "resampled_points": 185,
+          "path_length_m": 0.9922607522515227
+        },
+        "Phong/experiment_GROUND_TRUTH_20260616_191906.csv": {
+          "raw_rows": 341,
+          "valid_rows": 327,
+          "duration_s": 11.261933,
+          "resampled_points": 170,
+          "path_length_m": 0.9990220657468099
+        },
+        "Minh/experiment_GROUND_TRUTH_20260616_193146.csv": {
+          "raw_rows": 364,
+          "valid_rows": 350,
+          "duration_s": 11.729921,
+          "resampled_points": 177,
+          "path_length_m": 0.8544997987822687
+        },
+        "Tuấn/experiment_GROUND_TRUTH_20260616_165005.csv": {
+          "raw_rows": 312,
+          "valid_rows": 298,
+          "duration_s": 9.947619,
+          "resampled_points": 150,
+          "path_length_m": 1.0473894789422533
+        },
+        "Minh/experiment_GROUND_TRUTH_20260616_193628.csv": {
+          "raw_rows": 460,
+          "valid_rows": 446,
+          "duration_s": 15.309694,
+          "resampled_points": 230,
+          "path_length_m": 0.9038807821436501
+        },
+        "Phong/experiment_GROUND_TRUTH_20260616_191553.csv": {
+          "raw_rows": 414,
+          "valid_rows": 400,
+          "duration_s": 14.046246,
+          "resampled_points": 211,
+          "path_length_m": 0.9999966964005297
+        },
+        "Duy/experiment_GROUND_TRUTH_20260616_154339.csv": {
+          "raw_rows": 456,
+          "valid_rows": 442,
+          "duration_s": 15.089061,
+          "resampled_points": 227,
+          "path_length_m": 1.1578932629978396
+        },
+        "Phong/experiment_GROUND_TRUTH_20260616_191712.csv": {
+          "raw_rows": 387,
+          "valid_rows": 373,
+          "duration_s": 13.040933,
+          "resampled_points": 196,
+          "path_length_m": 0.8998957299447745
+        },
+        "Phong/experiment_GROUND_TRUTH_20260616_191631.csv": {
+          "raw_rows": 347,
+          "valid_rows": 333,
+          "duration_s": 11.517275,
+          "resampled_points": 174,
+          "path_length_m": 0.9074025017431027
+        },
+        "Đức/experiment_GROUND_TRUTH_20260616_173617.csv": {
+          "raw_rows": 317,
+          "valid_rows": 303,
+          "duration_s": 10.430046,
+          "resampled_points": 157,
+          "path_length_m": 1.051826490436547
+        },
+        "Phát/experiment_GROUND_TRUTH_20260616_175501.csv": {
+          "raw_rows": 280,
+          "valid_rows": 266,
+          "duration_s": 8.907271,
+          "resampled_points": 134,
+          "path_length_m": 0.8603028557650212
+        },
+        "Lộc/experiment_GROUND_TRUTH_20260616_171724.csv": {
+          "raw_rows": 350,
+          "valid_rows": 336,
+          "duration_s": 11.565141,
+          "resampled_points": 174,
+          "path_length_m": 1.1404100538026594
+        },
+        "Minh/experiment_GROUND_TRUTH_20260616_193543.csv": {
+          "raw_rows": 302,
+          "valid_rows": 288,
+          "duration_s": 9.65236,
+          "resampled_points": 146,
+          "path_length_m": 0.8809514197079107
+        },
+        "Nam/experiment_GROUND_TRUTH_20260616_184831.csv": {
+          "raw_rows": 377,
+          "valid_rows": 363,
+          "duration_s": 12.272876,
+          "resampled_points": 185,
+          "path_length_m": 0.8374497700897692
+        },
+        "Đức/experiment_GROUND_TRUTH_20260616_173341.csv": {
+          "raw_rows": 314,
+          "valid_rows": 300,
+          "duration_s": 10.458121,
+          "resampled_points": 158,
+          "path_length_m": 1.030999670893313
+        },
+        "Bách/experiment_GROUND_TRUTH_20260616_182553.csv": {
+          "raw_rows": 290,
+          "valid_rows": 276,
+          "duration_s": 9.462867,
+          "resampled_points": 143,
+          "path_length_m": 0.913357460349037
+        },
+        "Đức/experiment_GROUND_TRUTH_20260616_173712.csv": {
+          "raw_rows": 303,
+          "valid_rows": 289,
+          "duration_s": 9.979832,
+          "resampled_points": 150,
+          "path_length_m": 0.9696648591095204
+        },
+        "Đức/experiment_GROUND_TRUTH_20260616_173141.csv": {
+          "raw_rows": 467,
+          "valid_rows": 453,
+          "duration_s": 15.585707,
+          "resampled_points": 235,
+          "path_length_m": 1.0043817321046136
+        },
+        "Nam/experiment_GROUND_TRUTH_20260616_184744.csv": {
+          "raw_rows": 294,
+          "valid_rows": 280,
+          "duration_s": 9.732308,
+          "resampled_points": 147,
+          "path_length_m": 0.9672201833382539
+        },
+        "Long/experiment_GROUND_TRUTH_20260616_160644.csv": {
+          "raw_rows": 275,
+          "valid_rows": 261,
+          "duration_s": 8.885268,
+          "resampled_points": 134,
+          "path_length_m": 0.8502166079892832
+        },
+        "Duy/experiment_GROUND_TRUTH_20260616_154757.csv": {
+          "raw_rows": 331,
+          "valid_rows": 317,
+          "duration_s": 10.754669,
+          "resampled_points": 162,
+          "path_length_m": 1.0086357307084117
+        },
+        "Tuấn/experiment_GROUND_TRUTH_20260616_165257.csv": {
+          "raw_rows": 305,
+          "valid_rows": 291,
+          "duration_s": 9.699126,
+          "resampled_points": 146,
+          "path_length_m": 1.0448282135607043
+        },
+        "Phát/experiment_GROUND_TRUTH_20260616_175753.csv": {
+          "raw_rows": 303,
+          "valid_rows": 289,
+          "duration_s": 9.668619,
+          "resampled_points": 146,
+          "path_length_m": 0.891497025372133
+        },
+        "Duy/experiment_GROUND_TRUTH_20260616_154534.csv": {
+          "raw_rows": 414,
+          "valid_rows": 400,
+          "duration_s": 13.553001,
+          "resampled_points": 204,
+          "path_length_m": 1.2009918582578694
+        },
+        "Bách/experiment_GROUND_TRUTH_20260616_182305.csv": {
+          "raw_rows": 329,
+          "valid_rows": 315,
+          "duration_s": 10.793045,
+          "resampled_points": 163,
+          "path_length_m": 1.050146472608486
+        },
+        "Tuấn/experiment_GROUND_TRUTH_20260616_165111.csv": {
+          "raw_rows": 328,
+          "valid_rows": 314,
+          "duration_s": 10.475527,
+          "resampled_points": 158,
+          "path_length_m": 1.0511993780326017
+        },
+        "Đức/experiment_GROUND_TRUTH_20260616_173847.csv": {
+          "raw_rows": 309,
+          "valid_rows": 295,
+          "duration_s": 10.209685,
+          "resampled_points": 154,
+          "path_length_m": 0.8838615121173152
+        },
+        "Phong/experiment_GROUND_TRUTH_20260616_191432.csv": {
+          "raw_rows": 414,
+          "valid_rows": 400,
+          "duration_s": 14.13522,
+          "resampled_points": 213,
+          "path_length_m": 0.9581512851432132
+        },
+        "Lộc/experiment_GROUND_TRUTH_20260616_171636.csv": {
+          "raw_rows": 301,
+          "valid_rows": 287,
+          "duration_s": 10.014534,
+          "resampled_points": 151,
+          "path_length_m": 1.0311623049918255
+        },
+        "Đức/experiment_GROUND_TRUTH_20260616_173801.csv": {
+          "raw_rows": 317,
+          "valid_rows": 303,
+          "duration_s": 10.440324,
+          "resampled_points": 157,
+          "path_length_m": 0.9687816675232037
+        },
+        "Đức/experiment_GROUND_TRUTH_20260616_174137.csv": {
+          "raw_rows": 317,
+          "valid_rows": 303,
+          "duration_s": 10.452093,
+          "resampled_points": 158,
+          "path_length_m": 1.0096477283213752
+        }
+      }
+    },
+    "val": {
+      "files": 12,
+      "windows": 1990,
+      "resampled_points": 2050,
+      "duration_s": 136.108609,
+      "trials": {
+        "Minh/experiment_GROUND_TRUTH_20260616_193724.csv": {
+          "raw_rows": 318,
+          "valid_rows": 304,
+          "duration_s": 10.172907,
+          "resampled_points": 153,
+          "path_length_m": 0.9068793833655543
+        },
+        "Đức/experiment_GROUND_TRUTH_20260616_173433.csv": {
+          "raw_rows": 367,
+          "valid_rows": 353,
+          "duration_s": 12.252017,
+          "resampled_points": 185,
+          "path_length_m": 1.0975538208096127
+        },
+        "Lộc/experiment_GROUND_TRUTH_20260616_170952.csv": {
+          "raw_rows": 291,
+          "valid_rows": 277,
+          "duration_s": 9.429942,
+          "resampled_points": 142,
+          "path_length_m": 1.0569052124046978
+        },
+        "Nam/experiment_GROUND_TRUTH_20260616_184612.csv": {
+          "raw_rows": 295,
+          "valid_rows": 281,
+          "duration_s": 9.688375,
+          "resampled_points": 146,
+          "path_length_m": 0.805140840778445
+        },
+        "Long/experiment_GROUND_TRUTH_20260616_161204.csv": {
+          "raw_rows": 318,
+          "valid_rows": 304,
+          "duration_s": 10.277889,
+          "resampled_points": 155,
+          "path_length_m": 0.8210304427428964
+        },
+        "Minh/experiment_GROUND_TRUTH_20260616_193101.csv": {
+          "raw_rows": 349,
+          "valid_rows": 335,
+          "duration_s": 11.210006,
+          "resampled_points": 169,
+          "path_length_m": 0.8637627211052754
+        },
+        "Bách/experiment_GROUND_TRUTH_20260616_182349.csv": {
+          "raw_rows": 330,
+          "valid_rows": 316,
+          "duration_s": 10.826554,
+          "resampled_points": 163,
+          "path_length_m": 1.2165975232947335
+        },
+        "Duy/experiment_GROUND_TRUTH_20260616_154051.csv": {
+          "raw_rows": 381,
+          "valid_rows": 367,
+          "duration_s": 12.492461,
+          "resampled_points": 188,
+          "path_length_m": 1.058608535649222
+        },
+        "Bách/experiment_GROUND_TRUTH_20260616_181347.csv": {
+          "raw_rows": 374,
+          "valid_rows": 358,
+          "duration_s": 12.010732,
+          "resampled_points": 181,
+          "path_length_m": 0.9718221132448683
+        },
+        "Tuấn/experiment_GROUND_TRUTH_20260616_165350.csv": {
+          "raw_rows": 300,
+          "valid_rows": 286,
+          "duration_s": 9.704533,
+          "resampled_points": 146,
+          "path_length_m": 1.0964278939760312
+        },
+        "Lộc/experiment_GROUND_TRUTH_20260616_171830.csv": {
+          "raw_rows": 436,
+          "valid_rows": 422,
+          "duration_s": 14.511141,
+          "resampled_points": 218,
+          "path_length_m": 1.0259592900886525
+        },
+        "Nam/experiment_GROUND_TRUTH_20260616_184347.csv": {
+          "raw_rows": 405,
+          "valid_rows": 391,
+          "duration_s": 13.532052,
+          "resampled_points": 204,
+          "path_length_m": 0.9887677265666879
+        }
+      }
+    },
+    "test": {
+      "files": 7,
+      "windows": 1115,
+      "resampled_points": 1150,
+      "duration_s": 76.302181,
+      "trials": {
+        "Tuấn/experiment_GROUND_TRUTH_20260616_164545.csv": {
+          "raw_rows": 316,
+          "valid_rows": 302,
+          "duration_s": 10.99863,
+          "resampled_points": 166,
+          "path_length_m": 0.9964049692432315
+        },
+        "Tuấn/experiment_GROUND_TRUTH_20260616_165211.csv": {
+          "raw_rows": 371,
+          "valid_rows": 357,
+          "duration_s": 11.975212,
+          "resampled_points": 180,
+          "path_length_m": 1.0676646220678245
+        },
+        "Phát/experiment_GROUND_TRUTH_20260616_175828.csv": {
+          "raw_rows": 287,
+          "valid_rows": 273,
+          "duration_s": 9.43543,
+          "resampled_points": 142,
+          "path_length_m": 0.839274829018011
+        },
+        "Long/experiment_GROUND_TRUTH_20260616_160827.csv": {
+          "raw_rows": 358,
+          "valid_rows": 344,
+          "duration_s": 12.009227,
+          "resampled_points": 181,
+          "path_length_m": 0.8523797943879827
+        },
+        "Lộc/experiment_GROUND_TRUTH_20260616_171040.csv": {
+          "raw_rows": 368,
+          "valid_rows": 354,
+          "duration_s": 12.272764,
+          "resampled_points": 185,
+          "path_length_m": 1.0184226167382162
+        },
+        "Tuấn/experiment_GROUND_TRUTH_20260616_164918.csv": {
+          "raw_rows": 305,
+          "valid_rows": 291,
+          "duration_s": 9.936863,
+          "resampled_points": 150,
+          "path_length_m": 0.946404629489664
+        },
+        "Minh/experiment_GROUND_TRUTH_20260616_193454.csv": {
+          "raw_rows": 304,
+          "valid_rows": 290,
+          "duration_s": 9.674055,
+          "resampled_points": 146,
+          "path_length_m": 0.9113967914382916
+        }
+      }
+    }
+  },
+  "search": {
+    "layers": [
+      1,
+      2,
+      3
+    ],
+    "units": [
+      32,
+      64
+    ],
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "dropout": 0.2,
+    "learning_rate": 0.001,
+    "batch_size": 128,
+    "max_epochs": 200,
+    "patience": 20,
+    "selection_metric": "mean validation Euclidean position error",
+    "mean_validation_error_by_config_m": {
+      "1L_32U": 0.010308455496191664,
+      "1L_64U": 0.009515643810125813,
+      "2L_32U": 0.010986289204527077,
+      "2L_64U": 0.009597457800266227,
+      "3L_32U": 0.012126900352049904,
+      "3L_64U": 0.009805913241100831
+    }
+  },
+  "selected_run": {
+    "layers": 1,
+    "units": 64,
+    "seed": 43,
+    "epochs_ran": 79,
+    "best_epoch": 59,
+    "best_val_scaled_mse": 0.0001079173234757036,
+    "validation_metrics": {
+      "rmse_m": [
+        0.003027276797953,
+        0.009386021448594562,
+        0.005461911423899738
+      ],
+      "mae_m": [
+        0.0023034457531601943,
+        0.007109390810201125,
+        0.003873891517568538
+      ],
+      "mean_euclidean_error_m": 0.009330702303992773,
+      "p95_euclidean_error_m": 0.02177413074101796
+    },
+    "training_time_s": 57.21286193900005
+  },
+  "validation_metrics": {
+    "rmse_m": [
+      0.003027276797953,
+      0.009386021448594562,
+      0.005461911423899738
+    ],
+    "mae_m": [
+      0.0023034457531601943,
+      0.007109390810201125,
+      0.003873891517568538
+    ],
+    "mean_euclidean_error_m": 0.009330702303992773,
+    "p95_euclidean_error_m": 0.02177413074101796
+  },
+  "test_metrics": {
+    "rmse_m": [
+      0.0029290223794667452,
+      0.007813703713821275,
+      0.005525437059568748
+    ],
+    "mae_m": [
+      0.002243054172517395,
+      0.006171065793010802,
+      0.003912103582085503
+    ],
+    "mean_euclidean_error_m": 0.008531693516278084,
+    "p95_euclidean_error_m": 0.01872738206344826
+  },
+  "test_constant_position_sanity_baseline": {
+    "rmse_m": [
+      0.008294270373880863,
+      0.031145155429840088,
+      0.01283241342753172
+    ],
+    "mae_m": [
+      0.005932391155511141,
+      0.02519923262298107,
+      0.008943706750869751
+    ],
+    "mean_euclidean_error_m": 0.029121533036231995,
+    "p95_euclidean_error_m": 0.05098904296755791
+  },
+  "batch1_test_inference_ms_mean": 2.3137007363227142,
+  "tensorflow_version": "2.20.0",
+  "sklearn_version": "1.6.1"
+}

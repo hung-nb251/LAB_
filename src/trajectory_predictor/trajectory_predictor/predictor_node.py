@@ -33,6 +33,7 @@ from human_hand_msgs.msg import HandState, HandPrediction, SystemStatus
 
 from .feature_math import per_sample_displacement
 from .prediction_hold import TimeBasedPredictionHold
+from .inference_schedule import InferenceSchedule
 
 # Hybrid math utilities (Fitts' Law + Minimum Jerk Model)
 try:
@@ -105,6 +106,7 @@ class PredictorNode(Node):
         # Zero keeps the historical unlimited request rate.  Robot-EE co-carry
         # overrides this to the 15 Hz model/stream rate.
         self.declare_parameter('inference_rate_hz', 0.0)
+        self.declare_parameter('hold.enabled', True)
         self.declare_parameter('hold.time_based', False)
         self.declare_parameter('hold.window_sec', 0.40)
         self.declare_parameter('hold.max_motion_m', 0.003)
@@ -137,9 +139,7 @@ class PredictorNode(Node):
         self._trajectory_mode_auto_toggle = bool(
             self.get_parameter('trajectory_mode_auto_toggle').value)
         inference_rate_hz = float(self.get_parameter('inference_rate_hz').value)
-        self._inference_period = (
-            0.0 if inference_rate_hz <= 0.0 else 1.0 / inference_rate_hz)
-        self._last_inference_request_time = 0.0
+        self._inference_schedule = InferenceSchedule(inference_rate_hz)
 
         self.model_files = {
             'rnn': self.get_parameter('model_files.rnn').value,
@@ -217,6 +217,7 @@ class PredictorNode(Node):
         self._HOLD_STD_THRESH = 0.006            # ngưỡng std (15mm) — tăng để tránh false-positive khi mang vật
         self._HOLD_ENTER_FRAMES = 5             # cần 8 frame tĩnh liên tiếp (~266ms ở 30Hz)
         self._HOLD_RELEASE_THRESH = 0.030        # tay rời > 50mm thì thả hold — tăng để chắc chắn hơn
+        self._hold_enabled = bool(self.get_parameter('hold.enabled').value)
         self._time_based_hold = bool(self.get_parameter('hold.time_based').value)
         self._hold_detector = TimeBasedPredictionHold(
             self.get_parameter('hold.window_sec').value,
@@ -281,6 +282,7 @@ class PredictorNode(Node):
             f'window={self.window_size} | features={self.num_features} | '
             f'velocity={self._velocity_feature_mode} | '
             f'auto_start={self.auto_start}\n'
+            f'  Stationary HOLD: enabled={self._hold_enabled}\n'
             f'  Output Filter: enabled={self._filter_enabled}, '
             f'ema_alpha={self._filter_ema_alpha}, '
             f'max_dev={self._filter_max_dev}, '
@@ -564,7 +566,7 @@ class PredictorNode(Node):
                 return
 
         # ── Prediction Hold: phát hiện robot/tay đứng yên ────────────────
-        if self._time_based_hold:
+        if self._hold_enabled and self._time_based_hold:
             hold_state, hold_target = self._hold_detector.update([x, y, z], now)
             if hold_state == 'released':
                 self._buffer.clear()
@@ -584,7 +586,7 @@ class PredictorNode(Node):
                     self._publish_prediction(
                         list(hold_target), 0.0, output_source='hold')
                 return
-        else:
+        elif self._hold_enabled:
             self._legacy_prediction_hold(x, y, z)
             if self._hold_active:
                 return
@@ -594,8 +596,7 @@ class PredictorNode(Node):
             return
         if self._hybrid_enabled and self._hybrid_phase == 'LEADER':
             return  # Inference worker nhàn rỗi; MJM timer lo phần còn lại
-        if (self._inference_period > 0.0 and
-                now - self._last_inference_request_time < self._inference_period):
+        if not self._inference_schedule.ready(time.monotonic()):
             return
 
         if 0 < len(self._buffer) < self.window_size:
@@ -607,7 +608,6 @@ class PredictorNode(Node):
         else:
             return
 
-        self._last_inference_request_time = now
         self._send_to_worker({'cmd': 'predict', 'data': padded, 'epoch': self._predict_epoch})
 
     def _legacy_prediction_hold(self, x, y, z):
@@ -790,7 +790,7 @@ class PredictorNode(Node):
         self._buffer.clear()
         self._last_filtered = None
         self._filter_reject_count = 0
-        self._last_inference_request_time = 0.0
+        self._inference_schedule.reset()
         self._last_hold_publish_time = 0.0
         self._last_data_time = 0.0
         self._smoothed_vel = [0.0, 0.0, 0.0]

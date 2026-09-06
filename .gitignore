@@ -4,8 +4,3 @@ log/
 cocarry_logs/
 codrawing_logs/*
 !codrawing_logs/.gitkeep
-pHRI_Models/
-*~
-*.swp
-*.pyc
-__pycache__/

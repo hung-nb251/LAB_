@@ -142,7 +142,8 @@ tính biên an toàn Z: `minimum_ee_z = minimum_tip_z + 0.1814`.
 ### Chọn nguồn `x_d` bằng Trajectory Mode
 
 Không còn launch option `force_only` hoặc `fixed_nominal`. Admittance dùng
-`M=1`, `K=10`, critical `D=6.3246` trong Ground Truth và pha FOLLOWER:
+`M=1`, `K=5`, critical `D=4.4721` trong Ground Truth và pha FOLLOWER. Giới hạn
+lực hiện tại là 20 N trên từng trục và 30 N cho chuẩn lực tổng:
 
 - `Ground Truth` là mặc định: giữ `x_d` cố định tại robot EE pose được capture
   lúc `Start Run`. Lực người tạo admittance error `e`, do đó `x_r=x_d+e`.
@@ -234,10 +235,30 @@ co-carry không-camera; UI camera cũ tiếp tục dùng nút/goal và fallback 
 Predictor co-carry hiện do controller sở hữu chuỗi Start/Stop; việc chỉ chọn nút
 SVGP trên UI không tự chạy worker. Mỗi Start/Stop reset toàn bộ buffer, filter,
 velocity và HOLD state, đồng thời tăng prediction epoch để loại response cũ.
-HOLD của robot EE dùng cửa sổ thời gian `0.40 s`, motion tối đa `3 mm`, nhả khi
-EE đi quá `10 mm`; HOLD publish chính vị trí EE đo được với source `hold`, không
-dùng prediction đã lọc của model. Camera profile giữ cơ chế auto-toggle cũ qua
+Từ 2026-09-06, co-carry đặt `hold.enabled=false` cho cả GRU/SVGP: EE đứng yên
+không còn ép predictor sang HOLD hoặc reset lịch sử; nhả lực không đồng nghĩa
+với yêu cầu dừng robot. HOLD an toàn khi dữ liệu lực stale ở controller vẫn giữ
+nguyên. Camera profile giữ HOLD mặc định bật và cơ chế auto-toggle cũ qua
 parameter `trajectory_mode_auto_toggle=true`; co-carry override thành `false`.
+Rate gate predictor dùng deadline monotonic với dung sai jitter để không bỏ
+mỗi mẫu đến sớm một chút khi input và inference cùng 15 Hz. Hai launch co-carry
+bật `--continuous-cartesian-smoothing`: tích phân vận tốc qua đoạn đảo chiều,
+không snap thẳng tới target gần. Giới hạn vận tốc/gia tốc và joint limits không
+đổi; profile camera giữ hành vi smoother cũ. Chưa thay cơ chế joint clipping
+độc lập, mạng force sensor hay model GRU trong đợt sửa này.
+
+Sau trial GRU simulation `20260906_105435`, đã tái hiện ripple trong vòng
+robot-EE -> prediction -> nominal -> Admittance -> robot-EE mà không cần mạng
+hay IK. Output GRU raw vẫn giữ nguyên. Launch simulation hiện override
+`prediction_reference_tau_sec=0.4`: lọc bậc một nominal tại controller trước
+khi cộng `e`, rồi mới áp lead/workspace limits. Đây là điều hòa reference có
+đánh đổi độ trễ, không phải sửa đồ thị hay chứng minh model chính xác hơn.
+Ground Truth và MJM LEADER bypass khâu này. State reset tại Start/realign và
+đóng băng cùng force HOLD. Sau khi người dùng xác nhận trial 11:18:11 và yêu
+cầu áp dụng sang robot thật, YAML và cả hai launch mặc định `0.4`. Real và sim
+đều hỗ trợ launch arg `prediction_reference_tau_sec:=0.0` để đối chứng legacy.
+Không nới limits, không tự Enable/Start robot thật. Cùng cấu hình nominal không
+bảo đảm phần cứng thật có cùng đáp ứng với mock; cần người vận hành xác nhận.
 
 Phần chưa triển khai: Goal Classification, disagreement/role arbitration hoàn
 chỉnh, horizon chính thức, điều kiện trả quyền do conflict và blend LEADER ->
@@ -303,7 +324,7 @@ thật và làm sai zero của trial kế tiếp.
 Topology ưu tiên là hai máy:
 
 - PC 2 Ubuntu, user `binhdangnguyen`, đọc Axia bằng `axia_sensor_driver.py` qua
-  interface `enxec9a0c1fc063` và gửi UDP tới IP Wi-Fi máy `hungnb`.
+  interface `enxf8e43b7aeaf2` và gửi UDP tới IP Wi-Fi máy `hungnb`.
 - PC Ubuntu chạy robot/MotoROS2 và `axia_sensor_ui.py` nhận UDP.
 - Khi PC 2 đã gửi dữ liệu, không chạy thêm `run_sensor_driver.sh` trên Ubuntu.
 
@@ -311,10 +332,10 @@ Topology ưu tiên là hai máy:
 
 Hai đường mạng có vai trò khác nhau, không được cấu hình lẫn nhau:
 
-- `enxec9a0c1fc063` là cổng Ethernet trên hub USB-C nối trực tiếp với Axia.
+- `enxf8e43b7aeaf2` là cổng Ethernet trên hub USB-C nối trực tiếp với Axia.
   EtherCAT dùng frame Ethernet tầng 2 nên cổng này không cần IP `10.136.x.x`.
 - Wi-Fi dùng để hai laptop ping nhau và truyền gói UDP lực. Các địa chỉ đã từng
-  dùng là máy `hungnb`: `10.136.7.38/20`, máy `binhdangnguyen`:
+  dùng là máy `hungnb`: `10.136.12.182/20`, máy `binhdangnguyen`:
   `10.136.4.243/20`. Đây là IP DHCP, phải kiểm tra lại ở mỗi buổi thí nghiệm.
 - Driver trên máy 2 không phải ROS node nên máy 2 không cần đặt
   `ROS_DOMAIN_ID`. Domain `10` hoặc `42` chỉ áp dụng cho các terminal ROS trên
@@ -330,7 +351,7 @@ ping -c 4 <IP_WIFI_MAY_CON_LAI>
 
 Hai IP `/20` ở trên cùng thuộc mạng `10.136.0.0/20`, vì vậy có thể liên lạc
 trực tiếp nếu Wi-Fi không bật client isolation. Không dùng IP của
-`enxec9a0c1fc063` làm địa chỉ nhận UDP.
+`enxf8e43b7aeaf2` làm địa chỉ nhận UDP.
 
 Chuẩn bị máy 2 lần đầu:
 
@@ -365,9 +386,11 @@ ls -lh ~/axia_driver/axia_sensor_driver.py
 Cắm Axia vào hub USB-C của máy 2, sau đó kiểm tra link:
 
 ```bash
-ip link show enxec9a0c1fc063
-sudo ip link set dev enxec9a0c1fc063 up
-cat /sys/class/net/enxec9a0c1fc063/carrier
+ip link show enxf8e43b7aeaf2
+sudo nmcli device set enxf8e43b7aeaf2 managed no
+sudo ip addr flush dev enxf8e43b7aeaf2
+sudo ip link set dev enxf8e43b7aeaf2 up
+cat /sys/class/net/enxf8e43b7aeaf2/carrier
 ```
 
 Giá trị `carrier` phải là `1`. Đặt cảm biến và thanh sắt ở trạng thái ổn định,
@@ -377,10 +400,10 @@ Wi-Fi hiện tại của máy `hungnb`:
 ```bash
 sudo /home/binhdangnguyen/axia_driver/.venv/bin/python \
   /home/binhdangnguyen/axia_driver/axia_sensor_driver.py \
-  enxec9a0c1fc063 --ip <IP_WIFI_HUNGNB> --port 50000 --hz 100
+  enxf8e43b7aeaf2 --ip <IP_WIFI_HUNGNB> --port 50000 --hz 100
 ```
 
-Ví dụ chỉ khi IP chưa đổi: `--ip 10.136.7.38`. Phải dùng đúng Python trong
+Ví dụ chỉ khi IP chưa đổi: `--ip 10.136.12.182`. Phải dùng đúng Python trong
 `.venv` sau `sudo`; nếu gọi `sudo python3` thì thường sẽ báo thiếu `pysoem`.
 Driver thực hiện hardware tare khi khởi động, vì vậy tuyệt đối không chạm hoặc
 tạo preload trong lúc khởi động. `run_sensor_driver.sh` hiện chứa đường dẫn của
@@ -492,13 +515,14 @@ ros2 launch cocarry_admittance_control \
 Launch tự đặt domain 42. Các terminal chẩn đoán riêng phải đặt
 `export ROS_DOMAIN_ID=42`.
 
-Launch dùng Ground Truth và backend SVGP mặc định. Muốn test SVGP làm nominal
-reference, chọn nút `SVGP` trên UI trước `Start Run`. Muốn test GRU robot-EE,
-chọn backend ngay khi launch; UI sẽ đổi hai nút thành `GRU` và `GRU+MJM`:
+Launch dùng Ground Truth và backend GRU mặc định. Muốn test GRU làm nominal
+reference, chọn nút `GRU` trên UI trước `Start Run`. Muốn test SVGP M100
+NumPy, chọn backend ngay khi launch; UI sẽ đổi hai nút thành `SVGP` và
+`SVGP+MJM`:
 
 ```bash
 ros2 launch cocarry_admittance_control \
-  cocarry_admittance_sim_gui.launch.py prediction_model:=gru
+  cocarry_admittance_sim_gui.launch.py prediction_model:=svgp
 ```
 
 Trình tự UI an toàn: chờ joint states/TF -> calibrate Axia không tải -> Enable
@@ -506,26 +530,29 @@ Robot -> chờ streamer ready -> Start Run -> Stop Run -> Disable Robot.
 
 ## 8. Predictor robot EE
 
-Hai launch co-carry thật/mô phỏng hỗ trợ `prediction_model:=svgp|gru`; SVGP vẫn
-là mặc định để không thay đổi hành vi cũ. Mỗi backend có profile riêng về model
+Hai launch co-carry thật/mô phỏng hỗ trợ `prediction_model:=svgp|gru`; GRU là
+mặc định để ưu tiên runtime ổn định và nhẹ. Mỗi backend có profile riêng về model
 directory, window, số feature và cách tính velocity. Có thể override riêng bằng
 `svgp_model_dir:=...`, `gru_model_dir:=...`, hoặc dùng `model_dir:=...` để thay
 directory của backend đang chọn.
 
 ### SVGP
 
-Model mới đã train ngày 2026-09-03:
+Model mới đã train ngày 2026-09-05:
 
 ```text
-/home/hungnb/cocarry_ws/pHRI_Models/svgp_robot_ee_h5_m50_relative
+/home/hungnb/cocarry_ws/pHRI_Models/svgp_robot_ee_h5_m100_relative
 ```
 
-Model này đã train, đã kiểm tra load/inference và hiện là default của hai launch
-co-carrying admittance thật/mô phỏng và config:
+Model này đã train, đã kiểm tra load/inference và được cả hai launch dùng khi
+chọn `prediction_model:=svgp`:
 
 ```text
-/home/hungnb/cocarry_ws/pHRI_Models/svgp_robot_ee_h5_m50_relative
+/home/hungnb/cocarry_ws/pHRI_Models/svgp_robot_ee_h5_m100_relative
 ```
+
+Runtime dùng trực tiếp `svgp_model.npz`; `svgp_model.pkl` chỉ được giữ làm
+fallback/đối chứng GPflow.
 
 Cấu hình model mới:
 
@@ -533,17 +560,23 @@ Cấu hình model mới:
 - Chỉ dùng log `GROUND_TRUTH`.
 - Mỗi quỹ đạo được resample 15 Hz và trừ pose robot EE đầu tiên.
 - Window 10 bước, horizon 5 bước, dự đoán trước khoảng 0.333 s.
-- SVGP Matern52, 50 inducing points.
+- SVGP Matern52, 100 inducing points.
 - Train 80 files/13,017 windows; validation 13 files; test 7 files.
-- Best epoch 181.
-- Test RMSE X/Y/Z: `3.14 / 8.49 / 5.11 mm`; mean 3D error `8.54 mm`.
+- Best epoch 128.
+- Test RMSE X/Y/Z: `3.16 / 8.42 / 4.91 mm`; mean 3D error `8.50 mm`.
 
 Artifact:
 
-- `svgp_model.pkl`
+- `svgp_model.npz` là runtime mặc định, dùng NumPy với alpha đã tính trước.
+- `svgp_model.pkl` được giữ làm fallback/đối chứng GPflow.
 - `scaler_x.pkl`
 - `scaler_y.pkl`
 - `metadata.json`
+
+Worker dùng `SVGPNumpyRunner` cho `.npz`; output đã đối chiếu với GPflow sai
+khác dưới `5e-13`. Inference trực tiếp qua worker đo khoảng `0.08--0.13 ms` trên
+máy hiện tại, so với khoảng `15 ms` của `.pkl`. Nếu một model directory cũ
+không có `.npz`, worker tự fallback sang file `.pkl` cùng tên gốc.
 
 Script train nằm ngoài ROS workspace tại:
 
@@ -569,9 +602,12 @@ thích TensorFlow 2.15 của máy runtime:
 Cấu hình runtime khớp notebook train: một GRU joint cho XYZ, window 20, horizon
 5, input `[x,y,z,dx,dy,dz]` ở 15 Hz. `dx,dy,dz` là displacement chính xác giữa
 hai mẫu liên tiếp, không chia 16 và không EMA. Mẫu đầu mỗi trial dùng velocity
-bằng 0. Artifact gồm `gru_joint_Ts5.h5`, `scaler_x.pkl`, `scaler_y.pkl` và
-metadata/manifests. Kết quả test của lần train được chọn: RMSE X/Y/Z
-`2.929 / 7.814 / 5.525 mm`, mean 3D `8.532 mm`, p95 `18.727 mm`.
+bằng 0. GRU xuất raw prediction, không đi qua proximity/rate/EMA output filter;
+controller vẫn giữ prediction-lead, workspace, IK và tracking safety limits.
+Runtime dùng `gru_joint_Ts5_float16.tflite` (float16 weights, float32 I/O), còn
+file HDF5 được giữ làm đối chứng. Artifact cũng gồm `scaler_x.pkl`,
+`scaler_y.pkl` và metadata/manifests. Kết quả test của lần train được chọn:
+RMSE X/Y/Z `2.929 / 7.814 / 5.525 mm`, mean 3D `8.532 mm`, p95 `18.727 mm`.
 
 `pHRI_Models/` đang bị Git ignore. Phải sao lưu model riêng nếu cần chuyển máy.
 
@@ -613,6 +649,9 @@ nếu dùng lại phải ghi riêng trong `codrawing_logs/`.
   đầu sau mỗi thay đổi.
 - Streamer dùng 15 Hz, previous joint seed, soft joint limits, workspace và
   `--fail-closed`.
+- Profile mô phỏng co-carry đặt giới hạn R/B/T `0.08 rad/s` qua launch argument
+  `wrist_joint_velocity_limit`; J1/J2/J3 vẫn là `0.20 rad/s`. Profile robot thật
+  không truyền override này nên R/B/T vẫn giữ giới hạn mặc định `0.08 rad/s`.
 - `No kinematics solver` hoặc IK fail liên tiếp có thể khiến target không được
   chấp nhận. Không được gửi nghiệm clamp tùy tiện; kiểm tra frame, orientation,
   reachability, seed và joint limits.

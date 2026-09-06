@@ -54,12 +54,15 @@ def generate_launch_description():
     log_default = os.path.expanduser('~/cocarry_ws/cocarry_logs')
 
     prediction_model_arg = DeclareLaunchArgument(
-        'prediction_model', default_value='svgp', choices=['svgp', 'gru'],
+        'prediction_model', default_value='gru', choices=['svgp', 'gru'],
         description='Robot-EE prediction backend selected before launch')
+    prediction_reference_tau_arg = DeclareLaunchArgument(
+        'prediction_reference_tau_sec', default_value='0.4',
+        description='Nominal smoothing in seconds, matching validated simulation; 0 disables')
     svgp_model_dir_arg = DeclareLaunchArgument(
         'svgp_model_dir',
         default_value=os.path.expanduser(
-            '~/cocarry_ws/pHRI_Models/svgp_robot_ee_h5_m50_relative'),
+            '~/cocarry_ws/pHRI_Models/svgp_robot_ee_h5_m100_relative'),
         description='SVGP robot-EE artifact directory')
     gru_model_dir_arg = DeclareLaunchArgument(
         'gru_model_dir',
@@ -76,6 +79,17 @@ def generate_launch_description():
     test_mode_arg = DeclareLaunchArgument(
         'test_mode', default_value='false',
         description='Disable real Cartesian streaming/controller')
+    robot_effort_unit_mode_arg = DeclareLaunchArgument(
+        'robot_effort_unit_mode', default_value='raw_only',
+        choices=['raw_only', 'torque_nm', 'normalized_rated_torque', 'custom_scale'],
+        description=(
+            'Joint effort conversion used only by the diagnostic robot-force '
+            'estimator; raw_only is the safe default'))
+    robot_force_calibrated_arg = DeclareLaunchArgument(
+        'robot_force_calibrated', default_value='false',
+        description=(
+            'Mark f_robot ready for future role selection only after conversion '
+            'and bias/dynamics compensation have been validated'))
     use_rviz_arg = DeclareLaunchArgument('use_rviz', default_value='False')
 
     not_test_mode = UnlessCondition(
@@ -106,17 +120,29 @@ def generate_launch_description():
         # Deliberately no --lock-z: Z is a controlled 3D degree of freedom.
         # --fail-closed keeps workspace/feedback/queue safety active.
         arguments=['--stream-hz', '15', '--max-vel', '0.15',
-                   '--max-accel', '0.50', '--fail-closed'])
+                   '--max-accel', '0.50', '--continuous-cartesian-smoothing',
+                   '--fail-closed'])
     admittance = Node(
         package='cocarry_admittance_control',
         executable='admittance_controller_3d',
         name='cocarry_admittance_controller', output='screen',
-        condition=not_test_mode, parameters=[params])
+        condition=not_test_mode, parameters=[params, {
+            'prediction_reference_tau_sec': ParameterValue(
+                LaunchConfiguration('prediction_reference_tau_sec'), value_type=float),
+        }])
     sensorless_force = Node(
         package='hc10dtp_bringup', executable='sensorless_force_node.py',
         name='sensorless_force_node', output='screen',
-        condition=not_test_mode,
-        parameters=[{'base_link': 'base_link', 'tip_link': 'tool0', 'deadband_n': 1.0}])
+        # Read-only diagnostics remain available in test_mode; this node never
+        # sends robot commands.
+        parameters=[params, {
+            'base_link': 'base_link',
+            'tip_link': 'tool0',
+            'effort_unit_mode': ParameterValue(
+                LaunchConfiguration('robot_effort_unit_mode'), value_type=str),
+            'calibration_confirmed': ParameterValue(
+                LaunchConfiguration('robot_force_calibrated'), value_type=bool),
+        }])
     logger = Node(
         package='cocarry_admittance_control', executable='cocarry_logger',
         name='cocarry_admittance_logger', output='screen',
@@ -142,7 +168,9 @@ def generate_launch_description():
             'FASTRTPS_DEFAULT_PROFILES_FILE',
             os.path.expanduser('~/cocarry_ws/fastdds_no_shm.xml')),
         prediction_model_arg, svgp_model_dir_arg, gru_model_dir_arg,
+        prediction_reference_tau_arg,
         model_dir_arg, log_dir_arg, test_mode_arg, use_rviz_arg,
+        robot_effort_unit_mode_arg, robot_force_calibrated_arg,
         moveit_launch, ee_tracker, predictor, streamer, admittance,
         sensorless_force, logger, ui, axia_ui,
     ])
