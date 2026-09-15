@@ -1,9 +1,0 @@
-[INFO] [1786963225.565293476] [predictor_ui]: [UI] Node started
-[ERROR] [1786963257.588863592] [predictor_ui]: [UI] Capture Init Pose THẤT BẠI: Chưa nhận được vị trí hiện tại của robot từ /cartesian_streamer/current_pose
-[ERROR] [1786963283.113757757] [predictor_ui]: [UI] Capture Init Pose THẤT BẠI: Chưa nhận được vị trí hiện tại của robot từ /cartesian_streamer/current_pose
-[INFO] [1786963327.486974579] [predictor_ui]: [UI] Trajectory mode set to: prediction
-[INFO] [1786963327.487281768] [predictor_ui]: [UI] Model cmd → svgp
-[INFO] [1786963327.487663828] [predictor_ui]: [UI] Hybrid cmd → hybrid_off
-[ERROR] [1786963354.761624565] [predictor_ui]: [UI] Capture Init Pose THẤT BẠI: Chưa nhận được vị trí hiện tại của robot từ /cartesian_streamer/current_pose
-[ERROR] [1786963363.692685207] [predictor_ui]: [UI] Capture Init Pose THẤT BẠI: Chưa nhận được vị trí hiện tại của robot từ /cartesian_streamer/current_pose
-[ERROR] [1786963372.612138697] [predictor_ui]: [UI] Capture Init Pose THẤT BẠI: Chưa nhận được vị trí hiện tại của robot từ /cartesian_streamer/current_pose

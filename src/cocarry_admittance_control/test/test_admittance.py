@@ -9,6 +9,7 @@ from cocarry_admittance_control.admittance import (
     minimum_safe_ee_z,
     limit_position_lead,
     nominal_reference,
+    soft_axis_deadzone,
     soft_radial_deadzone,
 )
 
@@ -152,3 +153,11 @@ def test_soft_deadzone_is_3d_continuous_and_preserves_direction():
     assert np.allclose(soft_radial_deadzone((0.0, 0.0, 0.5), 0.5), 0.0)
     result = soft_radial_deadzone((0.6, 0.0, 0.8), 0.5)
     assert np.allclose(result, (0.3, 0.0, 0.4))
+
+
+def test_soft_axis_deadzone_can_target_z_only():
+    result = soft_axis_deadzone((1.5, -2.5, 3.73), (0.0, 0.0, 2.0))
+    assert np.allclose(result, (1.5, -2.5, 1.73))
+    assert np.allclose(
+        soft_axis_deadzone((1.5, -2.5, -1.9), (0.0, 0.0, 2.0)),
+        (1.5, -2.5, 0.0))

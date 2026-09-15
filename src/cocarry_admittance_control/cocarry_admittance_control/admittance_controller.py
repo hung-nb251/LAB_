@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import time
+import json
+import os
 
 import numpy as np
 import rclpy
@@ -13,6 +15,7 @@ from rclpy.node import Node
 from std_msgs.msg import Bool, Float32, String
 from std_srvs.srv import SetBool, Trigger
 from .prediction_reference import PredictionReference
+from .manual_hybrid import ManualHybrid
 
 from .admittance import (
     CartesianAdmittance,
@@ -21,8 +24,8 @@ from .admittance import (
     fresh_mjm_sample,
     force_watchdog_action,
     limit_position_lead,
-    minimum_safe_ee_z,
     nominal_reference,
+    soft_axis_deadzone,
     soft_radial_deadzone,
 )
 
@@ -40,6 +43,14 @@ class AdmittanceController3D(Node):
             'damping_z': 4.47213595,
             # Axia UI already applies the 4 N radial deadband.
             'intent_threshold_n': 0.0,
+            # Extra Z-only soft deadzone after Axia's 4 N radial deadband.
+            'additional_z_deadzone_n': 2.0,
+            'xminus_z_deadzone_force_enter_n': 0.50,
+            'xminus_z_deadzone_force_exit_n': 0.20,
+            'xminus_z_deadzone_velocity_enter_mps': 0.020,
+            'xminus_z_deadzone_velocity_exit_mps': 0.010,
+            'xminus_z_deadzone_ramp_sec': 0.25,
+            'xminus_z_deadzone_release_dwell_sec': 0.30,
             'force_sign_x': 1.0, 'force_sign_y': 1.0, 'force_sign_z': 1.0,
             'max_virtual_velocity_mps': 0.15,
             'max_virtual_acceleration_mps2': 0.50,
@@ -50,25 +61,36 @@ class AdmittanceController3D(Node):
             'safe_workspace_x_max_m': 1.4,
             'safe_workspace_y_min_m': -0.5,
             'safe_workspace_y_max_m': 1.3,
-            # The controller uses EE coordinates.  Keep the downward rod above
-            # the floor by converting tip clearance into an EE lower bound.
-            'safe_tool_tip_z_min_m': 0.05,
-            'downward_tool_length_m': 0.1814,
+            # Explicit EE workspace bound in base_link.  The current tool is
+            # horizontal, so do not derive this from the old downward rod.
+            'safe_workspace_z_min_m': 0.0314,
             'safe_workspace_z_max_m': 1.5,
             'max_force_per_axis_n': 20.0,
             'max_force_norm_n': 30.0,
             'force_stale_hold_sec': 0.20,
             'force_timeout_sec': 0.50,
-            'current_pose_timeout_sec': 0.25,
+            'current_pose_stale_hold_sec': 0.25,
+            'current_pose_timeout_sec': 0.50,
             'prediction_timeout_sec': 0.50,
             # Keep the AI nominal close enough to measured EE for IK/tracking
             # safety.  This is a geometric bound, not a force/intention gate.
             'prediction_max_nominal_lead_m': 0.05,
             # Co-carry launch/YAML opts in; standalone default is passthrough.
             'prediction_reference_tau_sec': 0.0,
+            'prediction_reference_lead_sec': 0.0,
             'prepare_timeout_sec': 8.0,
             'min_prediction_buffer_size': 10,
             'require_axia_calibrated': True,
+            'hybrid_target_file': '',
+            'hybrid_arrival_tolerance_m': 0.01,
+            'hybrid_arrival_speed_mps': 0.02,
+            'hybrid_arrival_dwell_sec': 0.5,
+            'hybrid_arrival_grace_sec': 5.0,
+            'hybrid_fitts_a': 3.0,
+            'hybrid_fitts_b': 0.7492,
+            'hybrid_fitts_w': 0.3,
+            'hybrid_reentry_blend_sec': 0.6,
+            'hybrid_reentry_warmup_samples': 10,
         }
         for name, value in defaults.items():
             self.declare_parameter(name, value)
@@ -88,21 +110,56 @@ class AdmittanceController3D(Node):
         self._admittance = CartesianAdmittance(
             mass, damping, stiffness,
             gp('max_virtual_velocity_mps'), gp('max_virtual_acceleration_mps2'))
+        # Release FOLLOWER: keep inertia/damping, but no spring to a GRU/home anchor.
+        self._free_admittance = CartesianAdmittance(
+            mass, damping, np.zeros(3),
+            gp('max_virtual_velocity_mps'), gp('max_virtual_acceleration_mps2'))
+        self._free_origin = np.zeros(3)
+        self._emitted_position = None
+        self._emitted_velocity = np.zeros(3)
+        self._emitted_acceleration = np.zeros(3)
+        self._emitted_time = None
+        self._reentry_token = self._last_reentry_token = 0
+        self._reentry_samples = self._reentry_input_stamp = 0
+        self._reentry_phase = 'OFF'
+        self._reentry_elapsed = 0.
+        self._reentry_blend_sec = float(gp('hybrid_reentry_blend_sec'))
+        if not np.isfinite(self._reentry_blend_sec) or self._reentry_blend_sec <= 0:
+            raise ValueError('hybrid_reentry_blend_sec must be positive')
+        self._reentry_warmup_samples = int(gp('hybrid_reentry_warmup_samples'))
+        if self._reentry_warmup_samples <= 0:
+            raise ValueError('hybrid_reentry_warmup_samples must be positive')
+        self._reentry_align = False
         self._force_sign = np.array([
             1.0 if float(gp('force_sign_x')) >= 0.0 else -1.0,
             1.0 if float(gp('force_sign_y')) >= 0.0 else -1.0,
             1.0 if float(gp('force_sign_z')) >= 0.0 else -1.0,
         ])
         self._intent_threshold = float(gp('intent_threshold_n'))
+        self._additional_z_deadzone = float(gp('additional_z_deadzone_n'))
+        if (not np.isfinite(self._additional_z_deadzone)
+                or self._additional_z_deadzone < 0.0):
+            raise ValueError('additional_z_deadzone_n must be finite and non-negative')
+        self._xminus_force_enter = float(gp('xminus_z_deadzone_force_enter_n'))
+        self._xminus_force_exit = float(gp('xminus_z_deadzone_force_exit_n'))
+        self._xminus_velocity_enter = float(
+            gp('xminus_z_deadzone_velocity_enter_mps'))
+        self._xminus_velocity_exit = float(
+            gp('xminus_z_deadzone_velocity_exit_mps'))
+        self._xminus_deadzone_ramp = float(gp('xminus_z_deadzone_ramp_sec'))
+        self._xminus_release_dwell = float(
+            gp('xminus_z_deadzone_release_dwell_sec'))
+        if (not 0.0 <= self._xminus_force_exit < self._xminus_force_enter
+                or not 0.0 <= self._xminus_velocity_exit < self._xminus_velocity_enter
+                or self._xminus_deadzone_ramp <= 0.0
+                or self._xminus_release_dwell < 0.0):
+            raise ValueError('Invalid adaptive X- Z-deadzone thresholds')
         self._max_command_lead = float(gp('max_command_lead_m'))
         if self._max_command_lead <= 0.0:
             raise ValueError('max_command_lead_m must be positive')
-        self._safe_tip_z_min = float(gp('safe_tool_tip_z_min_m'))
-        self._downward_tool_length = float(gp('downward_tool_length_m'))
         self._workspace_min = np.array([
             gp('safe_workspace_x_min_m'), gp('safe_workspace_y_min_m'),
-            minimum_safe_ee_z(
-                self._safe_tip_z_min, self._downward_tool_length)], dtype=float)
+            gp('safe_workspace_z_min_m')], dtype=float)
         self._workspace_max = np.array([
             gp('safe_workspace_x_max_m'), gp('safe_workspace_y_max_m'),
             gp('safe_workspace_z_max_m')], dtype=float)
@@ -115,10 +172,16 @@ class AdmittanceController3D(Node):
         if not 0.0 < self._force_stale_hold < self._force_timeout:
             raise ValueError(
                 'force_stale_hold_sec must be positive and less than force_timeout_sec')
+        self._pose_stale_hold = float(gp('current_pose_stale_hold_sec'))
         self._pose_timeout = float(gp('current_pose_timeout_sec'))
+        if not 0.0 < self._pose_stale_hold < self._pose_timeout:
+            raise ValueError(
+                'current_pose_stale_hold_sec must be positive and less than '
+                'current_pose_timeout_sec')
         self._prediction_timeout = float(gp('prediction_timeout_sec'))
         self._prediction_reference = PredictionReference(
-            gp('prediction_reference_tau_sec'))
+            gp('prediction_reference_tau_sec'),
+            lead_sec=gp('prediction_reference_lead_sec'))
         self._prediction_max_nominal_lead = float(
             gp('prediction_max_nominal_lead_m'))
         if self._prediction_max_nominal_lead <= 0.0:
@@ -150,6 +213,10 @@ class AdmittanceController3D(Node):
         self._hybrid_state = 'OFF'
         self._requested_hybrid_state = 'OFF'
         self._leader_pending = False
+        # UI callbacks only latch a manual LEADER request.  The control timer
+        # consumes it from the same state snapshot used by automatic Test mode,
+        # avoiding a one-sample handoff between two controller ticks.
+        self._manual_leader_pending = False
         self._pending_mjm = None
         self._role_change_time = 0.0
         self._follower_realign = False
@@ -159,9 +226,27 @@ class AdmittanceController3D(Node):
         self._workspace_clamped = False
         self._command_lead_limited = False
         self._force_stale_active = False
+        self._pose_stale_active = False
         self._force_recovery_pending = False
         self._force_stale_nominal = None
+        self._xminus_z_suppression = False
+        self._xminus_release_since = None
+        self._z_deadzone_weight = 0.0
         self._last_tick = time.monotonic()
+        domain = os.environ.get('ROS_DOMAIN_ID', '0')
+        target_file = gp('hybrid_target_file') or (
+            f'/home/hungnb/cocarry_ws/config/hybrid_targets_domain_{domain}.json')
+        self._manual = ManualHybrid(
+            target_file, self._workspace_min, self._workspace_max,
+            gp('hybrid_arrival_tolerance_m'), gp('hybrid_arrival_speed_mps'),
+            gp('hybrid_arrival_dwell_sec'), gp('hybrid_arrival_grace_sec'),
+            gp('max_virtual_velocity_mps'), gp('max_virtual_acceleration_mps2'),
+            gp('hybrid_fitts_a'), gp('hybrid_fitts_b'), gp('hybrid_fitts_w'))
+        self._ee_speed = float('inf')
+        self._follower_prediction_after_ns = 0
+        self._manual_pub = self.create_publisher(String, '/cocarry/hybrid_status', 10)
+        self.create_subscription(String, '/cocarry/hybrid_command', self._manual_command, 10)
+        self.create_subscription(String, '/ml/reentry_prediction', self._on_reentry_prediction, 10)
 
         self._target_pub = self.create_publisher(PoseStamped, '/cartesian_streamer/target_pose', 10)
         self._target_base_pub = self.create_publisher(PointStamped, '/coord_transform/target_base', 10)
@@ -171,8 +256,13 @@ class AdmittanceController3D(Node):
         self._relative_reference_pub = self.create_publisher(
             PointStamped, '/cocarry/reference_relative', 10)
         self._error_pub = self.create_publisher(Vector3Stamped, '/cocarry/admittance_error', 10)
+        self._effective_force_pub = self.create_publisher(
+            Vector3Stamped, '/cocarry/effective_force', 10)
+        self._z_deadzone_weight_pub = self.create_publisher(
+            Float32, '/cocarry/z_deadzone_weight', 10)
         self._status_pub = self.create_publisher(String, '/cocarry/status', 10)
         self._force_age_pub = self.create_publisher(Float32, '/cocarry/force_age_ms', 10)
+        self._pose_age_pub = self.create_publisher(Float32, '/cocarry/pose_age_ms', 10)
         self._prediction_age_pub = self.create_publisher(
             Float32, '/cocarry/prediction_age_ms', 10)
         self._raw_nominal_pub = self.create_publisher(
@@ -209,15 +299,196 @@ class AdmittanceController3D(Node):
             f'M={mass.tolist()}, D={damping.round(6).tolist()}, K={stiffness.tolist()}, '
             f'vmax={self._admittance.max_velocity:.3f} m/s, EE Z workspace='
             f'[{self._workspace_min[2]:.4f}, {self._workspace_max[2]:.2f}] m '
-            f'(tip floor={self._safe_tip_z_min:.2f} m, rod={self._downward_tool_length:.4f} m), '
+            f'(explicit EE Z bound in base_link), '
             f'force stale/hard={self._force_stale_hold:.2f}/{self._force_timeout:.2f} s, '
             f'Predictor nominal lead={self._prediction_max_nominal_lead:.3f} m '
             '(no force gate), '
-            f'nominal reference tau={self._prediction_reference.time_constant:.3f} s')
+            f'nominal reference tau={self._prediction_reference.time_constant:.3f} s, '
+            f'lead compensation={self._prediction_reference.lead_sec:.3f} s '
+            f'(cap={self._prediction_reference.max_lead_m:.3f} m)')
 
     def _on_current_pose(self, msg):
+        p, q = msg.pose.position, msg.pose.orientation
+        if not np.all(np.isfinite([p.x, p.y, p.z, q.x, q.y, q.z, q.w])):
+            self._current_pose_time = 0.
+            if self._state in ('PREPARING', 'RUNNING'):
+                self._set_fault('Non-finite EE pose')
+            return
+        now = time.monotonic()
+        if self._current_pose is not None and now > self._current_pose_time:
+            p, prev = msg.pose.position, self._current_pose.position
+            self._ee_speed = float(np.linalg.norm(
+                [p.x-prev.x, p.y-prev.y, p.z-prev.z]) / (now-self._current_pose_time))
         self._current_pose = msg.pose
-        self._current_pose_time = time.monotonic()
+        self._current_pose_time = now
+
+    def _manual_status(self):
+        data = self._manual.snapshot()
+        data['controller_state'] = self._state
+        # Derived diagnostic phase: do not introduce another mutable state machine.
+        phase = self._state
+        if self._state == 'RUNNING':
+            if self._force_stale_active:
+                phase = 'FORCE_HOLD'
+            elif self._manual_leader_pending:
+                phase = 'FOLLOWER_TO_LEADER_PENDING'
+            elif self._mode != 'prediction':
+                phase = 'GROUND_TRUTH'
+            elif self._manual.enabled and self._manual.role == 'LEADER':
+                phase = 'LEADER_BRIDGE' if data['transition'] else 'LEADER_MJM'
+            elif self._manual.enabled and self._reentry_phase == 'WAIT':
+                phase = 'FOLLOWER_FORCE_WARMUP'
+            elif self._manual.enabled and self._reentry_phase == 'BLEND':
+                phase = 'FOLLOWER_REENTRY_BLEND'
+            else:
+                phase = 'FOLLOWER_PREDICTION'
+        data['control_phase'] = phase
+        data['leader_request_pending'] = self._manual_leader_pending
+        data['stamp_ns'] = self.get_clock().now().nanoseconds
+        data.update(reentry_token=self._reentry_token, reentry_samples=self._reentry_samples,
+                    reentry_required_samples=self._reentry_warmup_samples, reentry_phase=self._reentry_phase,
+                    reentry_elapsed=self._reentry_elapsed, reentry_blend_sec=self._reentry_blend_sec)
+        if self._manual.enabled and self._manual.role == 'FOLLOWER':
+            if self._reentry_phase == 'WAIT':
+                data['control_source'] = 'force_admittance_warmup'
+            elif self._reentry_phase == 'BLEND':
+                data['control_source'] = 'prediction_reentry_blend'
+                data['transition'] = 'FORCE_TO_PREDICTION'
+        self._manual_pub.publish(String(data=json.dumps(data, allow_nan=False)))
+
+    def _manual_follow(self, reason):
+        self._manual_leader_pending = False
+        self._reset_adaptive_z_deadzone()
+        if self._manual.follow(reason):
+            self._hybrid_state = self._requested_hybrid_state = 'FOLLOWER'
+            self._prediction = None
+            self._prediction_source = ''
+            self._role_change_time = time.monotonic()
+            self._follower_prediction_after_ns = self.get_clock().now().nanoseconds
+            self._follower_realign = False
+            p = self._current_pose.position
+            self._free_origin = (np.array([p.x, p.y, p.z]) if self._emitted_position is None
+                                 else self._emitted_position.copy())
+            self._free_admittance.reset()
+            self._free_admittance.error_velocity[:] = self._emitted_velocity
+            if reason in ('reached', 'skipped_by_user'):
+                self._begin_reentry_wait()
+            else:
+                self._reentry_token, self._reentry_phase = 0, 'OFF'
+
+    def _begin_reentry_wait(self):
+        self._reentry_token = max(self.get_clock().now().nanoseconds, self._last_reentry_token+1)
+        self._last_reentry_token = self._reentry_token
+        self._reentry_samples = self._reentry_input_stamp = 0
+        self._reentry_phase, self._reentry_elapsed = 'WAIT', 0.
+        self._prediction, self._prediction_source = None, ''
+        self._manual.force_follower = True
+
+    def _on_reentry_prediction(self, msg):
+        if (not self._manual.enabled or self._manual.role != 'FOLLOWER'
+                or self._state != 'RUNNING' or not self._reentry_token):
+            return
+        try:
+            data = json.loads(msg.data)
+            token, samples, stamp = int(data['token']), int(data['samples']), int(data['input_stamp_ns'])
+            prediction = np.asarray(data['prediction'], dtype=float)
+            age = (self.get_clock().now().nanoseconds-stamp)/1e9
+            source = str(data['model']).lower()
+            if (token != self._reentry_token or samples < 1
+                    or stamp <= max(token, self._reentry_input_stamp)
+                    or not 0 <= age <= self._prediction_timeout
+                    or prediction.shape != (3,) or not np.all(np.isfinite(prediction))
+                    or source not in ('gru', 'svgp')):
+                return
+        except (KeyError, TypeError, ValueError):
+            return
+        self._reentry_samples = samples
+        self._reentry_input_stamp = stamp
+        if samples < self._reentry_warmup_samples:
+            return
+        self._prediction, self._prediction_source = prediction, source
+        # Age refers to the model INPUT, not the late worker's publication time.
+        self._prediction_time = time.monotonic()-age
+        self._prediction_buffer_size = self._reentry_warmup_samples
+
+    def _manual_command(self, msg):
+        try:
+            command = json.loads(msg.data)
+            action = command['action']
+            busy = self._state in ('PREPARING', 'RUNNING')
+            now = time.monotonic()
+            if action == 'mode':
+                if busy:
+                    raise ValueError('Stop Run before changing mode')
+                if type(command['enabled']) is not bool:
+                    raise ValueError('enabled must be boolean')
+                if type(command.get('test_mode', False)) is not bool:
+                    raise ValueError('test_mode must be boolean')
+                self._manual.enabled = command['enabled']
+                self._manual.test_mode = self._manual.enabled and command.get('test_mode', False)
+                self._manual.reset_run('mode_changed')
+                self._reentry_token, self._reentry_phase = 0, 'OFF'
+            elif action == 'reset':
+                self._manual.reset_targets(busy)
+            elif action == 'save':
+                if self._current_pose is None or now-self._current_pose_time > self._pose_timeout:
+                    raise ValueError('No fresh EE pose')
+                if self._ee_speed > self._manual.speed:
+                    raise ValueError('Wait for robot to stop before saving')
+                p = self._current_pose.position
+                self._manual.save(command['target'], [p.x, p.y, p.z], busy)
+            elif action == 'select':
+                if self._state != 'RUNNING' and not (self._manual.test_mode and not busy):
+                    raise ValueError('Select Target after Start Run is RUNNING')
+                if self._manual.test_mode and busy:
+                    raise ValueError('Select test target before Start Run')
+                self._manual.select(command['target'])
+            elif action == 'follower':
+                if not self._manual.enabled or self._state != 'RUNNING':
+                    raise ValueError('Hybrid must be running')
+                self._manual_follow('skipped_by_user')
+            elif action == 'leader':
+                if (not self._manual.enabled or self._state != 'RUNNING'
+                        or self._mode != 'prediction'):
+                    raise ValueError('Hybrid must be running')
+                if (len(self._manual.targets) != 2
+                        or self._manual.selected is None):
+                    raise ValueError(
+                        'Hybrid requires two saved targets and an explicit selection')
+                self._manual_leader_pending = True
+                self._manual.reason = 'leader_queued'
+            else:
+                raise ValueError('Unknown Hybrid action')
+        except (ValueError, KeyError, TypeError, OSError) as exc:
+            self._manual.reason = f'rejected: {exc}'
+            self.get_logger().warn(self._manual.reason)
+        self._manual_status()
+
+    def _activate_manual_leader_on_tick(self, now, actual_ee):
+        """Consume a UI/Test LEADER request on the control timer boundary."""
+        if not self._manual_leader_pending:
+            return
+        self._manual_leader_pending = False
+        try:
+            if (now-self._current_pose_time > self._pose_stale_hold
+                    or now-self._force_time > self._force_stale_hold
+                    or not self._axia_connected or not self._axia_calibrated
+                    or not self._streamer_ready or self._force_stale_active
+                    or self._pose_stale_active
+                    or np.any(np.abs(self._force) > self._max_force_axis)
+                    or np.linalg.norm(self._force) > self._max_force_norm):
+                raise ValueError('Fresh pose/force and robot readiness required')
+            if self._manual.lead(actual_ee, self._emitted_position,
+                                 self._emitted_velocity,
+                                 self._emitted_acceleration):
+                self._hybrid_state = self._requested_hybrid_state = 'LEADER'
+                self._admittance.reset()
+                self._follower_realign = False
+                self._manual.test_fired = True
+                self._reentry_token, self._reentry_phase = 0, 'OFF'
+        except (ValueError, TypeError) as exc:
+            self._manual.reason = f'rejected: {exc}'
+            self.get_logger().warn(self._manual.reason)
 
     def _on_streamer_ready(self, msg):
         was_ready = self._streamer_ready
@@ -227,6 +498,11 @@ class AdmittanceController3D(Node):
 
     def _on_robot_ee(self, msg):
         if not msg.is_tracked or msg.source != 'robot_ee':
+            return
+        if not np.all(np.isfinite([msg.x, msg.y, msg.z])):
+            self._robot_ee_time = 0.
+            if self._state in ('PREPARING', 'RUNNING'):
+                self._set_fault('Non-finite robot EE input')
             return
         self._robot_ee = np.array([msg.x, msg.y, msg.z], dtype=float)
         self._robot_ee_time = time.monotonic()
@@ -241,16 +517,32 @@ class AdmittanceController3D(Node):
         received_at = time.monotonic()
         buffer_size = int(msg.buffer_size)
         source = str(msg.model_name).strip().lower()
+        if self._manual.enabled:
+            # Manual MJM is controller-owned; predictor remains learned-only.
+            if source == 'mjm' or self._manual.role == 'LEADER':
+                return
+            if self._reentry_token:
+                return  # Only window-qualified results are accepted after release.
+            if self._follower_realign:
+                stamp = msg.header.stamp.sec * 1_000_000_000 + msg.header.stamp.nanosec
+                if stamp <= self._follower_prediction_after_ns:
+                    return
 
         # DDS does not guarantee ordering across hybrid_state and prediction
         # topics.  Keep an early MJM point separate so FOLLOWER can continue
         # using its last learned-predictor sample until the LEADER request arrives.
         if source == 'mjm' and self._requested_hybrid_state != 'LEADER':
-            self._pending_mjm = (prediction, received_at, buffer_size)
+            if np.all(np.isfinite(prediction)):
+                self._pending_mjm = (prediction, received_at, buffer_size)
             return
         if self._requested_hybrid_state == 'LEADER' and source != 'mjm':
             return
 
+        if not np.all(np.isfinite(prediction)):
+            self._prediction, self._prediction_time = None, 0.
+            if self._state in ('PREPARING', 'RUNNING'):
+                self._set_fault('Non-finite prediction')
+            return
         self._prediction = prediction
         self._prediction_time = received_at
         self._prediction_buffer_size = buffer_size
@@ -271,6 +563,8 @@ class AdmittanceController3D(Node):
         self._raw_nominal_pub.publish(out)
 
     def _on_hybrid_state(self, msg):
+        if self._manual.enabled:
+            return
         new_state = msg.data.strip().upper()
         if new_state not in ('OFF', 'READY', 'FOLLOWER', 'LEADER'):
             self.get_logger().warn(f'Ignoring unsupported hybrid state: {new_state}')
@@ -308,6 +602,7 @@ class AdmittanceController3D(Node):
 
         old_state = self._hybrid_state
         self._leader_pending = False
+        self._manual_leader_pending = False
         self._pending_mjm = None
         self._hybrid_state = new_state
         if old_state == 'LEADER':
@@ -330,10 +625,55 @@ class AdmittanceController3D(Node):
             'Role switched to LEADER with a fresh MJM sample: direct position control')
 
     def _on_force(self, msg):
+        if not np.all(np.isfinite([msg.vector.x, msg.vector.y, msg.vector.z])):
+            self._force_time = 0.
+            if self._state in ('PREPARING', 'RUNNING'):
+                self._set_fault('Non-finite force')
+            return
         self._force[:] = [msg.vector.x, msg.vector.y, msg.vector.z]
         self._force_time = time.monotonic()
         if self._force_stale_active:
             self._force_recovery_pending = True
+
+    def _effective_force_input(self, now, dt):
+        """Return and publish the force that the admittance actually consumes."""
+        force = self._force_sign * self._force
+        enter = (force[0] < -self._xminus_force_enter
+                 or self._emitted_velocity[0] < -self._xminus_velocity_enter)
+        release = (force[0] > -self._xminus_force_exit
+                   and self._emitted_velocity[0] > -self._xminus_velocity_exit)
+        if enter:
+            self._xminus_z_suppression = True
+            self._xminus_release_since = None
+        elif self._xminus_z_suppression:
+            if release:
+                if self._xminus_release_since is None:
+                    self._xminus_release_since = now
+                elif now-self._xminus_release_since >= self._xminus_release_dwell:
+                    self._xminus_z_suppression = False
+                    self._xminus_release_since = None
+            else:
+                self._xminus_release_since = None
+        target_weight = 1.0 if self._xminus_z_suppression else 0.0
+        max_change = max(0.0, min(float(dt), 0.1)) / self._xminus_deadzone_ramp
+        self._z_deadzone_weight += float(np.clip(
+            target_weight-self._z_deadzone_weight, -max_change, max_change))
+        z_threshold = self._additional_z_deadzone * self._z_deadzone_weight
+        force = soft_axis_deadzone(force, np.array([0.0, 0.0, z_threshold]))
+        force = soft_radial_deadzone(force, self._intent_threshold)
+        msg = Vector3Stamped()
+        msg.header.stamp = self.get_clock().now().to_msg()
+        msg.header.frame_id = 'base_link'
+        msg.vector.x, msg.vector.y, msg.vector.z = map(float, force)
+        self._effective_force_pub.publish(msg)
+        self._z_deadzone_weight_pub.publish(
+            Float32(data=float(self._z_deadzone_weight)))
+        return force
+
+    def _reset_adaptive_z_deadzone(self):
+        self._xminus_z_suppression = False
+        self._xminus_release_since = None
+        self._z_deadzone_weight = 0.0
 
     def _on_calibrated(self, msg):
         self._axia_calibrated = bool(msg.data)
@@ -372,6 +712,19 @@ class AdmittanceController3D(Node):
             self._stop_run()
 
     def _start_prepare(self):
+        if self._manual.enabled and self._manual.test_mode and (
+                len(self._manual.targets) != 2 or self._manual.selected is None):
+            self._reject_start('Save both targets and select a test target before Start Run')
+            return
+        self._manual.reset_run()
+        self._reentry_token, self._reentry_phase = 0, 'OFF'
+        self._reentry_samples = 0
+        self._emitted_position = self._emitted_time = None
+        self._emitted_velocity.fill(0.)
+        self._emitted_acceleration.fill(0.)
+        self._free_admittance.reset()
+        if self._manual.enabled:
+            self._hybrid_state = self._requested_hybrid_state = 'FOLLOWER'
         self._fault = ''
         now = time.monotonic()
         if self._current_pose is None or now - self._current_pose_time > self._pose_timeout:
@@ -417,8 +770,10 @@ class AdmittanceController3D(Node):
         self._command_lead_limited = False
         self._follower_realign = False
         self._force_stale_active = False
+        self._pose_stale_active = False
         self._force_recovery_pending = False
         self._force_stale_nominal = None
+        self._reset_adaptive_z_deadzone()
         self._control_hold_pub.publish(Bool(data=False))
         self._state = 'PREPARING'
         self._prepare_deadline = now + self._prepare_timeout
@@ -527,9 +882,14 @@ class AdmittanceController3D(Node):
         return desired
 
     def _stop_run(self):
+        self._manual_leader_pending = False
+        self._reset_adaptive_z_deadzone()
+        self._manual.reset_run('stopped')
+        self._reentry_token, self._reentry_phase = 0, 'OFF'
         self._state = 'STOPPED'
         self._admittance.reset()
         self._aligned = False
+        self._pose_stale_active = False
         self._force_stale_nominal = None
         self._control_hold_pub.publish(Bool(data=False))
         self._request_predictor_stop()
@@ -544,6 +904,10 @@ class AdmittanceController3D(Node):
     def _set_fault(self, reason):
         if self._fault:
             return
+        self._manual_leader_pending = False
+        self._reset_adaptive_z_deadzone()
+        self._manual.reset_run('fault: ' + reason)
+        self._reentry_token, self._reentry_phase = 0, 'OFF'
         self._fault = reason
         self._state = 'FAULT'
         self._control_hold_pub.publish(Bool(data=False))
@@ -570,6 +934,10 @@ class AdmittanceController3D(Node):
             else max(0.0, (now - self._prediction_time) * 1000.0))
         self._force_age_pub.publish(Float32(data=force_age_ms))
         self._prediction_age_pub.publish(Float32(data=prediction_age_ms))
+        pose_age_ms = (
+            float('nan') if self._current_pose_time <= 0.0
+            else max(0.0, (now - self._current_pose_time) * 1000.0))
+        self._pose_age_pub.publish(Float32(data=pose_age_ms))
 
     def _control_tick(self):
         now = time.monotonic()
@@ -586,8 +954,12 @@ class AdmittanceController3D(Node):
             self._set_fault(
                 f'Force data timeout ({force_age * 1000.0:.0f} ms)')
             return
-        if now - self._current_pose_time > self._pose_timeout:
-            self._set_fault('Current EE pose timeout')
+        pose_age = now - self._current_pose_time
+        pose_action = force_watchdog_action(
+            pose_age, self._pose_stale_hold, self._pose_timeout)
+        if pose_action == 'fault':
+            self._set_fault(
+                f'Current EE pose timeout ({pose_age * 1000.0:.0f} ms)')
             return
         if not self._streamer_ready:
             self._set_fault('Cartesian streamer is not ready')
@@ -605,7 +977,24 @@ class AdmittanceController3D(Node):
             self._current_pose.position.y,
             self._current_pose.position.z], dtype=float)
         leader = self._mode == 'prediction' and self._hybrid_state == 'LEADER'
+        if pose_action == 'hold':
+            if not self._pose_stale_active:
+                self._pose_stale_active = True
+                self._control_hold_pub.publish(Bool(data=True))
+                self.get_logger().warn(
+                    f'Current EE pose stale for {pose_age * 1000.0:.0f} ms; '
+                    'holding last measured EE until feedback recovers')
+            self._last_tick = now
+            self._publish_reference(actual_ee, np.zeros(3), actual_ee)
+            return
+        if self._pose_stale_active:
+            self._pose_stale_active = False
+            self._follower_realign = True
+            if not self._force_stale_active:
+                self._control_hold_pub.publish(Bool(data=False))
+            self.get_logger().info('Current EE pose stream recovered; resume from measured EE')
         if force_action == 'hold':
+            self._manual._inside_since = None
             if not self._force_stale_active:
                 self._force_stale_active = True
                 self._force_recovery_pending = False
@@ -615,6 +1004,8 @@ class AdmittanceController3D(Node):
                 self.get_logger().warn(
                     f'Force stream stale for {force_age * 1000.0:.0f} ms; '
                     'holding actual EE until data recovers')
+                if self._manual.enabled and not leader and self._reentry_phase != 'OFF':
+                    self._begin_reentry_wait()
             # Never advance a predictor/MJM nominal from the last non-zero force
             # while force data is stale.  Keep diagnostics alive but freeze
             # the control reference at measured EE.
@@ -626,23 +1017,69 @@ class AdmittanceController3D(Node):
             # Freeze nominal state/time too: no hidden advance during HOLD.
             self._prediction_reference.reset(nominal, now)
             self._admittance.reset(error)
+            self._free_origin = actual_ee.copy()
+            self._free_admittance.reset()
             self._last_tick = now
             self._publish_reference(nominal, error, actual_ee)
             return
 
-        if self._mode == 'prediction':
+        if self._manual.enabled and leader and self._force_stale_active and self._force_recovery_pending:
+            try:
+                self._manual.resume_after_hold(actual_ee)
+            except ValueError as exc:
+                self._set_fault(f'Cannot resume Hybrid after force HOLD: {exc}')
+                return
+        if self._manual.enabled and self._manual.test_mode and not self._manual.test_fired:
+            self._manual.test_elapsed += max(0., min(now-self._last_tick, .1))
+            if self._manual.test_elapsed >= 5.:
+                # One attempt only, including a rejected bridge. No surprise retry.
+                self._manual.test_fired = True
+                self._manual_command(String(data='{"action":"leader"}'))
+                if self._manual.role == 'LEADER':
+                    self._manual.role_source = 'test_timer'
+                    self._manual.reason = 'test_timer_leader'
+        self._activate_manual_leader_on_tick(now, actual_ee)
+        if self._manual.test_mode and self._manual.role == 'LEADER':
+            self._manual.role_source = 'test_timer'
+            if self._manual.reason == 'manual_leader':
+                self._manual.reason = 'test_timer_leader'
+        leader = self._hybrid_state == 'LEADER'
+        manual_leader = self._manual.enabled and leader
+        if self._manual.enabled:
+            was_leader = self._manual.role == 'LEADER'
+            reached = self._manual.observe(actual_ee, self._ee_speed, now)
+            if reached and was_leader:
+                self._manual_follow('reached')
+                leader = manual_leader = False
+            if manual_leader and self._manual.elapsed > self._manual.duration + self._manual.grace:
+                self._set_fault('Hybrid target_not_reached after MJM grace period')
+                return
+        if (self._manual.enabled and not leader and self._reentry_phase == 'WAIT'
+                and self._reentry_samples >= self._reentry_warmup_samples and self._prediction is not None
+                and now-self._prediction_time <= self._prediction_timeout):
+            self._reentry_phase, self._reentry_elapsed, self._reentry_align = 'BLEND', 0., True
+            start = actual_ee if self._emitted_position is None else self._emitted_position
+            self._prediction_reference.reset(start, now)
+        blending = self._manual.enabled and not leader and self._reentry_phase == 'BLEND'
+        free_follower = self._manual.enabled and self._manual.force_follower and not leader and not blending
+        if self._mode == 'prediction' and not manual_leader and not free_follower:
             correct_source = (
                 self._prediction_source == 'mjm'
                 if leader else self._prediction_source not in ('', 'mjm'))
             if not correct_source:
                 if now - self._role_change_time <= self._prediction_timeout:
+                    if self._follower_realign:
+                        self._last_tick = now
+                        self._publish_reference(actual_ee, np.zeros(3), actual_ee)
                     return
                 expected = 'MJM' if leader else 'predictor'
                 self._set_fault(f'Timed out waiting for a fresh {expected} position')
                 return
         if self._follower_realign and not leader:
             self._prediction_reference.reset(actual_ee, now)
-        nominal = self._nominal_position(now, apply_prediction_limit=not leader)
+        nominal = (self._free_origin.copy() if free_follower else
+                   self._manual.sample(now-self._last_tick) if manual_leader else
+                   self._nominal_position(now, apply_prediction_limit=not leader))
         if nominal is None:
             self._set_fault(f'{self._mode} position timeout')
             return
@@ -661,28 +1098,69 @@ class AdmittanceController3D(Node):
             # still watched above for timeout/limits, but is not applied here.
             error = np.zeros(3, dtype=float)
             reference_ee = commanded_position(nominal, error, leader=True)
+        elif free_follower:
+            effective_force = self._effective_force_input(now, dt)
+            error, _, _ = self._free_admittance.step(effective_force, dt)
+            reference_ee = nominal + error
+        elif blending:
+            force = self._effective_force_input(now, dt)
+            if self._reentry_align:
+                start = actual_ee if self._emitted_position is None else self._emitted_position
+                self._admittance.reset(start-nominal)
+                self._admittance.error_velocity[:] = self._emitted_velocity
+                self._reentry_align = False
+            s = min(self._reentry_elapsed/self._reentry_blend_sec, 1.)
+            weight = 10*s**3-15*s**4+6*s**5
+            free_error, _, _ = self._free_admittance.step(force, dt)
+            learned_error, _, _ = self._admittance.step(force, dt, stiffness_scale=weight)
+            reference_ee = ((1-weight)*(self._free_origin+free_error)
+                            + weight*(nominal+learned_error))
+            error = reference_ee-nominal
+            self._reentry_elapsed += max(0., min(dt, .1))
+            if s >= 1.:
+                self._reentry_phase = 'ACTIVE'
+                self._manual.force_follower = False
         else:
             if self._follower_realign:
                 self._admittance.reset(actual_ee - nominal)
                 self._follower_realign = False
-            effective_force = soft_radial_deadzone(
-                self._force_sign * self._force, self._intent_threshold)
-            error, _, _ = self._admittance.step(effective_force, dt)
+                error = self._admittance.error.copy()
+            else:
+                effective_force = self._effective_force_input(now, dt)
+                error, _, _ = self._admittance.step(effective_force, dt)
             reference_ee = commanded_position(nominal, error, leader=False)
 
+        integrator = self._free_admittance if free_follower else self._admittance
+        unconstrained_reference = reference_ee.copy()
+        if self._manual.enabled and not leader and self._reentry_phase in ('BLEND', 'ACTIVE'):
+            # Smoothstep alone does not bound velocity for an arbitrary GRU
+            # jump. Bound the TOTAL output and retain this guard after blending.
+            if self._emitted_position is not None:
+                step_dt = float(np.clip(dt, 1e-4, .1))
+                velocity = (reference_ee-self._emitted_position)/step_dt
+                change = CartesianAdmittance._limit_norm(
+                    velocity-self._emitted_velocity, integrator.max_acceleration*step_dt)
+                velocity = CartesianAdmittance._limit_norm(
+                    self._emitted_velocity+change, integrator.max_velocity)
+                limited = self._emitted_position+velocity*step_dt
+                if not np.allclose(limited, reference_ee, atol=1e-10, rtol=0):
+                    reference_ee = limited
+                    if not blending:
+                        integrator.error = reference_ee-nominal
+                    error = reference_ee-nominal
         clamped_ee = np.clip(reference_ee, self._workspace_min, self._workspace_max)
         self._workspace_clamped = not np.allclose(clamped_ee, reference_ee)
         if self._workspace_clamped:
             unclamped_ee = reference_ee.copy()
             reference_ee = clamped_ee
-            if not leader:
+            if not leader and not blending:
                 for axis in range(3):
                     if reference_ee[axis] != unclamped_ee[axis]:
-                        self._admittance.error[axis] = reference_ee[axis] - nominal[axis]
+                        integrator.error[axis] = reference_ee[axis] - nominal[axis]
                         outward = unclamped_ee[axis] - reference_ee[axis]
-                        if np.sign(self._admittance.error_velocity[axis]) == np.sign(outward):
-                            self._admittance.error_velocity[axis] = 0.0
-                error = self._admittance.error.copy()
+                        if np.sign(integrator.error_velocity[axis]) == np.sign(outward):
+                            integrator.error_velocity[axis] = 0.0
+                error = integrator.error.copy()
             self.get_logger().warn(
                 f'Workspace clamped at EE={reference_ee.round(4).tolist()}',
                 throttle_duration_sec=1.0)
@@ -696,21 +1174,49 @@ class AdmittanceController3D(Node):
         if self._command_lead_limited:
             lead_direction = lead / lead_norm
             reference_ee = actual_ee + lead_direction * self._max_command_lead
-            if not leader:
-                self._admittance.error = reference_ee - nominal
+            if not leader and not blending:
+                integrator.error = reference_ee - nominal
                 outward_velocity = float(np.dot(
-                    self._admittance.error_velocity, lead_direction))
+                    integrator.error_velocity, lead_direction))
                 if outward_velocity > 0.0:
-                    self._admittance.error_velocity -= (
+                    integrator.error_velocity -= (
                         outward_velocity * lead_direction)
-                error = self._admittance.error.copy()
+                error = integrator.error.copy()
             self.get_logger().warn(
                 f'Command lead limited to {self._max_command_lead:.3f} m '
                 f'(requested {lead_norm:.3f} m)',
                 throttle_duration_sec=1.0)
+        if blending:
+            # A common correction preserves the weighted sum for EVERY weight,
+            # including zero. Never assign a blended error to only one branch.
+            correction = reference_ee-unconstrained_reference
+            for branch in (self._free_admittance, self._admittance):
+                branch.error += correction
+                norm = float(np.linalg.norm(correction))
+                if norm > 1e-10:
+                    outward = -correction/norm
+                    speed = float(np.dot(branch.error_velocity, outward))
+                    if speed > 0.:
+                        branch.error_velocity -= speed*outward
+            error = reference_ee-nominal
         self._publish_reference(nominal, error, reference_ee)
 
     def _publish_reference(self, nominal, error, reference_ee):
+        if not np.all(np.isfinite([nominal, error, reference_ee])):
+            self._set_fault('Non-finite Cartesian reference')
+            return
+        now = time.monotonic()
+        if (self._emitted_time is not None and now > self._emitted_time
+                and not self._force_stale_active and not self._pose_stale_active):
+            dt = now-self._emitted_time
+            velocity = (reference_ee-self._emitted_position)/dt
+            self._emitted_acceleration = (velocity-self._emitted_velocity)/dt
+            self._emitted_velocity = velocity
+        else:
+            self._emitted_velocity.fill(0.)
+            self._emitted_acceleration.fill(0.)
+        self._emitted_position, self._emitted_time = reference_ee.copy(), now
+        self._manual_status()
         stamp = self.get_clock().now().to_msg()
         target = PoseStamped()
         target.header.stamp = stamp
@@ -741,8 +1247,13 @@ class AdmittanceController3D(Node):
         self._error_pub.publish(err)
 
     def _publish_status(self):
+        self._manual_status()
         if self._fault:
             state = f'FAULT: {self._fault}'
+        elif self._state == 'RUNNING' and self._pose_stale_active:
+            pose_age_ms = max(
+                0.0, (time.monotonic() - self._current_pose_time) * 1000.0)
+            state = f'RUNNING: POSE_STALE_HOLD ({pose_age_ms:.0f} ms)'
         elif self._state == 'RUNNING' and self._force_stale_active:
             force_age_ms = max(
                 0.0, (time.monotonic() - self._force_time) * 1000.0)

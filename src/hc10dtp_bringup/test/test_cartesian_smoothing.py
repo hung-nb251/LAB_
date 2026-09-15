@@ -1,5 +1,6 @@
 """Run the production smoother with an inert clock and Cartesian messages."""
 import ast
+from collections import deque
 import math
 from pathlib import Path
 from types import SimpleNamespace as NS
@@ -11,6 +12,17 @@ class Pose:
     def __init__(self, position=None, orientation=None):
         self.position = position or NS(x=0., y=0., z=0.)
         self.orientation = orientation or NS(x=0., y=0., z=0., w=1.)
+
+
+def timed_pose_selector():
+    path = Path(__file__).parents[1] / 'scripts/cartesian_streamer_hc10dtp.py'
+    tree = ast.parse(path.read_text())
+    function = next(n for n in tree.body
+                    if isinstance(n, ast.FunctionDef)
+                    and n.name == 'advance_timed_pose')
+    env = {}
+    exec(compile(ast.Module(body=[function], type_ignores=[]), str(path), 'exec'), env)
+    return env['advance_timed_pose']
 
 
 def smoother(velocity=(0., 0., 0.), continuous=True):
@@ -82,3 +94,12 @@ def test_positions_obey_velocity_and_acceleration_bounds_during_xyz_reversals():
 def test_camera_profile_keeps_historical_behavior_until_separate_review():
     _, step = smoother(velocity=(-.1, 0., 0.), continuous=False)
     assert np.allclose(step((.019, 0., 0.)), [.019, 0., 0.])
+
+
+def test_tracking_uses_latest_pose_that_is_due_not_newest_queued_pose():
+    select = timed_pose_selector()
+    history = deque([(100, 'p1'), (200, 'p2'), (300, 'p3')])
+    assert select(history, 'seed', 250) == 'p2'
+    assert list(history) == [(300, 'p3')]
+    assert select(history, 'p2', 299) == 'p2'
+    assert select(history, 'p2', 300) == 'p3'

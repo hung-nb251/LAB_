@@ -18,8 +18,17 @@ cocarry_admittance_controller:
     damping_y: 4.47213595
     damping_z: 4.47213595
 
-    # Axia UI da ap radial deadband 4 N, khong deadzone lan hai.
+    # Axia UI da ap radial deadband 4 N. Soft deadzone Fz toi da 2 N chi duoc
+    # ramp vao khi nhan dien X-, roi ramp ra sau hysteresis/dwell. Vi vay Z
+    # thuan khi khong co X- giu nguyen do nhay. Dat 0.0 de quay lai hanh vi cu.
     intent_threshold_n: 0.0
+    additional_z_deadzone_n: 2.0
+    xminus_z_deadzone_force_enter_n: 0.50
+    xminus_z_deadzone_force_exit_n: 0.20
+    xminus_z_deadzone_velocity_enter_mps: 0.020
+    xminus_z_deadzone_velocity_exit_mps: 0.010
+    xminus_z_deadzone_ramp_sec: 0.25
+    xminus_z_deadzone_release_dwell_sec: 0.30
     force_sign_x: 1.0
     force_sign_y: 1.0
     force_sign_z: 1.0
@@ -30,14 +39,14 @@ cocarry_admittance_controller:
     # Reference chi duoc di truoc feedback EE that toi da 30 mm.
     max_command_lead_m: 0.03
 
-    # Controller va UI dung toa do robot EE. Rieng bien Z duoi duoc suy ra
-    # tu khoang ho san cua dau thanh: EE_z >= 0.05 + 0.1814 = 0.2314 m.
+    # Controller va UI dung toa do goc EE (tool0) trong frame base_link.
+    # Cau hinh tool hien tai la thanh ngang, khong dung cong thuc thanh doc
+    # truoc day (0.05 + 0.1814 = 0.2314 m).
     safe_workspace_x_min_m: -1.4
     safe_workspace_x_max_m: 1.4
     safe_workspace_y_min_m: -0.5
     safe_workspace_y_max_m: 1.3
-    safe_tool_tip_z_min_m: 0.05
-    downward_tool_length_m: 0.1814
+    safe_workspace_z_min_m: 0.0314
     safe_workspace_z_max_m: 1.5
 
     max_force_per_axis_n: 20.0
@@ -47,7 +56,10 @@ cocarry_admittance_controller:
     # tao stop gia trong khi Axia van ket noi.
     force_stale_hold_sec: 0.20
     force_timeout_sec: 0.50
-    current_pose_timeout_sec: 0.25
+    # Pose watchdog hai tang: freeze reference khi jitter vuot 0.25 s; chi
+    # disable neu feedback mat qua 0.50 s. Streamer dung cung hard timeout.
+    current_pose_stale_hold_sec: 0.25
+    current_pose_timeout_sec: 0.50
     prediction_timeout_sec: 0.50
     # SVGP la nominal x_d ngay ca khi luc nguoi nho/bang 0. Gioi han nay chi
     # chong AI nominal chay qua xa EE, khong phai gate dua tren luc.
@@ -58,16 +70,30 @@ cocarry_admittance_controller:
     prepare_timeout_sec: 8.0
     min_prediction_buffer_size: 10
     require_axia_calibrated: true
+    # Manual Hybrid MJM duration. The velocity/acceleration bounds remain the
+    # hard lower bounds when this Fitts estimate is shorter.
+    hybrid_fitts_a: 3.0
+    hybrid_fitts_b: 0.7492
+    hybrid_fitts_w: 0.3
+    # Manual LEADER -> FOLLOWER: spread the prediction re-entry over a longer
+    # interval so a fresh prediction offset cannot create a sharp speed-up.
+    hybrid_reentry_blend_sec: 0.6
+    hybrid_reentry_warmup_samples: 10
 cocarry_admittance_logger:
   ros__parameters:
+    # Acquisition for calibration: CSV uses accepted pre-deadband estimates.
+    # The /sensorless_force topic keeps its configured deadband/sanity limit.
+    robot_force_log_unfiltered: true
+    robot_force_sample_timeout_sec: 0.25
     log_dir: /home/hungnb/cocarry_ws/cocarry_logs
     file_prefix: cocarry_admittance_3d
 
 sensorless_force_node:
   ros__parameters:
-    # The YRC1000 effort unit has not been verified yet. raw_only records all
-    # six channels without publishing a misleading Cartesian force.
-    effort_unit_mode: raw_only
+    # Diagnostic assumption: official MotoROS2 API reports joint effort in Nm.
+    # Actual controller firmware/scale still needs verification; NOT calibrated.
+    # Never infer a URDF rated-torque multiplier just from small effort values.
+    effort_unit_mode: torque_nm
     calibration_confirmed: false
     deadband_n: 1.0
     max_force_norm_n: 500.0
@@ -126,6 +152,7 @@ trajectory_predictor:
       release_distance_m: 0.010
       publish_rate_hz: 15.0
     mjm:
+      manual_control: true
       enabled: true
       publish_rate_hz: 15.0
       reference_timeout_sec: 0.25

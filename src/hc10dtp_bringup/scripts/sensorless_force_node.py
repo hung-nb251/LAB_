@@ -7,11 +7,13 @@ its output is not connected to the admittance controller. The convention is
 """
 
 import math
+import json
 
 import numpy as np
 import rclpy
 from geometry_msgs.msg import WrenchStamped
 from rclpy.node import Node
+from rclpy.qos import qos_profile_sensor_data
 from sensor_msgs.msg import JointState
 from std_msgs.msg import Bool, Float64MultiArray, String
 
@@ -90,7 +92,10 @@ class SensorlessForceNode(Node):
             String, '/sensorless_force/status', 10)
         self._diagnostics_pub = self.create_publisher(
             Float64MultiArray, '/sensorless_force/diagnostics', 10)
-        self.create_subscription(JointState, '/joint_states', self._joint_state, 20)
+        # One diagnostic record binds force, units, health and source joints.
+        self._sample_pub = self.create_publisher(String, '/sensorless_force/sample', 10)
+        self.create_subscription(
+            JointState, '/joint_states', self._joint_state, qos_profile_sensor_data)
 
         if self._mode == 'raw_only':
             self.get_logger().warning(
@@ -112,6 +117,8 @@ class SensorlessForceNode(Node):
         return values
 
     def _publish_health(self, valid, status):
+        self._sample.update(role_valid=bool(valid), status=status)
+        self._sample_pub.publish(String(data=json.dumps(self._sample, allow_nan=False)))
         valid_msg = Bool()
         valid_msg.data = bool(valid)
         self._valid_pub.publish(valid_msg)
@@ -143,6 +150,19 @@ class SensorlessForceNode(Node):
         if now_ns - self._last_process_ns < self._minimum_period_ns:
             return
         self._last_process_ns = now_ns
+        self._sample = {
+            'schema': 1,
+            'stamp_ns': msg.header.stamp.sec * 1_000_000_000 + msg.header.stamp.nanosec,
+            'frame': self._base_link, 'mode': self._mode,
+            'calibration_confirmed': self._calibration_confirmed,
+            'force': None, 'force_unfiltered': None, 'torque_nm': None,
+            'position': None, 'effort_raw': None, 'diagnostics': None,
+            'scale_nm_per_effort': (self._rated_torque.tolist()
+                if self._mode == 'normalized_rated_torque' else
+                self._custom_scale.tolist() if self._mode == 'custom_scale' else
+                [1.0] * 6 if self._mode == 'torque_nm' else None),
+            'bias_nm': self._torque_bias.tolist(),
+        }
         try:
             indices = self._indices_for(msg)
             if not msg.effort or max(indices) >= len(msg.effort):
@@ -160,6 +180,7 @@ class SensorlessForceNode(Node):
             self._publish_health(False, f'INVALID:{exc}')
             return
 
+        self._sample.update(position=q.tolist(), effort_raw=raw_effort.tolist())
         if self._mode == 'raw_only':
             self._publish_health(False, 'RAW_ONLY:conversion_not_confirmed')
             return
@@ -185,6 +206,13 @@ class SensorlessForceNode(Node):
             return
 
         force = estimate.wrench[:3].copy()
+        # Preserve pre-deadband data even if the standard output is rejected.
+        if np.all(np.isfinite(force)):
+            self._sample.update(
+                force_unfiltered=force.tolist(), torque_nm=torque_nm.tolist(),
+                diagnostics=[estimate.sigma_min,
+                    estimate.condition_number if math.isfinite(estimate.condition_number) else -1.0,
+                    estimate.damping, estimate.relative_residual])
         force[np.abs(force) < self._deadband] = 0.0
         force_norm = float(np.linalg.norm(force))
         if not np.all(np.isfinite(force)) or force_norm > self._max_force_norm:
@@ -221,6 +249,7 @@ class SensorlessForceNode(Node):
         self._diagnostics_pub.publish(diagnostics)
 
         quality = 'VALID' if self._calibration_confirmed else 'UNCALIBRATED'
+        self._sample['force'] = force.tolist()
         self._publish_health(
             self._calibration_confirmed, f'{quality}:{self._mode}')
 

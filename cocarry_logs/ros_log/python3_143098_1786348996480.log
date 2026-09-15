@@ -1,4 +1,0 @@
-[INFO] [1786348997.015651281] [realsense_tracker]: RealSense Tracker Node Started.
-[INFO] [1786349023.051642645] [realsense_tracker]: Calibrated successfully. Origin set to (-0.019, 0.040, 2.183)
-[INFO] [1786349595.788186491] [realsense_tracker]: Calibrated successfully. Origin set to (-0.048, 0.011, 2.176)
-[ERROR] [1786350473.354002048] [realsense_tracker]: Camera not responding

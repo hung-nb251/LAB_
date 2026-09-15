@@ -1,6 +1,0 @@
-[INFO] [1785745463.318062719] [predictor_ui]: [UI] Node started
-[WARN] [1785745524.625598475] [predictor_ui]: [UI] /realsense/calibrate_origin not ready
-[WARN] [1785745526.139178678] [predictor_ui]: [UI] /realsense/calibrate_origin not ready
-[WARN] [1785745611.483009383] [predictor_ui]: [UI] /realsense/calibrate_origin not ready
-[ERROR] [1785745617.531991719] [predictor_ui]: [UI] Capture Init Pose THẤT BẠI: Chưa nhận được vị trí hiện tại của robot từ /cartesian_streamer/current_pose
-[WARN] [1785745624.324416630] [predictor_ui]: [UI] /realsense/calibrate_origin not ready

@@ -109,8 +109,8 @@ def test_force_hold_resets_reference_clock_before_early_return():
     assert isinstance(hold.body[-1], ast.Return)
 
 
-@pytest.mark.parametrize('profile', ['real', 'sim'])
-def test_real_and_sim_launch_share_nominal_default_and_controller_wiring(profile):
+@pytest.mark.parametrize('profile, expected_tau', [('real', '0.4'), ('sim', '0.4')])
+def test_launch_nominal_default_and_controller_wiring(profile, expected_tau):
     path = Path(__file__).parents[1] / 'launch' / f'cocarry_admittance_{profile}_gui.launch.py'
     tree = ast.parse(path.read_text())
     declaration = next(n for n in ast.walk(tree) if isinstance(n, ast.Call)
@@ -118,9 +118,61 @@ def test_real_and_sim_launch_share_nominal_default_and_controller_wiring(profile
                        and n.func.id == 'DeclareLaunchArgument'
                        and n.args and isinstance(n.args[0], ast.Constant)
                        and n.args[0].value == 'prediction_reference_tau_sec')
-    assert next(k.value.value for k in declaration.keywords if k.arg == 'default_value') == '0.4'
+    assert next(
+        k.value.value for k in declaration.keywords
+        if k.arg == 'default_value') == expected_tau
     controller = next(n for n in ast.walk(tree) if isinstance(n, ast.Assign)
                       and any(isinstance(t, ast.Name) and t.id == 'admittance' for t in n.targets))
     params = next(k.value for k in controller.value.keywords if k.arg == 'parameters')
     assert "LaunchConfiguration('prediction_reference_tau_sec')" in ast.unparse(params)
     assert 'value_type=float' in ast.unparse(params)
+
+
+def test_lead_reduces_constant_velocity_lag_without_changing_raw_prediction():
+    old, new = PredictionReference(.4), PredictionReference(.4, lead_sec=.15)
+    for ref in (old, new):
+        ref.reset([0., 0., 0.], 0.)
+    for i in range(1, 151):
+        raw = np.array([.1 * i / 15, 0., 0.])
+        a, b = old.step(raw, i / 15), new.step(raw, i / 15)
+    assert np.isclose(raw[0], 1.)
+    assert raw[0] - b[0] < .65 * (raw[0] - a[0])
+    assert b[0] - a[0] == pytest.approx(.015, abs=1e-6)
+
+
+def test_lead_cap_reset_stall_and_repeated_timestamps():
+    ref = PredictionReference(.4, lead_sec=.15)
+    ref.reset([0., 0., 0.], 0.)
+    for i in range(1, 61):
+        out = ref.step([i, -i, i], i / 15)
+        assert np.linalg.norm(out - ref.position) <= .02 + 1e-12
+        assert np.array_equal(ref.step([99., 99., 99.], i / 15), out)
+    out = ref.step([100., 100., 100.], 10.)
+    assert np.array_equal(ref.velocity, np.zeros(3))
+    assert np.array_equal(out, ref.position)
+    ref.reset([1., 2., 3.], 20.)
+    assert np.array_equal(ref.step([9., 9., 9.], 20.), [1., 2., 3.])
+
+
+def test_compensated_constant_target_converges_and_attenuates_stationary_noise():
+    ref = PredictionReference(.4, lead_sec=.15)
+    ref.reset([0., 0., 0.], 0.)
+    for i in range(1, 151):
+        out = ref.step([.04, -.02, .01], i / 15)
+        assert np.all(out <= np.maximum(ref.position, [.04, -.02, .01]) + 1e-12)
+        assert np.all(out >= np.minimum(ref.position, [.04, -.02, .01]) - 1e-12)
+    assert np.allclose(out, [.04, -.02, .01], atol=1e-8)
+    rng = np.random.default_rng(15)
+    raw, result = [], []
+    for i in range(151, 751):
+        sample = np.array([.04, -.02, .01]) + rng.normal(0., .003, 3)
+        raw.append(sample)
+        result.append(ref.step(sample, i / 15))
+    assert np.std(result, axis=0).max() < .6 * np.std(raw, axis=0).min()
+
+
+@pytest.mark.parametrize('kwargs', [{'lead_sec': -1}, {'lead_sec': float('nan')},
+                                   {'velocity_tau_sec': 0}, {'max_lead_m': -1}])
+def test_invalid_lead_parameters_fail(kwargs):
+    with pytest.raises(ValueError):
+        PredictionReference(.4, **kwargs)

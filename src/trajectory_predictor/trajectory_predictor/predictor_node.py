@@ -75,6 +75,7 @@ class PredictorNode(Node):
 
         # ── Hybrid prediction+MJM parameters ─────────────────────────────────
         self.declare_parameter('mjm.enabled', False)
+        self.declare_parameter('mjm.manual_control', False)
         # Camera pipeline keeps its historical 30 Hz default.  Co-carry YAML
         # overrides this to 15 Hz to match the HC10DTP Cartesian streamer.
         self.declare_parameter('mjm.publish_rate_hz', 30.0)
@@ -150,6 +151,8 @@ class PredictorNode(Node):
 
         # ── Hybrid prediction+MJM config ─────────────────────────────────────
         self._hybrid_enabled  = self.get_parameter('mjm.enabled').value
+        if self.get_parameter('mjm.manual_control').value:
+            self._hybrid_enabled = False
         mjm_publish_rate = float(self.get_parameter('mjm.publish_rate_hz').value)
         if mjm_publish_rate <= 0.0:
             raise ValueError('mjm.publish_rate_hz must be positive')
@@ -174,6 +177,12 @@ class PredictorNode(Node):
 
         # ── State ────────────────────────────────────────────────────────────
         self._buffer: deque = deque(maxlen=self.window_size)
+        self._reentry_token = 0
+        self._manual_leader = False
+        self._manual_status_stamp = 0
+        self._reentry_required_samples = 10
+        self._reentry_samples = 0
+        self._reentry_last_stamp = 0
         self._last_data_time = 0.0
         self._predicting = self.auto_start
         self._current_model = self.default_model
@@ -239,6 +248,8 @@ class PredictorNode(Node):
             SystemStatus, '/ml/predictor_status', 10)
         self.hybrid_state_pub = self.create_publisher(
             String, '/predictor/hybrid_state', 5)
+        self.reentry_pub = self.create_publisher(String, '/ml/reentry_prediction', 10)
+        self.create_subscription(String, '/cocarry/hybrid_status', self._on_reentry_request, 10)
 
         # ── Subscribers ──────────────────────────────────────────────────────
         # Nhận dữ liệu thô (meas) từ /hand_position để giảm độ trễ
@@ -397,15 +408,26 @@ class PredictorNode(Node):
 
             elif rtype == 'predict':
                 pred = resp.get('prediction')
-                if pred and len(pred) == 3:
+                if pred and len(pred) == 3 and np.all(np.isfinite(pred)):
                     # Dùng epoch để loại bỏ stale response khi đã chuyển LEADER.
                     # Worker chạy async → response cũ có thể đến sau khi phase đã đổi.
                     resp_epoch = resp.get('epoch', -1)
                     if (self._predicting and resp_epoch == self._predict_epoch
-                            and self._hybrid_phase != 'LEADER'):
+                            and self._hybrid_phase != 'LEADER' and not self._manual_leader):
                         self._publish_raw_prediction(
                             pred, resp.get('inference_ms', 0.0))
-                        self._publish_prediction(pred, resp.get('inference_ms', 0.0))
+                        context = resp.get('reentry')
+                        qualified = (not context or (
+                            context.get('token') == self._reentry_token and
+                            context.get('samples', 0) >= context.get('required_samples', 10)))
+                        output = self._publish_prediction(
+                            pred, resp.get('inference_ms', 0.0), publish=qualified)
+                        if context and context.get('token') == self._reentry_token:
+                            # Context belongs to the submitted window, NOT to
+                            # the buffer size when this async result arrives.
+                            payload = dict(context, prediction=[output.x, output.y, output.z],
+                                           model=output.model_name)
+                            self.reentry_pub.publish(String(data=json.dumps(payload)))
                         # Lưu _last_filtered (output đã qua EMA/rate-limiter) làm điểm nối
                         # cho MJM, KHÔNG dùng raw pred để tránh cú giật tại điểm chuyển pha.
                         if self._last_filtered is not None:
@@ -437,10 +459,49 @@ class PredictorNode(Node):
 
     # ── ROS Callbacks ────────────────────────────────────────────────────────
 
+    def _on_reentry_request(self, msg):
+        if not self.get_parameter('mjm.manual_control').value or not self._predicting:
+            return
+        try:
+            state = json.loads(msg.data)
+            if not isinstance(state, dict):
+                return
+            status_stamp = int(state.get('stamp_ns', 0))
+            if status_stamp and status_stamp <= getattr(self, '_manual_status_stamp', 0):
+                return
+            token = int(state.get('reentry_token', 0))
+            if not state.get('enabled') or state.get('controller_state') != 'RUNNING':
+                return
+            self._manual_status_stamp = status_stamp
+            leader = state.get('role') == 'LEADER'
+            if leader != getattr(self, '_manual_leader', False):
+                self._predict_epoch += 1
+                self._manual_leader = leader
+            if leader or token <= self._reentry_token:
+                return
+            self._reentry_required_samples = max(1, int(state.get('reentry_required_samples', 10)))
+        except (ValueError, TypeError):
+            return
+        # Do not recalibrate robot EE or change the run's relative origin.
+        self._predict_epoch += 1
+        self._buffer.clear()
+        self._last_data_time = 0.
+        self._last_filtered = None
+        self._smoothed_vel = [0., 0., 0.]
+        self._reentry_token, self._reentry_samples = token, 0
+        self._reentry_last_stamp = token
+
     def _on_hand(self, msg: HandState):
         """Nhận tọa độ thô từ /hand_position (HandState)."""
         if not msg.is_tracked:
             return
+        if self._reentry_token:
+            stamp = msg.header.stamp.sec*1_000_000_000 + msg.header.stamp.nanosec
+            if (msg.source != 'robot_ee' or stamp <= self._reentry_last_stamp
+                    or not np.all(np.isfinite([msg.x, msg.y, msg.z]))):
+                return
+            self._reentry_last_stamp = stamp
+            self._reentry_samples += 1
         self._input_source = msg.source
         self._ingest_point(msg.x, msg.y, msg.z)
 
@@ -452,7 +513,7 @@ class PredictorNode(Node):
         """
         # Chỉ dùng nếu /hand_position không hoạt động
         # (bridge gửi raw coords qua HandPrediction với model_name='raw')
-        if msg.model_name == 'raw' or msg.model_name == '':
+        if not self._reentry_token and (msg.model_name == 'raw' or msg.model_name == ''):
             self._ingest_point(msg.x, msg.y, msg.z)
 
     def _on_trajectory_mode(self, msg: String):
@@ -594,6 +655,8 @@ class PredictorNode(Node):
         # Pha LEADER không gửi lệnh predict; MJM timer publish trực tiếp.
         if not self._worker_ready:
             return
+        if getattr(self, '_manual_leader', False):
+            return
         if self._hybrid_enabled and self._hybrid_phase == 'LEADER':
             return  # Inference worker nhàn rỗi; MJM timer lo phần còn lại
         if not self._inference_schedule.ready(time.monotonic()):
@@ -608,7 +671,12 @@ class PredictorNode(Node):
         else:
             return
 
-        self._send_to_worker({'cmd': 'predict', 'data': padded, 'epoch': self._predict_epoch})
+        request = {'cmd': 'predict', 'data': padded, 'epoch': self._predict_epoch}
+        if self._reentry_token:
+            request['reentry'] = dict(token=self._reentry_token, samples=self._reentry_samples,
+                                      required_samples=self._reentry_required_samples,
+                                      input_stamp_ns=self._reentry_last_stamp)
+        self._send_to_worker(request)
 
     def _legacy_prediction_hold(self, x, y, z):
         """Preserve the historical callback-count HOLD for camera profiles."""
@@ -658,6 +726,12 @@ class PredictorNode(Node):
 
     def _on_hybrid_cmd(self, msg: String):
         """Receive hybrid enable/disable commands from the dashboard."""
+        if self.get_parameter('mjm.manual_control').value:
+            self._hybrid_enabled = False
+            self._hybrid_phase = 'FOLLOWER'
+            self._mjm_trajectory = []
+            self._publish_hybrid_state()
+            return
         if msg.data == 'hybrid_on':
             self._hybrid_enabled = True
             self._publish_hybrid_state()
@@ -787,6 +861,9 @@ class PredictorNode(Node):
     def _reset_prediction_runtime(self):
         """Clear every run-scoped predictor, filter and HOLD state."""
         self._predict_epoch += 1
+        self._reentry_token = self._reentry_samples = self._reentry_last_stamp = 0
+        self._manual_leader = False
+        self._manual_status_stamp = 0
         self._buffer.clear()
         self._last_filtered = None
         self._filter_reject_count = 0
@@ -858,7 +935,8 @@ class PredictorNode(Node):
     # ── Publishing ───────────────────────────────────────────────────────────
 
     def _publish_prediction(
-            self, pred: list, inf_ms: float, output_source: str | None = None):
+            self, pred: list, inf_ms: float, output_source: str | None = None,
+            publish: bool = True):
         # Pha LEADER: bypass toàn bộ output filter — quỹ đạo MJM là pure math,
         # không bị ảnh hưởng bởi proximity clamp hay EMA từ camera.
         if output_source == 'hold':
@@ -896,7 +974,9 @@ class PredictorNode(Node):
         msg.model_name = output_source or self._current_model
         msg.prediction_confidence = 1.0
         msg.buffer_size = len(self._buffer)
-        self.pred_pub.publish(msg)
+        if publish:
+            self.pred_pub.publish(msg)
+        return msg
 
     def _publish_raw_prediction(self, pred: list, inf_ms: float):
         """Publish the unfiltered worker result for diagnostics only."""

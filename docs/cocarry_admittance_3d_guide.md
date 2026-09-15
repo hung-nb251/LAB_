@@ -26,6 +26,11 @@ Z không bị khóa theo pose ban đầu. Controller dùng robot EE và đặt b
 Biên trên EE là 1.50 m. Streamer cũng kiểm tra joint state, IK, joint limits,
 workspace và tracking error theo chế độ fail-closed.
 
+Giới hạn mềm trên J3 hiện là `1.25 rad` (~71.6°). Streamer vẫn trừ margin 3°,
+nên giới hạn IK hữu hiệu là khoảng `1.198 rad` (~68.6°). Mức này áp dụng cho
+cả mô phỏng và robot thật; X/Y workspace và năm joint còn lại không đổi. Không
+được bỏ margin hoặc mở tiếp chỉ để che lỗi IK.
+
 ## Chạy robot thật
 
 Terminal 1:
@@ -113,15 +118,46 @@ số DLS/singularity.
 
 Sensorless force dùng quy ước `tau_robot = J^T W_robot`, không tự đổi dấu lực.
 Moment được giải nội bộ để không làm sai nghiệm lực nhưng không được publish và
-không đi vào controller. Mặc định `robot_effort_unit_mode:=raw_only`, vì đơn vị
-effort của YRC1000 chưa được xác nhận; khi đó sáu effort vẫn được log còn ba cột
-`f_robot` để trống. Có thể thu dữ liệu chẩn đoán không phát lệnh robot bằng:
+không đi vào controller. Từ 2026-09-07, `robot_effort_unit_mode` mặc định rỗng:
+launch dùng `effort_unit_mode` trong YAML, chỉ override khi truyền arg rõ ràng.
+YAML hiện dùng `torque_nm`, theo hợp đồng đơn vị của MotoROS2 chính thức, nhưng
+firmware/scale trên robot này chưa được kiểm chứng; vẫn `calibration_confirmed=false`.
+Không tự nhân giới hạn URDF dựa trên độ lớn effort. Khi cần so sánh giả thiết
+normalized, phải chọn rõ `robot_effort_unit_mode:=normalized_rated_torque`.
+
+Trong trial hợp tác bình thường, logger ghi `f_robot_x/y/z` từ mẫu ước lượng
+hợp lệ về mặt số học, **trước deadband** (`f_robot_output_stage=pre_deadband`).
+Đây là dữ liệu chưa hiệu chuẩn, không phải lực tương tác đã xác nhận. Topic
+`/sensorless_force` vẫn giữ deadband và ngưỡng loại mẫu 500 N như cũ.
+CSV bổ sung `f_robot_unfiltered_x/y/z`, mode, frame, tuổi mẫu, đúng joint/effort
+nguồn, scale và bias. Khi vượt ngưỡng, chỉ cột unfiltered giữ số chẩn đoán;
+`f_robot_x/y/z` trống và status `INVALID`. Mẫu quá 0.25 s bị đánh dấu `STALE`
+và không lặp lại lực cũ. `NO_SAMPLE` nghĩa chưa nhận `/sensorless_force/sample`.
+Estimator và logger phải cùng được restart sau build. Không sửa CSV cũ.
+
+Đường lực lấy Jacobian tại `tool0`, biểu diễn XYZ trong `base_link`; không tự
+đổi dấu theo vận tốc robot. Lực phanh có thể ngược chiều chuyển động. Hiệu chuẩn
+sau này phải đối chiếu tải/lực chuẩn và quy ước tác dụng lực, không ép dấu trùng
+chiều vận tốc.
+
+Kiểm tra thu dữ liệu, không Enable/Start robot:
 
 ```bash
 ros2 launch cocarry_admittance_control cocarry_admittance_real_gui.launch.py \
-  test_mode:=true robot_effort_unit_mode:=normalized_rated_torque \
+  test_mode:=true robot_effort_unit_mode:=torque_nm \
   robot_force_calibrated:=false
 ```
+
+Kiểm tra live (terminal đã source workspace và `ROS_DOMAIN_ID=10`):
+
+```bash
+ros2 param get /sensorless_force_node effort_unit_mode
+ros2 topic echo /sensorless_force/sample --once
+```
+
+`test_mode` không chạy controller nên logger trial không tự có các tick reference
+để tạo CSV; dùng nó để kiểm tra topic. Trong trial thật người vận hành Start Run
+và bật logger như quy trình UI hiện tại thì các cột lực sẽ được ghi.
 
 `normalized_rated_torque` chỉ nhân effort với các giới hạn torque trong URDF,
 do đó là giả thiết sơ bộ để đối chiếu Axia, chưa phải hiệu chuẩn. Chỉ đặt

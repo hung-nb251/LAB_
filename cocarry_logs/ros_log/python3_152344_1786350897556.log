@@ -1,4 +1,0 @@
-[INFO] [1786350897.637453749] [predictor_ui]: [UI] Node started
-[INFO] [1786350904.618939565] [predictor_ui]: [UI] Trajectory mode set to: prediction
-[INFO] [1786350906.131058208] [predictor_ui]: [UI] Model cmd → svgp
-[INFO] [1786350906.132092061] [predictor_ui]: [UI] Hybrid cmd → hybrid_off

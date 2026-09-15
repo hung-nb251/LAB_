@@ -1,5 +1,53 @@
 # CODEX.md — Quy ước làm việc cho dự án CoCarry
 
+## Cập nhật phối hợp khớp 2026-09-15
+
+- Theo yêu cầu người dùng, profile vận tốc launch thật hiện là
+  `[0.50,0.50,0.50,0.08,0.50,0.40] rad/s`; profile thử nghiệm hiện tại
+  Cartesian vmax=0.35 m/s, amax=1.5 m/s², jerk=15 m/s³,
+  reference tau=0.40 s, command lead=0.04 m.
+- Hai launch co-carry bật `joint_coordination:=synchronized`: khớp cùng tiến
+  theo một tỷ lệ giới hạn vận tốc, cập nhật smoother theo FK/vận tốc đã ACK;
+  tracking nội suy tuyến tính giữa FK endpoint. Giữ threshold 50 mm/5 mẫu.
+- Nominal giữ tau=0.4 s, thêm `prediction_reference_lead_sec:=0.15`, bù theo
+  vận tốc lọc tối đa 20 mm. Đặt lead=0 để đối chứng bộ lọc cũ. GT/MJM bypass.
+- Đã sửa đồng hồ queue khi BUSY/retry; không rollback thời gian của điểm đang
+  pending. CSV thêm `motion_diagnostics_json` với timestamp queue và tracking.
+- Source/install hiện upper J2/J3=1.50 rad; margin IK 3° còn khoảng 1.4476 rad.
+  Đây là cấu hình thử nghiệm robot thật được người dùng yêu cầu ngày 15/09.
+- Chi tiết, giới hạn kiểm chứng và lệnh A/B:
+  `docs/motion_coordination_20260915_vi.md`. Chưa xác nhận độ êm/tốc độ trên
+  robot thật; thuật toán mới không bảo đảm gia tốc/jerk riêng từng joint.
+
+## Cập nhật Hybrid 2026-09-11 (ưu tiên hơn mô tả lịch sử bên dưới)
+
+- Giữ warmup 10 mẫu mới / blend 0,3 s và các cấu hình tốc độ, lực, workspace hiện tại.
+- Anti-windup khi blend hiệu chỉnh cả hai nhánh admittance, không ghi error
+  hỗn hợp vào riêng nhánh prediction. Stop/Fault reset cả trạng thái FOLLOWER cũ.
+- Nối sang LEADER ưu tiên C2, fallback C1 giữ p/v nếu gia tốc đầu không khả thi;
+  vẫn kiểm tra giới hạn, không âm thầm tăng tốc độ. `bridge_continuity` cho biết lựa chọn.
+- Chặn NaN/Inf trên đầu vào được sử dụng và reference đầu ra. Predictor tạm
+  ngừng inference trong manual LEADER, reset window theo token khi nhả quyền;
+  kết quả warmup chưa đủ mẫu không phát lên topic prediction chính.
+- Sau hai trial thật `20260911_100145/100806`, soft upper limit J2/L được tăng
+  từ `1.20` lên `1.30 rad`; margin IK 3° vẫn giữ, nên cận IK an toàn thực tế là
+  khoảng `1.2476 rad`. Thay đổi này xử lý vùng target xa theo bán kính ngang;
+  không mở rộng cận dưới workspace X/Z.
+- UI Hybrid cho phép bấm LEADER trong RUNNING/FOLLOWER để báo rõ target còn
+  thiếu hoặc chưa được chọn ở thanh trạng thái và terminal. GRU+MJM Test cũng
+  báo đúng điều kiện target còn thiếu khi từ chối Start Run.
+- Status và hybrid event log có `control_phase` để phân biệt WAIT/BLEND/ACTIVE,
+  LEADER bridge/MJM và force HOLD. Chi tiết tại `docs/manual_hybrid_test_20260910_vi.md`.
+- Kiểm chứng lần này: 108 tests đạt; build 3 package thành công. ROS integration
+  với GRU thật + robot giả, domain 64/localhost: đến đích, force-stale recovery,
+  hủy LEADER, lực ngược và reentry đều đạt. Không chạy robot thật.
+  Log: `/tmp/cocarry_hybrid_fixes_xcJYkt/` (tạm thời, có thể mất sau reboot).
+- Từ 2026-09-12, controller ramp soft deadzone Fz từ 0 lên tối đa 2 N chỉ khi
+  nhận diện chuyển động X−, rồi ramp về 0 sau hysteresis/dwell. Z thuần không
+  có X− giữ nguyên độ nhạy. Đặt `additional_z_deadzone_n: 0.0` để hoàn nguyên;
+  X/Y, dữ liệu Axia gốc và force safety limits không đổi. CSV ghi thêm
+  `f_effective_x/y/z` và `z_deadzone_weight`.
+
 > Cập nhật: 2026-09-03  
 > Workspace chính: `/home/hungnb/cocarry_ws`  
 > Máy điều khiển Ubuntu có tên người dùng `hungnb`; không dùng đường dẫn
@@ -46,6 +94,19 @@ không được dùng chúng để ghi đè hành vi được thể hiện trong
   phải lưu vào thư mục mới và có metadata.
 
 ## 3. Trạng thái nhiệm vụ hiện tại
+
+### Cập nhật Hybrid thủ công 2026-09-10 (ưu tiên hơn mô tả Hybrid cũ bên dưới)
+
+Đã triển khai chọn Target 1/2 độc lập với LEADER/FOLLOWER cho co-carry.
+Xem `docs/manual_hybrid_test_20260910_vi.md`. Start mới FOLLOWER/chưa chọn đích;
+chỉ bấm LEADER mới chạy MJM. Đến đích hoặc bấm FOLLOWER không tự đổi Target.
+Muốn đổi đích khi LEADER phải FOLLOWER trước. Capture hai đích khi stopped,
+persist absolute base_link tại `config/hybrid_targets_domain_<id>.json`;
+Reset Target có xác nhận, chỉ khi stopped. Controller sở hữu MJM/role,
+predictor co-carry đặt `mjm.manual_control=true` để vô hiệu timer cũ.
+Camera legacy giữ nguyên. CSV thêm hybrid_status_json và file events cạnh CSV.
+Đã kiểm thử logic và ROS fake hardware, chưa kiểm thử chuyển động robot thật.
+Không đổi các giới hạn vận hành trong nhiệm vụ này.
 
 Mục tiêu hiện tại là **human–robot co-carrying trong không gian 3D bằng
 Admittance Control**, dùng lực ATI Axia và chuỗi vị trí End-Effector của robot.
@@ -112,13 +173,13 @@ trực tiếp xuống robot.
 Profile co-carrying 3D chuẩn trong config:
 
 - `M = [1, 1, 1] kg`
-- `K = [10, 10, 10] N/m`
-- Critical damping: `D_i = 2*sqrt(M_i*K_i) = 6.32455532`
+- `K = [5, 5, 5] N/m`
+- Critical damping: `D_i = 2*sqrt(M_i*K_i) = 4.47213595`
 - Control/stream rate: `15 Hz`
-- Max virtual/Cartesian velocity: `0.15 m/s`
-- Max acceleration: `0.50 m/s²`
-- Max command lead so với EE feedback: `0.03 m`
-- Force limit mỗi trục: `15 N`; norm: `20 N`
+- Max virtual/Cartesian velocity: `0.18 m/s`
+- Max acceleration: `0.65 m/s²`
+- Max command lead so với EE feedback: `0.04 m`
+- Force limit mỗi trục: `20 N`; norm: `30 N`
 - Force watchdog hai tầng: trên `0.20 s` giữ EE tại feedback hiện tại; trên
   `0.50 s` mới hard-fault và disable. Không được tăng ngưỡng hard-fault nếu
   chưa đánh giá lại trên robot thật.
@@ -247,6 +308,24 @@ không snap thẳng tới target gần. Giới hạn vận tốc/gia tốc và j
 đổi; profile camera giữ hành vi smoother cũ. Chưa thay cơ chế joint clipping
 độc lập, mạng force sensor hay model GRU trong đợt sửa này.
 
+Sau trial simulation `20260908_180431`, profile tốc độ được chuyển sang robot
+thật theo từng cấp: J3/U tăng từ `0.20` lên `0.30 rad/s`; R/B/T thật vẫn giữ
+`0.08 rad/s`. B/T `0.20 rad/s` tiếp tục chỉ là override mặc định của simulation
+vì fake hardware không mô phỏng rung cơ khí/PFL và robot thật từng rung đáng
+ngại ở B/T `0.12 rad/s`. Cartesian velocity/acceleration vẫn là
+`0.15 m/s`/`0.50 m/s²`, command lead vẫn `0.03 m`, và `--fail-closed` giữ nguyên.
+
+Sau ba trial simulation `20260909_103339/103430/103608` không có IK fail,
+người dùng cho phép áp cùng profile lên robot thật: S/L/J3 `0.30 rad/s`,
+R `0.08`, B/T `0.15`, Cartesian/virtual velocity `0.18 m/s`, acceleration
+`0.65 m/s²`, command lead `0.04 m`. `--fail-closed`, workspace, force watchdog
+và joint margins vẫn giữ nguyên.
+
+Sau các trial thật và phép đo pendant High/Top ngày 2026-09-09, profile robot
+thật hiện dùng `[S,L,U,R,B,T] = [0.30,0.30,0.35,0.08,0.30,0.25] rad/s`,
+Cartesian/virtual velocity `0.22 m/s`, acceleration `0.80 m/s²` và command lead
+`0.05 m`. Simulation giữ profile riêng. Tracking threshold vẫn là `0.050 m`.
+
 Sau trial GRU simulation `20260906_105435`, đã tái hiện ripple trong vòng
 robot-EE -> prediction -> nominal -> Admittance -> robot-EE mà không cần mạng
 hay IK. Output GRU raw vẫn giữ nguyên. Launch simulation hiện override
@@ -254,9 +333,10 @@ hay IK. Output GRU raw vẫn giữ nguyên. Launch simulation hiện override
 khi cộng `e`, rồi mới áp lead/workspace limits. Đây là điều hòa reference có
 đánh đổi độ trễ, không phải sửa đồ thị hay chứng minh model chính xác hơn.
 Ground Truth và MJM LEADER bypass khâu này. State reset tại Start/realign và
-đóng băng cùng force HOLD. Sau khi người dùng xác nhận trial 11:18:11 và yêu
-cầu áp dụng sang robot thật, YAML và cả hai launch mặc định `0.4`. Real và sim
-đều hỗ trợ launch arg `prediction_reference_tau_sec:=0.0` để đối chứng legacy.
+đóng băng cùng force HOLD. Simulation giữ mặc định `0.4`; sau đánh giá pendant
+và tracking ngày 2026-09-09, launch robot thật dùng `0.25` để giảm độ trễ GRU.
+Real và sim đều hỗ trợ launch arg `prediction_reference_tau_sec:=0.0` để đối
+chứng legacy.
 Không nới limits, không tự Enable/Start robot thật. Cùng cấu hình nominal không
 bảo đảm phần cứng thật có cùng đáp ứng với mock; cần người vận hành xác nhận.
 
@@ -272,7 +352,14 @@ Trạng thái phần cứng đã chốt:
 
 - Chỉ dùng `Fx, Fy, Fz`; torque không dùng cho control hoặc UI.
 - Thanh sắt hiện vẫn lắp hướng xuống đất, chưa gắn thêm tải 2 kg.
-- Payload dùng để bù trọng lực hiện tại: `0.33 kg`.
+- Từ 2026-09-08, người dùng thay handle ngang rồi bỏ bớt tải; payload bù
+  trọng lực Axia trong `axia_sensor_ui.py` là `1.126 kg` (thay giá trị tạm
+  `3.856 kg`). Người dùng xác nhận không chạm handle và cho phép áp dụng fit
+  P0/P1/P0 của các CSV `handle_mass_check_20260908_164919/165059/165215`.
+  Hai cặp pose cho 1.122/1.131 kg; residual 0.42--0.51 N và P0 return 0.113 N.
+  Không tự đổi góc gá, Tool Data Yaskawa, giới hạn workspace hay đánh dấu
+  F_robot calibrated. Sau khi khởi động lại Axia UI cần calibrate bias không
+  tải và kiểm tra lực ở P0/P1 trước vận hành.
 - Góc bù gá mặc định: Roll X `0°`, Pitch Y `0°`, Yaw Z `-90°`.
 - Deadband vận hành: radial deadband `4 N`, không phải deadband riêng từng trục.
 - Calib Mode chỉ đặt deadband về `0 N` để quan sát/calibrate hướng; nó không tự
@@ -327,6 +414,36 @@ Topology ưu tiên là hai máy:
   interface `enxf8e43b7aeaf2` và gửi UDP tới IP Wi-Fi máy `hungnb`.
 - PC Ubuntu chạy robot/MotoROS2 và `axia_sensor_ui.py` nhận UDP.
 - Khi PC 2 đã gửi dữ liệu, không chạy thêm `run_sensor_driver.sh` trên Ubuntu.
+
+### Mapping cổng trên máy `hungnb` đã xác minh 2026-09-09
+
+Khi cắm robot và Axia qua hub hiện tại, hai USB-Ethernet được nhận như sau:
+
+- `enxec9a0c1fc063` — Naxiang SZNX LAN 100M (`35b5:3500`), profile
+  `robot-link`, IP robot-side `192.168.1.100/24`, robot YRC1000 là
+  `192.168.1.53`. Không dùng cổng này cho Axia.
+- `enxf8e43b7aeaf2` — ASIX AX88179 (`0b95:1790`), cổng EtherCAT của Axia.
+  Cổng này phải có `carrier=1`; không cần đặt IP cho EtherCAT.
+
+Tên `enx...` có thể đổi nếu thay hub/cổng USB. Luôn xác minh bằng
+`udevadm info`/`lsusb` trước khi chạy driver, không chỉ sao chép tên interface
+cũ.
+
+Nếu nối Force Sensor trực tiếp vào chính máy `hungnb` (không qua PC 2), chạy
+trong terminal người dùng:
+
+```bash
+cd ~/cocarry_ws
+./run_sensor_driver.sh --iface enxf8e43b7aeaf2
+```
+
+Lệnh này cần mật khẩu `sudo` vì pysoem mở raw EtherCAT socket. Driver sẽ vào
+SAFEOP/OP, đọc hệ số counts/F và counts/T, hardware-tare lúc khởi động rồi
+phát UDP tới `127.0.0.1:50000`. Trong lúc driver khởi động tuyệt đối không chạm
+handle. Giữ terminal này chạy; mở terminal khác để launch `real_gui` hoặc
+`sim_gui`, sau đó kiểm tra `/axia/connected`, `/axia/calibrated` và
+`/axia/human_force`. Chỉ chạy một driver giữ port EtherCAT/UDP tại một thời
+điểm. Dừng bằng `Ctrl+C`; script sẽ đóng master và hạ interface Axia.
 
 ### Thiết lập máy 2 Ubuntu để đọc Axia
 
@@ -460,6 +577,7 @@ kế hoạch cách ly điện, kiểm tra nguồn/cáp và người giám sát a
 ```bash
 cd ~/cocarry_ws
 source /opt/ros/humble/setup.bash
+export ROS_DOMAIN_ID=10
 colcon build --symlink-install
 source install/setup.bash
 ```
@@ -483,6 +601,11 @@ export ROS_DOMAIN_ID=10
 ros2 launch cocarry_admittance_control \
   cocarry_admittance_real_gui.launch.py
 ```
+
+Terminal 3:
+
+cd ~/cocarry_ws
+./run_sensor_driver.sh --iface enxf8e43b7aeaf2
 
 Chỉ kiểm tra joint states/TF/force/UI, không chạy controller thật:
 
@@ -643,21 +766,41 @@ bám sát là độ chính xác dự đoán SVGP.
 Không thay các trường lực robot bằng joint position/velocity/effort. Co-drawing
 nếu dùng lại phải ghi riêng trong `codrawing_logs/`.
 
+Thu lực robot cập nhật 2026-09-07: ba trial thật cuối 06/09 có đủ sáu effort,
+nhưng status luôn RAW_ONLY. Launch trước đây ghi đè YAML bằng raw_only; đã sửa
+`robot_effort_unit_mode` mặc định rỗng để dùng YAML. YAML nay chọn `torque_nm`
+theo API MotoROS2 chính thức, chỉ là giả định chẩn đoán cho firmware đang dùng;
+`calibration_confirmed=false`, không tự dùng tỷ lệ torque URDF.
+Estimator/logger nhận joint_states với sensor-data QoS. Topic JSON schema 1
+`/sensorless_force/sample` ghép lực, timestamp, chất lượng, mode/frame và joint
+nguồn thành một mẫu. CSV mặc định ghi F_robot trước deadband để không xóa tín
+hiệu nhỏ phục vụ calibration (`robot_force_log_unfiltered=true`); topic wrench
+cũ vẫn giữ deadband/force sanity limit. INVALID/STALE không lặp lực cũ. Các cột
+unfiltered lưu cả ước lượng bị loại vì norm>500 N nhưng không dùng cho role.
+F_robot chỉ diagnostic, base_link/tool0, không đổi Admittance/GRU/gains/safety
+và không tự đổi dấu theo hướng vận tốc. Phải xác minh đơn vị/scale/gravity rồi
+đối chiếu lực chuẩn trước khi đánh dấu calibrated. Test-mode không tạo tick
+reference của controller nên dùng để kiểm tra topic, không hứa tự có CSV trial.
+
 ## 10. Safety và lỗi cần nhớ
 
 - Người vận hành phải sẵn sàng E-stop và đặt speed override thấp cho lần chạy
   đầu sau mỗi thay đổi.
 - Streamer dùng 15 Hz, previous joint seed, soft joint limits, workspace và
   `--fail-closed`.
-- Profile mô phỏng co-carry đặt giới hạn R/B/T `0.08 rad/s` qua launch argument
-  `wrist_joint_velocity_limit`; J1/J2/J3 vẫn là `0.20 rad/s`. Profile robot thật
-  không truyền override này nên R/B/T vẫn giữ giới hạn mặc định `0.08 rad/s`.
+- Profile robot thật hiện dùng giới hạn `[S,L,U,R,B,T] =
+  [0.30,0.30,0.35,0.08,0.30,0.25] rad/s`; simulation giữ profile riêng.
+- Từ 2026-09-15, giới hạn mềm trên J2 và J3 của streamer là `1.50 rad` (~85.9°),
+  thay cho `1.05 rad`; margin 3° vẫn giữ nên IK chỉ dùng tới khoảng `1.198 rad`
+  (~68.6°). Thay đổi áp dụng cả real/sim, không đổi X/Y workspace hay các joint
+  khác. Nó được mở để bao phủ hai target thật đã cần J3 khoảng 1.068/1.141 rad;
+  vẫn phải theo dõi nhánh khuỷu, clearance và tracking trên robot thật.
 - `No kinematics solver` hoặc IK fail liên tiếp có thể khiến target không được
   chấp nhận. Không được gửi nghiệm clamp tùy tiện; kiểm tra frame, orientation,
   reachability, seed và joint limits.
-- Tracking error hiện dừng an toàn khi actual EE lệch accepted queued EE quá
-  `0.050 m` trong 5 lần kiểm tra sau grace period 1 s. Một lỗi đã thấy chủ yếu
-  đến từ trục Z. Không tăng threshold để che lỗi trước khi tìm nguyên nhân.
+- Tracking error dừng an toàn khi actual EE lệch pose queue đến hạn thực thi quá
+  `0.050 m` trong 5 lần kiểm tra sau grace period 1 s. Watchdog căn pose theo
+  `time_from_start`, không so feedback với điểm mới nhất còn nằm phía trước.
 - Workspace clamp không đảm bảo pose đạt được: orientation cố định và joint
   limits vẫn có thể khiến IK vô nghiệm.
 - Khi force timeout, pose timeout, mất readiness, quá lực hoặc mất calibration,

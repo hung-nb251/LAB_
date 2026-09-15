@@ -1,9 +1,0 @@
-[INFO] [1786686419.588777729] [predictor_ui]: [UI] Node started
-[INFO] [1786686445.030946208] [predictor_ui]: [UI] Model cmd → svgp
-[INFO] [1786686445.031329568] [predictor_ui]: [UI] Hybrid cmd → hybrid_off
-[INFO] [1786686447.804524732] [predictor_ui]: [UI] Trajectory mode set to: prediction
-[INFO] [1786686451.586136588] [predictor_ui]: [UI] Model cmd → svgp
-[INFO] [1786686451.586530709] [predictor_ui]: [UI] Hybrid cmd → hybrid_off
-[INFO] [1786686458.639564029] [predictor_ui]: [UI] Trajectory mode set to: ground_truth
-[INFO] [1786686467.807294274] [predictor_ui]: [UI] Capture Init Pose thành công: Captured Init Pose! P_init=(-0.162, 0.280, 0.379), Cam_init=(0.002, 0.054, 0.005), Noise_Tol=60.0mm
-Orientation=(0.998, 0.064, -0.000, 0.000)

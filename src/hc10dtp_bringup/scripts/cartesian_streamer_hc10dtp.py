@@ -33,10 +33,13 @@ import argparse
 import time as _time
 import os
 import sys
+import json
+from collections import deque
 
 # Import local IK solver (cùng thư mục)
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from local_ik_solver import LocalIKSolver
+from motion_conditioning import synchronized_joint_step, sample_timed_position
 
 import rclpy
 from rclpy.node import Node
@@ -66,7 +69,7 @@ BASE_FRAME   = 'base_link'
 # Workspace an toàn (mét) — HC10DTP có tầm với 1.2m, điều chỉnh theo môi trường
 WS_X = (-1.4,  1.4)
 WS_Y = (-0.5,  1.3)
-WS_Z = ( 0.05, 1.5)
+WS_Z = ( 0.0314, 1.5)
 
 # Tần suất stream tick (Hz). 15Hz đủ nhanh để bắt ACK ngay khi trả về.
 # An toàn đảm bảo bởi MAX_JOINT_DELTA và MAX_CARTESIAN_VELOCITY (không phải tick rate).
@@ -124,8 +127,8 @@ JOINT_LIMIT_MARGIN_RAD = math.radians(3.0)
 # Giới hạn mỗi khớp quanh tư thế home, tránh cấu hình nguy hiểm (flip)
 SOFT_JOINT_LIMITS = [
     (0.00,   3.14),    # J1 (S) — chỉ cho phép 0°~180° (hướng về phía người)
-    (-0.80,  1.20),    # J2 (L) — -45°~70° quanh home (0.07)
-    (-2.00,  1.05),    # J3 (U) — -115°~60° quanh home (-1.05), khuỷu xuống
+    (-0.80,  1.50),    # J2 (L) — -45°~86°, mở rộng cho vùng Target 2
+    (-2.00,  1.50),    # J3 (U) — -115°~86°, mở rộng đồng bộ với J2
     (-2.50,  2.50),    # J4 (R) — ±143° (đã mở rộng để cho phép xoay hướng xuống)
     (-2.09,  0.52),    # J5 (B) — -120°~30° quanh home (-0.52)
     (-2.50,  2.50),    # J6 (T) — ±143° (đã mở rộng để cho phép xoay hướng xuống)
@@ -153,7 +156,9 @@ IK_CACHE_TOLERANCE_M = 0.01
 
 # Fail-safe thresholds cho co-drawing/co-carrying thực tế.
 LOCAL_IK_MAX_CONSECUTIVE_FAILS = 3
-JOINT_STATE_TIMEOUT_SEC = 0.25
+# Match the controller's hard pose timeout. The controller freezes its
+# reference after 0.25 s; this remains the final fail-closed threshold.
+JOINT_STATE_TIMEOUT_SEC = 0.50
 TARGET_Z_TOLERANCE_M = 0.005
 ACTUAL_Z_TOLERANCE_M = 0.010
 MAX_TRACKING_ERROR_M = 0.050
@@ -162,6 +167,13 @@ STREAM_STATE_IDLE = 'idle'
 STREAM_STATE_SEEDING = 'seeding'
 STREAM_STATE_PREBUFFERING = 'prebuffering'
 STREAM_STATE_STREAMING = 'streaming'
+
+
+def advance_timed_pose(history, current_pose, now_ns):
+    """Select the newest accepted queue pose whose execution time is due."""
+    while history and history[0][0] <= now_ns:
+        _, current_pose = history.popleft()
+    return current_pose
 
 
 class CartesianStreamer(Node):
@@ -177,6 +189,7 @@ class CartesianStreamer(Node):
         lock_z: bool = False,
         fail_closed: bool = False,
         continuous_cartesian_smoothing: bool = False,
+        joint_coordination: str = 'independent',
     ):
         super().__init__('cartesian_streamer')
         self._stream_hz = stream_hz
@@ -189,6 +202,11 @@ class CartesianStreamer(Node):
         # Co-carry opts in; historical camera/co-drawing launches keep their
         # existing near-target behaviour until separately evaluated.
         self._continuous_cartesian_smoothing = continuous_cartesian_smoothing
+        self._joint_coordination = joint_coordination
+        self._motion_diagnostics = {}
+        self._last_diagnostic_time = 0.0
+        self._last_accepted_point_time_ns = None
+        self._accepted_ee_velocity = [0.0, 0.0, 0.0]
 
         self._cb = ReentrantCallbackGroup()
 
@@ -245,9 +263,15 @@ class CartesianStreamer(Node):
         # Pose đang thực sự gửi (smooth intermediate)
         self._current_ee_pose: Pose | None = None
         # FK của joint point gần nhất đã được MotoROS2 queue chấp nhận.
-        # Đây mới là pose lệnh phù hợp để so với feedback thật; pose smooth
-        # có thể chạy trước do giới hạn vận tốc joint trong _send_joint_point.
+        # Dùng làm backpressure để sinh điểm tiếp theo. Tracking watchdog dùng
+        # lịch pose theo time_from_start, không dùng trực tiếp pose mới nhất.
         self._queued_ee_pose: Pose | None = None
+        self._tracking_pose_history = deque(maxlen=512)
+        self._tracking_xyz_history = deque(maxlen=512)
+        self._tracking_xyz_anchor = None
+        self._tracking_expected_pose: Pose | None = None
+        self._queue_epoch_monotonic_ns: int | None = None
+        self._tracking_history_lock = threading.Lock()
         # Feedback thật từ joint_states, tách biệt với pose lệnh đang smooth.
         self._actual_ee_pose: Pose | None = None
         self._last_joint_state_monotonic = 0.0
@@ -304,6 +328,8 @@ class CartesianStreamer(Node):
             Bool, '/cartesian_streamer/ready', 5)
         self._status_pub = self.create_publisher(
             String, '/cartesian_streamer/status', 5)
+        self._motion_diagnostic_pub = self.create_publisher(
+            String, '/cartesian_streamer/motion_diagnostics', 10)
 
         # ── Service clients ──────────────────────────────────────
         self._ik_cli = self.create_client(
@@ -388,6 +414,20 @@ class CartesianStreamer(Node):
                 self._queued_ee_pose = actual_pose
             self._publish_actual_pose(actual_pose)
 
+            with self._tracking_history_lock:
+                self._tracking_expected_pose = advance_timed_pose(
+                    self._tracking_pose_history,
+                    self._tracking_expected_pose,
+                    _time.monotonic_ns())
+                expected_pose = self._tracking_expected_pose
+                if self._joint_coordination == 'synchronized':
+                    xyz, self._tracking_xyz_anchor = sample_timed_position(
+                        self._tracking_xyz_history, self._tracking_xyz_anchor,
+                        _time.monotonic_ns())
+                    if xyz is not None:
+                        expected_pose = Pose(position=Point(
+                            x=xyz[0], y=xyz[1], z=xyz[2]))
+
             if (self._lock_z_enabled and self._locked_z is not None
                     and self._queue_mode_active
                     and abs(actual_pose.position.z - self._locked_z) > ACTUAL_Z_TOLERANCE_M):
@@ -399,22 +439,32 @@ class CartesianStreamer(Node):
                     and self._queue_mode_active
                     and self._stream_state == STREAM_STATE_STREAMING
                     and self._target_pose is not None
-                    and self._queued_ee_pose is not None
+                    and expected_pose is not None
                     and _time.monotonic() - self._motion_started_monotonic
                     > TRACKING_ERROR_GRACE_SEC):
-                dx = actual_pose.position.x - self._queued_ee_pose.position.x
-                dy = actual_pose.position.y - self._queued_ee_pose.position.y
-                dz = actual_pose.position.z - self._queued_ee_pose.position.z
+                dx = actual_pose.position.x - expected_pose.position.x
+                dy = actual_pose.position.y - expected_pose.position.y
+                dz = actual_pose.position.z - expected_pose.position.z
                 tracking_error = math.sqrt(dx*dx + dy*dy + dz*dz)
+                self._motion_diagnostics.update(
+                    actual_xyz=[actual_pose.position.x, actual_pose.position.y,
+                                actual_pose.position.z],
+                    expected_xyz=[expected_pose.position.x, expected_pose.position.y,
+                                  expected_pose.position.z],
+                    tracking_error_m=tracking_error,
+                    tracking_sample_monotonic_ns=_time.monotonic_ns())
                 if tracking_error > MAX_TRACKING_ERROR_M:
                     self._tracking_error_count += 1
                     if self._tracking_error_count >= 5:
                         self._trigger_safety_stop(
-                            f'Actual EE vs accepted queue tracking error '
+                            f'Actual EE vs time-aligned queue tracking error '
                             f'{tracking_error:.3f} m '
                             f'> {MAX_TRACKING_ERROR_M:.3f} m')
+                        self.get_logger().error(
+                            'Tracking diagnostics: ' + json.dumps(self._motion_diagnostics))
                 else:
                     self._tracking_error_count = 0
+            self._publish_motion_diagnostics()
 
         if not self._got_joints:
             self._got_joints = True
@@ -727,6 +777,7 @@ class CartesianStreamer(Node):
                 self._pending_point_to_resend = None
                 self._cumulative_time_ns = 0
                 self._hold_point_count = 0
+                self._reset_tracking_schedule(self._actual_ee_pose)
                 self._next_send_not_before_ns = self.get_clock().now().nanoseconds
                 self._motion_started_monotonic = _time.monotonic()
                 self.get_logger().info('✓ Robot ENABLED — Point Queue Mode active. Servo ON!')
@@ -744,6 +795,7 @@ class CartesianStreamer(Node):
         self._target_pose = None
         self._locked_z = None
         self._tracking_error_count = 0
+        self._reset_tracking_schedule(self._actual_ee_pose)
         self._seed_request_sent = False
         self._pending_point_to_resend = None
         # Gọi stop_traj_mode
@@ -765,6 +817,7 @@ class CartesianStreamer(Node):
         self._latest_ik_solution = None
         self._last_validated_ik_solution = None
         self._moveit_solution_ready = False
+        self._reset_tracking_schedule(self._actual_ee_pose)
         # Cập nhật lại _last_queued_joints từ current_joints
         # (vì robot đã dừng ở vị trí hiện tại)
         if self._got_joints:
@@ -827,6 +880,19 @@ class CartesianStreamer(Node):
             self._check_no_motion_watchdog()
             now = self.get_clock().now()
             if now.nanoseconds < self._next_send_not_before_ns:
+                return
+            # Do not advance the smoother/IK while a queue ACK is pending.
+            # The ACK updates the accepted pose and velocity before releasing
+            # this gate. A stalled request must still fail closed.
+            if (self._joint_coordination == 'synchronized'
+                    and self._queue_call_inflight):
+                if (now.nanoseconds - self._last_call_time_ns > 500_000_000
+                        and self._fail_closed):
+                    self._trigger_safety_stop('Queue ACK timeout (>0.5 s)')
+                return
+            if (self._joint_coordination == 'synchronized'
+                    and self._pending_point_to_resend is not None):
+                self._send_joint_point(list(self._last_queued_joints))
                 return
 
             # ── Bước 0: Khởi tạo ─────────────────────────────────────
@@ -1002,6 +1068,9 @@ class CartesianStreamer(Node):
         else:
             seed = list(self._last_queued_joints)
 
+        self._motion_diagnostics.update(
+            ik_request_xyz=target_pos, ik_seed=seed,
+            ik_joint_bounds=[list(pair) for pair in SAFE_IK_JOINT_LIMITS])
         solution = self._local_ik.solve_ik(
             target_position=target_pos,
             target_quaternion=target_quat,
@@ -1010,6 +1079,7 @@ class CartesianStreamer(Node):
         )
 
         if solution is not None:
+            self._motion_diagnostics['ik_consecutive_failures'] = 0
             self._local_ik_consecutive_fails = 0
             self._latest_ik_solution = solution
             self._ik_fail_count = 0
@@ -1017,9 +1087,11 @@ class CartesianStreamer(Node):
 
         # Local IK failed
         self._local_ik_consecutive_fails += 1
+        self._motion_diagnostics['ik_consecutive_failures'] = self._local_ik_consecutive_fails
         self._ik_fail_count += 1
 
         if self._local_ik_consecutive_fails >= LOCAL_IK_MAX_CONSECUTIVE_FAILS:
+            self.get_logger().error('IK diagnostics: ' + json.dumps(self._motion_diagnostics))
             self._trigger_safety_stop(
                 f'Local IK failed {self._local_ik_consecutive_fails} consecutive times')
             return None
@@ -1381,7 +1453,7 @@ class CartesianStreamer(Node):
         Args:
             joints: joint positions [6]
             force_seed: True = seed point (t=0, v=0)
-            is_hold: True = hold-point (giữ vị trí, KHÔNG tăng cumulative time).
+            is_hold: True = hold-point (giữ vị trí, vẫn tăng cumulative time).
                      Dùng khi chưa có target hoặc IK thất bại.
         """
         # Thread-safe guard
@@ -1465,10 +1537,21 @@ class CartesianStreamer(Node):
                 for target, queued in zip(joints, self._last_queued_joints)
             ]
             # Clamp per-joint velocity for safety
-            clamped_velocities = [
-                max(-MAX_JOINT_VELOCITIES[i], min(MAX_JOINT_VELOCITIES[i], v))
-                for i, v in enumerate(raw_velocities)
-            ]
+            if self._joint_coordination == 'synchronized':
+                _, clamped_velocities, joint_scale = synchronized_joint_step(
+                    self._last_queued_joints, joints, dt, MAX_JOINT_VELOCITIES)
+            else:
+                clamped_velocities = [
+                    max(-MAX_JOINT_VELOCITIES[i], min(MAX_JOINT_VELOCITIES[i], v))
+                    for i, v in enumerate(raw_velocities)
+                ]
+                joint_scale = None
+            self._motion_diagnostics.update(
+                joint_coordination=self._joint_coordination,
+                joint_scale=joint_scale, requested_joint_velocity=raw_velocities,
+                sent_joint_velocity=clamped_velocities,
+                velocity_limits=list(MAX_JOINT_VELOCITIES),
+                requested_joints=list(joints), point_dt_sec=dt)
             
             # Tính lại positions dựa trên vận tốc đã clamp để đảm bảo JTC có thể tạo spline hợp lệ
             clamped_positions = [
@@ -1482,6 +1565,10 @@ class CartesianStreamer(Node):
             self._hold_point_count = 0  # reset hold counter
 
         request.point = point
+        self._motion_diagnostics.update(
+            sent_joints=list(point.positions),
+            point_time_sec=point.time_from_start.sec + point.time_from_start.nanosec / 1e9,
+            point_hold=is_hold, send_monotonic_ns=_time.monotonic_ns())
 
         self._queue_sent_count += 1
         # Throttling: Chặn gửi tiếp trong 80% chu kỳ để tránh làm nghẽn controller
@@ -1492,21 +1579,14 @@ class CartesianStreamer(Node):
         return True
 
     def _on_queue_result(self, future, sent_point: JointTrajectoryPoint, was_hold: bool = False):
-        self._last_call_time_ns = 0
-        with self._send_lock:
-            self._queue_call_inflight = False
         try:
             res = future.result()
             code = getattr(res.result_code, 'value', -1) if hasattr(res, 'result_code') else -1
             msg = getattr(res, 'message', '')
             if code == 4:
-                # BUSY: giữ lại điểm để resend ở tick tiếp theo.
-                # Rollback cumulative timer.
-                if was_hold:
-                    rollback_ns = int(self._queue_dt_sec * 1e9)  # hold dùng cùng dt
-                else:
-                    rollback_ns = int(self._queue_dt_sec * 1e9)
-                self._cumulative_time_ns = max(0, self._cumulative_time_ns - rollback_ns)
+                # Reserve this point's timestamp across retries. Rolling the
+                # counter back here made the following point reuse an earlier
+                # timestamp even though the retry retained the original time.
                 self._pending_point_to_resend = sent_point
                 self._window_busy_count += 1
                 self._window_retry_count += 1
@@ -1562,7 +1642,27 @@ class CartesianStreamer(Node):
             queued_pose = self._solve_fk_local_as_pose(
                 list(sent_point.positions))
             if queued_pose is not None:
+                point_time_ns = (int(sent_point.time_from_start.sec) * 1_000_000_000
+                                 + int(sent_point.time_from_start.nanosec))
+                if (self._joint_coordination == 'synchronized'
+                        and self._queued_ee_pose is not None
+                        and self._last_accepted_point_time_ns is not None
+                        and point_time_ns > self._last_accepted_point_time_ns):
+                    dt = (point_time_ns - self._last_accepted_point_time_ns) / 1e9
+                    # The next Cartesian step must start with the velocity of
+                    # the accepted joint motion, not the unclipped IK request.
+                    old_velocity = list(self._accepted_ee_velocity)
+                    self._prev_ee_velocity = [
+                        (getattr(queued_pose.position, axis)
+                         - getattr(self._queued_ee_pose.position, axis)) / dt
+                        for axis in ('x', 'y', 'z')]
+                    self._prev_ee_acceleration = [
+                        (new - old) / dt
+                        for new, old in zip(self._prev_ee_velocity, old_velocity)]
+                    self._accepted_ee_velocity = list(self._prev_ee_velocity)
+                self._last_accepted_point_time_ns = point_time_ns
                 self._queued_ee_pose = queued_pose
+                self._record_accepted_tracking_pose(sent_point, queued_pose)
                 # Backpressure Cartesian: tick kế tiếp đi tiếp từ pose joint
                 # thực sự đã được chấp nhận, không từ target smooth chạy trước.
                 self._current_ee_pose = queued_pose
@@ -1605,6 +1705,10 @@ class CartesianStreamer(Node):
                 )
         except Exception as e:
             self.get_logger().error(f'Lỗi khi nhận phản hồi từ queue_traj_point: {e}')
+        finally:
+            self._last_call_time_ns = 0
+            with self._send_lock:
+                self._queue_call_inflight = False
 
     def _select_queue_client(self):
         if self._queue_point_cli.service_is_ready():
@@ -1612,6 +1716,52 @@ class CartesianStreamer(Node):
         if self._queue_point_cli_alt.service_is_ready():
             return self._queue_point_cli_alt
         return None
+
+    def _reset_tracking_schedule(self, expected_pose=None):
+        with self._tracking_history_lock:
+            self._tracking_pose_history.clear()
+            self._tracking_xyz_history.clear()
+            self._tracking_xyz_anchor = None
+            self._last_accepted_point_time_ns = None
+            self._accepted_ee_velocity = [0.0, 0.0, 0.0]
+            self._motion_diagnostics.clear()
+            self._tracking_expected_pose = expected_pose
+            self._queue_epoch_monotonic_ns = None
+
+    def _record_accepted_tracking_pose(self, point, pose):
+        point_time_ns = (
+            int(point.time_from_start.sec) * 1_000_000_000
+            + int(point.time_from_start.nanosec))
+        now_ns = _time.monotonic_ns()
+        with self._tracking_history_lock:
+            if self._queue_epoch_monotonic_ns is None or point_time_ns == 0:
+                self._tracking_pose_history.clear()
+                self._tracking_xyz_history.clear()
+                self._tracking_xyz_anchor = None
+                self._queue_epoch_monotonic_ns = now_ns - point_time_ns
+                self._tracking_expected_pose = pose
+            due_ns = self._queue_epoch_monotonic_ns + point_time_ns
+            if self._tracking_pose_history:
+                due_ns = max(due_ns, self._tracking_pose_history[-1][0])
+            self._tracking_pose_history.append((due_ns, pose))
+            self._tracking_xyz_history.append((due_ns, [
+                pose.position.x, pose.position.y, pose.position.z]))
+            self._motion_diagnostics.update(
+                ack_monotonic_ns=now_ns, due_monotonic_ns=due_ns,
+                queue_epoch_monotonic_ns=self._queue_epoch_monotonic_ns,
+                accepted_joints=list(point.positions))
+
+    def _publish_motion_diagnostics(self):
+        now = _time.monotonic()
+        if now - self._last_diagnostic_time < self._stream_period_sec:
+            return
+        self._last_diagnostic_time = now
+        sample = dict(self._motion_diagnostics)
+        sample.update(schema=1, stamp_ns=self.get_clock().now().nanoseconds,
+                      state=self._stream_state,
+                      tracking_method=('linear_fk_endpoints' if
+                          self._joint_coordination == 'synchronized' else 'last_due_endpoint'))
+        self._motion_diagnostic_pub.publish(String(data=json.dumps(sample)))
 
     def _log_runtime_rates(self):
         now = self.get_clock().now()
@@ -1877,6 +2027,18 @@ Ví dụ:
             'Giới hạn tốc độ riêng cho R/B/T (rad/s); giữ nguyên giới hạn '
             'J1/J2/J3. Dùng để đánh giá profile mô phỏng trước robot thật.'))
     parser.add_argument(
+        '--max-j3-joint-vel', type=float, default=None,
+        help='Ghi đè riêng giới hạn tốc độ J3/U (rad/s).')
+    parser.add_argument(
+        '--max-j5-joint-vel', type=float, default=None,
+        help='Ghi đè riêng giới hạn tốc độ J5/B (rad/s).')
+    parser.add_argument(
+        '--max-j6-joint-vel', type=float, default=None,
+        help='Ghi đè riêng giới hạn tốc độ J6/T (rad/s).')
+    parser.add_argument(
+        '--max-bt-joint-vel', type=float, default=None,
+        help='Ghi đè riêng giới hạn tốc độ J5/B và J6/T (rad/s).')
+    parser.add_argument(
         '--smooth-alpha', type=float, default=SMOOTH_ALPHA,
         help=f'Hệ số smooth (0.0-1.0, thấp=mượt) [default: {SMOOTH_ALPHA}]')
     parser.add_argument(
@@ -1892,6 +2054,10 @@ Ví dụ:
         '--continuous-cartesian-smoothing', action='store_true', default=False,
         help='Co-carry: integrate bounded velocity through reversals without snapping to target')
     parser.add_argument(
+        '--joint-coordination', choices=['independent', 'synchronized'],
+        default='independent',
+        help='Common joint progress and interpolated queue tracking for co-carry')
+    parser.add_argument(
         '--fail-closed', action='store_true', default=False,
         help='Dừng ngay khi target ngoài workspace, queue bị drop hoặc feedback lệch; không khóa Z')
     args, ros_args = parser.parse_known_args()
@@ -1905,6 +2071,16 @@ Ví dụ:
     if args.max_wrist_joint_vel is not None:
         wrist_v = max(args.max_wrist_joint_vel, 0.01)
         MAX_JOINT_VELOCITIES[3:] = [wrist_v] * 3
+    if args.max_j3_joint_vel is not None:
+        MAX_JOINT_VELOCITIES[2] = max(args.max_j3_joint_vel, 0.01)
+    if args.max_bt_joint_vel is not None:
+        bt_v = max(args.max_bt_joint_vel, 0.01)
+        MAX_JOINT_VELOCITIES[4:6] = [bt_v, bt_v]
+    # A per-axis override takes precedence over grouped wrist/B-T limits.
+    if args.max_j5_joint_vel is not None:
+        MAX_JOINT_VELOCITIES[4] = max(args.max_j5_joint_vel, 0.01)
+    if args.max_j6_joint_vel is not None:
+        MAX_JOINT_VELOCITIES[5] = max(args.max_j6_joint_vel, 0.01)
     SMOOTH_ALPHA = max(0.01, min(1.0, args.smooth_alpha))
     MAX_CARTESIAN_JERK = max(args.max_jerk, 0.1)
 
@@ -1927,6 +2103,7 @@ Ví dụ:
         lock_z=args.lock_z,
         fail_closed=args.fail_closed,
         continuous_cartesian_smoothing=args.continuous_cartesian_smoothing,
+        joint_coordination=args.joint_coordination,
     )
     executor.add_node(streamer)
 

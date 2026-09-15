@@ -129,7 +129,7 @@ class CartesianAdmittance:
             raise ValueError('Initial error must contain XYZ values')
         self.error_velocity.fill(0.0)
 
-    def step(self, force, dt):
+    def step(self, force, dt, stiffness_scale=1.0):
         force = np.asarray(force, dtype=float)
         if force.shape != (3,):
             raise ValueError('Force must contain XYZ values')
@@ -137,7 +137,7 @@ class CartesianAdmittance:
         # callback cannot create a large integration jump.
         dt = float(np.clip(dt, 1e-4, 0.1))
         acceleration = (
-            force - self.damping * self.error_velocity - self.stiffness * self.error
+            force - self.damping * self.error_velocity - self.stiffness * self.error * stiffness_scale
         ) / self.mass
         acceleration = self._limit_norm(acceleration, self.max_acceleration)
         self.error_velocity += acceleration * dt
@@ -154,3 +154,15 @@ def soft_radial_deadzone(force, threshold):
     if magnitude <= threshold or magnitude == 0.0:
         return np.zeros_like(force)
     return force * ((magnitude - threshold) / magnitude)
+
+
+def soft_axis_deadzone(force, thresholds):
+    """Continuous per-axis deadzone: sign(f) * max(abs(f)-threshold, 0)."""
+    force = np.asarray(force, dtype=float)
+    thresholds = np.asarray(thresholds, dtype=float)
+    if force.shape != thresholds.shape:
+        raise ValueError('Force and axis deadzone thresholds must have equal shapes')
+    if (not np.all(np.isfinite(force)) or not np.all(np.isfinite(thresholds))
+            or np.any(thresholds < 0.0)):
+        raise ValueError('Axis deadzone inputs must be finite and thresholds non-negative')
+    return np.sign(force) * np.maximum(np.abs(force) - thresholds, 0.0)

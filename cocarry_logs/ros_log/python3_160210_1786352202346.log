@@ -1,7 +1,0 @@
-[INFO] [1786352202.423374148] [experiment_logger]: ✓ STARTED in-memory logging. Target file: /home/hungnb/cocarry_ws/cocarry_logs/experiment_GROUND_TRUTH_20260810_155642.csv
-[INFO] [1786352202.440504599] [experiment_logger]: Logger ready.
-[INFO] [1786352247.597670030] [experiment_logger]: Trajectory mode: ground_truth
-[INFO] [1786352251.628004282] [experiment_logger]: Trajectory mode: prediction
-[INFO] [1786352254.904547167] [experiment_logger]: Service called: /logger/toggle with data=False
-[INFO] [1786352306.064884387] [experiment_logger]: Service called: /logger/toggle with data=False
-[INFO] [1786352326.205186873] [experiment_logger]: Service called: /logger/toggle with data=False

@@ -1,8 +1,0 @@
-[INFO] [1786700457.571075725] [predictor_ui]: [UI] Node started
-[ERROR] [1786700537.581185559] [predictor_ui]: [UI] Capture Init Pose THẤT BẠI: Chưa nhận được vị trí hiện tại của robot từ /cartesian_streamer/current_pose
-[INFO] [1786700573.573373376] [predictor_ui]: [UI] Capture Init Pose thành công: Captured Init Pose! P_init=(-0.162, 0.309, 0.388), Cam_init=(0.201, -0.371, -0.010), Noise_Tol=60.0mm
-Orientation=(0.988, -0.154, -0.004, -0.029)
-[INFO] [1786700606.710957362] [predictor_ui]: [UI] Trajectory mode set to: prediction
-[INFO] [1786700609.249295955] [predictor_ui]: [UI] Model cmd → svgp
-[INFO] [1786700609.249771406] [predictor_ui]: [UI] Hybrid cmd → hybrid_on
-[INFO] [1786700639.539886160] [predictor_ui]: [UI] Auto-disabled robot on Stop Run

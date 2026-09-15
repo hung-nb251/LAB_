@@ -16,3 +16,15 @@ def relative_goal(target_absolute, start_absolute):
 def requires_robot_ee_target(show_camera_plots, trajectory_profile):
     """Require Capture Target only in the robot-EE predictor+MJM pipeline."""
     return not bool(show_camera_plots) and trajectory_profile == 'svgp_mjm'
+
+
+def manual_leader_rejection(state):
+    """Return the operator-facing reason why manual LEADER cannot start."""
+    targets = state.get('targets') or {}
+    saved = {str(key) for key in targets}
+    missing = [str(target) for target in (1, 2) if str(target) not in saved]
+    if missing:
+        return f"Cần lưu Target {' và '.join(missing)} trước khi chọn LEADER"
+    if state.get('selected') not in (1, 2):
+        return 'Cần chọn Target 1 hoặc Target 2 trước khi chọn LEADER'
+    return None

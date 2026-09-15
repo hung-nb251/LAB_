@@ -1,6 +1,0 @@
-[INFO] [1785836683.856895965] [predictor_ui]: [UI] Node started
-[ERROR] [1785836773.141579687] [predictor_ui]: [UI] Capture Init Pose THẤT BẠI: Chưa nhận được vị trí hiện tại của robot từ /cartesian_streamer/current_pose
-[ERROR] [1785836789.774095060] [predictor_ui]: [UI] Capture Init Pose THẤT BẠI: Chưa nhận được vị trí hiện tại của robot từ /cartesian_streamer/current_pose
-[INFO] [1785836815.965322497] [predictor_ui]: [UI] Using standalone go_home.py script for real robot
-[ERROR] [1785836852.226866182] [predictor_ui]: [UI] Capture Init Pose THẤT BẠI: Chưa nhận được vị trí hiện tại của robot từ /cartesian_streamer/current_pose
-[ERROR] [1785836856.760851718] [predictor_ui]: [UI] Capture Init Pose THẤT BẠI: Chưa nhận được vị trí hiện tại của robot từ /cartesian_streamer/current_pose

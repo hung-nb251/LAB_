@@ -48,6 +48,22 @@ def _launch_predictor(context, params):
     ]
 
 
+def _launch_sensorless_force(context, params):
+    # No implicit unit override: preserve the user's YAML unless explicitly set.
+    overrides = {
+        'base_link': 'base_link', 'tip_link': 'tool0',
+        'calibration_confirmed': ParameterValue(
+            LaunchConfiguration('robot_force_calibrated'), value_type=bool),
+    }
+    mode = LaunchConfiguration('robot_effort_unit_mode').perform(context).strip()
+    if mode:
+        overrides['effort_unit_mode'] = mode
+    return [Node(
+        package='hc10dtp_bringup', executable='sensorless_force_node.py',
+        name='sensorless_force_node', output='screen',
+        parameters=[params, overrides])]
+
+
 def generate_launch_description():
     package_share = get_package_share_directory('cocarry_admittance_control')
     params = os.path.join(package_share, 'config', 'cocarry_admittance_params.yaml')
@@ -58,7 +74,16 @@ def generate_launch_description():
         description='Robot-EE prediction backend selected before launch')
     prediction_reference_tau_arg = DeclareLaunchArgument(
         'prediction_reference_tau_sec', default_value='0.4',
-        description='Nominal smoothing in seconds, matching validated simulation; 0 disables')
+        description='Real-robot nominal smoothing in seconds; 0 disables')
+    prediction_reference_lead_arg = DeclareLaunchArgument(
+        'prediction_reference_lead_sec', default_value='0.15',
+        description='Filtered-velocity lead compensation, capped at 20 mm; 0 disables')
+    joint_coordination_arg = DeclareLaunchArgument(
+        'joint_coordination', default_value='synchronized',
+        choices=['independent', 'synchronized'])
+    command_lead_arg = DeclareLaunchArgument(
+        'command_lead_m', default_value='0.04',
+        description='Maximum nominal-to-actual command lead for the real robot (m)')
     svgp_model_dir_arg = DeclareLaunchArgument(
         'svgp_model_dir',
         default_value=os.path.expanduser(
@@ -79,12 +104,15 @@ def generate_launch_description():
     test_mode_arg = DeclareLaunchArgument(
         'test_mode', default_value='false',
         description='Disable real Cartesian streaming/controller')
+    hybrid_target_file_arg = DeclareLaunchArgument(
+        'hybrid_target_file', default_value='',
+        description='Persistent base_link targets; empty uses a per-ROS-domain file')
     robot_effort_unit_mode_arg = DeclareLaunchArgument(
-        'robot_effort_unit_mode', default_value='raw_only',
-        choices=['raw_only', 'torque_nm', 'normalized_rated_torque', 'custom_scale'],
+        'robot_effort_unit_mode', default_value='',
+        choices=['', 'raw_only', 'torque_nm', 'normalized_rated_torque', 'custom_scale'],
         description=(
             'Joint effort conversion used only by the diagnostic robot-force '
-            'estimator; raw_only is the safe default'))
+            'estimator; empty uses effort_unit_mode from YAML'))
     robot_force_calibrated_arg = DeclareLaunchArgument(
         'robot_force_calibrated', default_value='false',
         description=(
@@ -119,30 +147,35 @@ def generate_launch_description():
         condition=not_test_mode, parameters=[moveit_config],
         # Deliberately no --lock-z: Z is a controlled 3D degree of freedom.
         # --fail-closed keeps workspace/feedback/queue safety active.
-        arguments=['--stream-hz', '15', '--max-vel', '0.15',
-                   '--max-accel', '0.50', '--continuous-cartesian-smoothing',
+        arguments=['--stream-hz', '15', '--max-vel', '0.25',
+                   '--max-accel', '1.00', '--max-jerk', '10.0',
+                   # Trial speed profile: J1/J2/J3/J5=0.50, J6=0.40,
+                   # J4 remains conservative at 0.08 rad/s.
+                   '--max-joint-vel', '0.50',
+                   '--max-wrist-joint-vel', '0.08',
+                   '--max-j3-joint-vel', '0.50',
+                   '--max-j5-joint-vel', '0.50',
+                   '--max-j6-joint-vel', '0.40',
+                   '--continuous-cartesian-smoothing',
+                   '--joint-coordination', LaunchConfiguration('joint_coordination'),
                    '--fail-closed'])
     admittance = Node(
         package='cocarry_admittance_control',
         executable='admittance_controller_3d',
         name='cocarry_admittance_controller', output='screen',
         condition=not_test_mode, parameters=[params, {
+            'hybrid_target_file': ParameterValue(LaunchConfiguration('hybrid_target_file'), value_type=str),
             'prediction_reference_tau_sec': ParameterValue(
                 LaunchConfiguration('prediction_reference_tau_sec'), value_type=float),
+            'prediction_reference_lead_sec': ParameterValue(
+                LaunchConfiguration('prediction_reference_lead_sec'), value_type=float),
+            'max_virtual_velocity_mps': 0.25,
+            'max_virtual_acceleration_mps2': 1.00,
+            'max_command_lead_m': ParameterValue(
+                LaunchConfiguration('command_lead_m'), value_type=float),
         }])
-    sensorless_force = Node(
-        package='hc10dtp_bringup', executable='sensorless_force_node.py',
-        name='sensorless_force_node', output='screen',
-        # Read-only diagnostics remain available in test_mode; this node never
-        # sends robot commands.
-        parameters=[params, {
-            'base_link': 'base_link',
-            'tip_link': 'tool0',
-            'effort_unit_mode': ParameterValue(
-                LaunchConfiguration('robot_effort_unit_mode'), value_type=str),
-            'calibration_confirmed': ParameterValue(
-                LaunchConfiguration('robot_force_calibrated'), value_type=bool),
-        }])
+    sensorless_force = OpaqueFunction(
+        function=_launch_sensorless_force, kwargs={'params': params})
     logger = Node(
         package='cocarry_admittance_control', executable='cocarry_logger',
         name='cocarry_admittance_logger', output='screen',
@@ -169,7 +202,9 @@ def generate_launch_description():
             os.path.expanduser('~/cocarry_ws/fastdds_no_shm.xml')),
         prediction_model_arg, svgp_model_dir_arg, gru_model_dir_arg,
         prediction_reference_tau_arg,
-        model_dir_arg, log_dir_arg, test_mode_arg, use_rviz_arg,
+        prediction_reference_lead_arg, joint_coordination_arg,
+        command_lead_arg,
+        model_dir_arg, log_dir_arg, test_mode_arg, use_rviz_arg, hybrid_target_file_arg,
         robot_effort_unit_mode_arg, robot_force_calibrated_arg,
         moveit_launch, ee_tracker, predictor, streamer, admittance,
         sensorless_force, logger, ui, axia_ui,

@@ -77,7 +77,7 @@ def test_cocarry_stationary_input_keeps_predicting_and_retains_full_history():
         _hold_detector=SimpleNamespace(update=unexpected_hold),
         _legacy_prediction_hold=unexpected_hold,
         _worker_ready=True, _inference_schedule=InferenceSchedule(15.0),
-        window_size=20, _predict_epoch=7, _send_to_worker=requests.append,
+        window_size=20, _predict_epoch=7, _send_to_worker=requests.append, _reentry_token=0,
     )
     ingest = ingest_method(clock)
     for i in range(100):

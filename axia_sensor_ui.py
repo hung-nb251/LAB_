@@ -36,14 +36,17 @@ from PyQt5 import QtWidgets, QtCore
 import rclpy
 from rclpy.node import Node
 from rclpy.duration import Duration
-from geometry_msgs.msg import Vector3Stamped
+from geometry_msgs.msg import Vector3Stamped, WrenchStamped
 from std_msgs.msg import Bool, Float32
 from std_srvs.srv import Trigger
 import tf2_ros
 from scipy.spatial.transform import Rotation
 
 # ── Tham số vật lý ───────────────────────────────────────────────────────────
-PAYLOAD_MASS_KG = 0.33         # Khối lượng thanh sắt + gá (kg)
+# New horizontal handle after the extra load was removed: gravity fit from
+# handle_mass_check_20260908_{164919,165059,165215}.csv, approved 2026-09-08.
+# This value compensates Axia gravity only; it does not calibrate F_robot.
+PAYLOAD_MASS_KG = 1.126        # Tổng tải phía handle được Axia đỡ (kg)
 GRAVITY         = 9.80665      # m/s²
 SENSOR_FRAME    = 'axia_sensor_link'
 BASE_FRAME      = 'base_link'
@@ -99,6 +102,11 @@ class AxiaROS2Node(Node):
         self._on_data_cb = on_data_cb
 
         self._pub_fh = self.create_publisher(Vector3Stamped, '/axia/human_force', 10)
+        # Packet-native 6D wrench for offline torque validation.  This is
+        # deliberately published before filtering, gravity compensation and
+        # deadband; it is diagnostic only and is not consumed by control.
+        self._pub_raw_wrench = self.create_publisher(
+            WrenchStamped, '/axia/raw_wrench', 10)
         self._pub_calibrated = self.create_publisher(Bool, '/axia/calibrated', 5)
         self._pub_connected = self.create_publisher(Bool, '/axia/connected', 5)
         self._pub_udp_gap = self.create_publisher(Float32, '/axia/udp_gap_ms', 10)
@@ -114,7 +122,8 @@ class AxiaROS2Node(Node):
         self._calib_samples = []
         self._on_calib_done = None
 
-        self._filter = ForceFilter(median_size=5, ema_alpha=0.1)
+        # Raw is the default operating mode. EMA presets remain selectable.
+        self._filter = ForceFilter(median_size=5, ema_alpha=1.0)
         self._last_ui_update = 0.0
         self._deadband = DEADBAND_N
         self._mount_correction = Rotation.from_euler(
@@ -158,6 +167,7 @@ class AxiaROS2Node(Node):
                     self._last_udp_arrival = arrival
                     # Gói 24 bytes = 6 floats (Fx, Fy, Fz, Tx, Ty, Tz)
                     fx, fy, fz, tx, ty, tz = struct.unpack('<6f', data)
+                    self._publish_raw_wrench(fx, fy, fz, tx, ty, tz)
                     F3 = np.array([fx, fy, fz])
                     # Nếu trước đó đang mất kết nối, báo đã khôi phục
                     if not self._driver_connected:
@@ -287,6 +297,25 @@ class AxiaROS2Node(Node):
 
     # ── Publisher ────────────────────────────────────────────────────────────
 
+    def _publish_raw_wrench(self, fx, fy, fz, tx, ty, tz):
+        """Publish the unmodified six floats received in one UDP packet.
+
+        The frame is the physical Axia frame.  In particular, no mount-frame
+        rotation, payload compensation, filter, bias removal or deadband is
+        applied here.  Those operations would make a later comparison against
+        joint-current torque ambiguous.
+        """
+        msg = WrenchStamped()
+        msg.header.stamp = self.get_clock().now().to_msg()
+        msg.header.frame_id = SENSOR_FRAME
+        msg.wrench.force.x = float(fx)
+        msg.wrench.force.y = float(fy)
+        msg.wrench.force.z = float(fz)
+        msg.wrench.torque.x = float(tx)
+        msg.wrench.torque.y = float(ty)
+        msg.wrench.torque.z = float(tz)
+        self._pub_raw_wrench.publish(msg)
+
     def publish_human_force(self, Fh):
         msg = Vector3Stamped()
         msg.header.stamp    = self.get_clock().now().to_msg()
@@ -413,7 +442,7 @@ class AxiaSensorUI(QtWidgets.QMainWindow):
             '4: Rat manh (Alpha=0.05)',
             '5: Sieu muot (Alpha=0.01)',
         ])
-        self.combo.setCurrentIndex(3)
+        self.combo.setCurrentIndex(0)
         self.combo.currentIndexChanged.connect(self._on_filter)
         ctrl.addWidget(self.combo)
 

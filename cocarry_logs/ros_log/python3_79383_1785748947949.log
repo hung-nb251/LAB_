@@ -1,2 +1,0 @@
-[INFO] [1785748948.027075729] [predictor_ui]: [UI] Node started
-[ERROR] [1785749159.636773629] [predictor_ui]: [UI] Capture Init Pose THẤT BẠI: Chưa nhận được vị trí hiện tại của robot từ /cartesian_streamer/current_pose

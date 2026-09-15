@@ -14,6 +14,7 @@ import sys
 import time
 import threading
 import math
+import json
 from collections import deque
 from pathlib import Path
 
@@ -33,7 +34,11 @@ from human_hand_msgs.msg import HandState, HandPrediction
 from geometry_msgs.msg import Point, PointStamped, PoseStamped
 
 from .plot_history import append_time_window_xyz
-from .target_math import relative_goal, requires_robot_ee_target
+from .target_math import (
+    manual_leader_rejection,
+    relative_goal,
+    requires_robot_ee_target,
+)
 
 try:
     import pyqtgraph as pg
@@ -137,6 +142,8 @@ class PredictorUiNode(Node):
         self._latest_robot_ee = None
         self._latest_robot_ee_time = 0.0
         self._captured_target_ee = None
+        self._manual_status = {}
+        self._manual_status_time = 0.0
         self._lock = threading.Lock()
 
         # ── Subscribers ──────────────────────────────────────────────────────
@@ -167,6 +174,8 @@ class PredictorUiNode(Node):
         self._run_status_pub = self.create_publisher(Bool, '/run_status', 5)
         self._hybrid_cmd_pub = self.create_publisher(String, '/predictor/hybrid_cmd', 5)
         self._goal_pub = self.create_publisher(Point, '/predictor/goal_cmd', 5)
+        self._manual_pub = self.create_publisher(String, '/cocarry/hybrid_command', 10)
+        self.create_subscription(String, '/cocarry/hybrid_status', self._cb_manual_status, 10)
 
         # ── Service clients ──────────────────────────────────────────────────
         self._logger_cli = self.create_client(SetBool, '/logger/toggle')
@@ -351,6 +360,18 @@ class PredictorUiNode(Node):
     def _cb_hybrid_state(self, msg: String):
         with self._lock:
             self._hybrid_state = msg.data
+
+    def _cb_manual_status(self, msg):
+        try:
+            data = json.loads(msg.data)
+            with self._lock:
+                self._manual_status = data
+                self._manual_status_time = time.monotonic()
+        except (ValueError, TypeError):
+            pass
+
+    def manual_command(self, action, **kwargs):
+        self._manual_pub.publish(String(data=json.dumps(dict(action=action, **kwargs))))
 
     def capture_target_from_robot_ee(self):
         """Store an absolute base_link EE target while the robot is stopped."""
@@ -587,7 +608,7 @@ class DashboardWindow:
                  if node._show_camera_plots
                  else 'Co-carry Admittance Dashboard — Robot Frame')
         self.win.setWindowTitle(title)
-        self.win.resize(1600, 1100 if node._show_camera_plots else 700)
+        self.win.resize(1600, 1100 if node._show_camera_plots else 1000)
         self.win.setStyleSheet('background: #1a1a2e; color: #e0e0e0;')
 
         main_layout = QtWidgets.QVBoxLayout(self.win)
@@ -724,7 +745,7 @@ class DashboardWindow:
             self.gw2.ci.layout.setColumnStretchFactor(i, 1)
 
         plots_area.addWidget(self.gw2)
-        main_layout.addLayout(plots_area)
+        main_layout.addLayout(plots_area, 1)
 
         # ── Bottom bar: controls ──────────────────────────────────────────
         ctrl = QtWidgets.QVBoxLayout()
@@ -752,11 +773,20 @@ class DashboardWindow:
         self.btn_traj_svgp.clicked.connect(lambda: self._set_trajectory_mode('svgp'))
         traj_l.addWidget(self.btn_traj_svgp)
 
-        self.btn_traj_svgpmjm = QtWidgets.QPushButton(f'{model_label}+MJM')
+        self.btn_traj_svgpmjm = QtWidgets.QPushButton(
+            f'{model_label}+MJM' if node._show_camera_plots else 'Hybrid')
         self.btn_traj_svgpmjm.setCheckable(True)
         self.btn_traj_svgpmjm.setStyleSheet(self._btn_style('#7d4e00', '#ffaa00'))
         self.btn_traj_svgpmjm.clicked.connect(lambda: self._set_trajectory_mode('svgp_mjm'))
         traj_l.addWidget(self.btn_traj_svgpmjm)
+        self.btn_traj_test = QtWidgets.QPushButton(f'{model_label}+MJM Test')
+        self.btn_traj_test.setCheckable(True)
+        self.btn_traj_test.setStyleSheet(self._btn_style('#584020', '#ba7517'))
+        self.btn_traj_test.setVisible(not node._show_camera_plots)
+        self.btn_traj_test.setToolTip(
+            'Chọn đích trước Start: FOLLOWER 5s → LEADER một lần → FOLLOWER theo lực')
+        self.btn_traj_test.clicked.connect(lambda: self._set_trajectory_mode('svgp_mjm_test'))
+        traj_l.addWidget(self.btn_traj_test)
 
         self.btn_traj_gt.setToolTip(
             'Giữ x_d tại pose Start Run; admittance tạo x_r từ lực người')
@@ -767,6 +797,10 @@ class DashboardWindow:
             'LEADER: MJM gửi điểm trực tiếp')
 
         row_1.addWidget(traj_grp)
+        if not node._show_camera_plots:
+            # Keep mode selection compact; the target panel gets its own row.
+            row_1.addStretch(1)
+            row_1.setAlignment(QtCore.Qt.AlignTop)
 
         if not node._show_camera_plots:
             target_grp = QtWidgets.QGroupBox('MJM Target — robot EE')
@@ -774,22 +808,58 @@ class DashboardWindow:
                 'QGroupBox { color: #e0e0e0; border: 1px solid #555; '
                 'border-radius: 4px; margin-top: 15px; padding-top: 4px; }'
                 'QGroupBox::title { subcontrol-origin: margin; left: 8px; top: 0px; }')
-            target_layout = QtWidgets.QHBoxLayout(target_grp)
-            self.btn_capture_target = QtWidgets.QPushButton(
-                'Set Goal / Capture Target')
-            self.btn_capture_target.setStyleSheet(
-                self._btn_style('#704214', '#a86820'))
-            self.btn_capture_target.setToolTip(
-                'Lưu vị trí robot EE hiện tại trong base_link làm đích MJM')
-            self.btn_capture_target.clicked.connect(self._do_capture_target)
-            target_layout.addWidget(self.btn_capture_target)
-            self.lbl_captured_target = QtWidgets.QLabel('Target: chưa capture')
-            self.lbl_captured_target.setStyleSheet(
-                'color: #ffd479; font-size: 12px; font-weight: bold;')
-            target_layout.addWidget(self.lbl_captured_target)
-            row_1.addWidget(target_grp)
+            target_layout = QtWidgets.QGridLayout(target_grp)
+            target_layout.setHorizontalSpacing(12)
+            target_layout.setVerticalSpacing(8)
+            target_layout.setColumnStretch(1, 1)
+            target_layout.setColumnStretch(2, 1)
+            for row, title in enumerate(('Lưu vị trí', 'Chọn đích', 'Vai trò')):
+                label = QtWidgets.QLabel(title)
+                label.setStyleSheet('color: #aeb8c8; font-size: 13px;')
+                target_layout.addWidget(label, row, 0)
+            self.target_save_buttons = {}
+            self.target_select_buttons = {}
+            self.target_position_labels = {}
+            for target_id in (1, 2):
+                save = QtWidgets.QPushButton(f'Lưu đích {target_id}')
+                save.clicked.connect(lambda checked=False, i=target_id:
+                                     self.node.manual_command('save', target=i))
+                select = QtWidgets.QPushButton(f'Target {target_id}')
+                select.setCheckable(True)
+                save.setStyleSheet(self._btn_style('#283448', '#3a506e'))
+                select.setStyleSheet(self._btn_style('#16213e', '#176b9c'))
+                select.clicked.connect(lambda checked=False, i=target_id:
+                                       self.node.manual_command('select', target=i))
+                self.target_save_buttons[target_id] = save
+                self.target_select_buttons[target_id] = select
+                target_layout.addWidget(save, 0, target_id)
+                target_layout.addWidget(select, 1, target_id)
+                position = QtWidgets.QLabel(f'T{target_id}: chưa lưu')
+                position.setStyleSheet('color: #aeb8c8; font-size: 12px;')
+                self.target_position_labels[target_id] = position
+                target_layout.addWidget(position, 3, target_id)
+            self.btn_reset_targets = QtWidgets.QPushButton('Reset Target')
+            self.btn_reset_targets.clicked.connect(self._reset_manual_targets)
+            self.btn_reset_targets.setStyleSheet(self._btn_style('#54432e', '#80613c'))
+            target_layout.addWidget(self.btn_reset_targets, 0, 3)
+            self.btn_follower = QtWidgets.QPushButton('FOLLOWER')
+            self.btn_leader = QtWidgets.QPushButton('LEADER')
+            self.btn_follower.setStyleSheet(self._btn_style('#174c48', '#287d73'))
+            self.btn_leader.setStyleSheet(self._btn_style('#705018', '#a47724'))
+            self.btn_follower.clicked.connect(lambda: self.node.manual_command('follower'))
+            self.btn_leader.clicked.connect(self._request_manual_leader)
+            target_layout.addWidget(self.btn_follower, 2, 1)
+            target_layout.addWidget(self.btn_leader, 2, 2)
+            self.lbl_manual = QtWidgets.QLabel('Waiting for controller...')
+            self.lbl_manual.setWordWrap(True)
+            self.lbl_manual.setStyleSheet('color: #bcd9e8; font-size: 13px;')
+            self.lbl_manual.setMinimumWidth(200)
+            self.lbl_manual.setMaximumWidth(320)
+            target_layout.addWidget(self.lbl_manual, 1, 3, 3, 1)
+            self._manual_target_group = target_grp
 
-        row_1.addStretch()
+        if node._show_camera_plots:
+            row_1.addStretch()
 
         # Run toggle
         self.btn_pred = QtWidgets.QPushButton('Start Run')
@@ -812,6 +882,8 @@ class DashboardWindow:
         row_1.addWidget(self.btn_capture)
 
         ctrl.addLayout(row_1)
+        if not node._show_camera_plots:
+            ctrl.addWidget(self._manual_target_group)
 
         row_2 = QtWidgets.QHBoxLayout()
 
@@ -829,6 +901,7 @@ class DashboardWindow:
         self.btn_soft_stop.setStyleSheet(self._btn_style('#8e0000', '#c0392b'))
         self.btn_soft_stop.clicked.connect(self._soft_stop)
         row_2.addWidget(self.btn_soft_stop)
+        self.btn_soft_stop.setVisible(node._show_camera_plots)
 
         self.btn_go_home = QtWidgets.QPushButton('Go Home')
         self.btn_go_home.setStyleSheet(self._btn_style('#6c3483', '#8e44ad'))
@@ -842,6 +915,7 @@ class DashboardWindow:
         self.btn_draw.setStyleSheet(self._btn_style('#8e44ad', '#9b59b6'))
         self.btn_draw.clicked.connect(self._toggle_draw)
         row_2.addWidget(self.btn_draw)
+        self.btn_draw.setVisible(node._show_camera_plots)
 
         # Draw clear
         self.btn_clear = QtWidgets.QPushButton('Reset Draw')
@@ -891,7 +965,28 @@ class DashboardWindow:
                 self.btn_pred.setChecked(False)
                 return
 
-        if checked and requires_robot_ee_target(
+        if checked and not self.node._show_camera_plots:
+            with self.node._lock:
+                manual_state = dict(self.node._manual_status)
+                acknowledged = (time.monotonic()-self.node._manual_status_time < 1.5
+                                and manual_state.get('enabled') ==
+                                (self.node._trajectory_profile in ('svgp_mjm', 'svgp_mjm_test'))
+                                and manual_state.get('test_mode', False) ==
+                                (self.node._trajectory_profile == 'svgp_mjm_test'))
+                test_rejection = None
+                if self.node._trajectory_profile == 'svgp_mjm_test':
+                    test_rejection = manual_leader_rejection(manual_state)
+                    acknowledged = acknowledged and test_rejection is None
+            if not acknowledged:
+                if test_rejection is not None:
+                    message = f'Không thể Start GRU+MJM Test: {test_rejection}'
+                else:
+                    message = 'Chờ controller xác nhận chế độ quỹ đạo'
+                self._set_status(f'State: PREPARE | {message}')
+                self.node.get_logger().warn(f'[UI] {message}')
+                self.btn_pred.setChecked(False)
+                return
+        if checked and self.node._show_camera_plots and requires_robot_ee_target(
                 self.node._show_camera_plots,
                 self.node._trajectory_profile):
             relative_goal = self.node.publish_captured_goal_relative()
@@ -1027,6 +1122,13 @@ class DashboardWindow:
             self._set_status('State: RECOVER | Go-home action server unavailable')
 
     def _set_trajectory_mode(self, mode: str):
+        if self.node._is_running:
+            self._set_status('Stop Run before changing trajectory mode')
+            return
+        if not self.node._show_camera_plots:
+            self.node.manual_command('mode', enabled=(mode in ('svgp_mjm', 'svgp_mjm_test')),
+                                     test_mode=(mode == 'svgp_mjm_test'))
+            self.node.send_hybrid_cmd('hybrid_off')
         # Update button states
         if mode == 'ground_truth':
             self.node._trajectory_profile = 'ground_truth'
@@ -1045,11 +1147,12 @@ class DashboardWindow:
             self.btn_traj_svgpmjm.setChecked(False)
             model_label = self.node._prediction_model.upper()
             self._set_status(f'State: PREPARE | Mode: {model_label}')
-        elif mode == 'svgp_mjm':
-            self.node._trajectory_profile = 'svgp_mjm'
+        elif mode in ('svgp_mjm', 'svgp_mjm_test'):
+            self.node._trajectory_profile = mode
             self.node.set_trajectory_mode('prediction')
             self.node.send_model_cmd(self.node._prediction_model)
-            self.node.send_hybrid_cmd('hybrid_on')
+            self.node.send_hybrid_cmd(
+                'hybrid_on' if self.node._show_camera_plots else 'hybrid_off')
             self.btn_traj_gt.setChecked(False)
             self.btn_traj_svgp.setChecked(False)
             self.btn_traj_svgpmjm.setChecked(True)
@@ -1065,9 +1168,75 @@ class DashboardWindow:
         Ground Truth: chỉ hiện Actual EE — không có x̂ nào để so sánh.
         Prediction / Prediction+MJM: hiện cả hai để so sánh x̂ vs x.
         """
-        show = self.node._trajectory_profile in ('svgp', 'svgp_mjm')
+        show = self.node._trajectory_profile in ('svgp', 'svgp_mjm', 'svgp_mjm_test')
         for curve in self.curves_nominal.values():
             curve.setVisible(show)
+
+    def _reset_manual_targets(self):
+        answer = QtWidgets.QMessageBox.question(
+            self.win, 'Reset Target', 'Xóa cả hai đích đã lưu để đặt lại?',
+            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+            QtWidgets.QMessageBox.No)
+        if answer == QtWidgets.QMessageBox.Yes:
+            self.node.manual_command('reset')
+
+    def _request_manual_leader(self):
+        with self.node._lock:
+            state = dict(self.node._manual_status)
+            fresh = time.monotonic()-self.node._manual_status_time < 1.5
+        rejection = (manual_leader_rejection(state) if fresh else
+                     'Trạng thái controller đã cũ; chưa thể chọn LEADER')
+        if rejection is not None:
+            message = f'LEADER bị từ chối: {rejection}'
+            self._set_status(f'State: RUN | {message}')
+            self.node.get_logger().warn(f'[UI] {message}')
+            return
+        self.node.manual_command('leader')
+
+    def _refresh_manual_controls(self):
+        if not hasattr(self, 'lbl_manual'):
+            return
+        with self.node._lock:
+            state = dict(self.node._manual_status)
+            fresh = time.monotonic()-self.node._manual_status_time < 1.5
+        running = state.get('controller_state') == 'RUNNING'
+        busy = state.get('controller_state') in ('RUNNING', 'PREPARING') or self.node._is_running
+        for button, profile in ((self.btn_traj_gt, 'ground_truth'),
+                                (self.btn_traj_svgp, 'svgp'),
+                                (self.btn_traj_svgpmjm, 'svgp_mjm'),
+                                (self.btn_traj_test, 'svgp_mjm_test')):
+            button.setEnabled(fresh and not busy)
+            button.setChecked(self.node._trajectory_profile == profile)
+        hybrid = state.get('enabled', False) and self.node._trajectory_profile in ('svgp_mjm', 'svgp_mjm_test')
+        follower = state.get('role') == 'FOLLOWER'
+        targets = state.get('targets', {})
+        for i, button in self.target_save_buttons.items():
+            button.setEnabled(fresh and not busy and str(i) not in targets)
+            button.setToolTip(str(targets.get(str(i), 'Chưa lưu')))
+            point = targets.get(str(i))
+            self.target_position_labels[i].setText(
+                f'T{i}: X {point[0]:.3f} · Y {point[1]:.3f} · Z {point[2]:.3f} m'
+                if point is not None else f'T{i}: chưa lưu')
+        for i, button in self.target_select_buttons.items():
+            select_allowed = not busy if state.get('test_mode') else running
+            button.setEnabled(fresh and select_allowed and hybrid and follower and len(targets) == 2)
+            button.setChecked(state.get('selected') == i)
+        self.btn_reset_targets.setEnabled(fresh and not busy)
+        self.btn_follower.setEnabled(fresh and running and hybrid and len(targets) == 2)
+        # Let the operator click LEADER while FOLLOWER is active so missing
+        # target setup produces an explicit status instead of silent disablement.
+        self.btn_leader.setEnabled(fresh and running and hybrid and follower)
+        self.lbl_manual.setText(
+            f"Vai trò: {state.get('role', '?')} · {state.get('control_source', '')}\n"
+            f"Đích chọn: {state.get('selected') or '—'} · "
+            f"Đang đi: {state.get('active') or '—'}\n{state.get('transition') or state.get('reason', '')}"
+            + (f" · Test {min(state.get('test_elapsed', 0), 5):.1f}/5s"
+               if state.get('test_mode') and not state.get('test_fired') else '')
+            + (f" · EE mới {min(state.get('reentry_samples', 0), 20)}/20"
+               if state.get('reentry_phase') == 'WAIT' else '')
+            + (f" · GRU blend {state.get('reentry_elapsed', 0):.1f}/{state.get('reentry_blend_sec', .5):.1f}s"
+               if state.get('reentry_phase') == 'BLEND' else '')
+            if fresh else 'Controller status stale — controls locked')
 
     def _do_capture_target(self):
         if self.node._is_running:
@@ -1136,6 +1305,7 @@ class DashboardWindow:
             prefix = 'State: ENABLED' if success else 'State: ENABLE REJECTED'
             self._set_status(f'{prefix} | {message}')
 
+        self._refresh_manual_controls()
         if getattr(self.node, '_external_stop_requested', False):
             self.node._external_stop_requested = False
             self.node.get_logger().info(
@@ -1175,7 +1345,7 @@ class DashboardWindow:
                 self.curves_m[i].setData(tm, axes_m[i])
                 self.curves_p[i].setData(tp, axes_p[i])
 
-        show_nominal = self.node._trajectory_profile in ('svgp', 'svgp_mjm')
+        show_nominal = self.node._trajectory_profile in ('svgp', 'svgp_mjm', 'svgp_mjm_test')
         elapsed = max(te[-1] if te else 0.0, tn[-1] if tn else 0.0)
         window = self.node._robot_plot_window_sec
         x_right = max(window, elapsed)
@@ -1216,6 +1386,11 @@ class DashboardWindow:
         self._lbl_backend.setText(f'Backend: {mode}')
 
         # Update hybrid state label
+        if not self.node._show_camera_plots:
+            with self.node._lock:
+                manual = dict(self.node._manual_status)
+            if manual.get('enabled'):
+                hybrid_state = manual.get('role', 'OFF')
         self._lbl_hybrid.setText(f'Mode: {hybrid_state}')
         if hybrid_state == 'LEADER':
             self._lbl_hybrid.setStyleSheet('color: #ffffff; font-size: 14px; font-weight: bold; background: #c0392b; border-radius: 4px; padding: 2px 6px;')

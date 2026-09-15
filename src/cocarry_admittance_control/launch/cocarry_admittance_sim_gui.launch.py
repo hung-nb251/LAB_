@@ -70,6 +70,12 @@ def generate_launch_description():
     prediction_reference_tau_arg = DeclareLaunchArgument(
         'prediction_reference_tau_sec', default_value='0.4',
         description='Simulation nominal smoothing in seconds; 0 restores raw handoff')
+    prediction_reference_lead_arg = DeclareLaunchArgument(
+        'prediction_reference_lead_sec', default_value='0.15',
+        description='Filtered-velocity lead compensation, capped at 20 mm; 0 disables')
+    joint_coordination_arg = DeclareLaunchArgument(
+        'joint_coordination', default_value='synchronized',
+        choices=['independent', 'synchronized'])
     svgp_model_dir_arg = DeclareLaunchArgument(
         'svgp_model_dir',
         default_value=os.path.expanduser(
@@ -90,6 +96,9 @@ def generate_launch_description():
     simulation_domain_arg = DeclareLaunchArgument(
         'simulation_domain_id', default_value='42',
         description='Isolated ROS domain; keep different from real robot domain 10')
+    hybrid_target_file_arg = DeclareLaunchArgument(
+        'hybrid_target_file', default_value='',
+        description='Persistent base_link targets; empty uses a per-ROS-domain file')
     use_rviz_arg = DeclareLaunchArgument(
         'use_rviz', default_value='true',
         description='Show the fake HC10DTP in RViz')
@@ -105,8 +114,17 @@ def generate_launch_description():
     wrist_joint_velocity_limit_arg = DeclareLaunchArgument(
         'wrist_joint_velocity_limit', default_value='0.08',
         description=(
-            'Simulation-only R/B/T velocity limit in rad/s; J1/J2/J3 remain '
-            'at the streamer defaults'))
+            'Simulation-only initial R/B/T velocity limit in rad/s; explicit '
+            'B/T override is applied afterwards'))
+    j3_joint_velocity_limit_arg = DeclareLaunchArgument(
+        'j3_joint_velocity_limit', default_value='0.30',
+        description='Simulation-only J3/U velocity limit in rad/s')
+    bt_joint_velocity_limit_arg = DeclareLaunchArgument(
+        'bt_joint_velocity_limit', default_value='0.15',
+        description='Simulation-only J5/B and J6/T velocity limit in rad/s')
+    command_lead_arg = DeclareLaunchArgument(
+        'command_lead_m', default_value='0.04',
+        description='Simulation-only maximum nominal-to-actual command lead (m)')
     simulation = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(
             get_package_share_directory('hc10dtp_simulation'),
@@ -135,18 +153,31 @@ def generate_launch_description():
         executable='cartesian_streamer_hc10dtp.py',
         name='cartesian_streamer', output='screen',
         parameters=[fake_moveit_config],
-        arguments=['--stream-hz', '15', '--max-vel', '0.15',
-                   '--max-accel', '0.50', '--max-wrist-joint-vel',
+        arguments=['--stream-hz', '15', '--max-vel', '0.18',
+                   '--max-accel', '0.65', '--max-joint-vel', '0.30',
+                   '--max-wrist-joint-vel',
                    LaunchConfiguration('wrist_joint_velocity_limit'),
+                   '--max-j3-joint-vel',
+                   LaunchConfiguration('j3_joint_velocity_limit'),
+                   '--max-bt-joint-vel',
+                   LaunchConfiguration('bt_joint_velocity_limit'),
                    '--continuous-cartesian-smoothing',
+                   '--joint-coordination', LaunchConfiguration('joint_coordination'),
                    '--fail-closed'])
     admittance = Node(
         package='cocarry_admittance_control',
         executable='admittance_controller_3d',
         name='cocarry_admittance_controller', output='screen',
         parameters=[params, {
+            'hybrid_target_file': ParameterValue(LaunchConfiguration('hybrid_target_file'), value_type=str),
             'prediction_reference_tau_sec': ParameterValue(
                 LaunchConfiguration('prediction_reference_tau_sec'), value_type=float),
+            'prediction_reference_lead_sec': ParameterValue(
+                LaunchConfiguration('prediction_reference_lead_sec'), value_type=float),
+            'max_virtual_velocity_mps': 0.18,
+            'max_virtual_acceleration_mps2': 0.65,
+            'max_command_lead_m': ParameterValue(
+                LaunchConfiguration('command_lead_m'), value_type=float),
         }])
     logger = Node(
         package='cocarry_admittance_control', executable='cocarry_logger',
@@ -173,6 +204,7 @@ def generate_launch_description():
 
     return LaunchDescription([
         simulation_domain_arg,
+        hybrid_target_file_arg,
         SetEnvironmentVariable(
             'ROS_DOMAIN_ID', LaunchConfiguration('simulation_domain_id')),
         SetEnvironmentVariable('PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION', 'python'),
@@ -187,6 +219,8 @@ def generate_launch_description():
         ]),
         prediction_model_arg,
         prediction_reference_tau_arg,
+        prediction_reference_lead_arg, joint_coordination_arg,
+        command_lead_arg,
         svgp_model_dir_arg,
         gru_model_dir_arg,
         model_dir_arg,
@@ -195,7 +229,8 @@ def generate_launch_description():
         launch_sensor_ui_arg,
         launch_dashboard_arg,
         mjm_publish_rate_arg,
-        wrist_joint_velocity_limit_arg,
+        wrist_joint_velocity_limit_arg, j3_joint_velocity_limit_arg,
+        bt_joint_velocity_limit_arg,
         simulation,
         ee_tracker,
         predictor,

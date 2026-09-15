@@ -1,7 +1,0 @@
-[INFO] [1786691876.182788927] [trajectory_predictor]: [Predictor] Worker launched (pid=22625)
-[INFO] [1786691876.183254933] [trajectory_predictor]: [Predictor] Started | model=svgp | window=10 | auto_start=True
-  Output Filter: enabled=True, ema_alpha=0.5, max_dev=0.08, max_rate=0.02
-[WARN] [1786691877.319552248] [trajectory_predictor]: [Worker STDERR] /usr/lib/python3/dist-packages/scipy/__init__.py:146: UserWarning: A NumPy version >=1.17.3 and <1.25.0 is required for this version of SciPy (detected version 1.26.4
-[WARN] [1786691877.320270929] [trajectory_predictor]: [Worker STDERR] warnings.warn(f"A NumPy version >={np_minversion} and <{np_maxversion}"
-[INFO] [1786691878.198786150] [trajectory_predictor]: [Worker] TF 2.15.0 and sklearn loaded
-[INFO] [1786691879.225810676] [trajectory_predictor]: [Predictor] Worker READY | model=svgp

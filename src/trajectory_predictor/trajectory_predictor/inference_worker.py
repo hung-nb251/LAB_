@@ -343,6 +343,7 @@ def main():
                     "inference_ms": inference_ms,
                     "model_name": current_model_name,
                     "epoch": cmd.get("epoch", -1),  # echo epoch để lọc stale response
+                    "reentry": cmd.get("reentry"),
                 })
             except Exception as e:
                 print(f"DEBUG: Predict error: {e}", file=sys.stderr)

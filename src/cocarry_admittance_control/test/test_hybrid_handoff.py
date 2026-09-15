@@ -26,6 +26,7 @@ class _Admittance:
 
 def _controller_harness():
     controller = SimpleNamespace(
+        _manual=SimpleNamespace(enabled=False),
         _hybrid_state='FOLLOWER',
         _requested_hybrid_state='FOLLOWER',
         _leader_pending=False,
