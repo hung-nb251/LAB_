@@ -104,7 +104,7 @@ def generate_launch_description():
 
     # ── 3. Giao diện cảm biến lực (chạy user thường, TF hoạt động 100%) ────
     axia_ui_node = ExecuteProcess(
-        cmd=['python3', os.path.expanduser('~/cocarry_ws/axia_sensor_ui.py')],
+        cmd=['python3', os.path.expanduser('~/cocarry_ws/scripts/axia_sensor_ui.py')],
         name='axia_sensor_ui',
         output='screen',
     )
@@ -119,4 +119,3 @@ def generate_launch_description():
         cocarry_launch,
         axia_ui_node,
     ])
-

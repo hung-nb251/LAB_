@@ -30,6 +30,27 @@ HC10DTP_RATED_TORQUE_NM = np.array(
     [368.48, 414.54, 158.76, 41.16, 33.32, 31.36], dtype=np.float64)
 
 
+def apply_mregister_calibration(register_torque_nm, baseline_nm, q, q0, scale, coef):
+    """Apply the validated row-vector torque+pose calibration."""
+    register = np.asarray(register_torque_nm, dtype=np.float64)
+    baseline = np.asarray(baseline_nm, dtype=np.float64)
+    position = np.asarray(q, dtype=np.float64)
+    origin = np.asarray(q0, dtype=np.float64)
+    scaling = np.asarray(scale, dtype=np.float64)
+    matrix = np.asarray(coef, dtype=np.float64)
+    if any(v.shape != (6,) for v in (register, baseline, position, origin)):
+        raise ValueError('register, baseline, q and q0 must contain six values')
+    if scaling.shape != (12,) or matrix.shape != (12, 6):
+        raise ValueError('calibration requires scale[12] and coef[12,6]')
+    if not all(np.all(np.isfinite(v)) for v in
+               (register, baseline, position, origin, scaling, matrix)):
+        raise ValueError('calibration inputs must be finite')
+    if np.any(scaling <= 0.0):
+        raise ValueError('calibration scale must be positive')
+    features = np.concatenate((register - baseline, position - origin))
+    return (features / scaling) @ matrix
+
+
 @dataclass(frozen=True)
 class WrenchEstimate:
     wrench: np.ndarray
@@ -125,3 +146,36 @@ def estimate_robot_wrench(
         damping=damping,
         relative_residual=relative_residual,
     )
+
+
+def recover_calibrated_wrench(
+    jacobian,
+    calibrated_joint_torque_nm,
+    damping: float = 0.01,
+    characteristic_length_m: float = 0.3,
+) -> WrenchEstimate:
+    """Reproduce the DLS recovery used to validate the M310 calibration.
+
+    ``characteristic_length_m`` is retained in the candidate schema for
+    provenance but does not alter the physical equation J.T W = tau. Earlier
+    analysis incorrectly scaled Jacobian joint columns; doing so changes the
+    inverse instead of merely conditioning it.
+    """
+    jac = np.asarray(jacobian, dtype=np.float64)
+    tau = np.asarray(calibrated_joint_torque_nm, dtype=np.float64)
+    if jac.shape != (6, 6) or not np.all(np.isfinite(jac)):
+        raise ValueError('jacobian must be a finite 6x6 matrix')
+    if tau.shape != (6,) or not np.all(np.isfinite(tau)):
+        raise ValueError('calibrated_joint_torque_nm must contain six finite values')
+    if damping < 0.0 or characteristic_length_m <= 0.0:
+        raise ValueError('damping must be nonnegative and characteristic length positive')
+
+    normal = jac @ jac.T + damping * damping * np.eye(6)
+    wrench = np.linalg.solve(normal, jac @ tau)
+    singular_values = np.linalg.svd(jac, compute_uv=False)
+    sigma_min, sigma_max = float(singular_values[-1]), float(singular_values[0])
+    condition = float('inf') if sigma_min <= np.finfo(float).eps else sigma_max / sigma_min
+    residual = jac.T @ wrench - tau
+    relative_residual = float(
+        np.linalg.norm(residual) / max(np.linalg.norm(tau), np.finfo(float).eps))
+    return WrenchEstimate(wrench, sigma_min, condition, damping, relative_residual)

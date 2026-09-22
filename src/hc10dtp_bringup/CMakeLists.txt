@@ -3,10 +3,12 @@ project(hc10dtp_bringup)
 
 find_package(ament_cmake REQUIRED)
 
+install(DIRECTORY config DESTINATION share/${PROJECT_NAME})
+
 # Removed launch dir install as it doesn't exist
 
 install(
-  PROGRAMS scripts/cartesian_streamer_hc10dtp.py scripts/motion_conditioning.py scripts/restamp_joint_states.py scripts/go_home.py scripts/capture_home.py scripts/test_queue_diagnostic.py scripts/ee_tracker_node.py scripts/local_ik_solver.py scripts/sensorless_force_math.py scripts/sensorless_force_node.py scripts/torque_validation_logger.py
+  PROGRAMS scripts/cartesian_streamer_hc10dtp.py scripts/motion_conditioning.py scripts/restamp_joint_states.py scripts/go_home.py scripts/capture_home.py scripts/test_queue_diagnostic.py scripts/ee_tracker_node.py scripts/local_ik_solver.py scripts/sensorless_force_math.py scripts/sensorless_force_node.py scripts/mregister_force_node.py scripts/torque_validation_logger.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

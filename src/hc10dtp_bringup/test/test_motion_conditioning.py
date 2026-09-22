@@ -11,7 +11,11 @@ import numpy as np
 import pytest
 
 sys.path.insert(0, str(Path(__file__).parents[1] / 'scripts'))
-from motion_conditioning import synchronized_joint_step, sample_timed_position
+from motion_conditioning import (
+    reconcile_cartesian_state,
+    sample_timed_position,
+    synchronized_joint_step,
+)
 from local_ik_solver import LocalIKSolver
 
 
@@ -47,6 +51,22 @@ def test_random_reversals_stay_on_segment_and_within_velocity_limits():
         assert np.all(np.abs(v) <= caps + 1e-12)
         assert 0 < scale <= 1
         q = np.array(new)
+
+
+def test_accepted_cartesian_feedback_respects_dynamic_bounds():
+    velocity = [0.10, 0.0, 0.0]
+    acceleration = [0.0, 0.0, 0.0]
+    dt = 1 / 15
+    new_velocity, new_acceleration = reconcile_cartesian_state(
+        velocity, acceleration, [-0.10, 0.10, 0.0], dt,
+        max_velocity=0.25, max_acceleration=1.0, max_jerk=10.0)
+
+    assert np.linalg.norm(new_acceleration) <= 1.0 + 1e-12
+    assert np.max(np.abs(np.array(new_acceleration) - acceleration)) \
+        <= 10.0 * dt + 1e-12
+    assert np.linalg.norm(new_velocity) <= 0.25 + 1e-12
+    # The raw ACK velocity is feedback, not an instantaneous state assignment.
+    assert not np.allclose(new_velocity, [-0.10, 0.10, 0.0])
 
 
 @pytest.mark.parametrize('dt,caps', [(0, [.5]*6), (.1, [float('nan')]*6),
@@ -85,7 +105,8 @@ def test_busy_retry_keeps_reserved_timestamp_and_releases_gate_after_state_updat
     state = NS(_last_call_time_ns=10, _send_lock=threading.Lock(),
                _queue_call_inflight=True, _cumulative_time_ns=200_000_000,
                _pending_point_to_resend=None, _window_busy_count=0,
-               _window_retry_count=0, _retry_backoff_sec=.066,
+               _window_retry_count=0, _total_busy_count=0,
+               _total_retry_count=0, _retry_backoff_sec=.066,
                get_clock=lambda: NS(now=lambda: NS(nanoseconds=300_000_000)))
     def warn(*args, **kwargs):
         assert state._queue_call_inflight  # not released midway through ACK
@@ -148,6 +169,7 @@ def test_production_send_ack_chain_keeps_schedule_and_feeds_back_accepted_fk_vel
            _window_ack_count=0, _last_ack_time=None, _window_ack_interval_sum=0.,
            _window_ack_interval_count=0, _queue_debug_log_count=5,
            _window_busy_count=0, _window_retry_count=0, _retry_backoff_sec=.066,
+           _total_busy_count=0, _total_retry_count=0,
            get_clock=lambda: NS(now=lambda: Time(clock.ns)),
            get_logger=lambda: NS(info=lambda *a, **kw: None,
                                  warn=lambda *a, **kw: None,

@@ -1,5 +1,300 @@
 # CODEX.md — Quy ước làm việc cho dự án CoCarry
 
+## Cấu hình vận hành mới ngày 22/09 — lead 55 mm, tracking 65 mm
+
+Mặc định của `cocarry_admittance_real_gui.launch.py` đổi từ `0.04/0.050` sang
+`command_lead_m:=0.055` và `max_tracking_error_m:=0.065`. Đo trên lượt `121935`
+(82 s, profile diagnostic):
+
+| | lead 40 / ngưỡng 50 | lead 55 / ngưỡng 65 |
+|---|---|---|
+| Tốc độ EE median | 0,095 m/s | **0,130 m/s** |
+| Tracking median | 28,3 mm | 38,5 mm |
+| Tracking p95 | 35,1 mm | 44,3 mm |
+| Tracking max | 45,0 mm | 50,6 mm |
+| Biên tới ngưỡng | 5,0 mm (10%) | **14,4 mm (22%)** |
+
+Ba điều phải nhớ:
+
+- **Lead quyết định tốc độ**, không phải `max_virtual_velocity` hay
+  `prediction_reference_tau`. Quan hệ đo được là `v ≈ lead / 0,3 s`, và trần
+  0,095 m/s suốt hai ngày trước đó chính là do lead 40 mm.
+- **Tracking error tỉ lệ với lead, không với tốc độ**: đo được
+  `tracking ≈ 0,70 × lead`, xấu nhất `0,92 × lead`. Vì vậy hai tham số này là
+  **một cặp an toàn** và không bao giờ được nới riêng lẻ. Có test khóa ràng
+  buộc này trong `test_phase_alignment.py`.
+- Gia tốc và jerk **chuẩn hóa theo tốc độ giảm** (gia tốc/v² từ 32–39 xuống
+  23–26; jerk/v³ từ 8 800–11 800 xuống 4 500–5 400). Robot nhanh hơn mà đường
+  đi sạch hơn, không phải đánh đổi.
+
+Chưa kiểm chứng: ảnh hưởng tới các đợt ripple khi buông tay. Hai lượt ở lead 55
+mới có 15 s buông tay tích lũy, cần ≥100 s mới kết luận được.
+
+`--max-tracking-error` giờ là CLI arg của streamer (mặc định trong code vẫn
+`0.050`); giá trị vận hành do launch truyền vào.
+
+## Quy ước logging gọn từ 21/09
+
+- `cocarry_admittance_real_gui.launch.py` và bản simulation mặc định dùng
+  `logging_profile:=compact`: mỗi trial chỉ tạo **một CSV 30 cột**, không tạo
+  `.hybrid_events.json` hay `.calibration.jsonl`.
+- CSV compact chỉ giữ các biên cần phân tích: prediction đã lọc, nominal,
+  reference, EE thực; lực Axia trước/sau deadzone; role/trạng thái và bốn chỉ
+  số tuổi dữ liệu. Các trường suy ra được, joint/M310 và JSON lặp theo từng
+  dòng bị loại.
+- Chỉ dùng `logging_profile:=diagnostic` khi debug controller; profile này giữ
+  CSV 61 cột và event JSON. Chỉ dùng `logging_profile:=calibration` khi thật sự
+  cần raw Axia/M310; profile này mới tạo thêm `.calibration.jsonl`.
+- ROS 2 runtime log trở lại thư mục mặc định `~/.ros/log`, không trộn các file
+  process `.log` với dữ liệu thí nghiệm trong `cocarry_logs/`.
+- Raw CSV/JSONL lịch sử là dữ liệu thí nghiệm, không tự động xóa hoặc ghi đè.
+
+## Quy ước script Python ở workspace root
+
+- Toàn bộ script Python thao tác trực tiếp đã được gom vào `scripts/`; mã
+  package ROS vẫn nằm trong `src/` theo cấu trúc colcon.
+- `scripts/` giữ entry point phần cứng/runtime, script train model, công cụ plot
+  còn dùng và các script offline cần để tái lập báo cáo calibration/audit.
+- Test tự động phải đặt trong `tests/` hoặc `<package>/test/`. Không thêm các
+  file `test_ik2.py`, `test_ik3.py` hay bản nháp `refactor_*.py` ở root.
+- Các thử nghiệm ngắn đã được thay bằng implementation/test trong `src/` phải
+  xóa sau khi đối chiếu; không giữ nhiều bản đánh số của cùng một thử nghiệm.
+
+## Xác nhận bằng hai trial LEADER ngày 21/09 — M-register là external force chậm
+
+- Hai lượt `104650` và `104823` có pha LEADER mà người vận hành cố ý đẩy ngược
+  hướng robot. Chỉ đếm scan M310 duy nhất và dùng ngưỡng norm lực >=4 N:
+  `cos(F_robot_register,F_ext_Axia)` âm **0/39** mẫu, median theo lượt
+  +0,976/+0,971; `cos(v_EE,F_ext)` âm **33/39** mẫu.
+- Ở nửa sau LEADER, khi tác động đã ổn định, cosine hai lực vẫn dương 20/20,
+  còn cosine vận tốc–lực âm 20/20; median lần lượt −0,864 và −0,842 theo trial.
+  Đạo hàm reference cho cùng dấu âm 16/16 mẫu đủ điều kiện.
+- Axia khoảng 100,02 Hz; M310 khoảng 4,82 Hz, chậm hơn 20,7 lần. Sáu register
+  M310–M315 còn trải trên median 154 ms thay vì là một vector đồng thời.
+- Kết luận: trường runtime đang gọi `F_robot` từ M-register là external
+  interaction force estimate chậm hơn, không phải robot intent/internal force.
+  Không dùng nó cho conflict/role. Báo cáo và artifact tái lập:
+  `docs/f_robot_mregister_external_evidence_20260921_vi.md`.
+
+## Kết luận F_robot cuối 19/09 — M310/M320 bị loại, effort chưa đủ, F_robot không khả thi
+
+**Tóm tắt:** không có nguồn nào trên cấu hình phần cứng hiện tại cho ra `F_robot`
+như một lực độc lập với `F_ext`. Chỉ số bất đồng phải định nghĩa lại thành
+**lực người so với chuyển động robot định thực hiện**, không phải lực so lực.
+
+### M310–M315 và M320–M325: loại khỏi đường đo lực
+
+- Chúng là **ước lượng ngoại lực**, tức đo cùng đại lượng mà Axia đo. Không
+  phải nguồn độc lập.
+- Đo trên lượt `195619`: Axia **100,00 Hz** (chu kỳ 10,00 ms, P95 10,45 ms,
+  sáu kênh đồng thời) so với M310 **4,94 Hz** (chu kỳ 202 ms, sáu kênh trải
+  144,8 ms). Chênh 20 lần, và độ lệch kênh gây sai vector torque 3,04 Nm
+  trung vị / 8,16 Nm P95 khi chuyển động.
+- Axia đã calibrate xong (payload 1,126 kg, residual 0,42–0,51 N) và không phụ
+  thuộc Tool Data của controller.
+- **Kết luận: dùng Axia, bỏ M310/M320 khỏi đường đo ngoại lực.** Chúng không
+  thêm thông tin nào, chỉ thêm sai số và công việc.
+- Giữ lại một ghi chú cho tương lai: cảm biến torque ở khớp là nguồn **duy
+  nhất** thấy được va chạm ở thân/khuỷu, nơi Axia không thấy. Chưa cần dùng.
+
+### Bằng chứng M310 không mang tín hiệu xung đột
+
+- Lượt `200407` có pha LEADER, robot thật sự đi ngược lực người 20% số mẫu
+  (`cos(F_ext, v_reference)` và `cos(F_ext, v_EE)` đều âm 20%). `Φ = cos(F_robot,
+  F_ext)` vẫn **0% âm**, trung vị +0,994 — cao hơn cả pha FOLLOWER. Cỡ mẫu pha
+  LEADER chỉ 5, là chỉ dấu chứ chưa phải chứng minh thống kê.
+- Lượt `193546`: 85/185 mẫu người đi ngược GRU, Φ cũng 0% âm; AUC tách chỉ
+  0,738; ngưỡng `PHI_ANGLE=90°` cho tỷ lệ phát hiện **0,0%**.
+- Sai số còn lại của model nằm ở **độ lớn theo trục** (Z hụt ~31%, X hụt ~32%,
+  Y vượt, cùng dấu ở hai lượt độc lập), mà cosine thì chuẩn hoá mất độ lớn.
+
+### `joint_states.effort` — torque feedback theo Nm, nhưng chưa phải `F_robot`
+
+- MotoROS2 lấy tín hiệu bằng `mpSvsGetVelTrqFb`, yêu cầu đơn vị
+  `TRQ_NEWTON_METER`, rồi nhân giá trị API với `1e-6` trước khi publish.
+  ROS API công bố `JointState.effort` của khớp quay theo **Nm**. Theo
+  Discussion #509, không nhân thêm rated torque hoặc gear ratio.
+- Đây là **servo torque feedback** của actuator, khác với estimated external
+  torque M310–M315. Tuy nhiên cần kiểm chứng trên đúng binary/controller đang
+  cài rằng giá trị feedback có thể dùng như joint-side torque trong phương
+  trình động lực học. Nó gồm ảnh hưởng của trọng lực, quán tính, Coriolis,
+  ma sát, điều khiển bám và ngoại lực; không phải trực tiếp `F_robot`.
+- `cocarry_logs/torque_validation/` có 27 CSV ngày 08–10/09 với các cột
+  `joint_effort_j1..j6`; 12 file có giá trị khác 0. Dải 0,01–0,2 đã quan sát
+  phải giữ nguyên cách hiểu là **Nm do MotoROS2 publish**. Không được diễn
+  giải lại thành 1–20% rated chỉ vì trị số nhỏ.
+- `effort = 0` trong các phiên gần đây là do **Servo tắt**, không phải lỗi
+  cấu hình. Đã xác nhận với người vận hành.
+- `HC10DTP_RATED_TORQUE_NM` trong `sensorless_force_math.py` lấy từ URDF chỉ
+  là artifact chẩn đoán cũ; **không dùng** nó để scale `joint_states.effort`.
+- Toàn bộ file có effort đều ở **cùng một pose** (J2=+0,028, J3=−0,711 rad) và
+  không file nào có cột M310, nên dữ liệu cũ chưa đủ kiểm tra gravity/dynamics,
+  quy ước dấu hoặc độ tin cậy của torque feedback theo nhiều pose.
+
+### Vì sao F_robot không khả thi trên cấu hình này
+
+Ba nghĩa khác nhau, ba kết cục:
+
+1. **Lực robot tại điểm tiếp xúc** — không tồn tại tách biệt. Thanh cầm bắt
+   cứng vào flange **xuyên qua chính Axia** (`hc_tool_geometry_frames_20260918_vi.md`:
+   plate → Axia → spacer → thanh). Ở một mặt cắt cứng chỉ có một lực tương
+   tác; định luật III Newton làm "lực robot" bằng âm "lực người". Axia đã đo
+   nó. Đây là lý do mọi đường đi đều sụp về `cos ≈ 1`.
+2. **Torque nội tại của tay máy** — inverse dynamics có thể dự đoán torque cần
+   cho chuyển động, hoặc dùng residual torque để ước lượng ngoại lực. Nhưng
+   `τ_actuator − J(q)ᵀF_ext` chỉ còn lại tổng `M(q)qdd + C(q,qdot)qdot + g(q)
+   + τ_friction`; nó không phải một Cartesian `F_robot` duy nhất. Ánh xạ tổng
+   này qua Jacobian cần mô hình động lực học/ma sát và định nghĩa rõ đại lượng
+   đích. Ở dữ liệu co-carry chậm hiện tại, phần quán tính mang thông tin chuyển
+   động nhỏ hơn nhiễu nên chưa nhận dạng đáng tin cậy.
+3. **Ý định robot dạng vector** — có sẵn chính xác trong phần mềm (vận tốc
+   reference, hướng GRU/MJM), ở nhịp controller, không cần cảm biến hay
+   calibration. Nhưng nó **không phải lực**.
+
+Khoảng cách gốc với mô phỏng: `simulation_hri/inner_loop.py` giả định người và
+robot cùng đẩy **một vật thể tự do có động lực học riêng**, nên `f_h` và `f_r`
+là hai lực độc lập thật. Cơ cấu hiện tại không có vật thể đó. Muốn `φ` có nghĩa
+đúng như mô phỏng thì phải đổi cơ cấu sang một tấm/hộp được cùng nâng, không
+bắt cứng vào flange — đó là quyết định phần cứng.
+
+### Việc còn để ngỏ
+
+- Nếu cần lực vật lý thật cho mục đích khác (kiểm tra mô hình động lực học,
+  phát hiện bất thường cơ khí), phép thử rẻ nhất là 5–8 pose tĩnh không tiếp
+  xúc, Servo bật, ghi đồng thời `effort` + Axia + q, xem `τ_actuator` có bám
+  **dạng** trọng lực theo pose không. Chưa cần bảng rated cho phép thử đó.
+- Tool Data hiện khai báo sai: W=2,350 kg nhưng Xg=Yg=0, Zg=0,001 mm,
+  Ix=Iy=Iz=0 (ảnh `images/20240912_135149.png`), trong khi thanh vươn 160 mm.
+  Nếu bỏ M310/M320 thì nó chỉ còn ảnh hưởng safety/PFL, không còn là việc của
+  nhánh calibration. **Không tự sửa.**
+- Mass và CoG nhận dạng được bằng thực nghiệm và **tự động bao gồm ốc vít, cáp**
+  — không cần cân từng chi tiết. Inertia thì không nhận dạng được từ pose tĩnh,
+  nhưng ở gia tốc 0,03 m/s² nó gần như không ảnh hưởng.
+- Chi tiết, số liệu và đính chính: `docs/f_robot_source_reassessment_20260919_vi.md`.
+
+## Calibration T1 tối 19/09 — có candidate hợp nhất, vẫn chưa đổi runtime
+
+- Lượt `180049` (XY, 125 s RUNNING, 612 scan) và lượt Z± `183108`+`183502`
+  (`t1_dev_z_02`, 430 scan dùng được) đã được hợp nhất. Lượt Z lấp đúng phần
+  thiếu: từ 13 mẫu Z+ / 0 Z− lên 54 Z+ / 37 Z−. Y± trong lượt Z bằng 0.
+- Candidate hợp nhất `full` ridge 0,01 tốt hơn runtime trên **mọi** đối chứng:
+  holdout 18:00 2,922→2,536 N; holdout Z 2,661→2,245 N; macro 10 trial T1
+  lịch sử 2,792→**2,015 N**. Bản 18:24 chỉ fit XY từng làm macro lịch sử xấu
+  đi (3,278 N) và không đạt kiểm tra tiến cử trên lượt Z; việc bổ sung Z±
+  đã đảo ngược kết luận đó.
+- Singular values correction gain `[1,445 … 0,468]` — hiệu chỉnh vừa phải
+  quanh model hiện tại, không phải gain lớn 22,04 của thử nghiệm trước.
+- **Vẫn không deploy.** `decision.json` giữ `KEEP_CURRENT_RUNTIME_SHADOW;
+  REQUIRE_NEW_SESSION_TEST`: mọi split lịch sử và cả hai khối nội bộ trong
+  ngày đều đã được xem, nên không còn tập nào là test độc lập. Lượt Z sau khi
+  dùng để fit đã mất vai trò kiểm tra tiến cử. F_robot giữ shadow,
+  `calibration_confirmed=false`, `role_valid=false`.
+- Candidate đóng băng: `cocarry_logs/hc_force_calibration/20260919_t1_combined_v3/
+  candidate_frozen.json`. Cùng schema với model runtime nên nạp được bằng
+  tham số `calibration_file`; **không tự đổi tham số đó**.
+- Giới hạn dữ liệu: `183502` ghi liên tục >15 phút thay vì 15 s và chỉ có một
+  marker `post_baseline_for`, thiếu `no_contact_begin/end`; logger được đóng
+  lúc 18:52 theo yêu cầu người dùng. Baseline cuối chỉ dùng chẩn đoán.
+  `t1_z_analysis_v4` đã đọc file khi còn đang ghi nên hash không còn khớp;
+  bản dùng cho kết quả là `t1_z_analysis_v5`.
+- Từ 18:53 Claude tiếp quản nhánh calibration theo yêu cầu người dùng, tiếp
+  tục `calibrate_hc_t1_combined.py` mà Codex đang chạy dở tại `t1_combined_v2`
+  (thư mục rỗng, giữ nguyên). **Không còn lớp review độc lập giữa hai nhánh.**
+- Báo cáo đầy đủ: `docs/hc_force_t1_calibration_result_20260919_vi.md` mục 3b.
+  Tốc độ/chất lượng reader: `docs/m310_reader_rate_audit_20260919_vi.md`.
+
+## Cập nhật P2 ngày 19/09 — A/B prebuffer và candidate sửa jerk
+
+- Lượt `125048` xác nhận đúng `command_lead_m=0.04`, `prebuffer=2`. So với hai
+  lượt mốc `prebuffer=3`, tốc độ lệnh trung vị vẫn khoảng 0,095 m/s, queue lag
+  theo thời gian vẫn khoảng 0,40 s; BUSY/retry/reject và IK fail đều bằng 0.
+  Giảm prebuffer chỉ hạ tracking error trung vị khoảng 1 mm, không cải thiện tốc
+  độ có ý nghĩa. Artifact: `cocarry_logs/20260919_p2_lead004_prebuffer2_v1/`.
+- Launch thật đã trở về baseline an toàn `command_lead_m=0.04`, `prebuffer=3`.
+  Không tăng velocity, acceleration, jerk, tracking threshold hay force limit.
+- Candidate source cho co-carry continuous giữ jerk limit cả khi `dist<20 mm`
+  và reconcile velocity/acceleration từ ACK qua các bound thay vì ghi đè bằng
+  sai phân bậc hai thô. Camera/demo non-continuous giữ hành vi cũ. Candidate đã
+  qua test offline nhưng **chưa chạy robot thật**; không được kết luận nó làm
+  robot nhanh hơn. Lượt thật kế tiếp chỉ dùng để kiểm tra jerk/độ mượt, tracking,
+  overshoot và queue health với cấu hình baseline.
+- Báo cáo đầy đủ và số mốc: `docs/p2_pipeline_bandwidth_audit_20260919_vi.md`.
+
+## Cập nhật P1 ngày 19/09 — benchmark và tích hợp shadow runtime
+
+- Đã benchmark 8 filter causal trên 74 đoạn/105.389 mẫu raw, từ 44 log.
+  Chọn preset bằng validation 17/09, giữ 18/09 để đối chứng.
+- Candidate `median3_adaptive` (median-3 + cutoff thích nghi 1,5–15 Hz)
+  giảm RMS nghỉ từ khoảng 0,01717 xuống 0,00937 N so với Raw UI median-5;
+  t90 bước tổng hợp tăng 20→40 ms, còn EMA 0,1 mất khoảng 230 ms.
+- Candidate loại tốt xung một mẫu nhưng để lọt phần lớn burst 2–3 mẫu.
+  Đã tích hợp `median3_adaptive` vào `axia_sensor_ui.py` trước gravity
+  compensation; `/axia/raw_wrench` và safety/force limits không đổi. Chưa dùng
+  candidate cho F_robot hoặc role selection. Filter reset khi NaN, timestamp
+  không tăng hoặc UDP gap >0.20 s.
+- Audit 782.750 raw samples không thấy xung đơn theo tiêu chí đã công khai;
+  không coi đó là bằng chứng không có burst hoặc lỗi bù trọng lực/TF.
+- Kết quả, giới hạn, cấu hình candidate và bước shadow:
+  `docs/axia_filter_p1_benchmark_20260919_vi.md`. Có thể tiếp tục P2 offline.
+
+## Cập nhật P0 ngày 19/09 — đã audit hợp nhất, chưa thay model runtime
+
+- Đã kiểm kê 77 event logs (61 trong kho calibration + 16 lịch sử), hợp nhất
+  12 pose tĩnh, 54 baseline và 25 trial/3.993 mẫu lực hợp lệ ngày 15–18/09.
+- Baseline đủ rank số học 6 nhưng có một hướng yếu; condition chuẩn hóa
+  khoảng 101 ở 12 pose và 197 ở tập hợp nhất. Không còn diễn giải rank=2
+  của tập con cũ là kết luận về toàn bộ dữ liệu.
+- Candidate P0 train+r3 đạt r4 RMSE 3,134 N so với runtime 2,306 N trên cùng
+  protocol; lượt dài 17:22 là 8,771 so với 7,144 N. Chưa vượt model hiện tại,
+  không deploy hoặc bật calibrated/role_valid. F_robot tiếp tục shadow.
+- Phần thiếu rõ nhất: lực X±/Y− trong vùng T2 có M310 đồng thời, baseline
+  động có marker không tiếp xúc, test session mới có raw/sidecar đầy đủ.
+  Không thu lại diện rộng 12 pose. Chi tiết, code tái lập và artifacts:
+  `docs/hc_force_p0_unified_calibration_20260919_vi.md`.
+
+## Trạng thái cuối ngày 18/09 — calibration và băng thông hệ thống
+
+- Không thu lại diện rộng baseline tĩnh/động. Dự án đã có 61 log event, 12 pose
+  tĩnh không tiếp xúc, các lượt GT/GRU/GRU+MJM và bảy lượt GRU M310 mới. Audit
+  kế tiếp phải hợp nhất toàn bộ dữ liệu; chỉ thu đúng pose/hướng còn thiếu sau
+  khi kiểm tra rank, condition và độ phủ.
+- `F_robot` từ M310–M315 hiện là shadow trong `base_link`, tính bằng nghiệm
+  regularized `J(q)^T W=tau`. Replay runtime khớp công thức offline, nhưng sai
+  số Axia còn khoảng 6–7 N ở các lượt dài; calibration chưa hoàn chỉnh và chưa
+  được dùng cho Admittance hoặc role selection.
+- Chế độ Axia ghi `Raw/alpha=1.0` vẫn qua median-5 nên chưa phải raw thật. Việc
+  tiếp theo là benchmark offline bộ lọc causal loại xung + bám nhanh/thích nghi
+  theo noise, latency và sai số hướng, rồi mới chạy shadow.
+- Độ chậm chuyển động có thể do nhiều khâu nối tiếp: prediction-reference
+  tau=0.4 s, Admittance limits, Cartesian jerk/accel/velocity, IK/queue và
+  command-lead. Phải đo delay/limiter từng tầng và mô phỏng A/B; không hạ tau
+  và tăng jerk đồng thời trên robot thật.
+- Minimum Jerk hai điểm hiện nội suy `p0+h(s)(p1-p0)`: đường trong không gian
+  phải thẳng; dạng S là tiến độ vị trí theo thời gian. Kiểm chứng bằng đồ thị
+  along-path velocity/acceleration/jerk. Đường cong không gian cần planner khác.
+- M310–M315 hiện chỉ khoảng 5 Hz vì sáu service scalar tuần tự. Giảm scan gap
+  chỉ là benchmark; giải pháp đích là controller-side batch/topic sáu register
+  với một timestamp, mục tiêu ban đầu >=15 Hz sau khi kiểm tra tải khi robot
+  Stop/Disable.
+- Tài liệu đầy đủ, thứ tự P0–P5 và tiêu chí đánh giá:
+  `docs/cocarry_progress_next_steps_20260918_vi.md`.
+
+## Calibration M310 ngày 18/09 — trạng thái sau audit runtime
+
+- F_robot CSV hiện lấy từ M310–M315, baseline Home + torque/pose candidate +
+  nghiệm regularized `J(q)^T W=tau`, chỉ shadow. Chưa calibrated hoàn chỉnh.
+- Axia của launch hiện tại do `axia_sensor_ui.py` publish trong base_link,
+  gồm bù góc gá sẵn có; không xoay thêm chỉ vì thấy frame sensor trong node
+  `gravity_compensator.py` legacy không được launch ở pipeline này.
+- Hai lượt runtime mới cho sai số khoảng 7 N trên reference suy ngược deadband.
+  Mô hình baseline riêng chưa vượt candidate cũ nhất quán; chưa triển khai.
+- CSV chính giữ 61 cột, chỉ ba cột `f_robot_x/y/z`, torque_J1_Nm..J6_Nm.
+  Logger bổ sung `<csv>.calibration.jsonl` với raw M310, Axia raw/processed,
+  baseline, q/q0, rotation, model snapshot và marker; không đọc register lần hai.
+- Hướng dẫn thu phần dữ liệu còn thiếu và kết quả kiểm chứng:
+  `docs/hc_force_baseline_audit_20260918_vi.md`. Người vận hành chạy robot;
+  không tự Enable/Start, không thay Tool Data, tare/gá hoặc giới hạn điều khiển.
+
 ## Cập nhật phối hợp khớp 2026-09-15
 
 - Theo yêu cầu người dùng, profile vận tốc launch thật hiện là
@@ -86,7 +381,8 @@ không được dùng chúng để ghi đè hành vi được thể hiện trong
 - Không đổi frame, chiều trục, dấu lực, pose Home, tool offset, khối lượng tải
   hoặc góc gá cảm biến chỉ dựa trên suy đoán. Nếu dữ liệu thực nghiệm chưa đủ,
   hỏi lại người dùng.
-- Sau khi sửa Python: chạy `python3 -m py_compile` cho file liên quan. Sau khi
+- Sau khi sửa Python: chạy `python3 -m py_compile scripts/<file>.py` cho script
+  trong `scripts/` (hoặc đường dẫn tương ứng trong `src/`). Sau khi
   sửa package ROS: chạy test phù hợp và `colcon build --symlink-install
   --packages-select ...` ở mức tối thiểu cần thiết.
 - Không commit hoặc push nếu người dùng chưa yêu cầu.
@@ -134,7 +430,7 @@ Không chạy đồng thời hai pipeline có thể publish
 
 Axia trên PC cảm biến
   -> UDP 50000
-  -> axia_sensor_ui.py
+  -> scripts/axia_sensor_ui.py
   -> /axia/human_force trong base_link
 
 x_d + F_h
@@ -155,7 +451,7 @@ Các file chính:
 - `src/hc10dtp_bringup/scripts/cartesian_streamer_hc10dtp.py`
 - `src/trajectory_predictor/trajectory_predictor/predictor_node.py`
 - `src/trajectory_predictor/trajectory_predictor/inference_worker.py`
-- `axia_sensor_ui.py`
+- `scripts/axia_sensor_ui.py`
 
 ### Luật điều khiển
 
@@ -329,12 +625,12 @@ Cartesian/virtual velocity `0.22 m/s`, acceleration `0.80 m/s²` và command lea
 Sau trial GRU simulation `20260906_105435`, đã tái hiện ripple trong vòng
 robot-EE -> prediction -> nominal -> Admittance -> robot-EE mà không cần mạng
 hay IK. Output GRU raw vẫn giữ nguyên. Launch simulation hiện override
-`prediction_reference_tau_sec=0.4`: lọc bậc một nominal tại controller trước
+`prediction_reference_tau_sec=0.5`: lọc bậc một nominal tại controller trước
 khi cộng `e`, rồi mới áp lead/workspace limits. Đây là điều hòa reference có
 đánh đổi độ trễ, không phải sửa đồ thị hay chứng minh model chính xác hơn.
 Ground Truth và MJM LEADER bypass khâu này. State reset tại Start/realign và
-đóng băng cùng force HOLD. Simulation giữ mặc định `0.4`; sau đánh giá pendant
-và tracking ngày 2026-09-09, launch robot thật dùng `0.25` để giảm độ trễ GRU.
+đóng băng cùng force HOLD. Real và simulation hiện cùng dùng mặc định `0.5`;
+có thể truyền `0.0` để đối chứng legacy.
 Real và sim đều hỗ trợ launch arg `prediction_reference_tau_sec:=0.0` để đối
 chứng legacy.
 Không nới limits, không tự Enable/Start robot thật. Cùng cấu hình nominal không
@@ -361,7 +657,13 @@ Trạng thái phần cứng đã chốt:
   F_robot calibrated. Sau khi khởi động lại Axia UI cần calibrate bias không
   tải và kiểm tra lực ở P0/P1 trước vận hành.
 - Góc bù gá mặc định: Roll X `0°`, Pitch Y `0°`, Yaw Z `-90°`.
-- Deadband vận hành: radial deadband `4 N`, không phải deadband riêng từng trục.
+- Deadband vận hành: radial deadband `2.5 N`, không phải deadband riêng từng
+  trục. Giá trị nằm ở hằng số `DEADBAND_N` trong `scripts/axia_sensor_ui.py` và
+  dùng chung cho cả ba pipeline (co-carry, co-drawing, camera). Các báo
+  cáo/audit trước 21/09 giả định `4 N`; không đọc lại chúng theo ngưỡng mới.
+- Deadband này là **kiểu trừ**: `F_out = F * (|F| - dz) / |F|`. Hạ ngưỡng vừa
+  giảm mức lực bắt đầu có tác dụng, vừa **cộng thêm `(4 - dz)` N độ lợi** vào
+  mọi mức lực vượt ngưỡng. Không coi nó chỉ là một nút chỉnh độ nhạy.
 - Calib Mode chỉ đặt deadband về `0 N` để quan sát/calibrate hướng; nó không tự
   thay thế thao tác bấm `Calibrate F/T Sensor`.
 - Filter mặc định: median size 5 + EMA alpha `0.1`. Khi test hướng nên tạm dùng
@@ -485,7 +787,7 @@ python3 -m venv ~/axia_driver/.venv
 Từ máy `hungnb`, chép driver sang máy 2 bằng IP Wi-Fi hiện tại:
 
 ```bash
-scp ~/cocarry_ws/axia_sensor_driver.py \
+scp ~/cocarry_ws/scripts/axia_sensor_driver.py \
   binhdangnguyen@<IP_WIFI_MAY_2>:/home/binhdangnguyen/axia_driver/
 ```
 
@@ -604,8 +906,10 @@ ros2 launch cocarry_admittance_control \
 
 Terminal 3:
 
+```bash
 cd ~/cocarry_ws
 ./run_sensor_driver.sh --iface enxf8e43b7aeaf2
+```
 
 Chỉ kiểm tra joint states/TF/force/UI, không chạy controller thật:
 
@@ -748,15 +1052,15 @@ Mô phỏng ghi vào:
 /home/hungnb/cocarry_ws/cocarry_logs/simulation
 ```
 
-Logger co-carrying lưu các nhóm chính:
+Logger co-carrying mặc định (`logging_profile:=compact`) lưu các nhóm chính:
 
 - actual robot EE XYZ;
-- predicted relative `x_d` và nominal absolute `x_d`;
-- admittance error và reference `x_r`;
-- `f_human_x/y/z` và `f_robot_x/y/z`;
-- inference time, model, role và timestamp lực.
-- raw SVGP relative, `force_age_ms`, `prediction_age_ms` và `udp_gap_ms` để phân
-  biệt model inference, HOLD và dropout cảm biến.
+- predicted relative đã lọc, nominal absolute và reference `x_r`;
+- `f_human_x/y/z`, lực effective sau deadzone và trọng số deadzone Z;
+- model, role, controller state/phase, timestamp và tuổi dữ liệu.
+
+Raw prediction, joint/M310, motion diagnostics và full hybrid JSON chỉ có trong
+profile `diagnostic`; raw Axia/M310 sidecar chỉ có trong profile `calibration`.
 
 UI co-carry vẽ riêng bốn tín hiệu trên cùng hệ `base_link`: raw SVGP nominal,
 nominal đã filter/bound, reference gửi robot và actual robot EE. Nhãn `Model`
@@ -825,3 +1129,16 @@ reference của controller nên dùng để kiểm tra topic, không hứa tự 
    dụng; không nhầm artifact mới với default.
 8. Trình bày nguyên nhân/kế hoạch trước thay đổi có rủi ro và kiểm thử theo mức
    độ: unit -> load/inference -> simulation -> robot thật.
+
+python3 scripts/hc_force_trial_logger.py \
+    --session "$HC_CALIB_SESSION" \
+    --category static_cog \
+    --trial cog_p013 \
+    --mode static \
+    --pose pose_013 \
+    --tool-number 0 \
+    --group all \
+    --timeout 5.0 \
+    --scan-gap 0.10 \
+    --output "$HC_CALIB_ROOT" \
+    --notes 'mass_total_kg=TODO; one_tare_at_home; CalibMode_OFF; deadband_4N; no_contact'

@@ -40,23 +40,30 @@ def test_rejected_estimate_keeps_raw_diagnostic_without_valid_force():
     assert r['force'] is None and r['force_unfiltered'][0] == 600.
 
 
+def test_stale_clears_mregister_source_values():
+    s = sample()
+    s.update(mregister_values_nm=[1.] * 6, mregister_delta_nm=[.5] * 6)
+    r = force_log_record(s, 1_300_000_000, .01, .25)
+    assert r['mregister_values_nm'] is None
+    assert r['mregister_delta_nm'] is None
+
+
 def test_missing_and_malformed_are_explicit():
     assert force_log_record(None, 0, 0, .25)['status'] == 'NO_SAMPLE'
     s = sample();s['force'][0] = float('nan')
     with pytest.raises(ValueError): validate_force_sample(s)
 
 
-@pytest.mark.parametrize('override', ['', 'raw_only', 'torque_nm', 'normalized_rated_torque'])
-def test_launch_only_overrides_yaml_if_explicit(override):
+def test_real_launch_uses_mregister_calibration_file():
     path = Path(__file__).parents[1] / 'launch/cocarry_admittance_real_gui.launch.py'
     tree = ast.parse(path.read_text())
     method = next(n for n in ast.walk(tree) if isinstance(n, ast.FunctionDef)
                   and n.name == '_launch_sensorless_force')
     env = dict(Node=lambda **kwargs: kwargs,
-               ParameterValue=lambda *a, **k: False,
-               LaunchConfiguration=lambda name: NS(perform=lambda context: override))
+               ParameterValue=lambda value, **kwargs: value,
+               LaunchConfiguration=lambda name: f'<{name}>')
     exec(compile(ast.Module(body=[method], type_ignores=[]), str(path), 'exec'), env)
     params = env['_launch_sensorless_force'](None, 'params.yaml')[0]['parameters']
     assert params[0] == 'params.yaml'
-    if override: assert params[1]['effort_unit_mode'] == override
-    else: assert 'effort_unit_mode' not in params[1]
+    assert params[1]['calibration_file'] == '<robot_force_calibration_file>'
+    assert env['_launch_sensorless_force'](None, 'params.yaml')[0]['executable'] == 'mregister_force_node.py'

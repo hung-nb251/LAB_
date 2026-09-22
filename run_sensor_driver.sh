@@ -72,7 +72,7 @@ fi
 trap 'echo "Dọn dẹp..."; sudo ip link set dev '$IFACE' down; exit 0' SIGINT SIGTERM
 
 # ── Xây dựng lệnh chạy driver ─────────────────────────────────────────────────
-DRIVER_CMD=(python3 /home/hungnb/cocarry_ws/axia_sensor_driver.py "$IFACE")
+DRIVER_CMD=(python3 /home/hungnb/cocarry_ws/scripts/axia_sensor_driver.py "$IFACE")
 
 if [ -n "$PC1_IP" ]; then
     DRIVER_CMD+=(--ip "$PC1_IP")

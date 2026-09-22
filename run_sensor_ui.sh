@@ -9,4 +9,4 @@ source install/setup.bash || { echo "[LỖI] Chưa build workspace! Chạy: colc
 FASTRTPS_DEFAULT_PROFILES_FILE=/home/hungnb/cocarry_ws/fastdds_no_shm.xml \
 LD_LIBRARY_PATH="$LD_LIBRARY_PATH" \
 PYTHONPATH="$PYTHONPATH:/home/hungnb/.local/lib/python3.10/site-packages" \
-python3 axia_sensor_ui.py
+python3 scripts/axia_sensor_ui.py

@@ -2,7 +2,7 @@
 
 ## Phạm vi và dữ liệu
 
-Dùng `hc_force_trial_logger.py` ở gốc workspace. Logger chỉ gọi `/read_mregister`
+Dùng `scripts/hc_force_trial_logger.py`. Logger chỉ gọi `/read_mregister`
 và subscribe; không bật servo, chạy robot, tare hay sửa tham số.
 Giữ nguyên URDF +61.2°, Axia offset −90°, Tool 0 và Tool Data hiện tại.
 Home/Target 1 đã đủ cho pilot hôm nay; Target 2 là bài mở rộng sau.
@@ -51,7 +51,7 @@ thay thế việc kiểm tra dữ liệu thật. Xem health mỗi 5 giây.
 Người vận hành giữ robot ở Home bằng chế độ phù hợp, Servo ON, không có
 admittance/Start Run đang hoạt động. Bật logger:
 ```bash
-python3 hc_force_trial_logger.py --trial S1_home --mode static --pose home \
+python3 scripts/hc_force_trial_logger.py --trial S1_home --mode static --pose home \
   --tool-number 0 --group all \
   --notes 'before_tool_data_update; mass=2.350kg; CoG=(0,0,0.001)mm; bổ sung tare/filter/deadband thực tế'
 ```
@@ -88,7 +88,7 @@ khiển. Người vận hành chọn Ground Truth khi stopped, Enable/Start theo
 hiện hành. Logger không làm các thao tác này.
 
 ```bash
-python3 hc_force_trial_logger.py --trial G1_home_x --mode ground_truth --pose home \
+python3 scripts/hc_force_trial_logger.py --trial G1_home_x --mode ground_truth --pose home \
   --tool-number 0 --group wrench \
   --notes 'before_tool_data_update; same tare as S1 nếu đúng; ghi file CSV Ground Truth và cấu hình UI'
 ```

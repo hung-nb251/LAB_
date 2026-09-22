@@ -84,14 +84,14 @@ Các thay đổi này xử lý lỗi nhịp/smoother đã tái hiện, chưa b�
 robot thật; joint clipping độc lập và chất lượng mạng force vẫn cần đánh giá.
 
 Sau trial mô phỏng GRU `20260906_105435`, launch simulation bật thêm
-`prediction_reference_tau_sec=0.4` để giảm ripple của vòng phản hồi EE/model.
+`prediction_reference_tau_sec=0.5` để giảm ripple của vòng phản hồi EE/model.
 Đây là lọc bậc một của nominal **tại controller, trước khi cộng admittance
 error**, không sửa/che raw output GRU trong predictor và CSV. Đường
 `Limited x_d` hiển thị nominal đã qua khâu này rồi qua giới hạn khoảng cách.
-Khâu này có đánh đổi độ trễ; 0.4 s là tham số thử nghiệm, không phải bảo đảm
+Khâu này có đánh đổi độ trễ; 0.5 s là tham số thử nghiệm, không phải bảo đảm
 ổn định cho mọi model/quỹ đạo. Ground Truth và MJM LEADER không bị lọc.
 K, giới hạn tốc độ, force watchdog giữ nguyên. Sau khi người dùng xác nhận
-trial `20260906_111811`, **cả real và simulation mặc định 0.4 s**. Launch real
+trial `20260906_111811`, **cả real và simulation mặc định 0.5 s**. Launch real
 hỗ trợ cùng arg `prediction_reference_tau_sec`; không cần truyền arg để bật.
 Độ mượt phần cứng thật vẫn cần xác nhận trực tiếp, không suy ra từ mock.
 
@@ -99,7 +99,7 @@ Chạy mô phỏng với bản giảm ripple (mặc định GRU):
 
 ```bash
 ros2 launch cocarry_admittance_control cocarry_admittance_sim_gui.launch.py \
-  prediction_reference_tau_sec:=0.4
+  prediction_reference_tau_sec:=0.5
 ```
 
 Đối chứng hành vi trước sửa: dừng launch rồi chạy lại với

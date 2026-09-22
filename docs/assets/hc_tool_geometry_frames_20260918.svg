@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+  <defs>
+    <marker id="arrow-red" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#d33"/></marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#178b4c"/></marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#276bd1"/></marker>
+    <marker id="arrow-gray" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#555"/></marker>
+    <style>text{font-family:DejaVu Sans,Arial,sans-serif;fill:#222}.title{font-size:25px;font-weight:700}.label{font-size:18px}.small{font-size:15px}.dim{stroke:#555;stroke-width:2;marker-start:url(#arrow-gray);marker-end:url(#arrow-gray)}.guide{stroke:#888;stroke-width:1;stroke-dasharray:6 5}</style>
+  </defs>
+  <rect width="1200" height="700" fill="#fafafa"/>
+  <text x="45" y="45" class="title">Hình học danh nghĩa của cụm flange–Axia–thanh</text>
+  <text x="45" y="75" class="small">Đơn vị mm · sơ đồ phục vụ biến đổi wrench · không dùng làm bản vẽ chế tạo</text>
+
+  <text x="55" y="125" class="label" font-weight="700">Nhìn từ trên theo frame Axia {A}</text>
+  <rect x="450" y="145" width="164" height="400" rx="82" fill="#d8dde3" stroke="#5c6670" stroke-width="3"/>
+  <rect x="70" y="265" width="800" height="60" fill="#56616c" stroke="#252c33" stroke-width="3"/>
+  <circle cx="532" cy="295" r="82" fill="#87919b" stroke="#323a42" stroke-width="3"/>
+  <circle cx="532" cy="295" r="8" fill="#fff" stroke="#222" stroke-width="3"/>
+  <circle cx="532" cy="531" r="8" fill="#fff" stroke="#222" stroke-width="3"/>
+  <circle cx="212" cy="295" r="8" fill="#fff" stroke="#222" stroke-width="3"/>
+  <text x="546" y="286" class="label">O<tspan baseline-shift="sub" font-size="13">A</tspan> = (0,0,0)</text>
+  <text x="546" y="526" class="label">O<tspan baseline-shift="sub" font-size="13">F</tspan> = (0,−120,0)</text>
+  <text x="92" y="285" class="label" fill="#fff">O<tspan baseline-shift="sub" font-size="13">B</tspan> = (−160,0,0)</text>
+  <text x="74" y="350" class="small">Thanh 400 × 30 × 30</text>
+  <text x="625" y="180" class="small">Plate 82 × 200 × 10</text>
+  <text x="620" y="250" class="small">Axia Ø82 × 25,4</text>
+
+  <line x1="532" y1="295" x2="692" y2="295" stroke="#d33" stroke-width="4" marker-end="url(#arrow-red)"/>
+  <text x="700" y="301" class="label" fill="#d33">+X<tspan baseline-shift="sub" font-size="13">A</tspan></text>
+  <line x1="532" y1="295" x2="532" y2="135" stroke="#178b4c" stroke-width="4" marker-end="url(#arrow-green)"/>
+  <text x="542" y="143" class="label" fill="#178b4c">+Y<tspan baseline-shift="sub" font-size="13">A</tspan></text>
+  <circle cx="532" cy="295" r="18" fill="none" stroke="#276bd1" stroke-width="3"/>
+  <circle cx="532" cy="295" r="5" fill="#276bd1"/>
+  <text x="500" y="338" class="small" fill="#276bd1">+Z<tspan baseline-shift="sub" font-size="11">A</tspan> minh họa</text>
+
+  <line x1="212" y1="385" x2="532" y2="385" class="dim"/><line x1="212" y1="325" x2="212" y2="400" class="guide"/><line x1="532" y1="325" x2="532" y2="400" class="guide"/>
+  <text x="335" y="377" class="label">160</text>
+  <line x1="925" y1="295" x2="925" y2="531" class="dim"/><line x1="540" y1="295" x2="940" y2="295" class="guide"/><line x1="540" y1="531" x2="940" y2="531" class="guide"/>
+  <text x="940" y="420" class="label">120 danh nghĩa</text>
+  <text x="940" y="443" class="small">118 trong CAD</text>
+
+  <rect x="40" y="590" width="1120" height="80" rx="10" fill="#eef4fa" stroke="#8aa3bb"/>
+  <text x="60" y="620" class="label">Quy wrench Axia → flange: r<tspan baseline-shift="sub" font-size="13">F→A</tspan> = (0,+0.120,0) m</text>
+  <text x="60" y="651" class="label">F<tspan baseline-shift="sub" font-size="13">F</tspan> = F<tspan baseline-shift="sub" font-size="13">A</tspan>  ;  τ<tspan baseline-shift="sub" font-size="13">F</tspan> = τ<tspan baseline-shift="sub" font-size="13">A</tspan> + r<tspan baseline-shift="sub" font-size="13">F→A</tspan> × F<tspan baseline-shift="sub" font-size="13">A</tspan>  (khi cùng orientation)</text>
+</svg>

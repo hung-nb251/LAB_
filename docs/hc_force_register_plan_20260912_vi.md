@@ -77,7 +77,7 @@ trạng thái cập nhật. Đối chiếu pendant khi giữ pose, chấp nhận
 
 ### 2. Bổ sung logger độc lập trước trial (30–45 phút)
 
-Cập nhật triển khai: đã thêm logger độc lập `hc_force_trial_logger.py` ở gốc
+Cập nhật triển khai: đã thêm logger độc lập `scripts/hc_force_trial_logger.py`
 workspace và hướng dẫn `docs/hc_force_trial_runbook_vi.md`. Chạy trực tiếp bằng
 Python sau khi source ROS; không thay logger điều khiển hiện có. Đã kiểm tra
 syntax và unit test scale/timeout; chưa kiểm chứng rate trên robot thật.

@@ -111,7 +111,7 @@ Giữ T2 chạy. Launch này tạo TF và mở UI Axia; trong code hiện tại 
 tắt streamer, admittance controller và move_group. Predictor/UI phụ vẫn có
 thể xuất hiện. Không bấm Enable Robot, Go Home hoặc Start Run trên UI.
 
-Không chạy thêm `python3 axia_sensor_ui.py`: T2 đã mở nó và chỉ được có một
+Không chạy thêm `python3 scripts/axia_sensor_ui.py`: T2 đã mở nó và chỉ được có một
 tiến trình nhận UDP port 50000. Nếu đã mở một phiên cũ, kết thúc phiên cũ theo
 đúng quy trình rồi mở lại để có publisher `/axia/raw_wrench` mới.
 

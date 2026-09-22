@@ -68,7 +68,7 @@ def generate_launch_description():
         'prediction_model', default_value='gru', choices=['svgp', 'gru'],
         description='Robot-EE prediction backend selected before launch')
     prediction_reference_tau_arg = DeclareLaunchArgument(
-        'prediction_reference_tau_sec', default_value='0.4',
+        'prediction_reference_tau_sec', default_value='0.5',
         description='Simulation nominal smoothing in seconds; 0 restores raw handoff')
     prediction_reference_lead_arg = DeclareLaunchArgument(
         'prediction_reference_lead_sec', default_value='0.15',
@@ -93,6 +93,10 @@ def generate_launch_description():
     log_dir_arg = DeclareLaunchArgument(
         'log_dir', default_value=sim_log_default,
         description='CSV directory for simulated-robot trials')
+    logging_profile_arg = DeclareLaunchArgument(
+        'logging_profile', default_value='compact',
+        choices=['compact', 'diagnostic', 'calibration'],
+        description='compact=one CSV; diagnostic=wide CSV+events; calibration=raw sidecar')
     simulation_domain_arg = DeclareLaunchArgument(
         'simulation_domain_id', default_value='42',
         description='Isolated ROS domain; keep different from real robot domain 10')
@@ -125,6 +129,11 @@ def generate_launch_description():
     command_lead_arg = DeclareLaunchArgument(
         'command_lead_m', default_value='0.04',
         description='Simulation-only maximum nominal-to-actual command lead (m)')
+    tracking_error_arg = DeclareLaunchArgument(
+        'max_tracking_error_m', default_value='0.050',
+        description=('Streamer safety-stop threshold for EE vs due queue pose (m). '
+                     'Normal tracking error scales with command lead (~0.75*lead), '
+                     'so raise the two together or not at all.'))
     simulation = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(
             get_package_share_directory('hc10dtp_simulation'),
@@ -163,6 +172,8 @@ def generate_launch_description():
                    LaunchConfiguration('bt_joint_velocity_limit'),
                    '--continuous-cartesian-smoothing',
                    '--joint-coordination', LaunchConfiguration('joint_coordination'),
+                   '--max-tracking-error',
+                   LaunchConfiguration('max_tracking_error_m'),
                    '--fail-closed'])
     admittance = Node(
         package='cocarry_admittance_control',
@@ -185,6 +196,7 @@ def generate_launch_description():
         parameters=[params, {
             'log_dir': LaunchConfiguration('log_dir'),
             'file_prefix': 'cocarry_admittance_sim_3d',
+            'logging_profile': LaunchConfiguration('logging_profile'),
         }])
     ui = Node(
         package='predictor_ui', executable='ui_node',
@@ -198,7 +210,7 @@ def generate_launch_description():
         }],
         condition=IfCondition(LaunchConfiguration('launch_dashboard')))
     axia_ui = ExecuteProcess(
-        cmd=['python3', os.path.expanduser('~/cocarry_ws/axia_sensor_ui.py')],
+        cmd=['python3', os.path.expanduser('~/cocarry_ws/scripts/axia_sensor_ui.py')],
         name='axia_sensor_ui', output='screen',
         condition=IfCondition(LaunchConfiguration('launch_sensor_ui')))
 
@@ -208,7 +220,6 @@ def generate_launch_description():
         SetEnvironmentVariable(
             'ROS_DOMAIN_ID', LaunchConfiguration('simulation_domain_id')),
         SetEnvironmentVariable('PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION', 'python'),
-        SetEnvironmentVariable('ROS_LOG_DIR', sim_log_default),
         SetEnvironmentVariable(
             'FASTRTPS_DEFAULT_PROFILES_FILE',
             os.path.expanduser('~/cocarry_ws/fastdds_no_shm.xml')),
@@ -220,11 +231,12 @@ def generate_launch_description():
         prediction_model_arg,
         prediction_reference_tau_arg,
         prediction_reference_lead_arg, joint_coordination_arg,
-        command_lead_arg,
+        command_lead_arg, tracking_error_arg,
         svgp_model_dir_arg,
         gru_model_dir_arg,
         model_dir_arg,
         log_dir_arg,
+        logging_profile_arg,
         use_rviz_arg,
         launch_sensor_ui_arg,
         launch_dashboard_arg,

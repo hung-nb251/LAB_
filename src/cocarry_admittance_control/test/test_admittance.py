@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 
 from cocarry_admittance_control.admittance import (
     CartesianAdmittance,
@@ -9,6 +10,7 @@ from cocarry_admittance_control.admittance import (
     minimum_safe_ee_z,
     limit_position_lead,
     nominal_reference,
+    phase_aligned_delay,
     soft_axis_deadzone,
     soft_radial_deadzone,
 )
@@ -161,3 +163,55 @@ def test_soft_axis_deadzone_can_target_z_only():
     assert np.allclose(
         soft_axis_deadzone((1.5, -2.5, -1.9), (0.0, 0.0, 2.0)),
         (1.5, -2.5, 0.0))
+
+
+PERIOD = 1 / 15
+OFFSET = 0.0333
+# prediction_age_ms medians observed across launches on 2026-09-21.
+OBSERVED_PHASES = (0.0054, 0.0182, 0.0212, 0.0332, 0.053, 0.0637, 0.0645)
+
+
+def test_phase_alignment_lands_on_the_target_offset_from_any_launch_phase():
+    """Whatever the launch dealt, one wait puts the tick at the same offset."""
+    now = 1000.0
+    for phase in OBSERVED_PHASES:
+        sample_time = now - phase          # the sample arrived `phase` ago
+        delay = phase_aligned_delay(sample_time, now, PERIOD, OFFSET)
+        assert 0.0 < delay <= PERIOD + 1e-12
+        # Age of that same sample when the re-phased tick finally runs.
+        settled = (now + delay) - sample_time
+        residue = (settled - OFFSET) % PERIOD
+        assert min(residue, PERIOD - residue) < 1e-9
+
+
+def test_phase_alignment_waits_less_than_one_period_and_never_returns_zero():
+    for phase in np.linspace(0.0, PERIOD, 97):
+        delay = phase_aligned_delay(1000.0 - phase, 1000.0, PERIOD, OFFSET)
+        assert 0.0 < delay <= PERIOD + 1e-12
+
+
+def test_phase_alignment_handles_a_sample_newer_than_the_offset():
+    # Sample arrived 1 ms ago, target offset 33.3 ms: wait the remaining 32.3.
+    assert phase_aligned_delay(999.999, 1000.0, PERIOD, OFFSET) == pytest.approx(
+        OFFSET - 0.001, abs=1e-12)
+    # Sample exactly at the target instant already: wait a full period.
+    assert phase_aligned_delay(1000.0 - OFFSET, 1000.0, PERIOD, OFFSET) == pytest.approx(
+        PERIOD, abs=1e-12)
+
+
+def test_phase_alignment_tolerates_a_very_old_sample():
+    delay = phase_aligned_delay(1000.0 - 7.4, 1000.0, PERIOD, OFFSET)
+    assert 0.0 < delay <= PERIOD + 1e-12
+
+
+@pytest.mark.parametrize('args', [
+    (1000.0, 1000.0, 0.0, 0.0),            # period must be positive
+    (1000.0, 1000.0, -PERIOD, 0.0),
+    (1000.0, 1000.0, PERIOD, PERIOD),      # offset must be below one period
+    (1000.0, 1000.0, PERIOD, -1e-9),
+    (float('nan'), 1000.0, PERIOD, OFFSET),
+    (1000.0, float('inf'), PERIOD, OFFSET),
+])
+def test_phase_alignment_rejects_invalid_arguments(args):
+    with pytest.raises(ValueError):
+        phase_aligned_delay(*args)

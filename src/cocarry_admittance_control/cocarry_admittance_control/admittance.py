@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import math
+
 import numpy as np
 
 
@@ -93,6 +95,32 @@ def force_watchdog_action(age_sec, stale_hold_sec, timeout_sec):
     if age_sec > stale_hold_sec:
         return 'hold'
     return 'fresh'
+
+
+def phase_aligned_delay(sample_time, now, period, offset):
+    """Seconds to wait so the next tick lands ``offset`` after a sample.
+
+    Producer and consumer run at the same rate on independent timers, so the
+    gap between a sample arriving and being used is a constant fixed at launch,
+    anywhere in [0, period). Waiting the returned delay once moves that constant
+    to ``offset``. The result is always in (0, period].
+    """
+    sample_time = float(sample_time)
+    now = float(now)
+    period = float(period)
+    offset = float(offset)
+    if not all(np.isfinite(x) for x in (sample_time, now, period, offset)):
+        raise ValueError('Phase alignment needs finite values')
+    if period <= 0.0:
+        raise ValueError('period must be positive')
+    if not 0.0 <= offset < period:
+        raise ValueError('offset must satisfy 0 <= offset < period')
+    target = sample_time + offset
+    if target <= now:
+        target += math.ceil((now - target) / period + 1e-12) * period
+    if target <= now:                     # ceil() landed exactly on now
+        target += period
+    return target - now
 
 
 class CartesianAdmittance:

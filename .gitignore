@@ -1,6 +1,9 @@
 build/
 install/
 log/
+__pycache__/
+*.py[cod]
+.pytest_cache/
 cocarry_logs/
 codrawing_logs/*
 !codrawing_logs/.gitkeep

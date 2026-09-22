@@ -31,7 +31,8 @@ def force_log_record(sample, now_ns, receipt_age_sec, timeout_sec):
     invalid = sample['status'].startswith(('INVALID:', 'RAW_ONLY:'))
     if stale:
         record['status'] = 'STALE:' + sample['status']
-        for key in ['force_unfiltered', 'torque_nm', 'position', 'effort_raw', 'diagnostics']:
+        for key in ['force_unfiltered', 'torque_nm', 'position', 'effort_raw',
+                    'diagnostics', 'mregister_values_nm', 'mregister_delta_nm']:
             record[key] = None
     if stale or invalid:
         record['force'] = None

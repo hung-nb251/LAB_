@@ -44,12 +44,20 @@ class PredictionReference:
         self.velocity[:] = 0.0
         self.output = self.position.copy()
 
-    def step(self, desired, now):
+    # A sample older than this is treated as a stall, not as a lead to
+    # extrapolate across. Matches the executor-stall cap used for dt below.
+    MAX_SAMPLE_AGE_SEC = 0.1
+
+    def step(self, desired, now, sample_age_sec=0.0):
         desired = np.asarray(desired, dtype=float)
         if desired.shape != (3,) or not np.all(np.isfinite(desired)):
             raise ValueError('Prediction reference must contain finite XYZ')
         if not math.isfinite(now):
             raise ValueError('Reference time must be finite')
+        sample_age_sec = float(sample_age_sec)
+        if not math.isfinite(sample_age_sec) or sample_age_sec < 0.0:
+            raise ValueError('sample_age_sec must be finite and non-negative')
+        sample_age_sec = min(sample_age_sec, self.MAX_SAMPLE_AGE_SEC)
         if self.position is None or self.time_constant == 0.0:
             self.reset(desired, now)
             return self.position.copy()
@@ -67,7 +75,11 @@ class PredictionReference:
         self.velocity += beta * (increment / dt - self.velocity)
         if elapsed > 0.1:
             self.velocity[:] = 0.0
-        correction = self.lead_sec * self.velocity
+        # The producer and the consumer run on independent same-rate timers, so
+        # a sample sits in the controller for a launch-dependent constant
+        # between zero and one control period. Extrapolating by the measured
+        # age keeps the effective lead the same whatever that constant is.
+        correction = (self.lead_sec + sample_age_sec) * self.velocity
         length = float(np.linalg.norm(correction))
         if length > self.max_lead_m:
             correction *= self.max_lead_m / length

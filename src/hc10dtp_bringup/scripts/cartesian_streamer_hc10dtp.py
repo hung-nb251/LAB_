@@ -39,7 +39,11 @@ from collections import deque
 # Import local IK solver (cùng thư mục)
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from local_ik_solver import LocalIKSolver
-from motion_conditioning import synchronized_joint_step, sample_timed_position
+from motion_conditioning import (
+    reconcile_cartesian_state,
+    sample_timed_position,
+    synchronized_joint_step,
+)
 
 import rclpy
 from rclpy.node import Node
@@ -247,6 +251,12 @@ class CartesianStreamer(Node):
         self._window_busy_count = 0
         self._window_retry_count = 0
         self._window_reject_count = 0
+        # Cumulative queue-admission counters.  The _window_* counters are
+        # cleared every 5 s for the console rate log, so they cannot be used
+        # offline; these are published in motion_diagnostics instead.
+        self._total_busy_count = 0
+        self._total_retry_count = 0
+        self._total_reject_count = 0
         self._consecutive_queue_rejects = 0
         self._window_max_joint_delta = 0.0
         self._last_ack_time = None
@@ -1347,9 +1357,12 @@ class CartesianStreamer(Node):
         ]
         
         # Bước 2: Giới hạn jerk (tốc độ thay đổi gia tốc)
-        # Tắt giới hạn jerk khi ở rất gần đích (<20mm) để tránh bị trượt (overshoot)
-        # do hệ thống không kịp phanh lại (thuật toán S-curve yêu cầu khoảng cách phanh dài hơn).
-        if dist < 0.020:
+        # Legacy point-to-point mode keeps its historical near-target escape.
+        # Co-carry continuous mode must retain the jerk bound: P2 showed that
+        # dist < 20 mm is its normal operating region, not just final arrival.
+        if (dist < 1e-5
+                or (dist < 0.020
+                    and not self._continuous_cartesian_smoothing)):
             max_da = float('inf')
         else:
             max_da = MAX_CARTESIAN_JERK * dt
@@ -1590,6 +1603,8 @@ class CartesianStreamer(Node):
                 self._pending_point_to_resend = sent_point
                 self._window_busy_count += 1
                 self._window_retry_count += 1
+                self._total_busy_count += 1
+                self._total_retry_count += 1
                 backoff_ns = int(self._retry_backoff_sec * 1e9)
                 self._next_send_not_before_ns = self.get_clock().now().nanoseconds + backoff_ns
                 self.get_logger().warn(
@@ -1601,6 +1616,7 @@ class CartesianStreamer(Node):
             if code == 2:  # "Must call start_point_queue_mode service"
                 self._pending_point_to_resend = None
                 self._window_reject_count += 1
+                self._total_reject_count += 1
                 if self._lock_z_enabled or self._fail_closed:
                     self._trigger_safety_stop(
                         'MotoROS2 point queue mode dropped during force-guided motion')
@@ -1630,6 +1646,7 @@ class CartesianStreamer(Node):
                 )
                 self._pending_point_to_resend = None
                 self._window_reject_count += 1
+                self._total_reject_count += 1
                 self._consecutive_queue_rejects += 1
                 if self._consecutive_queue_rejects >= 3:
                     self._trigger_safety_stop(
@@ -1649,17 +1666,45 @@ class CartesianStreamer(Node):
                         and self._last_accepted_point_time_ns is not None
                         and point_time_ns > self._last_accepted_point_time_ns):
                     dt = (point_time_ns - self._last_accepted_point_time_ns) / 1e9
-                    # The next Cartesian step must start with the velocity of
-                    # the accepted joint motion, not the unclipped IK request.
-                    old_velocity = list(self._accepted_ee_velocity)
-                    self._prev_ee_velocity = [
+                    old_accepted_velocity = list(self._accepted_ee_velocity)
+                    accepted_velocity = [
                         (getattr(queued_pose.position, axis)
                          - getattr(self._queued_ee_pose.position, axis)) / dt
                         for axis in ('x', 'y', 'z')]
-                    self._prev_ee_acceleration = [
+                    accepted_acceleration_raw = [
                         (new - old) / dt
-                        for new, old in zip(self._prev_ee_velocity, old_velocity)]
-                    self._accepted_ee_velocity = list(self._prev_ee_velocity)
+                        for new, old in zip(
+                            accepted_velocity, old_accepted_velocity)]
+                    self._accepted_ee_velocity = list(accepted_velocity)
+                    continuous_smoothing = getattr(
+                        self, '_continuous_cartesian_smoothing', False)
+                    if continuous_smoothing:
+                        # Do not bypass the jerk limiter with a raw second
+                        # difference at every ACK.  Reconcile the internal
+                        # smoother state through the configured bounds.
+                        (self._prev_ee_velocity,
+                         self._prev_ee_acceleration) = reconcile_cartesian_state(
+                            self._prev_ee_velocity,
+                            self._prev_ee_acceleration,
+                            accepted_velocity,
+                            dt,
+                            MAX_CARTESIAN_VELOCITY,
+                            MAX_CARTESIAN_ACCELERATION,
+                            MAX_CARTESIAN_JERK,
+                        )
+                    else:
+                        # Preserve historical behavior for non-continuous
+                        # camera/demo pipelines pending a separate review.
+                        self._prev_ee_velocity = list(accepted_velocity)
+                        self._prev_ee_acceleration = list(
+                            accepted_acceleration_raw)
+                    self._motion_diagnostics.update(
+                        accepted_ee_velocity=list(accepted_velocity),
+                        accepted_ee_acceleration_raw=list(
+                            accepted_acceleration_raw),
+                        accepted_state_reconciled=bool(
+                            continuous_smoothing),
+                    )
                 self._last_accepted_point_time_ns = point_time_ns
                 self._queued_ee_pose = queued_pose
                 self._record_accepted_tracking_pose(sent_point, queued_pose)
@@ -1757,10 +1802,37 @@ class CartesianStreamer(Node):
             return
         self._last_diagnostic_time = now
         sample = dict(self._motion_diagnostics)
-        sample.update(schema=1, stamp_ns=self.get_clock().now().nanoseconds,
+        sample.update(schema=2, stamp_ns=self.get_clock().now().nanoseconds,
                       state=self._stream_state,
                       tracking_method=('linear_fk_endpoints' if
                           self._joint_coordination == 'synchronized' else 'last_due_endpoint'))
+        # Queue admission history. Without these an offline audit cannot tell
+        # a retry-delayed point from a late one; the _window_* counters are
+        # reset every 5 s and only reach the console.
+        sample.update(queue_busy_total=self._total_busy_count,
+                      queue_retry_total=self._total_retry_count,
+                      queue_reject_total=self._total_reject_count,
+                      accepted_points_total=self._accepted_points,
+                      auto_recovery_count=self._auto_recovery_count)
+        # Internal profile-limiter state, so jerk/acceleration no longer have
+        # to be reconstructed as numerical derivatives of the measured EE.
+        sample.update(smoother_velocity=list(self._prev_ee_velocity),
+                      smoother_acceleration=list(self._prev_ee_acceleration))
+        # The effective limits actually in force after CLI overrides. The YAML
+        # and the module constants are NOT what runs, so an audit that reads
+        # them instead of these will draw the wrong conclusion.
+        sample['limits'] = dict(
+            stream_hz=self._stream_hz,
+            queue_dt_sec=self._queue_dt_sec,
+            prebuffer_points=self._prebuffer_target,
+            max_cartesian_velocity=MAX_CARTESIAN_VELOCITY,
+            max_cartesian_acceleration=MAX_CARTESIAN_ACCELERATION,
+            max_cartesian_jerk=MAX_CARTESIAN_JERK,
+            max_joint_velocities=list(MAX_JOINT_VELOCITIES),
+            max_tracking_error_m=MAX_TRACKING_ERROR_M,
+            joint_coordination=self._joint_coordination,
+            fail_closed=self._fail_closed,
+        )
         self._motion_diagnostic_pub.publish(String(data=json.dumps(sample)))
 
     def _log_runtime_rates(self):
@@ -1970,6 +2042,7 @@ class CartesianDemoPublisher(Node):
 
 def main():
     global MAX_CARTESIAN_VELOCITY, MAX_CARTESIAN_ACCELERATION, MAX_CARTESIAN_JERK, MAX_JOINT_VELOCITIES, SMOOTH_ALPHA
+    global MAX_TRACKING_ERROR_M
     parser = argparse.ArgumentParser(
         description='Cartesian Streamer cho MotoROS2 Point Queue Mode',
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -2060,6 +2133,11 @@ Ví dụ:
     parser.add_argument(
         '--fail-closed', action='store_true', default=False,
         help='Dừng ngay khi target ngoài workspace, queue bị drop hoặc feedback lệch; không khóa Z')
+    parser.add_argument(
+        '--max-tracking-error', type=float, default=MAX_TRACKING_ERROR_M,
+        help=('Ngưỡng safety stop cho sai lệch EE thực so với pose queue đến hạn '
+              '(m). Sai lệch bình thường tỉ lệ với command lead (~0.75*lead), nên '
+              'chỉ nới cùng lúc với lead và sau khi đã đánh giá rủi ro.'))
     args, ros_args = parser.parse_known_args()
 
     # Áp dụng CLI overrides lên các hằng số an toàn
@@ -2083,6 +2161,7 @@ Ví dụ:
         MAX_JOINT_VELOCITIES[5] = max(args.max_j6_joint_vel, 0.01)
     SMOOTH_ALPHA = max(0.01, min(1.0, args.smooth_alpha))
     MAX_CARTESIAN_JERK = max(args.max_jerk, 0.1)
+    MAX_TRACKING_ERROR_M = max(args.max_tracking_error, 0.001)
 
     rclpy.init(args=ros_args)
 

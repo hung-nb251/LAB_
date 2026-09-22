@@ -13,6 +13,8 @@ _SPEC.loader.exec_module(_MODULE)
 
 effort_to_joint_torque = _MODULE.effort_to_joint_torque
 estimate_robot_wrench = _MODULE.estimate_robot_wrench
+recover_calibrated_wrench = _MODULE.recover_calibrated_wrench
+apply_mregister_calibration = _MODULE.apply_mregister_calibration
 
 
 def test_raw_only_never_claims_a_torque_conversion():
@@ -64,3 +66,28 @@ def test_damping_increases_near_a_singularity():
     assert regular.damping == 0.002
     assert near_singular.damping > regular.damping
     assert near_singular.sigma_min < regular.sigma_min
+
+
+def test_calibrated_recovery_matches_forward_wrench_mapping_without_damping():
+    rng = np.random.default_rng(7)
+    jacobian = rng.normal(size=(6, 6))
+    while abs(np.linalg.det(jacobian)) < .1:
+        jacobian = rng.normal(size=(6, 6))
+    wanted = np.array([4., -3., 2., .5, -.4, .3])
+    torque = jacobian.T @ wanted
+    estimate = recover_calibrated_wrench(
+        jacobian, torque, damping=0., characteristic_length_m=.3)
+    assert np.allclose(estimate.wrench, wanted)
+    assert estimate.relative_residual < 1e-10
+
+
+def test_mregister_pose_calibration_uses_baseline_and_q0():
+    register = np.arange(6.) + 10.
+    baseline = np.arange(6.)
+    q = np.arange(6.) * .1
+    q0 = np.zeros(6)
+    scale = np.ones(12)
+    coef = np.eye(12, 6)
+    result = apply_mregister_calibration(
+        register, baseline, q, q0, scale, coef)
+    assert np.allclose(result, np.full(6, 10.))

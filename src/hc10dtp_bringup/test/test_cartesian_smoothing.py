@@ -91,6 +91,17 @@ def test_positions_obey_velocity_and_acceleration_bounds_during_xyz_reversals():
     assert np.linalg.norm(position - target) < 1e-5
 
 
+def test_continuous_mode_keeps_jerk_bound_inside_twenty_mm():
+    state, step = smoother()
+    previous_acceleration = np.zeros(3)
+    for target in ((.019, 0., 0.), (-.019, 0., 0.)) * 12:
+        step(target)
+        acceleration = np.array(state._prev_ee_acceleration)
+        assert np.max(np.abs(acceleration - previous_acceleration)) \
+            <= 10.0 / 15 + 1e-7
+        previous_acceleration = acceleration
+
+
 def test_camera_profile_keeps_historical_behavior_until_separate_review():
     _, step = smoother(velocity=(-.1, 0., 0.), continuous=False)
     assert np.allclose(step((.019, 0., 0.)), [.019, 0., 0.])

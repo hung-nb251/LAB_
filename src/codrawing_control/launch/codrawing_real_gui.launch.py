@@ -98,7 +98,7 @@ def generate_launch_description():
 
     # Force dashboard stays a separate process/window, exactly as requested.
     axia_ui = ExecuteProcess(
-        cmd=['python3', os.path.expanduser('~/cocarry_ws/axia_sensor_ui.py')],
+        cmd=['python3', os.path.expanduser('~/cocarry_ws/scripts/axia_sensor_ui.py')],
         name='axia_sensor_ui', output='screen')
 
     return LaunchDescription([

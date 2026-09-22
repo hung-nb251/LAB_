@@ -49,17 +49,12 @@ def _launch_predictor(context, params):
 
 
 def _launch_sensorless_force(context, params):
-    # No implicit unit override: preserve the user's YAML unless explicitly set.
     overrides = {
-        'base_link': 'base_link', 'tip_link': 'tool0',
-        'calibration_confirmed': ParameterValue(
-            LaunchConfiguration('robot_force_calibrated'), value_type=bool),
+        'calibration_file': ParameterValue(
+            LaunchConfiguration('robot_force_calibration_file'), value_type=str),
     }
-    mode = LaunchConfiguration('robot_effort_unit_mode').perform(context).strip()
-    if mode:
-        overrides['effort_unit_mode'] = mode
     return [Node(
-        package='hc10dtp_bringup', executable='sensorless_force_node.py',
+        package='hc10dtp_bringup', executable='mregister_force_node.py',
         name='sensorless_force_node', output='screen',
         parameters=[params, overrides])]
 
@@ -73,7 +68,7 @@ def generate_launch_description():
         'prediction_model', default_value='gru', choices=['svgp', 'gru'],
         description='Robot-EE prediction backend selected before launch')
     prediction_reference_tau_arg = DeclareLaunchArgument(
-        'prediction_reference_tau_sec', default_value='0.4',
+        'prediction_reference_tau_sec', default_value='0.5',
         description='Real-robot nominal smoothing in seconds; 0 disables')
     prediction_reference_lead_arg = DeclareLaunchArgument(
         'prediction_reference_lead_sec', default_value='0.15',
@@ -81,9 +76,22 @@ def generate_launch_description():
     joint_coordination_arg = DeclareLaunchArgument(
         'joint_coordination', default_value='synchronized',
         choices=['independent', 'synchronized'])
+    tracking_error_arg = DeclareLaunchArgument(
+        'max_tracking_error_m', default_value='0.065',
+        description=(
+            'Streamer safety-stop threshold for actual EE vs the due queue pose '
+            '(m). Normal tracking error scales with command lead (~0.75*lead on '
+            'the real robot), so this only ever moves together with '
+            'command_lead_m. Raising it lowers the sensitivity of the only '
+            'check that detects the robot not following its commanded path.'))
     command_lead_arg = DeclareLaunchArgument(
-        'command_lead_m', default_value='0.04',
-        description='Maximum nominal-to-actual command lead for the real robot (m)')
+        'command_lead_m', default_value='0.055',
+        description=(
+            'Maximum nominal-to-actual command lead for the real robot (m). '
+            'This sets the speed: the robot chases a carrot this far ahead, '
+            'giving v ~ lead / 0.3 s. Measured 2026-09-22 on trial 121935: '
+            '55 mm gives 0.130 m/s against 0.095 m/s at the previous 40 mm. '
+            'Never move this without moving max_tracking_error_m with it.'))
     svgp_model_dir_arg = DeclareLaunchArgument(
         'svgp_model_dir',
         default_value=os.path.expanduser(
@@ -101,23 +109,22 @@ def generate_launch_description():
     log_dir_arg = DeclareLaunchArgument(
         'log_dir', default_value=log_default,
         description='CSV directory (files use cocarry_admittance_3d prefix)')
+    logging_profile_arg = DeclareLaunchArgument(
+        'logging_profile', default_value='compact',
+        choices=['compact', 'diagnostic', 'calibration'],
+        description='compact=one CSV; diagnostic=wide CSV+events; calibration=raw sidecar')
     test_mode_arg = DeclareLaunchArgument(
         'test_mode', default_value='false',
         description='Disable real Cartesian streaming/controller')
     hybrid_target_file_arg = DeclareLaunchArgument(
         'hybrid_target_file', default_value='',
         description='Persistent base_link targets; empty uses a per-ROS-domain file')
-    robot_effort_unit_mode_arg = DeclareLaunchArgument(
-        'robot_effort_unit_mode', default_value='',
-        choices=['', 'raw_only', 'torque_nm', 'normalized_rated_torque', 'custom_scale'],
-        description=(
-            'Joint effort conversion used only by the diagnostic robot-force '
-            'estimator; empty uses effort_unit_mode from YAML'))
-    robot_force_calibrated_arg = DeclareLaunchArgument(
-        'robot_force_calibrated', default_value='false',
-        description=(
-            'Mark f_robot ready for future role selection only after conversion '
-            'and bias/dynamics compensation have been validated'))
+    robot_force_calibration_file_arg = DeclareLaunchArgument(
+        'robot_force_calibration_file',
+        default_value=os.path.join(
+            get_package_share_directory('hc10dtp_bringup'),
+            'config', 'f_robot_m310_candidate_20260918.json'),
+        description='Shadow-only local M310 F_robot calibration candidate')
     use_rviz_arg = DeclareLaunchArgument('use_rviz', default_value='False')
 
     not_test_mode = UnlessCondition(
@@ -149,6 +156,10 @@ def generate_launch_description():
         # --fail-closed keeps workspace/feedback/queue safety active.
         arguments=['--stream-hz', '15', '--max-vel', '0.25',
                    '--max-accel', '1.00', '--max-jerk', '10.0',
+                   # P2 A/B 19/09: prebuffer=2 did not improve median speed or
+                   # time-domain queue lag versus the three-point baseline.
+                   # Keep the more robust three-point buffer explicitly logged.
+                   '--prebuffer', '3',
                    # Trial speed profile: J1/J2/J3/J5=0.50, J6=0.40,
                    # J4 remains conservative at 0.08 rad/s.
                    '--max-joint-vel', '0.50',
@@ -158,6 +169,8 @@ def generate_launch_description():
                    '--max-j6-joint-vel', '0.40',
                    '--continuous-cartesian-smoothing',
                    '--joint-coordination', LaunchConfiguration('joint_coordination'),
+                   '--max-tracking-error',
+                   LaunchConfiguration('max_tracking_error_m'),
                    '--fail-closed'])
     admittance = Node(
         package='cocarry_admittance_control',
@@ -179,7 +192,10 @@ def generate_launch_description():
     logger = Node(
         package='cocarry_admittance_control', executable='cocarry_logger',
         name='cocarry_admittance_logger', output='screen',
-        parameters=[params, {'log_dir': LaunchConfiguration('log_dir')}])
+        parameters=[params, {
+            'log_dir': LaunchConfiguration('log_dir'),
+            'logging_profile': LaunchConfiguration('logging_profile'),
+        }])
     ui = Node(
         package='predictor_ui', executable='ui_node',
         name='predictor_ui', output='screen',
@@ -191,21 +207,21 @@ def generate_launch_description():
                 LaunchConfiguration('prediction_model'), value_type=str),
         }])
     axia_ui = ExecuteProcess(
-        cmd=['python3', os.path.expanduser('~/cocarry_ws/axia_sensor_ui.py')],
+        cmd=['python3', os.path.expanduser('~/cocarry_ws/scripts/axia_sensor_ui.py')],
         name='axia_sensor_ui', output='screen')
 
     return LaunchDescription([
         SetEnvironmentVariable('PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION', 'python'),
-        SetEnvironmentVariable('ROS_LOG_DIR', log_default),
         SetEnvironmentVariable(
             'FASTRTPS_DEFAULT_PROFILES_FILE',
             os.path.expanduser('~/cocarry_ws/fastdds_no_shm.xml')),
         prediction_model_arg, svgp_model_dir_arg, gru_model_dir_arg,
         prediction_reference_tau_arg,
         prediction_reference_lead_arg, joint_coordination_arg,
-        command_lead_arg,
-        model_dir_arg, log_dir_arg, test_mode_arg, use_rviz_arg, hybrid_target_file_arg,
-        robot_effort_unit_mode_arg, robot_force_calibrated_arg,
+        command_lead_arg, tracking_error_arg,
+        model_dir_arg, log_dir_arg, logging_profile_arg,
+        test_mode_arg, use_rviz_arg, hybrid_target_file_arg,
+        robot_force_calibration_file_arg,
         moveit_launch, ee_tracker, predictor, streamer, admittance,
         sensorless_force, logger, ui, axia_ui,
     ])

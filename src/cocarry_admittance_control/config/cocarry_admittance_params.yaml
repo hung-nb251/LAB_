@@ -18,7 +18,7 @@ cocarry_admittance_controller:
     damping_y: 4.47213595
     damping_z: 4.47213595
 
-    # Axia UI da ap radial deadband 4 N. Soft deadzone Fz toi da 2 N chi duoc
+    # Axia UI da ap radial deadband 1.5 N. Soft deadzone Fz toi da 2 N chi duoc
     # ramp vao khi nhan dien X-, roi ramp ra sau hysteresis/dwell. Vi vay Z
     # thuan khi khong co X- giu nguyen do nhay. Dat 0.0 de quay lai hanh vi cu.
     intent_threshold_n: 0.0
@@ -29,6 +29,12 @@ cocarry_admittance_controller:
     xminus_z_deadzone_velocity_exit_mps: 0.010
     xminus_z_deadzone_ramp_sec: 0.25
     xminus_z_deadzone_release_dwell_sec: 0.30
+
+    # Predictor va controller cung chay 15 Hz tren hai timer doc lap, nen tuoi
+    # cua mau prediction la mot hang so chot luc launch, roi bat ky dau trong
+    # [0, 66.7] ms. Can pha mot lan moi luot ve nua chu ky. Dat false de doi chung.
+    prediction_phase_align_enabled: true
+    prediction_phase_align_sec: 0.0333
     force_sign_x: 1.0
     force_sign_y: 1.0
     force_sign_z: 1.0
@@ -66,7 +72,7 @@ cocarry_admittance_controller:
     prediction_max_nominal_lead_m: 0.05
     # User-approved real/simulation nominal conditioning (2026-09-06).
     # GRU raw output remains unchanged; this conditions controller nominal only.
-    prediction_reference_tau_sec: 0.4
+    prediction_reference_tau_sec: 0.5
     prepare_timeout_sec: 8.0
     min_prediction_buffer_size: 10
     require_axia_calibrated: true
@@ -81,33 +87,29 @@ cocarry_admittance_controller:
     hybrid_reentry_warmup_samples: 10
 cocarry_admittance_logger:
   ros__parameters:
+    # compact: one 30-column CSV, no JSON sidecars. Use diagnostic only for
+    # controller debugging and calibration only for raw Axia/M310 acquisition.
+    logging_profile: compact
     # Acquisition for calibration: CSV uses accepted pre-deadband estimates.
     # The /sensorless_force topic keeps its configured deadband/sanity limit.
     robot_force_log_unfiltered: true
-    robot_force_sample_timeout_sec: 0.25
+    # M310-M315 are read sequentially; allow one complete six-register scan.
+    robot_force_sample_timeout_sec: 0.40
     log_dir: /home/hungnb/cocarry_ws/cocarry_logs
     file_prefix: cocarry_admittance_3d
 
 sensorless_force_node:
   ros__parameters:
-    # Diagnostic assumption: official MotoROS2 API reports joint effort in Nm.
-    # Actual controller firmware/scale still needs verification; NOT calibrated.
-    # Never infer a URDF rated-torque multiplier just from small effort values.
-    effort_unit_mode: torque_nm
-    calibration_confirmed: false
+    # Shadow-only M310-M315 estimator. A baseline is frozen at the rising edge
+    # of Start Run; output is logged but remains invalid for role selection.
+    baseline_min_scans: 12
+    baseline_window_scans: 30
+    baseline_max_joint_speed_rad_s: 0.02
+    scan_gap_sec: 0.05
+    request_timeout_sec: 1.0
+    joint_state_timeout_sec: 0.25
     deadband_n: 1.0
-    max_force_norm_n: 500.0
-    # HC10DTP URDF limits: available only for the explicitly selected
-    # normalized_rated_torque diagnostic mode, not claimed as calibration.
-    rated_joint_torques_nm: [368.48, 414.54, 158.76, 41.16, 33.32, 31.36]
-    custom_effort_scale_nm: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
-    # A future calibrated/modelled gravity, friction and payload contribution
-    # can be subtracted here. Zero currently means no such compensation.
-    joint_torque_bias_nm: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-    damping_min: 0.002
-    damping_max: 0.08
-    singularity_threshold: 0.05
-    publish_rate_hz: 15.0
+    max_force_norm_n: 100.0
 
 ee_position_tracker:
   ros__parameters:

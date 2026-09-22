@@ -25,6 +25,7 @@ from .admittance import (
     force_watchdog_action,
     limit_position_lead,
     nominal_reference,
+    phase_aligned_delay,
     soft_axis_deadzone,
     soft_radial_deadzone,
 )
@@ -41,9 +42,16 @@ class AdmittanceController3D(Node):
             'critical_damping': True,
             'damping_x': 4.47213595, 'damping_y': 4.47213595,
             'damping_z': 4.47213595,
-            # Axia UI already applies the 4 N radial deadband.
+            # Producer and consumer both tick at control_rate_hz on independent
+            # timers, so prediction staleness is a per-launch constant in
+            # [0, 1/rate). Align it once per run to half a period: far from the
+            # >=53 ms band that rippled and from the ~5 ms band that dropped
+            # samples. Set enabled false for an A/B control group.
+            'prediction_phase_align_enabled': True,
+            'prediction_phase_align_sec': 0.0333,
+            # Axia UI already applies the 1.5 N radial deadband.
             'intent_threshold_n': 0.0,
-            # Extra Z-only soft deadzone after Axia's 4 N radial deadband.
+            # Extra Z-only soft deadzone after Axia's 1.5 N radial deadband.
             'additional_z_deadzone_n': 2.0,
             'xminus_z_deadzone_force_enter_n': 0.50,
             'xminus_z_deadzone_force_exit_n': 0.20,
@@ -135,6 +143,12 @@ class AdmittanceController3D(Node):
             1.0 if float(gp('force_sign_y')) >= 0.0 else -1.0,
             1.0 if float(gp('force_sign_z')) >= 0.0 else -1.0,
         ])
+        self._phase_align_enabled = bool(gp('prediction_phase_align_enabled'))
+        self._phase_offset = float(gp('prediction_phase_align_sec'))
+        if not 0.0 <= self._phase_offset < 1.0 / self._rate:
+            raise ValueError(
+                'prediction_phase_align_sec must satisfy 0 <= offset < 1/control_rate_hz')
+        self._phase_aligned = False
         self._intent_threshold = float(gp('intent_threshold_n'))
         self._additional_z_deadzone = float(gp('additional_z_deadzone_n'))
         if (not np.isfinite(self._additional_z_deadzone)
@@ -289,7 +303,8 @@ class AdmittanceController3D(Node):
         self._streamer_enable_client = self.create_client(SetBool, '/cartesian_streamer/enable')
         self.create_service(Trigger, '/realsense/calibrate_origin', self._on_ui_calibrate)
 
-        self.create_timer(1.0 / self._rate, self._control_tick)
+        self._control_timer = self.create_timer(1.0 / self._rate, self._control_tick)
+        self._retired_timer = None
         self.create_timer(0.5, self._publish_status)
         self.get_logger().info(
             'Independent 3D co-carrying admittance ready (robot_ee, no camera). '
@@ -345,6 +360,25 @@ class AdmittanceController3D(Node):
         data['control_phase'] = phase
         data['leader_request_pending'] = self._manual_leader_pending
         data['stamp_ns'] = self.get_clock().now().nanoseconds
+        # Diagnostics only.  capture_ee is the run's relative origin; without it
+        # an offline replay of the nominal conditioner has to guess the origin
+        # from the first EE sample.  The limits are the values actually in
+        # force after launch overrides, which differ from the YAML defaults.
+        data['capture_ee'] = (
+            None if self._capture_ee is None
+            else [float(v) for v in self._capture_ee])
+        data['limits'] = dict(
+            control_rate_hz=self._rate,
+            max_command_lead_m=self._max_command_lead,
+            prediction_max_nominal_lead_m=self._prediction_max_nominal_lead,
+            prediction_reference_tau_sec=self._prediction_reference.time_constant,
+            prediction_reference_lead_sec=self._prediction_reference.lead_sec,
+            prediction_reference_max_lead_m=self._prediction_reference.max_lead_m,
+            max_virtual_velocity_mps=self._admittance.max_velocity,
+            max_virtual_acceleration_mps2=self._admittance.max_acceleration,
+            force_stale_hold_sec=self._force_stale_hold,
+            force_timeout_sec=self._force_timeout,
+        )
         data.update(reentry_token=self._reentry_token, reentry_samples=self._reentry_samples,
                     reentry_required_samples=self._reentry_warmup_samples, reentry_phase=self._reentry_phase,
                     reentry_elapsed=self._reentry_elapsed, reentry_blend_sec=self._reentry_blend_sec)
@@ -775,6 +809,7 @@ class AdmittanceController3D(Node):
         self._force_stale_nominal = None
         self._reset_adaptive_z_deadzone()
         self._control_hold_pub.publish(Bool(data=False))
+        self._phase_aligned = False
         self._state = 'PREPARING'
         self._prepare_deadline = now + self._prepare_timeout
         future = self._ee_calibrate_client.call_async(Trigger.Request())
@@ -862,7 +897,10 @@ class AdmittanceController3D(Node):
         if self._mode != 'prediction' or not apply_prediction_limit:
             return desired
 
-        desired = self._prediction_reference.step(desired, now)
+        sample_age = (
+            0.0 if self._prediction_time <= 0.0
+            else max(0.0, now - self._prediction_time))
+        desired = self._prediction_reference.step(desired, now, sample_age)
 
         actual = np.array([
             self._current_pose.position.x,
@@ -939,10 +977,61 @@ class AdmittanceController3D(Node):
             else max(0.0, (now - self._current_pose_time) * 1000.0))
         self._pose_age_pub.publish(Float32(data=pose_age_ms))
 
+    def _should_align_phase(self):
+        """Align once per run, in PREPARING only, and only with a live stream.
+
+        Ground Truth and MJM build the reference without the predictor, so
+        there is no producer to align to.
+        """
+        return (self._phase_align_enabled
+                and not self._phase_aligned
+                and self._mode == 'prediction'
+                and self._prediction is not None
+                and self._prediction_time > 0.0)
+
+    def _align_control_phase(self, now):
+        """Re-phase the control tick relative to the prediction stream.
+
+        Runs in PREPARING, where the robot is not yet moving, so the gap of at
+        most one period before the next tick cannot interrupt a trajectory.
+        The watchdogs live in _control_tick, so this must never be reached
+        while RUNNING.
+        """
+        self._phase_aligned = True
+        try:
+            delay = phase_aligned_delay(
+                self._prediction_time, now, 1.0 / self._rate, self._phase_offset)
+        except ValueError as exc:
+            self.get_logger().warn(f'Skipping control-phase alignment: {exc}')
+            return
+        self._swap_control_timer(delay, self._finish_phase_alignment)
+        self.get_logger().info(
+            f'Aligning control tick to {self._phase_offset * 1000.0:.0f} ms after '
+            f'the prediction stream (waiting {delay * 1000.0:.1f} ms)')
+
+    def _finish_phase_alignment(self):
+        self._swap_control_timer(1.0 / self._rate, self._control_tick)
+        self._control_tick()
+
+    def _swap_control_timer(self, period, callback):
+        """Replace the control timer, never leaving the node without one."""
+        old = self._control_timer
+        self._control_timer = self.create_timer(period, callback)
+        if old is not None:
+            old.cancel()
+        # Destroy the timer retired by the previous swap, never the one whose
+        # callback may be running right now.
+        if self._retired_timer is not None:
+            self.destroy_timer(self._retired_timer)
+        self._retired_timer = old
+
     def _control_tick(self):
         now = time.monotonic()
         self._publish_ages(now)
         if self._state == 'PREPARING':
+            if self._should_align_phase():
+                self._align_control_phase(now)
+                return
             self._try_finish_prepare(now)
             return
         if self._state != 'RUNNING':

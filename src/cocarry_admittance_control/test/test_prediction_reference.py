@@ -109,7 +109,7 @@ def test_force_hold_resets_reference_clock_before_early_return():
     assert isinstance(hold.body[-1], ast.Return)
 
 
-@pytest.mark.parametrize('profile, expected_tau', [('real', '0.4'), ('sim', '0.4')])
+@pytest.mark.parametrize('profile, expected_tau', [('real', '0.5'), ('sim', '0.5')])
 def test_launch_nominal_default_and_controller_wiring(profile, expected_tau):
     path = Path(__file__).parents[1] / 'launch' / f'cocarry_admittance_{profile}_gui.launch.py'
     tree = ast.parse(path.read_text())
@@ -176,3 +176,104 @@ def test_compensated_constant_target_converges_and_attenuates_stationary_noise()
 def test_invalid_lead_parameters_fail(kwargs):
     with pytest.raises(ValueError):
         PredictionReference(.4, **kwargs)
+
+
+def _lag_after_ramp(sample_age_sec, compensate, ticks=150, speed=.06):
+    """Lag behind the TRUE nominal when samples arrive `sample_age_sec` stale.
+
+    A stale sample describes where the nominal was `sample_age_sec` ago, so the
+    ramp is evaluated at the sample's own time, not at the tick time. Speed is
+    low enough that the 20 mm lead cap is not the binding constraint.
+    """
+    ref = PredictionReference(.4, lead_sec=.15)
+    ref.reset([0., 0., 0.], 0.)
+    for i in range(1, ticks + 1):
+        now = i / 15
+        raw = np.array([speed * max(0., now - sample_age_sec), 0., 0.])
+        out = ref.step(raw, now, sample_age_sec if compensate else 0.)
+    return speed * now - out[0]
+
+
+# The phases actually observed across launches on 2026-09-21.
+OBSERVED_PHASES = (.0054, .0182, .0212, .0332, .053, .0637, 1 / 15)
+
+
+def test_sample_age_cancels_the_launch_phase_lottery():
+    """Launches differing only in timer phase must track the nominal alike.
+
+    Producer and consumer both run at 15 Hz on independent timers, so a sample
+    waits a launch-dependent constant in [0, 1/15] s before use. Uncompensated,
+    that constant lands directly in the tracking lag; compensated, the spread
+    across the observed phases must nearly vanish.
+    """
+    off = [_lag_after_ramp(a, compensate=False) for a in OBSERVED_PHASES]
+    on = [_lag_after_ramp(a, compensate=True) for a in OBSERVED_PHASES]
+    spread_off = max(off) - min(off)
+    spread_on = max(on) - min(on)
+    # Uncompensated, the spread is a full period of travel.
+    assert spread_off == pytest.approx(.06 * (OBSERVED_PHASES[-1] - OBSERVED_PHASES[0]),
+                                       rel=.05)
+    assert spread_on < .05 * spread_off
+    # Compensation removes lag; it must never overshoot into a lead.
+    assert all(0. <= v <= off[0] + 1e-12 for v in on)
+
+
+def test_lead_cap_still_binds_at_co_carry_speed():
+    """At real co-carry speed the cap clips part of the compensation.
+
+    0.095 m/s with lead 0.15 s already uses 14.3 mm of the 20 mm budget, so a
+    full-period age cannot be fully compensated. Documented, not a failure.
+    """
+    ref = PredictionReference(.4, lead_sec=.15, max_lead_m=.02)
+    ref.reset([0., 0., 0.], 0.)
+    speed = .095
+    for i in range(1, 151):
+        now = i / 15
+        out = ref.step([speed * now, 0., 0.], now, 1 / 15)
+    applied = float(np.linalg.norm(out - ref.position))
+    assert applied == pytest.approx(.02, abs=1e-9)
+    assert (.15 + 1 / 15) * speed > .02
+
+
+def test_sample_age_respects_lead_cap_and_stall_clamp():
+    ref = PredictionReference(.4, lead_sec=.15, max_lead_m=.02)
+    ref.reset([0., 0., 0.], 0.)
+    for i in range(1, 61):
+        out = ref.step([i, -i, i], i / 15, .05)
+        assert np.linalg.norm(out - ref.position) <= .02 + 1e-12
+    # An absurd age is clamped, so it cannot extrapolate across a stall.
+    huge = PredictionReference(.4, lead_sec=.15)
+    huge.reset([0., 0., 0.], 0.)
+    for i in range(1, 31):
+        a = huge.step([.1 * i / 15, 0., 0.], i / 15, 7.4)
+    capped = PredictionReference(.4, lead_sec=.15)
+    capped.reset([0., 0., 0.], 0.)
+    for i in range(1, 31):
+        b = capped.step([.1 * i / 15, 0., 0.], i / 15,
+                        PredictionReference.MAX_SAMPLE_AGE_SEC)
+    assert np.allclose(a, b)
+
+
+@pytest.mark.parametrize('age', [-1e-9, float('nan'), float('inf')])
+def test_invalid_sample_age_rejected(age):
+    ref = PredictionReference(.4, lead_sec=.15)
+    ref.reset([0., 0., 0.], 0.)
+    with pytest.raises(ValueError):
+        ref.step([1., 0., 0.], 1., age)
+
+
+def test_controller_passes_measured_prediction_age_to_conditioner():
+    """The wiring, not just the maths: the age must reach step()."""
+    src = (Path(__file__).resolve().parents[1]
+           / 'cocarry_admittance_control' / 'admittance_controller.py')
+    tree = ast.parse(src.read_text())
+    calls = [n for n in ast.walk(tree)
+             if isinstance(n, ast.Call)
+             and isinstance(n.func, ast.Attribute) and n.func.attr == 'step'
+             and ast.unparse(n.func.value).endswith('_prediction_reference')]
+    assert calls, 'no _prediction_reference.step() call found'
+    assert all(len(c.args) == 3 for c in calls), \
+        'step() must be given the measured sample age'
+    # The age must be computed, never a hard-coded constant.
+    assert all(not isinstance(c.args[2], ast.Constant) for c in calls)
+    assert 'now - self._prediction_time' in src.read_text()
