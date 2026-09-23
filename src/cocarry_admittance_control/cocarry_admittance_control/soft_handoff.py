@@ -1,6 +1,19 @@
 """Boundary-matched bridge into an unchanged rest-to-rest minimum-jerk leg."""
 import numpy as np
 
+# Every candidate is checked at the same 401 normalised instants, so the
+# polynomial bases are fixed and each check becomes one matrix product. The
+# fit runs inside the control tick on the FOLLOWER -> LEADER switch; building
+# these per candidate cost ~36 ms median against a 66.7 ms tick budget.
+_U = np.linspace(0., 1., 401)
+_POSITION_BASIS = np.stack([_U**i for i in range(6)], axis=1)
+_VELOCITY_BASIS = np.stack(
+    [np.zeros_like(_U)] + [i * _U**(i - 1) for i in range(1, 6)], axis=1)
+_ACCELERATION_BASIS = np.stack(
+    [np.zeros_like(_U)] * 2 + [i * (i - 1) * _U**(i - 2) for i in range(2, 6)],
+    axis=1)
+_JOIN_SYSTEM = np.array([[1., 1., 1.], [3., 4., 5.], [6., 12., 20.]])
+
 
 def mjm_state(start, goal, duration, time):
     s = np.clip(time / duration, 0., 1.)
@@ -48,18 +61,17 @@ class Bridge:
                 c = np.zeros((6, 3))
                 c[:3] = p, v*tb, a*tb**2/2
                 c[3:] = np.linalg.solve(
-                    [[1., 1., 1.], [3., 4., 5.], [6., 12., 20.]],
+                    _JOIN_SYSTEM,
                     [q-c[0]-c[1]-c[2], w*tb-c[1]-2*c[2], b*tb**2-2*c[2]])
-                u = np.linspace(0, 1, 401)[:, None]
-                positions = sum(c[i]*u**i for i in range(6))
-                velocities = sum(i*c[i]*u**(i-1)/tb for i in range(1, 6))
-                accelerations = sum(i*(i-1)*c[i]*u**(i-2)/tb**2 for i in range(2, 6))
-                if (np.max(np.linalg.norm(velocities, axis=1)) > vmax+1e-9
+                positions = _POSITION_BASIS @ c
+                velocities = (_VELOCITY_BASIS @ c) / tb
+                accelerations = (_ACCELERATION_BASIS @ c) / tb**2
+                speeds = np.linalg.norm(velocities, axis=1)
+                if (np.max(speeds) > vmax+1e-9
                         or np.max(np.linalg.norm(accelerations, axis=1)) > amax+1e-9
                         or np.any(positions < lower) or np.any(positions > upper)
                         or (forward and np.min(velocities@delta) < -1e-9)):
                     continue
-                speeds = np.linalg.norm(velocities, axis=1)
                 minimum_speed = float(np.min(speeds))
                 speed_drop = max(0., initial_speed-minimum_speed)
                 join_velocity_error = float(np.linalg.norm(w-v))

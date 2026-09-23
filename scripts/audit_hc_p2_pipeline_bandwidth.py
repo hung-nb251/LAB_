@@ -44,8 +44,8 @@ DEFAULT_WORKSPACE = Path('/home/hungnb/cocarry_ws')
 # module constants:
 #   streamer arguments: --stream-hz 15 --max-vel 0.25 --max-accel 1.00
 #       --max-jerk 10.0 --continuous-cartesian-smoothing --fail-closed
-#       --max-joint-vel 0.50 --max-wrist-joint-vel 0.08 --max-j3-joint-vel 0.50
-#       --max-j5-joint-vel 0.50 --max-j6-joint-vel 0.40
+#       --max-joint-vel 0.60 --max-wrist-joint-vel 0.08 --max-j3-joint-vel 0.60
+#       --max-j5-joint-vel 0.60 --max-j6-joint-vel 0.60
 #   admittance parameters: max_virtual_velocity_mps 0.25,
 #       max_virtual_acceleration_mps2 1.00, command_lead_m 0.04
 # The YAML values 0.15/0.50/0.03 and the module defaults 0.15/0.50 are NOT what
@@ -60,7 +60,7 @@ STREAM_MAX_ACCEL = 1.00
 STREAM_MAX_JERK = 10.0
 CONTROL_RATE_HZ = 15.0
 # Streamer joint velocity caps as launched, [S, L, U, R, B, T] rad/s.
-JOINT_VEL_LIMITS = [0.50, 0.50, 0.50, 0.08, 0.50, 0.40]
+JOINT_VEL_LIMITS = [0.60, 0.60, 0.60, 0.08, 0.60, 0.60]
 # QUEUE_PREBUFFER_POINTS in the streamer; each point is one control period, so
 # the prebuffer alone puts this many ticks of schedule ahead of the robot.
 QUEUE_PREBUFFER_POINTS = 3

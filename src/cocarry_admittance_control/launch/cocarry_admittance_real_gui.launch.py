@@ -76,6 +76,22 @@ def generate_launch_description():
     joint_coordination_arg = DeclareLaunchArgument(
         'joint_coordination', default_value='synchronized',
         choices=['independent', 'synchronized'])
+    cart_vel_arg = DeclareLaunchArgument(
+        'cartesian_velocity_mps', default_value='0.25',
+        description=(
+            'Cartesian/virtual velocity ceiling (m/s). Measured 2026-09-22: '
+            'this and joint_velocity_limit are matched at 0.25 <-> 0.60 rad/s, '
+            'so raising one alone changes nothing.'))
+    cart_acc_arg = DeclareLaunchArgument(
+        'cartesian_acceleration_mps2', default_value='1.00',
+        description='Cartesian/virtual acceleration ceiling (m/s^2)')
+    joint_vel_arg = DeclareLaunchArgument(
+        'joint_velocity_limit', default_value='0.60',
+        description=(
+            'Velocity limit for J1/J2/J3/J5/J6 in rad/s; J4/R stays at 0.08. '
+            'Hard ceiling is MAX_JOINT_DELTA_PER_AXIS in the streamer: 0.07 '
+            'rad/tick at 15 Hz = 1.05 rad/s for J1-J3. That guard triggers a '
+            'SAFETY STOP, not a clamp, so leave headroom for IK branch jumps.'))
     tracking_error_arg = DeclareLaunchArgument(
         'max_tracking_error_m', default_value='0.065',
         description=(
@@ -154,19 +170,25 @@ def generate_launch_description():
         condition=not_test_mode, parameters=[moveit_config],
         # Deliberately no --lock-z: Z is a controlled 3D degree of freedom.
         # --fail-closed keeps workspace/feedback/queue safety active.
-        arguments=['--stream-hz', '15', '--max-vel', '0.25',
-                   '--max-accel', '1.00', '--max-jerk', '10.0',
+        arguments=['--stream-hz', '15',
+                   '--max-vel', LaunchConfiguration('cartesian_velocity_mps'),
+                   '--max-accel',
+                   LaunchConfiguration('cartesian_acceleration_mps2'),
+                   '--max-jerk', '10.0',
                    # P2 A/B 19/09: prebuffer=2 did not improve median speed or
                    # time-domain queue lag versus the three-point baseline.
                    # Keep the more robust three-point buffer explicitly logged.
                    '--prebuffer', '3',
-                   # Trial speed profile: J1/J2/J3/J5=0.50, J6=0.40,
+                   # User-approved speed profile: J1/J2/J3/J5/J6=0.60;
                    # J4 remains conservative at 0.08 rad/s.
-                   '--max-joint-vel', '0.50',
+                   '--max-joint-vel', LaunchConfiguration('joint_velocity_limit'),
                    '--max-wrist-joint-vel', '0.08',
-                   '--max-j3-joint-vel', '0.50',
-                   '--max-j5-joint-vel', '0.50',
-                   '--max-j6-joint-vel', '0.40',
+                   '--max-j3-joint-vel',
+                   LaunchConfiguration('joint_velocity_limit'),
+                   '--max-j5-joint-vel',
+                   LaunchConfiguration('joint_velocity_limit'),
+                   '--max-j6-joint-vel',
+                   LaunchConfiguration('joint_velocity_limit'),
                    '--continuous-cartesian-smoothing',
                    '--joint-coordination', LaunchConfiguration('joint_coordination'),
                    '--max-tracking-error',
@@ -182,8 +204,11 @@ def generate_launch_description():
                 LaunchConfiguration('prediction_reference_tau_sec'), value_type=float),
             'prediction_reference_lead_sec': ParameterValue(
                 LaunchConfiguration('prediction_reference_lead_sec'), value_type=float),
-            'max_virtual_velocity_mps': 0.25,
-            'max_virtual_acceleration_mps2': 1.00,
+            'max_virtual_velocity_mps': ParameterValue(
+                LaunchConfiguration('cartesian_velocity_mps'), value_type=float),
+            'max_virtual_acceleration_mps2': ParameterValue(
+                LaunchConfiguration('cartesian_acceleration_mps2'),
+                value_type=float),
             'max_command_lead_m': ParameterValue(
                 LaunchConfiguration('command_lead_m'), value_type=float),
         }])
@@ -219,6 +244,7 @@ def generate_launch_description():
         prediction_reference_tau_arg,
         prediction_reference_lead_arg, joint_coordination_arg,
         command_lead_arg, tracking_error_arg,
+        cart_vel_arg, cart_acc_arg, joint_vel_arg,
         model_dir_arg, log_dir_arg, logging_profile_arg,
         test_mode_arg, use_rviz_arg, hybrid_target_file_arg,
         robot_force_calibration_file_arg,

@@ -121,14 +121,23 @@ def generate_launch_description():
             'Simulation-only initial R/B/T velocity limit in rad/s; explicit '
             'B/T override is applied afterwards'))
     j3_joint_velocity_limit_arg = DeclareLaunchArgument(
-        'j3_joint_velocity_limit', default_value='0.30',
+        'j3_joint_velocity_limit', default_value='0.60',
         description='Simulation-only J3/U velocity limit in rad/s')
     bt_joint_velocity_limit_arg = DeclareLaunchArgument(
-        'bt_joint_velocity_limit', default_value='0.15',
+        'bt_joint_velocity_limit', default_value='0.60',
         description='Simulation-only J5/B and J6/T velocity limit in rad/s')
     command_lead_arg = DeclareLaunchArgument(
         'command_lead_m', default_value='0.04',
         description='Simulation-only maximum nominal-to-actual command lead (m)')
+    cart_vel_arg = DeclareLaunchArgument(
+        'cartesian_velocity_mps', default_value='0.18',
+        description='Simulation-only Cartesian/virtual velocity ceiling (m/s)')
+    cart_acc_arg = DeclareLaunchArgument(
+        'cartesian_acceleration_mps2', default_value='0.65',
+        description='Simulation-only Cartesian/virtual acceleration ceiling (m/s^2)')
+    joint_vel_arg = DeclareLaunchArgument(
+        'joint_velocity_limit', default_value='0.60',
+        description='Simulation-only limit for J1/J2 (rad/s); J3/J5/J6 have their own')
     tracking_error_arg = DeclareLaunchArgument(
         'max_tracking_error_m', default_value='0.050',
         description=('Streamer safety-stop threshold for EE vs due queue pose (m). '
@@ -162,8 +171,10 @@ def generate_launch_description():
         executable='cartesian_streamer_hc10dtp.py',
         name='cartesian_streamer', output='screen',
         parameters=[fake_moveit_config],
-        arguments=['--stream-hz', '15', '--max-vel', '0.18',
-                   '--max-accel', '0.65', '--max-joint-vel', '0.30',
+        arguments=['--stream-hz', '15',
+                   '--max-vel', LaunchConfiguration('cartesian_velocity_mps'),
+                   '--max-accel', LaunchConfiguration('cartesian_acceleration_mps2'),
+                   '--max-joint-vel', LaunchConfiguration('joint_velocity_limit'),
                    '--max-wrist-joint-vel',
                    LaunchConfiguration('wrist_joint_velocity_limit'),
                    '--max-j3-joint-vel',
@@ -185,8 +196,10 @@ def generate_launch_description():
                 LaunchConfiguration('prediction_reference_tau_sec'), value_type=float),
             'prediction_reference_lead_sec': ParameterValue(
                 LaunchConfiguration('prediction_reference_lead_sec'), value_type=float),
-            'max_virtual_velocity_mps': 0.18,
-            'max_virtual_acceleration_mps2': 0.65,
+            'max_virtual_velocity_mps': ParameterValue(
+                LaunchConfiguration('cartesian_velocity_mps'), value_type=float),
+            'max_virtual_acceleration_mps2': ParameterValue(
+                LaunchConfiguration('cartesian_acceleration_mps2'), value_type=float),
             'max_command_lead_m': ParameterValue(
                 LaunchConfiguration('command_lead_m'), value_type=float),
         }])
@@ -232,6 +245,7 @@ def generate_launch_description():
         prediction_reference_tau_arg,
         prediction_reference_lead_arg, joint_coordination_arg,
         command_lead_arg, tracking_error_arg,
+        cart_vel_arg, cart_acc_arg, joint_vel_arg,
         svgp_model_dir_arg,
         gru_model_dir_arg,
         model_dir_arg,

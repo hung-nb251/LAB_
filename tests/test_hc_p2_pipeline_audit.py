@@ -409,7 +409,7 @@ def test_streamer_publishes_schema2_diagnostics_with_effective_limits():
     # The launch overrides these globals; reproduce the real profile.
     mod.MAX_CARTESIAN_VELOCITY = 0.25
     mod.MAX_CARTESIAN_ACCELERATION = 1.00
-    mod.MAX_JOINT_VELOCITIES[:] = [0.50, 0.50, 0.50, 0.08, 0.50, 0.40]
+    mod.MAX_JOINT_VELOCITIES[:] = [0.60, 0.60, 0.60, 0.08, 0.60, 0.60]
 
     captured = {}
 
@@ -442,7 +442,7 @@ def test_streamer_publishes_schema2_diagnostics_with_effective_limits():
     # defaults -- this is the check that would have caught the constants error.
     assert payload['limits']['max_cartesian_velocity'] == 0.25
     assert payload['limits']['max_cartesian_acceleration'] == 1.00
-    assert payload['limits']['max_joint_velocities'] == [0.50, 0.50, 0.50, 0.08, 0.50, 0.40]
+    assert payload['limits']['max_joint_velocities'] == [0.60, 0.60, 0.60, 0.08, 0.60, 0.60]
     # Pre-existing diagnostic fields must survive untouched.
     assert payload['tracking_error_m'] == 0.03
 

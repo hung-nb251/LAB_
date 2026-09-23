@@ -291,3 +291,26 @@ def test_auto_test_runs_once_and_pauses_during_force_hold(controller):
         assert not c._fault
     assert c._manual.test_fired and c._manual.leg == 1
     assert c._manual.role == 'FOLLOWER' and c._manual.force_follower
+
+
+@pytest.mark.parametrize('wait_s', [0., 5., 10., 30.])
+def test_manual_leader_accepted_long_after_target_selection(controller, wait_s):
+    """Selecting a target must not expire: the operator decides WHEN to lead.
+
+    This is the intended conflict/confidence-aware flow of 'GRU+MJM' (not the
+    'GRU+MJM Test' button, which auto-fires LEADER once at 5 s and locks target
+    selection while running). Reported 2026-09-23 as 'LEADER only works if
+    pressed right after Target'; the logs showed every LEADER that week came
+    from test mode.
+    """
+    c, clock = controller
+    cmd(c, 'select', target=1)
+    for _ in range(int(round(wait_s * 15))):
+        tick(c, clock)
+        assert not c._fault
+    assert c._manual.selected == 1
+    assert c._manual.role == 'FOLLOWER'
+    cmd(c, 'leader')
+    tick(c, clock)
+    assert c._manual.role == 'LEADER', c._manual.reason
+    assert c._manual.active == 1
